@@ -1,0 +1,304 @@
+\section{Kompilacja kodu źródłowego}
+\label{sec:erlangKompilacja}
+
+Podrozdział opisuje kolejne kroki, z jakich składa się proces otrzymywania skompilowanego kodu pośredniego maszyny wirtualnej BEAM z kodu źródłowego napisanego w języku Erlang.
+
+%---------------------------------------------------------------------------
+\subsection{Wprowadzenie}
+
+Jak zostało wspomniane w \ref{sec:erlangMaszyny}, program napisany w języku Erlang wykonywany jest na dedykowanej do tego celu maszynie wirtualnej.
+
+Narzędzia przeznaczone do operacji opisanych w niniejszym rozdziale zostały napisane w języku Erlang i dostępne są w aplikacji \textbf{compiler} dostarczanej wraz z maszyną wirtualną BEAM.
+%---------------------------------------------------------------------------
+\subsection{Kod źródłowy}
+
+\begin{lstlisting}[style=erlang, caption=Plik fac.erl, label=facERL]
+-module(fac).
+
+-export([fac/1]).
+-define(ERROR, "Invalid argument").
+
+-include("fac.hrl").
+
+fac(#factorial{n=0, acc=Acc}) ->
+    Acc;
+fac(#factorial{n=N, acc=Acc}) ->
+    fac(#factorial{n=N-1, acc=N*Acc});
+fac(N) when is_integer(N) ->
+    fac(#factorial{n=N});
+fac(N) when is_binary(N) ->
+    fac(binary_to_integer(N));
+fac(_) ->
+    {error, ?ERROR}.
+\end{lstlisting}
+
+\begin{lstlisting}[style=erlang, caption=Plik fac.hrl, label=facHRL]
+-record(factorial, {n, acc=1}).
+\end{lstlisting}
+
+%---------------------------------------------------------------------------
+\subsection{Preprocessing}
+
+\begin{lstlisting}[style=erlang, caption=Moduł fac po pierwszym przetworzeniu, label=facP]
+-file("fac.erl", 1).
+
+-module(fac).
+
+-export([fac/1]).
+
+-file("fac.hrl", 1).
+
+-record(factorial,{n,acc = 1}).
+
+-file("fac.erl", 7).
+
+fac(#factorial{n = 0,acc = Acc}) ->
+    Acc;
+fac(#factorial{n = N,acc = Acc}) ->
+    fac(#factorial{n = N - 1,acc = N * Acc});
+fac(N) when is_integer(N) ->
+    fac(#factorial{n = N});
+fac(N) when is_binary(N) ->
+    fac(binary_to_integer(N));
+fac(_) ->
+    {error,"Invalid argument"}.
+\end{lstlisting}
+
+\begin{lstlisting}[style=erlang, caption=Moduł fac po drugim przetworzeniu, label=facE]
+-file("fac.erl", 1).
+
+-file("fac.hrl", 1).
+
+-file("fac.erl", 7).
+
+fac({factorial,0,Acc}) ->
+    Acc;
+fac({factorial,N,Acc}) ->
+    fac({factorial,N - 1,N * Acc});
+fac(N) when is_integer(N) ->
+    fac({factorial,N,1});
+fac(N) when is_binary(N) ->
+    fac(binary_to_integer(N));
+fac(_) ->
+    {error,"Invalid argument"}.
+
+module_info() ->
+    erlang:get_module_info(fac).
+
+module_info(X) ->
+    erlang:get_module_info(fac, X).
+\end{lstlisting}
+%---------------------------------------------------------------------------
+\subsection{Transformacje drzewa syntaktycznego}
+\begin{lstlisting}[style=erlang, caption=Drzewo syntaktyczne modułu fac, label=facAE]
+[{attribute,1,file,{"fac.erl",1}},
+ {attribute,1,module,fac},
+ {attribute,5,export,[{fac,1}]},
+ {attribute,1,file,{"fac.hrl",1}},
+ {attribute,1,record,
+     {factorial,
+         [{record_field,1,{atom,1,n}},
+          {record_field,1,{atom,1,acc},{integer,1,1}}]}},
+ {attribute,9,file,{"fac.erl",9}},
+ {function,10,fac,1,
+     [{clause,10,
+          [{record,10,factorial,
+               [{record_field,10,{atom,10,n},{integer,10,0}},
+                {record_field,10,{atom,10,acc},{var,10,'Acc'}}]}],
+          [],
+          [{var,11,'Acc'}]},
+      {clause,12,
+          [{record,12,factorial,
+               [{record_field,12,{atom,12,n},{var,12,'N'}},
+                {record_field,12,{atom,12,acc},{var,12,'Acc'}}]}],
+          [],
+          [{call,13,
+               {atom,13,fac},
+               [{record,13,factorial,
+                    [{record_field,13,
+                         {atom,13,n},
+                         {op,13,'-',{var,13,'N'},{integer,13,1}}},
+                     {record_field,13,
+                         {atom,13,acc},
+                         {op,13,'*',{var,13,'N'},{var,13,'Acc'}}}]}]}]},
+      {clause,14,
+          [{var,14,'N'}],
+          [[{call,14,{atom,14,is_integer},[{var,14,'N'}]}]],
+          [{call,15,
+               {atom,15,fac},
+               [{record,15,factorial,
+                    [{record_field,15,{atom,15,n},{var,15,'N'}}]}]}]},
+      {clause,16,
+          [{var,16,'N'}],
+          [[{call,16,{atom,16,is_binary},[{var,16,'N'}]}]],
+          [{call,17,
+               {atom,17,fac},
+               [{call,17,{atom,17,binary_to_integer},[{var,17,'N'}]}]}]},
+      {clause,18,
+          [{var,18,'_'}],
+          [],
+          [{tuple,19,[{atom,19,error},{string,19,"Invalid argument"}]}]}]},
+ {eof,20}]
+\end{lstlisting}
+%---------------------------------------------------------------------------
+\subsection{Kod pośredni (\emph{bytecode})}
+\begin{lstlisting}[style=erlang, caption=\emph{Bytecode} modułu fac, label=facS]
+{module, fac}.  %% version = 0
+
+{exports, [{fac,1},{module_info,0},{module_info,1}]}.
+
+{attributes, []}.
+
+{labels, 11}.
+
+
+{function, fac, 1, 2}.
+  {label,1}.
+    {line,[{location,"fac.erl",8}]}.
+    {func_info,{atom,fac},{atom,fac},1}.
+  {label,2}.
+    {test,is_tuple,{f,4},[{x,0}]}.
+    {test,test_arity,{f,4},[{x,0},3]}.
+    {get_tuple_element,{x,0},0,{x,1}}.
+    {get_tuple_element,{x,0},1,{x,2}}.
+    {get_tuple_element,{x,0},2,{x,3}}.
+    {test,is_eq_exact,{f,4},[{x,1},{atom,factorial}]}.
+    {test,is_eq_exact,{f,3},[{x,2},{integer,0}]}.
+    {move,{x,3},{x,0}}.
+    return.
+  {label,3}.
+    {line,[{location,"fac.erl",11}]}.
+    {gc_bif,'-',{f,0},4,[{x,2},{integer,1}],{x,0}}.
+    {line,[{location,"fac.erl",11}]}.
+    {gc_bif,'*',{f,0},4,[{x,2},{x,3}],{x,1}}.
+    {test_heap,4,4}.
+    {put_tuple,3,{x,2}}.
+    {put,{atom,factorial}}.
+    {put,{x,0}}.
+    {put,{x,1}}.
+    {move,{x,2},{x,0}}.
+    {call_only,1,{f,2}}.
+  {label,4}.
+    {test,is_integer,{f,5},[{x,0}]}.
+    {test_heap,4,1}.
+    {put_tuple,3,{x,1}}.
+    {put,{atom,factorial}}.
+    {put,{x,0}}.
+    {put,{integer,1}}.
+    {move,{x,1},{x,0}}.
+    {call_only,1,{f,2}}.
+  {label,5}.
+    {test,is_binary,{f,6},[{x,0}]}.
+    {allocate,0,1}.
+    {line,[{location,"fac.erl",15}]}.
+    {call_ext,1,{extfunc,erlang,binary_to_integer,1}}.
+    {call_last,1,{f,2},0}.
+  {label,6}.
+    {move,{literal,{error,"Invalid argument"}},{x,0}}.
+    return.
+
+
+{function, module_info, 0, 8}.
+  {label,7}.
+    {line,[]}.
+    {func_info,{atom,fac},{atom,module_info},0}.
+  {label,8}.
+    {move,{atom,fac},{x,0}}.
+    {line,[]}.
+    {call_ext_only,1,{extfunc,erlang,get_module_info,1}}.
+
+
+{function, module_info, 1, 10}.
+  {label,9}.
+    {line,[]}.
+    {func_info,{atom,fac},{atom,module_info},1}.
+  {label,10}.
+    {move,{x,0},{x,1}}.
+    {move,{atom,fac},{x,0}}.
+    {line,[]}.
+    {call_ext_only,2,{extfunc,erlang,get_module_info,2}}.
+\end{lstlisting}
+%---------------------------------------------------------------------------
+\subsection{Plik binarny BEAM}
+
+Efektem przetworzenia kodu pośredniego, wyrażonego w postaci krotek, jest plik binarny w formacie IFF \cite{morrison1985ea}, w formacie zrozumiałym przez maszynę wirtualną BEAM. Maszyna ta wykorzystuje tego rodzaju pliki do ładowania kodu modułów do pamięci. Ich źródłem może być zarówno system plików na fizycznej maszynie, na której uruchomiony został BEAM, jak i inna maszyna wirtualna znajdująca się w tym samym klastrze \emph{Distributed Erlang}, co docelowa.
+
+W tabeli \ref{table:beamFile} zaprezentowana została struktura pliku binarnego maszyny wirtualnej BEAM.
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & \textbf{Oktet} & \multicolumn{8}{|c|}{\textbf{0}} & \multicolumn{8}{|c|}{\textbf{1}} \\
+\hline
+\textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{"FOR1"} \\[2ex]
+\hline
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Rozmiar pliku bez pierwszych 8 bajtów}\\[2ex]
+\hline
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{"BEAM"} \\[2ex]
+\hline
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 1}\\[2ex]
+\hline
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Rozmiar fragmentu 1} \\[2ex]
+\hline
+\textbf{20} & \textbf{160} & \multicolumn{16}{|c|}{Dane fragmentu 1} \\[10ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 2}\\[2ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...} \\
+\hline
+\caption{Struktura pliku kodu pośredniego BEAM}
+\label{table:beamFile} \\
+\end{longtable}
+
+Każdy plik binarny BEAM powinien zawierać przynajmniej 5 następujących fragmentów \emph{chunków} (obok opisu każdego fragmentu, w nawiasie podano tabelę, która reprezentuje strukturę dane fragmentu w pliku BEAM):
+\begin{itemize}
+\item tablica atomów wykorzystywanych przez moduł;
+\item \emph{bytecode} danego modułu;
+\item tablica stringów wykorzystywanych przez moduł;
+\item tablica funkcji importowanych przez moduł;
+\item tablica funkcji eksportowanych przez moduł.
+\end{itemize}
+
+Ponadto, w pliku mogą znajdować się następujące, opcjonalne fragmenty:
+\begin{itemize}
+\item tablica lamdb wykorzystwanych przed moduł (tabela \ref{table:atomTable});
+\item tablica stałych wykorzystywanych przed moduł;
+\item lista atrybutów modułu;
+\item lista dodatkowych informacji o kompilacji modułu;
+\item tablica linii kodu źródłowego modułu (używana przy debuggowaniu i generacji stosu wywołań - \emph{stacktrace});
+\item drzewo syntaktyczne pliku z kodem źródłowym.
+\end{itemize}
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & \textbf{Oktet} & \multicolumn{8}{|c|}{\textbf{0}} & \multicolumn{8}{|c|}{\textbf{1}} \\
+\hline
+\textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{"FOR1"} \\[2ex]
+\hline
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Rozmiar pliku bez pierwszych 8 bajtów}\\[2ex]
+\hline
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{"BEAM"} \\[2ex]
+\hline
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 1}\\[2ex]
+\hline
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Rozmiar fragmentu 1} \\[2ex]
+\hline
+\textbf{20} & \textbf{160} & \multicolumn{16}{|c|}{Dane fragmentu 1} \\[10ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 2}\\[2ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...} \\
+\hline
+\caption{Struktura tablicy atomów w pliku BEAM}
+\label{table:atomTable} \\
+\end{longtable}
+
+W przypadku każdego rodzaju fragmentu, obszar jaki zajmuje on w pliku jest zawsze wielokrotnością 4 bajtów. Nawet jeżeli nagłówek fragmentu, zawierający jego rozmiar, nie jest podzielny przez 4, obszar zaraz za danym fragmentem dopełniany jest zerami do pełnych 4 bajtów.
+
+Warto zaznaczyć również, że sposób implementacji maszyny wirtualnej BEAM nie definiuje kolejności w jakiej fragmenty powinny występować w pliku binarnym.
+%---------------------------------------------------------------------------
+\subsection{Podsumowanie}
+%---------------------------------------------------------------------------

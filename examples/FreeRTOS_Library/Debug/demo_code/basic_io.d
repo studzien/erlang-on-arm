@@ -1,0 +1,36 @@
+demo_code/basic_io.d: ../demo_code/basic_io.c ../demo_code/consoleprint.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/FreeRTOS.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/projdefs.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/FreeRTOSConfig.h \
+ /Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc/LPC17xx.h \
+ /Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc/core_cm3.h \
+ /Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc/system_LPC17xx.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/portable.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable/portmacro.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/mpu_wrappers.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h \
+ /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h
+
+../demo_code/consoleprint.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/FreeRTOS.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/projdefs.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/FreeRTOSConfig.h:
+
+/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc/LPC17xx.h:
+
+/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc/core_cm3.h:
+
+/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc/system_LPC17xx.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/portable.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable/portmacro.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/mpu_wrappers.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h:
+
+/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h:

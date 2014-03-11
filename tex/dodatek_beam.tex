@@ -1,0 +1,48 @@
+\chapter{Lista operacji maszyny wirtualnej BEAM}
+\label{cha:operacjeBeam}
+
+%---------------------------------------------------------------------------
+
+Dodatek zawiera listę operacji maszyny wirtualnej BEAM, jakie może zawierać skompilowany kod pośredni przez nią wykonywany.
+Lista zawiera nazwę operacji, jej argumenty oraz opis jej działania.
+
+Kod operacji oraz każdy argument zajmują zawsze 1 bajt w pliku skompilowanego kodu pośredniego.
+Kolejość bajtów w zapisie kodu pośredniego to \emph{big endian}.
+
+\begin{longtable}{|c|c|c|p{5cm}|}
+\hline
+
+\multicolumn{2}{|c|}{\textbf{Kod operacji}} & \multirow{2}{*}{\textbf{Nazwa operacji i jej argumenty}} & \multirow{2}{*}{\textbf{Opis operacji}} \\
+\cline{1-2}
+\textbf{szesnastkowo} & \textbf{dziesiętnie} & & \\
+\hline
+\endfirsthead
+
+01 & 1 & label Lbl & Wprowadza lokalną dla danego modułu etykietę identyfikującą aktualne miejsce w kodzie. \\
+\hline
+02 & 2 & func\_info M F A & Definiuje funkcję F, w module M o arności A. \\
+\hline
+03 & 3 & int\_code\_end & ???  \\
+\hline
+
+\caption{Lista operacji maszyny wirtualnej BEAM}  \\
+\end{longtable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

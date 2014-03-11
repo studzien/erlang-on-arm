@@ -1,0 +1,112 @@
+\chapter{Wprowadzenie}
+\label{cha:wprowadzenie}
+
+W rozdziale uwzględniono wstępne informacje dotyczące programowania urządzeń wbudowanych, a także opisano dotychczasowe wykorzystanie języków funkcyjnych w programowaniu takich urządzeń.
+Opisano w nim także cele oraz zawartość niniejszej pracy.
+
+%---------------------------------------------------------------------------
+
+\section{Programowanie i zastosowanie systemów wbudowanych}
+\label{sec:systemyWbudowane}
+
+System wbudowany jest to system komputerowy będący zazwyczaj integralną częścią urządzenia zawierającego elementy sprzętowe i mechaniczne.
+W przeciwieństwie do komputerów ogólne przeznaczenia, których celem jest realizacja różnego rodzaju zadań w zależności od potrzeb ich użytkowników, systemy wbudowane realizują tylko jedno, konkretne zadanie.
+
+W obecnych czasach, gdy dąży się do tego, by coraz większa liczba urządzeń powszechnego użytku była "inteligentna" i mogła spełniać swoja zadania całkowicie niezależnie od człowieka, systemy wbudowane wykorzystywane w coraz większej mierze. Przykładami zastosowań systemów wbudowanych mogą być np.:
+\begin{itemize}
+\item telefony komórkowe;
+\item centrale telefoniczne;
+\item sterowniki do robotów mechanicznych;
+\item sprzęt sterujący samolotami i rakietami;
+\item układy sterujące pracą silnika samochodowego, komputery pokładowe;
+\item systemy alarmowe, antywłamaniowe, przeciwpożarowe;
+\item sprzęt medyczny;
+\item sprzęt pomiarowy.
+\end{itemize}
+
+Systemy wbudowane najczęściej implementowane są w oparciu o mikrokontrolery, czyli scalone systemy mikroprocesorowe zawierające na jednym, zintegrowanym układzie scalonym oprócz mikroprocesora również pamięć RAM, programu, układy wejścia-wyjścia, układy licznikowe oraz kontrolery przerwań. Zintegrowanie wszystkich tych elementów na jednej płytce pozwala na redukcję rozmiaru i poboru mocy takiego układu.
+
+Spośród architektur projektowania oprogramowania przeznaczonego do programowania urządzeń wbudowanych można wymienić:
+\begin{enumerate}
+\item kontrola programu w pętli \\
+program kontrolowany jest w pojedynczej pętli, wewnątrz której podejmowane są decyzje o sterowaniu elementami sprzętowymi lub programowymi;
+\item kontrola programu przez przerwania \\
+konkretne zadania programu wywoływane są przez wewnętrzne (np. zegary) lub zewnętrzne (np. odbiór danych z portu szeregowego) przerwania.
+Architektura ta często mieszana jest z wykonywaniem programu w pętli. W takim podejściu zadania o wysokim priorytecie wywoływane są przez przerwania, natomiast zadania o niskim priorytecie wykonywane są w pętli;
+\item wielozadaniowość z wywłaszczaniem \\
+w tego typu systemach pomiędzy kodem programu a mikrokontrolerem znajduje się niskopoziomowe oprogramowanie (jądro) odpowiadające za przydzielanie czasu procesora dla wielu współbieżnych zadań, które mogą mieć różne priorytety wykonania. Planista (\emph{scheduler}) decyduje także w którym momencie powinno zostać obsłużone przerwanie;
+\item wielozadaniowość bez wywłaszczania \\
+tego rodzaju architektura jest bardzo podobna do wielozadaniowości z wywłaszczaniem, jednak jądro nie dokonuje samodzielnych decyzji o przerwaniu wykonywania któregoś ze współbieżnych zadań lecz pozostawia tę decyzję programiście;
+\item mikrojądro \\
+jest rozszerzeniem systemów obsługujących wielozadaniowość bez wywłaszczania lub z wywłaszczaniem poprzez dodanie np. zarządzania pamięcią, mechanizmów synchronizacji czy komunikacji pomiędzy współbieżnymi zadaniami do funkcjonalności jądra. Przykładami mikrojąder mogą być np. FreeRTOS, Enea OSE czy RTEMS;
+\item jądro monolityczne
+do funkcjonalności jądra dodaje funkcjonalności zapewniające komplet komunikacji z peryferiami systemu dodające do funkcjonalności np. system plików, stos TCP/IP do komunikacji sieciowej, czy sterowniki obsługi urządzeń zewnętrznych.
+Spośród systemów z jądrami monolitycznymi można wymienić takie systemy jak Embedded Linux czy Windows CE.
+\end{enumerate}
+
+Można zauważyć, że wymienione architektury zostały uporządkowane względem złożoności projektowanego systemu, ale także pod względem złożoności występującego elementu pośredniego pomiędzy programowanym fizycznym urządzeniem a oprogramowaniem. Wraz ze wzrostem złożoności systemu rosną również wymagania sprzętowe konieczne do uruchomienia danego systemu, maleje jednak bezpośredni poziom kontroli programisty nad realizacją wymagań czasu rzeczywistego.
+W niniejszej pracy rozważane będą sposoby implementacji oprogramowania na systemy wbudowane w oparciu o mikrojądra.
+
+%---------------------------------------------------------------------------
+
+\section{Wykorzystanie Erlanga w programowaniu systemów wbudowanych}
+\label{sec:jezykiFunkcyjne}
+
+Jim Gray w pracy \emph{Why Do Computers Stop And What Can Be Done About It?} \cite{Gray85whydo} na podstawie obserwacji procesu projektowania i budowy sprzętu wchodzącego w skład systemów komputerowych sformułował pewne postulaty dotyczące implementacji oprogramowania odpornego na błędy.
+Były one następujące:
+\begin{enumerate}
+\item oprogramowanie powinno być modularne, co powinno zostać zapewnione przez wyabstrahowanie logiki w procesach. Komunikacja między procesami powinna zostać zapewniona przez mechanizm przesyłania wiadomości;
+\item propagacja błędów powinna być powstrzymywana tak szybko jak to tylko możliwe (\emph{fail-fast});
+\item logika wykonywana przez procesy powinna być zduplikowana w całym systemie tak, aby możliwe było jej wykonanie pomimo błędu sprzętowego lub tymczasowego błędu innego modułu;
+\item powinien zostać zapewniony mechanizm transakcyjny pozwalający na zachowanie spójności danych;
+\item powinien zostać zapewniony mechanizm transakcyjny, który w połączeniu z duplikacją procesów ułatwi obsługę wyjątków i tolerowanie błędów oprogramowania.
+\end{enumerate}
+
+Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB - Bjarne Dackera, Joe Armstrona, Mike'a Williams i Roberta Virdinga do stworzenia nowej platformy spełniającej powyższe wymagania i w oparciu o którą możliwe byłoby tworzenie projektów wewnątrz firmy.
+Jak się później okazało, do zaspokojenia wszystkich wymienionych potrzeb konieczne było stworzenie nowego, dedykowanego języka programowania - Erlang, wraz z zestawem bibliotek - OTP (Open Telecom Platform).
+
+Rozwiązanie to zapewniało realizację powyższych postulatów poprzez następujące cechy charakterystyczne:
+\begin{enumerate}
+\item izolowane, lekkie i możliwe do szybkiego uruchomienia procesy, które nie mogą bezpośrednio oddziaływać na inne uruchomione w systemie;
+\item współbieżne uruchomienie procesów;
+\item możliwość wykrywania błędów w jednym procesie przez drugi (monitorowanie procesów);
+\item możliwość zidentyfikowania błędu i podjęcia odpowiedniej akcji w jego efekcie;
+\item możliwość podmiany kodu uruchamianego programu w locie;
+\item niezawodna baza danych (mnesia wchodząca w skład OTP).
+\end{enumerate}
+
+Należy zaznaczyć, że celem przyświacającym twórcom języka od samego początku było zastosowanie go w urządzeniach w budowanych, jak np. w centrali telekomunikacyjnej Ericsson AXD301, która pozostaje tego typu urządzeniem o największej liczbie sprzedanych egzemplarzy.
+
+W tym miejscu nie można jednak zapomnieć o tym, że język ten został zaprojektowany dla systemów o miękkich wymaganiach czasu rzeczywistego. Systemy tego typu charakteryzują się tym, że oczekiwane czasy odpowiedzi w tym systemie są rzędu milisekund a odstępstwa od oczekiwanego czasu odpowiedzi powodują tylko spadek jakości usług danego systemu. W przeciwieństwie do tego, systemy o twardych wymaganiach czasu rzeczywistego uznaje się w takich sytuacjach za niefunkcjonujące.
+
+
+Dystrybucja maszyny wirtualnej Erlanga BEAM (Bjorn/Bogdan Erlang Abstract Machine), która utrzymywana jest przez firmę Ericsson AB umożliwia uruchomienie jej w trybie wbudowanym na takich systemach operacyjnych jak VxWorks czy Embedded Solaris. Pierwszy z nich jest systemem operacyjnym czasu rzeczywistego, jednak maszyna wirtualna została przeniesiona na ten system tylko w zakresie pozwalającym na uruchomienie na niej centrali telekomunikacyjnej, a jej uruchomienie wymaga 32 MB pamięci RAM i 22 MB przestrzeni dyskowej.
+Z kolei uruchomienie Erlang/OTP na systemie Embedded Solaris wymaga 17 MB pamięci RAM i 80 MB przestrzeni dyskowej.
+Szczegóły dotyczące wersji maszyny wirtualnej na te systemy operacyjne mogą zostać znalezione w dokumentacji Erlang/OTP \cite{ErlangVxWorks}.
+
+
+Oprócz tego, aktualnie rozwijanym, otwartym projektem związanym z uruchomieniem Erlanga na systemach wbudowanych jest Embedded Erlang. Powstający on przy współpracy firmy Erlang Solutions Ltd. Skupia się on jednak na uruchomieniu maszyny wirtualnej na Raspberry Pi oraz Paralleli, które wymagają pełnej dystrybucji systemu operacyjnego Linux. Szczegóły dotyczące projektu można znaleźć na stronie http://www.erlang-embedded.com.
+
+
+Zatem wymagania, jakich potrzebują zarówno wymienione przeniesienia (\emph{porty}) maszyny BEAM oraz Embedded Erlang są zdecydowanie zbyt wysokie w porównaniu do specyfikacji sprzętowych rozważanych w niniejszej pracy.
+
+
+W momencie powstawania pracy firma Ericsson AB była w trakcie implementacji maszyny wirtualnej Erlanga dla systemu operacyjnego czasu rzeczywistego Enea OSE. System ten abstrahuje logikę implementowanego oprogramowania w izolowanych procesach, komunikujących się między sobą poprzez wiadomości (\emph{actor model}). Poziom zgodności z filozofią Erlanga sprawia, że OSE wydaje się być idealnym systemem do implementacji maszyny wirtualnej dla tego języka. Pozostaje on jednak produktem zamkniętym.
+
+Innym projektem godnym uwagi jest Grisp, autorstwa Peera Stritzingera, będący portem maszyny wirtualnej Erlanga dla mikrojądra RTEMS \cite{Stritzinger2013}. W momencie pisania pracy Grisp również pozostaje w trakcie rozwoju, jednak tak jak i maszyna dla systemu OSE pozostaje projektem zamkniętym.
+%---------------------------------------------------------------------------
+
+\section{Cele pracy}
+\label{sec:celePracy}
+
+Oczekiwanym efektem niniejszej pracy jest implementacja funkcjonalności systemu uruchomieniowego dla funkcyjnego, współbieżnego języka programowania Erlang dla systemu operacyjnego czasu rzeczywistego FreeRTOS.
+Zakres implementacji powinien pozwolić na uruchomienie kodu pośredniego (bajtkodu) maszyny wirtualnej Erlanga skompilowanego przez kompilator maszyny wirtualnej BEAM na mikrokontrolerach o ograniczonych zasobach sprzętowych (jak np. mikrokontroler z serii LPC17xx, mający 512kB pamięci flash i 64kB pamięci RAM).
+
+Sposób implementacji powinien pozwolić na uruchamianie programów w taki sposób, by możliwe było spełnienie przynajmniej pierwszych czterech cech charakterystycznych dla języka Erlang z podrozdziału \ref{sec:jezykiFunkcyjne}. Punkt 6. został na tym etapie pominięty, gdyż integracja systemu FreeRTOS z obsługą systemu plików leży poza zakresem pracy. Udostępnienie interfejsów sieciowych oraz możliwość korzystania z mechanizmu klastra Erlanga (\emph{Distributed Erlang}) również nie jest jednym z celów niniejszej pracy.
+
+Celem pracy jest zatem umożliwienie implementacji oprogramowania uruchamianego w ramach systemach wbudowanych o miękkich wymaganiach czasu rzeczywistego, przy pomocy języka programowania Erlang. 
+
+%---------------------------------------------------------------------------
+
+\section{Zawartość pracy}
+\label{sec:zawartoscPracy}

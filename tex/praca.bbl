@@ -1,0 +1,17 @@
+\begin{thebibliography}{Mor85}
+
+\bibitem[AB97]{ErlangVxWorks}
+Ericsson AB.
+\newblock Erlang embedded systems user's guide, 1997.
+
+\bibitem[Gra85]{Gray85whydo}
+Jim Gray.
+\newblock Why do computers stop and what can be done about it?, 1985.
+
+\bibitem[Mor85]{morrison1985ea}
+J.~Morrison.
+\newblock Ea iff 85: Standard for interchange format files.
+\newblock {\em Amiga ROM Kernel Reference Manual: Devices (3rd edition),
+  Addison-Wesley}, 1(99):1, 1985.
+
+\end{thebibliography}
