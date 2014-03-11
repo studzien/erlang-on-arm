@@ -45,7 +45,7 @@ Spośród systemów z jądrami monolitycznymi można wymienić takie systemy jak
 \end{enumerate}
 
 Można zauważyć, że wymienione architektury zostały uporządkowane względem złożoności projektowanego systemu, ale także pod względem złożoności występującego elementu pośredniego pomiędzy programowanym fizycznym urządzeniem a oprogramowaniem. Wraz ze wzrostem złożoności systemu rosną również wymagania sprzętowe konieczne do uruchomienia danego systemu, maleje jednak bezpośredni poziom kontroli programisty nad realizacją wymagań czasu rzeczywistego.
-W niniejszej pracy rozważane będą sposoby implementacji oprogramowania na systemy wbudowane w oparciu o mikrojądra.
+W niniejszej pracy rozważane będą sposoby implementacji oprogramowania na systemy wbudowane w oparciu o mikrojądro. Przykładem takiego systemu jest FreeRTOS.
 
 %---------------------------------------------------------------------------
 
@@ -62,22 +62,24 @@ Były one następujące:
 \item powinien zostać zapewniony mechanizm transakcyjny, który w połączeniu z duplikacją procesów ułatwi obsługę wyjątków i tolerowanie błędów oprogramowania.
 \end{enumerate}
 
-Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB - Bjarne Dackera, Joe Armstrona, Mike'a Williams i Roberta Virdinga do stworzenia nowej platformy spełniającej powyższe wymagania i w oparciu o którą możliwe byłoby tworzenie projektów wewnątrz firmy.
+Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB - Bjarne Dackera, Joe Armstrona, Mike'a Williams i Roberta Virdinga do stworzenia nowej platformy umożliwiającej rozwój oprogramowania, spełniającego powyższe wymagania.
 Jak się później okazało, do zaspokojenia wszystkich wymienionych potrzeb konieczne było stworzenie nowego, dedykowanego języka programowania - Erlang, wraz z zestawem bibliotek - OTP (Open Telecom Platform).
 
-Rozwiązanie to zapewniało realizację powyższych postulatów poprzez następujące cechy charakterystyczne:
+Rozwiązanie to zapewniało realizację powyższych postulatów poprzez następujące cechy:
 \begin{enumerate}
+\item składnia języka pozwalająca na tworzenie krótszych i bardziej zwięzłych programów w porównaniu do języków imperatywnych;
+\item zarządzanie pamięcią przy pomocy \emph{garbage collectora}, co pozwala na zwolnienie programisty z ręcznego zarządzania pamięcią i wynikających z tego częstych błędów;
 \item izolowane, lekkie i możliwe do szybkiego uruchomienia procesy, które nie mogą bezpośrednio oddziaływać na inne uruchomione w systemie;
 \item współbieżne uruchomienie procesów;
 \item możliwość wykrywania błędów w jednym procesie przez drugi (monitorowanie procesów);
 \item możliwość zidentyfikowania błędu i podjęcia odpowiedniej akcji w jego efekcie;
 \item możliwość podmiany kodu uruchamianego programu w locie;
-\item niezawodna baza danych (mnesia wchodząca w skład OTP).
+\item niezawodna baza danych (\emph{Mnesia}, wchodząca w skład OTP).
 \end{enumerate}
 
-Należy zaznaczyć, że celem przyświacającym twórcom języka od samego początku było zastosowanie go w urządzeniach w budowanych, jak np. w centrali telekomunikacyjnej Ericsson AXD301, która pozostaje tego typu urządzeniem o największej liczbie sprzedanych egzemplarzy.
+Należy zaznaczyć, że celem przyświecającym twórcom języka od samego początku było zastosowanie go w urządzeniach w budowanych, jak np. w centrali telekomunikacyjnej Ericsson AXD301, która po dzień dzisiejszy pozostaje tego typu urządzeniem o największej liczbie sprzedanych egzemplarzy.
 
-W tym miejscu nie można jednak zapomnieć o tym, że język ten został zaprojektowany dla systemów o miękkich wymaganiach czasu rzeczywistego. Systemy tego typu charakteryzują się tym, że oczekiwane czasy odpowiedzi w tym systemie są rzędu milisekund a odstępstwa od oczekiwanego czasu odpowiedzi powodują tylko spadek jakości usług danego systemu. W przeciwieństwie do tego, systemy o twardych wymaganiach czasu rzeczywistego uznaje się w takich sytuacjach za niefunkcjonujące.
+Nie można jednak zapomnieć o tym, że język ten został zaprojektowany dla systemów o miękkich wymaganiach czasu rzeczywistego. Systemy tego typu charakteryzują się tym, że oczekiwane czasy odpowiedzi w tym systemie są rzędu milisekund a odstępstwa od oczekiwanego czasu odpowiedzi powodują tylko spadek jakości usług danego systemu. W przeciwieństwie do tego, systemy o twardych wymaganiach czasu rzeczywistego uznaje się w takich sytuacjach za niefunkcjonalne.
 
 
 Dystrybucja maszyny wirtualnej Erlanga BEAM (Bjorn/Bogdan Erlang Abstract Machine), która utrzymywana jest przez firmę Ericsson AB umożliwia uruchomienie jej w trybie wbudowanym na takich systemach operacyjnych jak VxWorks czy Embedded Solaris. Pierwszy z nich jest systemem operacyjnym czasu rzeczywistego, jednak maszyna wirtualna została przeniesiona na ten system tylko w zakresie pozwalającym na uruchomienie na niej centrali telekomunikacyjnej, a jej uruchomienie wymaga 32 MB pamięci RAM i 22 MB przestrzeni dyskowej.
@@ -91,7 +93,7 @@ Oprócz tego, aktualnie rozwijanym, otwartym projektem związanym z uruchomienie
 Zatem wymagania, jakich potrzebują zarówno wymienione przeniesienia (\emph{porty}) maszyny BEAM oraz Embedded Erlang są zdecydowanie zbyt wysokie w porównaniu do specyfikacji sprzętowych rozważanych w niniejszej pracy.
 
 
-W momencie powstawania pracy firma Ericsson AB była w trakcie implementacji maszyny wirtualnej Erlanga dla systemu operacyjnego czasu rzeczywistego Enea OSE. System ten abstrahuje logikę implementowanego oprogramowania w izolowanych procesach, komunikujących się między sobą poprzez wiadomości (\emph{actor model}). Poziom zgodności z filozofią Erlanga sprawia, że OSE wydaje się być idealnym systemem do implementacji maszyny wirtualnej dla tego języka. Pozostaje on jednak produktem zamkniętym.
+W momencie powstawania pracy firma Ericsson AB była w trakcie implementacji maszyny wirtualnej Erlanga dla systemu operacyjnego czasu rzeczywistego Enea OSE. System ten abstrahuje logikę implementowanego oprogramowania w izolowanych procesach, komunikujących się między sobą poprzez wiadomości (\emph{actor model}). Poziom zgodności funkcjonalności udostępnianych przez system z architekturą maszyny wirtualnej Erlanga sprawia, że OSE wydaje się być idealnym systemem do implementacji maszyny wirtualnej dla tego języka. Pozostaje on jednak produktem zamkniętym.
 
 Innym projektem godnym uwagi jest Grisp, autorstwa Peera Stritzingera, będący portem maszyny wirtualnej Erlanga dla mikrojądra RTEMS \cite{Stritzinger2013}. W momencie pisania pracy Grisp również pozostaje w trakcie rozwoju, jednak tak jak i maszyna dla systemu OSE pozostaje projektem zamkniętym.
 %---------------------------------------------------------------------------
@@ -99,12 +101,18 @@ Innym projektem godnym uwagi jest Grisp, autorstwa Peera Stritzingera, będący 
 \section{Cele pracy}
 \label{sec:celePracy}
 
-Oczekiwanym efektem niniejszej pracy jest implementacja funkcjonalności systemu uruchomieniowego dla funkcyjnego, współbieżnego języka programowania Erlang dla systemu operacyjnego czasu rzeczywistego FreeRTOS.
+Oczekiwanym efektem niniejszej pracy jest implementacja funkcjonalności systemu uruchomieniowego dla funkcyjnego, współbieżnego języka programowania Erlang dla systemu operacyjnego czasu rzeczywistego (mikrojądra) FreeRTOS.
 Zakres implementacji powinien pozwolić na uruchomienie kodu pośredniego (bajtkodu) maszyny wirtualnej Erlanga skompilowanego przez kompilator maszyny wirtualnej BEAM na mikrokontrolerach o ograniczonych zasobach sprzętowych (jak np. mikrokontroler z serii LPC17xx, mający 512kB pamięci flash i 64kB pamięci RAM).
 
-Sposób implementacji powinien pozwolić na uruchamianie programów w taki sposób, by możliwe było spełnienie przynajmniej pierwszych czterech cech charakterystycznych dla języka Erlang z podrozdziału \ref{sec:jezykiFunkcyjne}. Punkt 6. został na tym etapie pominięty, gdyż integracja systemu FreeRTOS z obsługą systemu plików leży poza zakresem pracy. Udostępnienie interfejsów sieciowych oraz możliwość korzystania z mechanizmu klastra Erlanga (\emph{Distributed Erlang}) również nie jest jednym z celów niniejszej pracy.
+Sposób implementacji powinien pozwolić na uruchamianie programów w taki sposób, by możliwe było spełnienie przynajmniej pierwszych czterech cech charakterystycznych dla języka Erlang z podrozdziału \ref{sec:jezykiFunkcyjne}. Punkt 6. został na tym etapie pominięty - integracja systemu FreeRTOS z obsługą systemu plików leży poza zakresem pracy. Udostępnienie interfejsów sieciowych oraz możliwość korzystania z mechanizmu klastra Erlanga (\emph{Distributed Erlang}) również nie jest jednym z celów niniejszej pracy.
 
-Celem pracy jest zatem umożliwienie implementacji oprogramowania uruchamianego w ramach systemach wbudowanych o miękkich wymaganiach czasu rzeczywistego, przy pomocy języka programowania Erlang. 
+Celem pracy jest są zatem:
+\begin{itemize}
+\item umożliwienie implementacji oprogramowania uruchamianego w ramach systemach wbudowanych o miękkich wymaganiach czasu rzeczywistego, przy pomocy funkcyjnego języka programowania Erlang;
+\item zbadanie wydajności rozwiązania na podstawie przykładowych programów uruchomionych na zaimplementowanej maszynie;
+\item udokumentowanie sposobu implementacji poszczególnych funkcjonalności i wskazanie różnic z implementacją oryginalnej maszyny wirtualnej;
+\item zwrócenie uwagi na 
+\end{itemize}
 
 %---------------------------------------------------------------------------
 
