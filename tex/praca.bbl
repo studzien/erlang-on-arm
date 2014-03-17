@@ -1,17 +1,31 @@
-\begin{thebibliography}{Mor85}
+\begin{thebibliography}{1}
 
-\bibitem[AB97]{ErlangVxWorks}
+\bibitem{ErlangVxWorks}
 Ericsson AB.
 \newblock Erlang embedded systems user's guide, 1997.
 
-\bibitem[Gra85]{Gray85whydo}
+\bibitem{Gray85whydo}
 Jim Gray.
 \newblock Why do computers stop and what can be done about it?, 1985.
 
-\bibitem[Mor85]{morrison1985ea}
+\bibitem{Kharchenko2012}
+Maxim Kharchenko.
+\newblock Erlang on xen, a quest to lower startup latency.
+\newblock {\em Erlang Factory SF Bay Area 2012, San Francisco}, 2012.
+
+\bibitem{ErlangEmbedded}
+Erlang~Solutions Ltd.
+\newblock Erlang embedded.
+
+\bibitem{morrison1985ea}
 J.~Morrison.
 \newblock Ea iff 85: Standard for interchange format files.
 \newblock {\em Amiga ROM Kernel Reference Manual: Devices (3rd edition),
   Addison-Wesley}, 1(99):1, 1985.
+
+\bibitem{Stritzinger2013}
+Peer Stritzinger.
+\newblock Full metal erlang.
+\newblock {\em Erlang User Conference 2013, Stockholm}, 2013.
 
 \end{thebibliography}

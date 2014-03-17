@@ -2,7 +2,7 @@
 \contentsline {chapter}{\numberline {1}Wprowadzenie}{6}
 \contentsline {section}{\numberline {1.1}Programowanie i zastosowanie system\IeC {\'o}w wbudowanych}{6}
 \contentsline {section}{\numberline {1.2}Wykorzystanie Erlanga w programowaniu system\IeC {\'o}w wbudowanych}{8}
-\contentsline {section}{\numberline {1.3}Cele pracy}{9}
+\contentsline {section}{\numberline {1.3}Cele pracy}{10}
 \contentsline {section}{\numberline {1.4}Zawarto\IeC {\'s}\IeC {\'c} pracy}{10}
 \contentsline {chapter}{\numberline {2}System operacyjny FreeRTOS}{11}
 \contentsline {section}{\numberline {2.1}Wprowadzenie}{11}
