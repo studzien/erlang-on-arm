@@ -26,7 +26,8 @@ W obecnych czasach, gdy dąży się do tego, by coraz większa liczba urządzeń
 
 Systemy wbudowane najczęściej implementowane są w oparciu o mikrokontrolery, czyli scalone systemy mikroprocesorowe zawierające na jednym, zintegrowanym układzie scalonym oprócz mikroprocesora również pamięć RAM, programu, układy wejścia-wyjścia, układy licznikowe oraz kontrolery przerwań. Zintegrowanie wszystkich tych elementów na jednej płytce pozwala na redukcję rozmiaru i poboru mocy takiego układu.
 
-Spośród architektur projektowania oprogramowania przeznaczonego do programowania urządzeń wbudowanych można wymienić:
+\label{ref:architektury}
+Spośród architektur oprogramowania uruchamianego na urządzeniach wbudowanych można wymienić:
 \begin{enumerate}
 \item kontrola programu w pętli \\
 program kontrolowany jest w pojedynczej pętli, wewnątrz której podejmowane są decyzje o sterowaniu elementami sprzętowymi lub programowymi;
@@ -98,7 +99,7 @@ W momencie powstawania pracy firma Ericsson AB była w trakcie implementacji mas
 
 Innym projektem godnym uwagi jest Grisp, autorstwa Peera Stritzingera, będący portem maszyny wirtualnej Erlanga dla mikrojądra RTEMS \cite{Stritzinger2013}. W momencie pisania pracy Grisp również pozostaje w trakcie rozwoju, jednak tak jak i maszyna dla systemu OSE pozostaje projektem zamkniętym.
 
-Warto także wspomnieć o projekcie Erlang on Xen autorstwa Maxima Kharchenki \cite{Kharchenko2012}, którego celem jest zbudowanie wersji maszyny wirtualnej, której możliwe byłoby uruchomienie w środowisku zwirtualizowanym, bezpośrednio przez \em{hypervisor} Xen, bez systemu operacyjnego jako warstwy pośredniej. Aby cel mógł zostać osiągnięty, konieczna jest reimplementacja funkcjonalności maszyny wirtualnej przy jednoczesnym dopasowaniu ich do architektury \em{hypervisora}.
+Warto także wspomnieć o projekcie Erlang on Xen autorstwa Maxima Kharchenki \cite{Kharchenko2012}, którego celem jest zbudowanie wersji maszyny wirtualnej, której możliwe byłoby uruchomienie w środowisku zwirtualizowanym, bezpośrednio przez \emph{hypervisor} Xen, bez systemu operacyjnego jako warstwy pośredniej. Aby cel mógł zostać osiągnięty, konieczna jest reimplementacja funkcjonalności maszyny wirtualnej przy jednoczesnym dopasowaniu ich do architektury \emph{hypervisora}.
 %---------------------------------------------------------------------------
 
 \section{Cele pracy}

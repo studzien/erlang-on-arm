@@ -2,30 +2,37 @@
 
 \bibitem{ErlangVxWorks}
 Ericsson AB.
-\newblock Erlang embedded systems user's guide, 1997.
+\newblock {Erlang Embedded Systems User's Guide}, 1997.
+
+\bibitem{Barry2011}
+Richard Barry.
+\newblock {\em {Using the FreeRTOS Real Time Kernel}}.
+\newblock {Real Time Engineers Ltd.}, 2011.
 
 \bibitem{Gray85whydo}
 Jim Gray.
-\newblock Why do computers stop and what can be done about it?, 1985.
+\newblock {Why Do Computers Stop And What Can Be Done About It?}, 1985.
 
 \bibitem{Kharchenko2012}
 Maxim Kharchenko.
-\newblock Erlang on xen, a quest to lower startup latency.
+\newblock {Erlang on Xen, A quest to lower startup latency}.
 \newblock {\em Erlang Factory SF Bay Area 2012, San Francisco}, 2012.
 
 \bibitem{ErlangEmbedded}
 Erlang~Solutions Ltd.
-\newblock Erlang embedded.
+\newblock {Erlang Embedded}.
+\newblock \url{http://www.erlang-embedded.com}, 2013.
+\newblock [data dostępu: 17.03.2014].
 
 \bibitem{morrison1985ea}
 J.~Morrison.
-\newblock Ea iff 85: Standard for interchange format files.
+\newblock {EA IFF 85: Standard for interchange format files}.
 \newblock {\em Amiga ROM Kernel Reference Manual: Devices (3rd edition),
   Addison-Wesley}, 1(99):1, 1985.
 
 \bibitem{Stritzinger2013}
 Peer Stritzinger.
-\newblock Full metal erlang.
+\newblock {Full Metal Erlang}.
 \newblock {\em Erlang User Conference 2013, Stockholm}, 2013.
 
 \end{thebibliography}

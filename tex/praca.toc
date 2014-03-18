@@ -5,24 +5,23 @@
 \contentsline {section}{\numberline {1.3}Cele pracy}{10}
 \contentsline {section}{\numberline {1.4}Zawarto\IeC {\'s}\IeC {\'c} pracy}{10}
 \contentsline {chapter}{\numberline {2}System operacyjny FreeRTOS}{11}
-\contentsline {section}{\numberline {2.1}Wprowadzenie}{11}
-\contentsline {section}{\numberline {2.2}Zadania i planista (\emph {scheduler})}{11}
-\contentsline {section}{\numberline {2.3}Kolejki}{11}
-\contentsline {section}{\numberline {2.4}Przerwania}{11}
-\contentsline {section}{\numberline {2.5}Zarz\IeC {\k a}dzanie zasobami}{11}
-\contentsline {section}{\numberline {2.6}Zarz\IeC {\k a}dzanie pami\IeC {\k e}ci\IeC {\k a}}{11}
-\contentsline {section}{\numberline {2.7}FreeRTOS i LPC17xx}{11}
-\contentsline {section}{\numberline {2.8}Podsumowanie}{11}
-\contentsline {chapter}{\numberline {3}J\IeC {\k e}zyk programowania Erlang}{12}
-\contentsline {section}{\numberline {3.1}Wprowadzenie}{12}
-\contentsline {section}{\numberline {3.2}System typ\IeC {\'o}w danych}{12}
-\contentsline {section}{\numberline {3.3}Kompilacja kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego}{12}
-\contentsline {subsection}{\numberline {3.3.1}Wprowadzenie}{12}
-\contentsline {subsection}{\numberline {3.3.2}Kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy}{12}
-\contentsline {subsection}{\numberline {3.3.3}Preprocessing}{13}
-\contentsline {subsection}{\numberline {3.3.4}Transformacje drzewa syntaktycznego}{14}
-\contentsline {subsection}{\numberline {3.3.5}Kod po\IeC {\'s}redni (\emph {bytecode})}{15}
-\contentsline {subsection}{\numberline {3.3.6}Plik binarny BEAM}{17}
-\contentsline {subsection}{\numberline {3.3.7}Podsumowanie}{18}
-\contentsline {chapter}{\numberline {A}Lista operacji maszyny wirtualnej BEAM}{19}
-\contentsline {chapter}{Bibliografia}{20}
+\contentsline {section}{\numberline {2.1}Zadania i planista (\emph {scheduler})}{11}
+\contentsline {section}{\numberline {2.2}Kolejki}{12}
+\contentsline {section}{\numberline {2.3}Przerwania}{12}
+\contentsline {section}{\numberline {2.4}Zarz\IeC {\k a}dzanie zasobami}{12}
+\contentsline {section}{\numberline {2.5}Zarz\IeC {\k a}dzanie pami\IeC {\k e}ci\IeC {\k a}}{12}
+\contentsline {section}{\numberline {2.6}FreeRTOS i LPC17xx}{12}
+\contentsline {section}{\numberline {2.7}Podsumowanie}{12}
+\contentsline {chapter}{\numberline {3}J\IeC {\k e}zyk programowania Erlang}{13}
+\contentsline {section}{\numberline {3.1}Wprowadzenie}{13}
+\contentsline {section}{\numberline {3.2}System typ\IeC {\'o}w danych}{13}
+\contentsline {section}{\numberline {3.3}Kompilacja kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego}{13}
+\contentsline {subsection}{\numberline {3.3.1}Wprowadzenie}{13}
+\contentsline {subsection}{\numberline {3.3.2}Kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy}{13}
+\contentsline {subsection}{\numberline {3.3.3}Preprocessing}{14}
+\contentsline {subsection}{\numberline {3.3.4}Transformacje drzewa syntaktycznego}{15}
+\contentsline {subsection}{\numberline {3.3.5}Kod po\IeC {\'s}redni (\emph {bytecode})}{16}
+\contentsline {subsection}{\numberline {3.3.6}Plik binarny BEAM}{18}
+\contentsline {subsection}{\numberline {3.3.7}Podsumowanie}{19}
+\contentsline {chapter}{\numberline {A}Lista operacji maszyny wirtualnej BEAM}{20}
+\contentsline {chapter}{Bibliografia}{21}

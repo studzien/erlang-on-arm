@@ -1,28 +1,45 @@
 \chapter{System operacyjny FreeRTOS}
 \label{cha:freertos}
 
+\textbf{Dodaj odnośniki do opisanych funkcjonalności maszyny, gdy ogólnie wspomniane}
+
+Podstawową częścią każdego systemu operacyjnego jest jego jądro, które odpowiedzialne jest za udostępnianie zasobów sprzętowych, takich jak procesor, pamięć, czy urządzenia wejścia/wyjścia, programom wykonywanym na tym systemie.
+
+System FreeRTOS jest mikrojądrem (por. architektury oprogramowania na str. \pageref{ref:architektury}), przy użyciu którego możliwa jest implementacja aplikacji czasu rzeczywistego (zarówno o miękkich jak i twardych wymaganiach) na urządzeniach wbudowanych.
+
 W niniejszym rozdziale opisano architekturę systemu (mikrojądra) FreeRTOS wraz ze sposobem, w jaki
-poszczególne funkcjonalności mogą być przydatne w implementacji maszyny wirtualnej Erlanga dedykowanej
-dla tego systemu.
-
-%---------------------------------------------------------------------------
-\section{Wprowadzenie}
-\label{sec:rtosWprowadzenie}
-
-Podstawową częścią każdego systemu operacyjnego jest jego jądro
-FreeRTOS jest mikrojądrem, umożliwiającym tworzenie aplikacji czasu rzeczywistego (zarówno o miękkich jak i twardych wymaganiach) przeznaczonych na systemy wbudowane. 
+poszczególne funkcjonalności mogą być przydatne w implementacji maszyny wirtualnej Erlanga dedykowanej dla tego systemu.
 
 %---------------------------------------------------------------------------
 \section{Zadania i planista (\emph{scheduler})}
 \label{sec:rtosScheduler}
 
+Podstawową wykonywalną jednostką w systemie FreeRTOS jest zadanie, zarządzane przez wbudowanego w system planistę (\emph{scheduler}).
+Zadanie uruchomione pod nadzorem planisty można porównać do wątku w systemie Linux, z tą różnicą, że kod zadania musi zostać zaimplementowany w języku C i przed rozpoczęciem jego wykonywania należy zadeklarować rozmiar stosu danego zadania.
+
+\emph{Scheduler} może pracować w dwóch trybach: wywłaszczeniowym, w którym sam algorytm planisty decyduje o kolejności wykonywania zadań, oraz w trybie opartym na współpracy, w którym zadania ,,dobrowolnie'' rezygnują z czasu procesora, który został im przydzielony. W tym drugim przypadku, priorytety zadań są nadal brane pod uwagę podczas wyboru kolejnego zadania do wykonania.
+
+Wielozadaniowość oparta na współpracy to model, jaki został zaimplementowany w oryginalnej maszynie wirtualnej Erlanga, po wprowadzeniu pojęcia redukcji jako miary czasu, przez jaki danemu procesowi udostępniona jest moc obliczeniowa (por. rozdział \ref{cha:erlang}).
+
+Wymienione cechy charakterystyczne zadań i planisty stanowią dobry punkt wyjścia do oparcia implementacji \emph{schedulera} maszyny wirtualnej Erlanga w oparciu o planistę systemu FreeRTOS oraz enkapsulację logiki procesów w zadaniach.
+
 %---------------------------------------------------------------------------
 \section{Kolejki}
 \label{sec:rtosKolejki}
 
+System FreeRTOS zapewnia mechanizm kolejki wiadomości między procesami, na wzór kolejki wiadomości POSIX. Kolejki nie należą do żadnego z zadań, dlatego też każde z zadań może zarówno odczytywać jak i zapisywać danego do każdej kolejki. Proces przesłania i odebrania wiadomości polega na skopiowaniu danych z przestrzeni adresowej nadawcy do przestrzeni adresowej kolejki a następnie z przestrzeni adresowej kolejki do przestrzeni adresowej zadania adresata.
+
+Kolejki w systemie FreeRTOS bardzo dobrze oddają semantykę kolejki wiadomości (\emph{mailbox}) w procesie Erlangowym. Jednakże istniałaby konieczność utworzenia osobnej kolejki dla każdego z uruchomionych w systemie procesów, do czego konieczne jest zaalokowanie pamięci dla kolejki wiadomości o maksymalnej długości z góry. 
+
+W związku z tym, w maszynie wirtualnej opisanej w niniejszej pracy kolejki wiadomości zostały zaimplementowane wewnątrz zadań implementujących logikę procesów. Pozwoli to na uproszczenie procedury wysłania wiadomości do procedury przez umieszczenie wiadomości na stercie procesu będącego jej adresatem, z której proces będzie mógł korzystać aż do momentu odśmiecenia pamięci procesu. 
+
 %---------------------------------------------------------------------------
 \section{Przerwania}
 \label{sec:rtosPrzerwania}
+
+FreeRTOS zapewnia obsługę zarówno programowych jak i sprzętowych przerwań. Podejściem implementacji obsługi przerwań przez autorów systemu jest ich odroczenie i delegacja obsługi do innego zadania, niż to które obsługuje przerwanie przez \emph{Interrupt Service Routine} (ISR) \cite{Barry2011}. Motywacją do tego, aby kod ISR był możliwie jak najkrótszy jest fakt, że w momencie jego wykonywania nowe przerwania nie są identyfikowane.
+
+W implementacji maszyny wirtualnej Erlanga dla FreeRTOS podążono za tą koncepcją i informacja o przerwaniu jest przesyłana jako wiadomość do procesów, które wywołają wcześniej odpowiednią funkcję subskrybującą.
 
 %---------------------------------------------------------------------------
 \section{Zarządzanie zasobami}
