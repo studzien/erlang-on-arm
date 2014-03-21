@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  19 MAR 2014 16:12
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  21 MAR 2014 02:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -488,8 +488,7 @@ File: lstlang3.sty 2004/09/05 1.3 listings language file
 LaTeX Warning: Unused global option(s):
     [pdflatex,11pt].
 
-(./praca.aux (./rozdzial1.aux) (./rozdzial2.aux) (./rozdzial3.aux)
-(./dodatek_beam.aux))
+(./praca.aux (./dodatek_beam.aux) (./dodatek_kompilacja.aux))
 \openout1 = `praca.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 88.
@@ -659,64 +658,22 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
  [5
 
 ]
-\openout2 = `rozdzial1.aux'.
+\openout2 = `dodatek_beam.aux'.
 
- (./rozdzial1.tex
-Rozdzia\l  1.
-[6
-
-
-
-] [7] [8]
-Underfull \vbox (badness 2343) has occurred while \output is active []
-
- [9])
-[10]
-\openout2 = `rozdzial2.aux'.
-
- (./rozdzial2.tex
-Rozdzia\l  2.
-LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 14.
-<taskstate.pdf, id=41, 844.65562pt x 596.98032pt>
-File: taskstate.pdf Graphic file (type pdf)
- <use taskstate.pdf>
-Package pdftex.def Info: taskstate.pdf used on input line 25.
-(pdftex.def)             Requested size: 441.87897pt x 298.38261pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 1292) has occurred while \output is active []
-
- [11
+ (./dodatek_beam.tex
+Dodatek A.
+) [6
 
 
 
 ]
-Underfull \vbox (badness 4036) has occurred while \output is active []
+\openout2 = `dodatek_kompilacja.aux'.
 
- [12 <./taskstate.pdf>]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 77.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)
-Underfull \vbox (badness 1436) has occurred while \output is active []
+ (./dodatek_kompilacja.tex
+Dodatek B.
 
- [13]
-[14]) [15]
-\openout2 = `rozdzial3.aux'.
-
- (./rozdzial3.tex
-Rozdzia\l  3.
-(./rozdzial3_typy.tex) (./rozdzial3_kompilacja.tex
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 7.
-
-
-LaTeX Warning: Reference `sec:erlangMaszyny' on page 16 undefined on input line
- 9.
+LaTeX Warning: Reference `sec:erlangMaszyny' on page 7 undefined on input line 
+9.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
@@ -724,56 +681,61 @@ File: lstlang1.sty 2004/09/05 1.3 listings language file
 (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 )
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 15.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
 (Font)              Font shape `T1/pcr/b/n' tried instead on input line 16.
- [16
+ [7
 
 
 
-]
-[17] [18]
-LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <12> not available
+] [8] [9]
+LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/it' tried instead on input line 144.
- [19]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [20]
-Underfull \vbox (badness 10000) detected at line 252
+[10] [11]
+Underfull \vbox (badness 10000) detected at line 254
  []
 
-[21]
-Underfull \vbox (badness 10000) detected at line 297
+[12]
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 281.
+
+Underfull \vbox (badness 10000) detected at line 303
  []
 
-)) [22]
-\openout2 = `dodatek_beam.aux'.
 
- (./dodatek_beam.tex
-Dodatek A.
-) [23
+Underfull \vbox (badness 10000) detected at line 338
+ []
+
+[13]
+Underfull \vbox (badness 10000) detected at line 368
+ []
+
+[14]
+Underfull \vbox (badness 10000) detected at line 397
+ []
+
+) [15] (./praca.bbl) [16
 
 
-
-] (./praca.bbl) [24
-
-
-] (./praca.aux (./rozdzial1.aux) (./rozdzial2.aux)
-(./rozdzial3.aux) (./dodatek_beam.aux))
+] (./praca.aux (./dodatek_beam.aux)
+(./dodatek_kompilacja.aux))
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 6447 strings out of 493315
- 84804 string characters out of 6137905
- 289763 words of memory out of 5000000
- 9705 multiletter control sequences out of 15000+600000
- 103298 words of font info for 85 fonts, out of 8000000 for 9000
+ 6402 strings out of 493315
+ 84142 string characters out of 6137905
+ 292310 words of memory out of 5000000
+ 9683 multiletter control sequences out of 15000+600000
+ 97808 words of font info for 81 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,12n,60p,650b,1892s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,12n,60p,543b,1916s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2
 013/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texm
@@ -783,10 +745,10 @@ ype1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/t
 imes/utmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr
 8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></u
 sr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on praca.pdf (24 pages, 424109 bytes).
+Output written on praca.pdf (16 pages, 212698 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
- 103 compressed objects within 2 object streams
+ 94 PDF objects out of 1000 (max. 8388607)
+ 65 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 17 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
