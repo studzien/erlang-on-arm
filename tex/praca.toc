@@ -1,5 +1,7 @@
 \select@language {polish}
-\contentsline {chapter}{\numberline {A}Lista operacji maszyny wirtualnej BEAM}{6}
+\contentsline {chapter}{\numberline {A}Lista instrukcji maszyny wirtualnej BEAM}{6}
+\contentsline {section}{\numberline {A.1}Typy argument\IeC {\'o}w}{6}
+\contentsline {section}{\numberline {A.2}Lista instrukcji}{6}
 \contentsline {chapter}{\numberline {B}Kompilacja kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego}{7}
 \contentsline {section}{\numberline {B.1}Wprowadzenie}{7}
 \contentsline {section}{\numberline {B.2}Kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy}{7}
@@ -8,8 +10,14 @@
 \contentsline {section}{\numberline {B.5}Kod po\IeC {\'s}redni (\emph {bytecode})}{10}
 \contentsline {section}{\numberline {B.6}Plik binarny BEAM}{11}
 \contentsline {subsection}{\numberline {B.6.1}Tablica atom\IeC {\'o}w}{13}
-\contentsline {subsection}{\numberline {B.6.2}Bajtkod}{13}
+\contentsline {subsection}{\numberline {B.6.2}Kod po\IeC {\'s}redni}{13}
 \contentsline {subsection}{\numberline {B.6.3}Tablica importowanych funkcji}{14}
 \contentsline {subsection}{\numberline {B.6.4}Tablica eksportowanych funkcji}{15}
-\contentsline {section}{\numberline {B.7}Podsumowanie}{15}
-\contentsline {chapter}{Bibliografia}{16}
+\contentsline {subsection}{\numberline {B.6.5}Tablica funkcji lokalnych}{15}
+\contentsline {subsection}{\numberline {B.6.6}Tablica lambd}{16}
+\contentsline {subsection}{\numberline {B.6.7}Tablica sta\IeC {\l }ych}{17}
+\contentsline {subsection}{\numberline {B.6.8}Lista atrybut\IeC {\'o}w modu\IeC {\l }u}{17}
+\contentsline {subsection}{\numberline {B.6.9}Lista dodatkowych informacji o kompilacji modu\IeC {\l }u}{18}
+\contentsline {subsection}{\numberline {B.6.10}Tablica linii kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego modu\IeC {\l }u}{18}
+\contentsline {subsection}{\numberline {B.6.11}Tablica linii kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego modu\IeC {\l }u}{19}
+\contentsline {chapter}{Bibliografia}{20}

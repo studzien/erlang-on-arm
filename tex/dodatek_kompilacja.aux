@@ -15,6 +15,7 @@
 \newlabel{facE}{{B.4}{8}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {B.4}Modu\IeC {\l } fac po drugim przetworzeniu}{8}}
 \@writefile{toc}{\contentsline {section}{\numberline {B.4}Transformacje drzewa syntaktycznego}{9}}
+\newlabel{sec:compilationSyntaxtree}{{B.4}{9}}
 \newlabel{facAE}{{B.5}{9}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {B.5}Drzewo syntaktyczne modu\IeC {\l }u fac}{9}}
 \@writefile{toc}{\contentsline {section}{\numberline {B.5}Kod po\IeC {\'s}redni (\emph  {bytecode})}{10}}
@@ -41,7 +42,7 @@
     {1}{22.94998pt}\LT@entry 
     {1}{22.94998pt}\LT@entry 
     {1}{22.94998pt}}
-\@writefile{lot}{\contentsline {table}{\numberline {B.1}{Struktura pliku kodu po\IeC {\'s}redniego BEAM}}{12}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.1}{Struktura pliku modu\IeC {\l }u BEAM}}{12}}
 \newlabel{table:beamFile}{{B.1}{12}}
 \gdef \LT@iii {\LT@entry 
     {1}{38.76143pt}\LT@entry 
@@ -84,7 +85,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.6.1}Tablica atom\IeC {\'o}w}{13}}
 \@writefile{lot}{\contentsline {table}{\numberline {B.2}{Struktura tablicy atom\IeC {\'o}w w pliku BEAM}}{13}}
 \newlabel{table:atomTable}{{B.2}{13}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.2}Bajtkod}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.2}Kod po\IeC {\'s}redni}{13}}
 \gdef \LT@v {\LT@entry 
     {1}{38.76143pt}\LT@entry 
     {1}{38.76143pt}\LT@entry 
@@ -104,10 +105,29 @@
     {1}{22.94998pt}\LT@entry 
     {1}{22.94998pt}\LT@entry 
     {1}{22.94998pt}}
-\@writefile{lot}{\contentsline {table}{\numberline {B.3}{Struktura bajtkodu w pliku BEAM}}{14}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.3}{Struktura kodu po\IeC {\'s}redniego w pliku BEAM}}{14}}
 \newlabel{table:bytecode}{{B.3}{14}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.6.3}Tablica importowanych funkcji}{14}}
 \gdef \LT@vi {\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}}
+\gdef \LT@vii {\LT@entry 
     {1}{38.76143pt}\LT@entry 
     {1}{38.76143pt}\LT@entry 
     {1}{17.47499pt}\LT@entry 
@@ -131,9 +151,81 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.6.4}Tablica eksportowanych funkcji}{15}}
 \@writefile{lot}{\contentsline {table}{\numberline {B.5}{Struktura tablicy eksportowanych funkcji w pliku BEAM}}{15}}
 \newlabel{table:exporttable}{{B.5}{15}}
-\@writefile{toc}{\contentsline {section}{\numberline {B.7}Podsumowanie}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.5}Tablica funkcji lokalnych}{15}}
+\gdef \LT@viii {\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.6}{Struktura tablicy lokalnych funkcji w pliku BEAM}}{16}}
+\newlabel{table:localtable}{{B.6}{16}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.6}Tablica lambd}{16}}
+\citation{ExternalTermFormat}
+\gdef \LT@ix {\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.7}{Struktura tablicy lambd w pliku BEAM}}{17}}
+\newlabel{table:lambdatable}{{B.7}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.7}Tablica sta\IeC {\l }ych}{17}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.8}{Struktura tablicy sta\IeC {\l }ych w pliku BEAM}}{17}}
+\newlabel{table:literaltable}{{B.8}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.8}Lista atrybut\IeC {\'o}w modu\IeC {\l }u}{17}}
+\gdef \LT@x {\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{38.76143pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{17.47499pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}\LT@entry 
+    {1}{22.94998pt}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.9}Lista dodatkowych informacji o kompilacji modu\IeC {\l }u}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.10}Tablica linii kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego modu\IeC {\l }u}{18}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.9}{Struktura tablicy linii kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego w pliku BEAM}}{19}}
+\newlabel{table:linetable}{{B.9}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6.11}Tablica linii kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego modu\IeC {\l }u}{19}}
 \@setckpt{dodatek_kompilacja}{
-\setcounter{page}{16}
+\setcounter{page}{20}
 \setcounter{equation}{0}
 \setcounter{enumi}{0}
 \setcounter{enumii}{0}
@@ -143,16 +235,16 @@
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{2}
-\setcounter{section}{7}
-\setcounter{subsection}{0}
+\setcounter{section}{6}
+\setcounter{subsection}{11}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{0}
-\setcounter{table}{5}
+\setcounter{table}{9}
 \setcounter{lofdepth}{1}
 \setcounter{lotdepth}{1}
-\setcounter{LT@tables}{6}
+\setcounter{LT@tables}{10}
 \setcounter{LT@chunks}{1}
 \setcounter{lstnumber}{75}
 \setcounter{lstlisting}{6}

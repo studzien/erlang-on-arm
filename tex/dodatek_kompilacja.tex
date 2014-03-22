@@ -90,6 +90,8 @@ module_info(X) ->
 \end{lstlisting}
 %---------------------------------------------------------------------------
 \section{Transformacje drzewa syntaktycznego}
+\label{sec:compilationSyntaxtree}
+
 \begin{lstlisting}[style=erlang, caption=Drzewo syntaktyczne modułu fac, label=facAE]
 [{attribute,1,file,{"fac.erl",1}},
  {attribute,1,module,fac},
@@ -233,44 +235,44 @@ W tabeli \ref{table:beamFile} zaprezentowana została struktura pliku binarnego 
 \hline
 \textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
 \hline
-\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{"FOR1"} \\[2ex]
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{"FOR1"} \\[3ex]
 \hline
-\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Rozmiar pliku bez pierwszych 8 bajtów}\\[2ex]
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Rozmiar pliku bez pierwszych 8 bajtów}\\[3ex]
 \hline
-\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{"BEAM"} \\[2ex]
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{"BEAM"} \\[3ex]
 \hline
-\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 1}\\[2ex]
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 1}\\[3ex]
 \hline
-\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Rozmiar fragmentu 1} \\[2ex]
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Rozmiar fragmentu 1} \\[3ex]
 \hline
 \textbf{20} & \textbf{160} & \multicolumn{16}{|c|}{Dane fragmentu 1} \\[10ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 2}\\[2ex]
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{Identyfikator fragmentu (\emph{chunk}) 2}\\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...} \\
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...} \\[10ex]
 \hline
-\caption{Struktura pliku kodu pośredniego BEAM}
+\caption{Struktura pliku modułu BEAM}
 \label{table:beamFile} \\
 \end{longtable}
 
-Każdy plik binarny BEAM powinien zawierać przynajmniej 5 z następujących fragmentów (\emph{chunków}).
+Każdy plik binarny BEAM powinien zawierać przynajmniej 4 następujące fragmenty (\emph{chunki}).
 Obok opisu każdego fragmentu, w nawiasie podano ciąg znaków będący jego identyfikatorem w binarnym pliku modułu:
 \begin{itemize}
 \item tablica atomów wykorzystywanych przez moduł (\texttt{Atom});
-\item bajtkod danego modułu (\texttt{Code});
+\item kod pośredni danego modułu (\texttt{Code});
 \item tablica zewnętrznych funkcji używanych przez moduł (\texttt{ImpT});
 \item tablica funkcji eksportowanych przez moduł (\texttt{ExpT}).
 \end{itemize}
 
-Ponadto, w pliku mogą znajdować się następujące, opcjonalne fragmenty:
+Ponadto, w pliku mogą znajdować się następujące fragmenty:
 \begin{itemize}
 \item tablica funkcji lokalnych dla danego modułu (\texttt{LocT});
 \item tablica lambd wykorzystwanych przed moduł (\texttt{FunT});
 \item tablica stałych wykorzystywanych przed moduł (\texttt{LitT});
 \item lista atrybutów modułu (\texttt{Attr});
 \item lista dodatkowych informacji o kompilacji modułu (\texttt{CInf)};
-\item tablica linii kodu źródłowego modułu (używana przy debuggowaniu i generacji stosu wywołań - \emph{stacktrace}) (\texttt{Line});
-\item drzewo syntaktyczne pliku z kodem źródłowym (\texttt{Abst}).
+\item tablica linii kodu źródłowego modułu (\texttt{Line});
+\item drzewo syntaktyczne modułu (\texttt{Abst}).
 \end{itemize}
 
 W przypadku każdego rodzaju fragmentu, obszar jaki zajmuje on w pliku jest zawsze wielokrotnością 4 bajtów. Nawet jeżeli nagłówek fragmentu, zawierający jego rozmiar, nie jest podzielny przez 4, obszar zaraz za danym fragmentem dopełniany jest zerami do pełnych 4 bajtów.
@@ -290,22 +292,22 @@ Fragment piku binarnego z tablicą atomów reprezentowany jest przez napis \text
 \hline
 \textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
 \hline
-\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Ilość atomów w tablicy atomów} \\[2ex]
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Ilość atomów w tablicy atomów} \\[3ex]
 \hline
-\textbf{4} & \textbf{32} & \multicolumn{8}{|c|}{Dł. atomu 1} & \multicolumn{8}{|c|}{Nazwa atomu 1 w ASCII}\\[2ex]
+\textbf{4} & \textbf{32} & \multicolumn{8}{|c|}{Dł. atomu 1} & \multicolumn{8}{|c|}{Nazwa atomu 1 w ASCII}\\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{Dł. atomu 2} & \multicolumn{8}{|c|}{Nazwa atomu 2 w ASCII}\\[2ex]
+\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{Dł. atomu 2} & \multicolumn{8}{|c|}{Nazwa atomu 2 w ASCII}\\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...} \\[2ex]
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...} \\[3ex]
 \hline
 \caption{Struktura tablicy atomów w pliku BEAM}
 \label{table:atomTable} \\
 \end{longtable}
 
 %---------------------------------------------------------------------------
-\subsection{Bajtkod}
+\subsection{Kod pośredni}
 %---------------------------------------------------------------------------
-Sekcja z bajtkodem zawiera faktyczny kod wykonywalny modułu, który jest interpretowany przez maszynę wirtualną w trakcie uruchomienia systemu.
+Sekcja z kodem pośrednim zawiera faktyczny kod wykonywalny modułu, który jest interpretowany przez maszynę wirtualną w trakcie uruchomienia systemu.
 
 Fragment pliku z kodem identyfikowana jest przez napis \texttt{Code}. Struktura danych fragmentu zawarta została w tabeli \ref{table:bytecode}. Szczegółowy opis reprezentacji i znaczenia opkodów i ich argumentów zawarty został w dodatku \ref{cha:operacjeBeam}.
 
@@ -315,25 +317,25 @@ Fragment pliku z kodem identyfikowana jest przez napis \texttt{Code}. Struktura 
 \hline
 \textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
 \hline
-\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{0x000010} \\[2ex]
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{0x000010} \\[3ex]
 \hline
-\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Numer wersji formatu bajtkodu (w Erlangu R16 - 0x00000000)}\\[2ex]
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Numer wersji formatu kod (w Erlangu R16 - 0x00000000)}\\[3ex]
 \hline
-\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Maksymalny numer operacji (do sprawdzenia kompatybilności)} \\[2ex]
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Maksymalny numer operacji (do sprawdzenia kompatybilności)} \\[3ex]
 \hline
-\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Liczba etykiet w kodzie modułu}\\[2ex]
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Liczba etykiet w kodzie modułu}\\[3ex]
 \hline
-\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Liczba funkcji eksportowanych z modułu} \\[2ex]
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Liczba funkcji eksportowanych z modułu} \\[3ex]
 \hline
-\textbf{20} & \textbf{160} & \multicolumn{8}{|c|}{Opkod 1} & \multicolumn{8}{|c|}{Argument 1}  \\[10ex]
+\textbf{20} & \textbf{160} & \multicolumn{8}{|c|}{Opkod 1} & \multicolumn{8}{|c|}{Argument 1}  \\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{...} & \multicolumn{8}{|c|}{Argument N}  \\[10ex]
+\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{...} & \multicolumn{8}{|c|}{Argument N}  \\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{Opkod 2} & \multicolumn{8}{|c|}{Argument 1}  \\[10ex]
+\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{Opkod 2} & \multicolumn{8}{|c|}{Argument 1}  \\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[10ex]
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[3ex]
 \hline
-\caption{Struktura bajtkodu w pliku BEAM}
+\caption{Struktura kodu pośredniego w pliku BEAM}
 \label{table:bytecode} \\
 \end{longtable}
 
@@ -343,7 +345,7 @@ Fragment pliku z kodem identyfikowana jest przez napis \texttt{Code}. Struktura 
 %---------------------------------------------------------------------------
 Fragment pliku binarnego z tablicą importowanych funkcji zawiera informacje o funkcjach zaimplementowanych w innych modułach, które są wykorzystywane przez moduł.
 
-Fragment pliku z kodem identyfikowana jest przez napis \texttt{ImpT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:importtable}.
+Identyfikowany jest on przez napis \texttt{ImpT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:importtable}.
 
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -351,17 +353,17 @@ Fragment pliku z kodem identyfikowana jest przez napis \texttt{ImpT}. Struktura 
 \hline
 \textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
 \hline
-\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Liczba importowanych funkcji} \\[2ex]
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Liczba importowanych funkcji} \\[3ex]
 \hline
-\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Indeks atomu z nazwą modułu 1}\\[2ex]
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Indeks atomu z nazwą modułu 1}\\[3ex]
 \hline
-\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 1} \\[2ex]
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 1} \\[3ex]
 \hline
-\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Arność funkcji 1}\\[2ex]
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Arność funkcji 1}\\[3ex]
 \hline
-\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Indeks atomu z nazwą modułu 2}\\[2ex]
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Indeks atomu z nazwą modułu 2}\\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[10ex]
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[3ex]
 \hline
 \caption{Struktura tablicy importowanych funkcji w pliku BEAM}
 \label{table:importtable} \\
@@ -372,7 +374,7 @@ Fragment pliku z kodem identyfikowana jest przez napis \texttt{ImpT}. Struktura 
 %---------------------------------------------------------------------------
 Fragment pliku binarnego z tablicą eksportowanych funkcji zawiera informacje o funkcjach z modułu, które widoczne są z poziomu innych modułów.
 
-Fragment pliku z kodem identyfikowana jest przez napis \texttt{ExpT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:exporttable}.
+Identyfikowany jest on przez napis \texttt{ExpT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:exporttable}.
 
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -380,22 +382,183 @@ Fragment pliku z kodem identyfikowana jest przez napis \texttt{ExpT}. Struktura 
 \hline
 \textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
 \hline
-\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Liczba eksportowanych funkcji} \\[2ex]
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Liczba eksportowanych funkcji} \\[3ex]
 \hline
-\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 1}\\[2ex]
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 1}\\[3ex]
 \hline
-\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Arność funkcji 1} \\[2ex]
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Arność funkcji 1} \\[3ex]
 \hline
-\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Etykieta początku kodu funkcji 1}\\[2ex]
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Etykieta początku kodu funkcji 1}\\[3ex]
 \hline
-\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 2}\\[2ex]
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 2}\\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[10ex]
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[3ex]
 \hline
 \caption{Struktura tablicy eksportowanych funkcji w pliku BEAM}
 \label{table:exporttable} \\
 \end{longtable}
 
 %---------------------------------------------------------------------------
-\section{Podsumowanie}
+\subsection{Tablica funkcji lokalnych}
 %---------------------------------------------------------------------------
+Fragment pliku binarnego z tablicą lokalnych funkcji zawiera informacje o funkcjach zaimplementowanych w module (w tym lambd), które wykorzystywane są tylko przez ten moduł i nie są widoczne z poziomu innych modułów.
+
+Identyfikowany jest on przez napis \texttt{LocT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:localtable}.
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & \textbf{Oktet} & \multicolumn{8}{|c|}{\textbf{0}} & \multicolumn{8}{|c|}{\textbf{1}} \\
+\hline
+\textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Liczba lokalnych funkcji} \\[3ex]
+\hline
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 1}\\[3ex]
+\hline
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Arność funkcji 1} \\[3ex]
+\hline
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Etykieta początku kodu funkcji 1}\\[3ex]
+\hline
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Indeks atomu z nazwą funkcji 2}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[3ex]
+\hline
+\caption{Struktura tablicy lokalnych funkcji w pliku BEAM}
+\label{table:localtable} \\
+\end{longtable}
+
+%---------------------------------------------------------------------------
+\subsection{Tablica lambd}
+%---------------------------------------------------------------------------
+Fragment pliku binarnego z tablicą lambd zawiera informacje o obiektach funkcyjnych, które wykorzystywane są przez ten moduł.
+
+Lambdy indentyfikowane są poprzez atomy, które powstały przez złączenie nazwy funkcji, w której zostały zdefiniowane oraz kolejny indeks lambdy zdefiniowanej w danej funkcji.
+Np. kolejne obiekty funkcyjne zdefiniowane w funkcji \texttt{foo/1} będą identyfikowane przez atomy \texttt{-foo/1-fun-0-}, \texttt{-foo/1-fun-1-} itd.
+
+Fragment pliku tablicą lambdy identyfikowany jest przez napis \texttt{FunT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:lambdatable}.
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & \textbf{Oktet} & \multicolumn{8}{|c|}{\textbf{0}} & \multicolumn{8}{|c|}{\textbf{1}} \\
+\hline
+\textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Liczba lambd w module} \\[3ex]
+\hline
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Indeks atomu z identyfikatorem lambdy 1}\\[3ex]
+\hline
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Arność lambdy 1} \\[3ex]
+\hline
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Etykieta początku kodu lambdy 1}\\[3ex]
+\hline
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Indeks lambdy 1 (0x00)}\\[3ex]
+\hline
+\textbf{20} & \textbf{160} & \multicolumn{16}{|c|}{Liczba wolnych zmiennych w lambdzie 1}\\[3ex]
+\hline
+\textbf{24} & \textbf{192} & \multicolumn{16}{|c|}{Wartość skrótu z drzewa syntaktycznego kodu lambdy 1}\\[3ex]
+\hline
+\textbf{28} & \textbf{224} & \multicolumn{16}{|c|}{Indeks atomu z identyfikatorem lambdy 2}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}  \\[3ex]
+\hline
+\caption{Struktura tablicy lambd w pliku BEAM}
+\label{table:lambdatable} \\
+\end{longtable}
+
+%---------------------------------------------------------------------------
+\subsection{Tablica stałych}
+%---------------------------------------------------------------------------
+Fragment pliku binarnego z tablicą lambd stałych zawiera informacje o stałych (listy, napisy, duże liczby) które wykorzystywane są przez ten moduł.
+
+Właściwa lista wartości stałych (od bajtu 4 do końca fragmentu) przechowywana jest w pliku w postaci skompresowanej algorytmem \textbf{zlib}.
+Stałe zapisane są w formacie binarnym w formacie \emph{External Term Format}, opisanym w dokumencie \cite{ExternalTermFormat}.
+
+Fragment pliku z tablicą identyfikowany jest przez napis \texttt{LitT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:literaltable}.
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & \textbf{Oktet} & \multicolumn{8}{|c|}{\textbf{0}} & \multicolumn{8}{|c|}{\textbf{1}} \\
+\hline
+\textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Rozmiar tablicy w bajtach} \\[3ex]
+\hline
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Liczba stałych}\\[3ex]
+\hline
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Rozmiar stałej 1 w bajtach} \\[3ex]
+\hline
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Stała 1 w formacie binarnym}\\[6ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{Rozmiar stałej 2 w bajtach}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}\\[6ex]
+\hline
+\caption{Struktura tablicy stałych w pliku BEAM}
+\label{table:literaltable} \\
+\end{longtable}
+
+%---------------------------------------------------------------------------
+\subsection{Lista atrybutów modułu}
+%---------------------------------------------------------------------------
+Fragment pliku binarnego z listą atrybutów modułu zawiera listę dwójek (proplistę) ze wszystkimi dodatkowymi atrybutami, z jakimi został skompilowany dany moduł (np. informacje o wersji czy autorze). Lista ta zapisana jest binarnie w postaci \emph{External Term Format}.
+
+Fragment ten reprezentowany jest przez napis \texttt{Attr}.
+
+%---------------------------------------------------------------------------
+\subsection{Lista dodatkowych informacji o kompilacji modułu}
+%---------------------------------------------------------------------------
+Fragment pliku binarnego z listą informacji o kompilacji modułu zawiera proplistę z informacjami dotyczącymi kompilacji, takimi jak: ścieżka pliku z kodem źrodłowym, czas kompilacji, wersja kompilatora czy użyte opcje kompilacji. Informacje te zapisane są binarnie w postaci \emph{External Term Format}.
+
+Fragment ten reprezentowany jest przez napis \texttt{CInf}.
+
+%---------------------------------------------------------------------------
+\subsection{Tablica linii kodu źródłowego modułu}
+%---------------------------------------------------------------------------
+Fragment pliku binarnego z informacjami o liniach kodu źródłowego modułu zawiera informacje dla instrukcji \texttt{line/1} maszyny wirtualnej o pliku źródłowym i linii, z której pochodzi aktualnie wykonywany fragment kodu. Informacje te wykorzystywane są przy generowaniu stosu wywołań przy wystąpięniu błędu lub wyjątku. Funkcjonalność ta została wprowadzona dopiero w wersji R15 maszyny wirtualnej Erlanga.
+
+Jeżeli kompilowany plik jest na etapie preprocessingu łączony z innymi plikami z kodem źródłowym (przez użycie atrybutu \texttt{include}) to informacja o tych plikach zostanie zawarta w tym fragmencie. Domyślnie, kompilowany plik nie jest liczony i ma indeks 0. 
+
+Numer linii koduje się przy użyciu tagu \texttt{0001}, jak w przypadku argumentów instrukcji maszyny wirtualnej, opisanych w sekcji \ref{sec:opsTypes}.
+Rozróżnienie pliku, z którego pochodzi linia odbywa się za pomocą zapamiętania, z którego pliku pochodziła ostatnia linia. Domyślnie jest to plik o indeksie 0. Jeżeli dochodzi do zmiany aktualnego pliku, kolejny numer linii poprzedzony jest indeksem pliku z którego pochodzi, zakodowanym przy użyciu tagu \texttt{0010} (jak w sekcji \ref{sec:opsTypes}). Dlatego też numer linii może zawierać w pliku binarnym 1 lub 2 bajty.
+
+Fragment pliku z tablicą identyfikowany jest przez napis \texttt{Line}. Struktura danych fragmentu zawarta została w tabeli \ref{table:linetable}.
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+         & \textbf{Oktet} & \multicolumn{8}{|c|}{\textbf{0}} & \multicolumn{8}{|c|}{\textbf{1}} \\
+\hline
+\textbf{Oktet} & \textbf{Bit} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Wersja (0x000000)} \\[3ex]
+\hline
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{0x000000}\\[3ex]
+\hline
+\textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Liczba instrukcji \texttt{line} w kodzie modułu} \\[3ex]
+\hline
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Liczba linii z kodem w plikach modułu}\\[3ex]
+\hline
+\textbf{16} & \textbf{128} & \multicolumn{16}{|c|}{Liczba plików z kodem modułu}\\[3ex]
+\hline
+\textbf{20} & \textbf{160} & \multicolumn{8}{|c|}{Numer linii (1 lub 2 B)} & \multicolumn{8}{|c|}{Numer linii (1 lub 2 B)} \\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{Długość nazwy pliku 1} & \multicolumn{8}{|c|}{Nazwa pliku 1 w ASCII}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{8}{|c|}{Długość nazwy pliku 2} & \multicolumn{8}{|c|}{Nazwa pliku 2 w ASCII}\\[3ex]
+\hline
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}\\[3ex]
+\hline
+\caption{Struktura tablicy linii kodu źródłowego w pliku BEAM}
+\label{table:linetable} \\
+\end{longtable}
+
+%---------------------------------------------------------------------------
+\subsection{Drzewo syntaktyczne modułu}
+%---------------------------------------------------------------------------
+Plik z modułem zawiera fragment pliku źródłowego z drzewem syntaktycznym pliku z kodem źródłowym o ile został skompilowany z opcją \texttt{debug\_info}.
+Fragment ten identyfikowany jest przez napis \texttt{Abst}. 
+
+Zawartością fragmentu jest drzewo syntaktyczne modułu, w takim formacie jak w sekcji \ref{sec:compilationSyntaxtree} w formacie \emph{External Term Format}.
