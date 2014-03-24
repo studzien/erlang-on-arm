@@ -1,7 +1,8 @@
 \chapter{Kompilacja kodu źródłowego}
 \label{cha:erlangKompilacja}
 
-Podrozdział opisuje kolejne kroki, z jakich składa się proces otrzymywania skompilowanego kodu pośredniego maszyny wirtualnej BEAM z kodu źródłowego napisanego w języku Erlang.
+Dodatek opisuje kolejne kroki, z jakich składa się proces otrzymywania skompilowanego kodu pośredniego maszyny wirtualnej BEAM z kodu źródłowego napisanego w języku Erlang.
+Oprócz tego dodatek dokumentuje, na potrzeby projektu, zawartość pliku ze skompilowanym kodem pośrednim.  Format pliku nie jest objęty oficjalną dokumentacją języka ze względu na dużą zmienność pomiędzy kolejnymi wersjami kompilatora i maszyny wirtualnej.
 
 %---------------------------------------------------------------------------
 \section{Wprowadzenie}
@@ -225,9 +226,9 @@ module_info(X) ->
 \section{Plik binarny BEAM}
 %---------------------------------------------------------------------------
 
-Efektem przetworzenia kodu pośredniego, wyrażonego w postaci krotek, jest plik binarny w formacie IFF \cite{morrison1985ea}, w formacie zrozumiałym przez maszynę wirtualną BEAM. Maszyna ta wykorzystuje tego rodzaju pliki do ładowania kodu modułów do pamięci. Ich źródłem może być zarówno system plików na fizycznej maszynie, na której uruchomiony został BEAM, jak i inna maszyna wirtualna znajdująca się w tym samym klastrze \emph{Distributed Erlang}, co docelowa.
+Efektem przetworzenia kodu pośredniego, wyrażonego w postaci krotek, jest plik binarny w formacie IFF \cite{morrison1985ea}, w formacie zrozumiałym przez maszynę wirtualną BEAM. Maszyna ta wykorzystuje tego rodzaju pliki do ładowania kodu poszczególnych modułów do pamięci. Ich źródłem może być zarówno system plików na fizycznej maszynie, na której uruchomiony został BEAM, jak i inna maszyna wirtualna znajdująca się w tym samym klastrze \emph{Distributed Erlang}, co docelowa.
 
-W tabeli \ref{table:beamFile} zaprezentowana została struktura pliku binarnego ze skompilowanym modułem.
+W tabeli \ref{table:beamFile} zaprezentowana została ogólna struktura pliku binarnego ze skompilowanym modułem.
 
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -275,7 +276,7 @@ Ponadto, w pliku mogą znajdować się następujące fragmenty:
 \item drzewo syntaktyczne modułu (\texttt{Abst}).
 \end{itemize}
 
-W przypadku każdego rodzaju fragmentu, obszar jaki zajmuje on w pliku jest zawsze wielokrotnością 4 bajtów. Nawet jeżeli nagłówek fragmentu, zawierający jego rozmiar, nie jest podzielny przez 4, obszar zaraz za danym fragmentem dopełniany jest zerami do pełnych 4 bajtów.
+W przypadku każdego rodzaju fragmentu, obszar pamięci jaki zajmuje on w pliku jest zawsze wielokrotnością 4 bajtów. Nawet jeżeli nagłówek fragmentu, zawierający jego rozmiar nie jest podzielny przez 4, obszar zaraz za danym fragmentem dopełniany jest zerami do pełnych 4 bajtów.
 
 Warto zaznaczyć również, że sposób implementacji maszyny wirtualnej BEAM nie definiuje kolejności w jakiej poszczególne fragmenty powinny występować w pliku binarnym.
 
@@ -283,6 +284,8 @@ Warto zaznaczyć również, że sposób implementacji maszyny wirtualnej BEAM ni
 \subsection{Tablica atomów}
 %---------------------------------------------------------------------------
 Tablica atomów zawiera listę wszystkich atomów, które używane są przez dany moduł. W trakcie ładowania kodu modułu przez maszynę wirtualną, atomy, które nie wystepowały we wcześniej załadowanych modułach, zostają wstawione do globalnej tablicy atomów (w postaci tablicy z hashowaniem).
+
+Ponieważ długość atomu zapisana jest na jednym bajcie, nazwa atomu może mieć maksymalnie 255 znaków.
 
 Fragment piku binarnego z tablicą atomów reprezentowany jest przez napis \texttt{Atom}. Struktura danych fragmentu zaprezentowana jest w tabeli \ref{table:atomTable}.
 
@@ -308,8 +311,9 @@ Fragment piku binarnego z tablicą atomów reprezentowany jest przez napis \text
 \subsection{Kod pośredni}
 %---------------------------------------------------------------------------
 Sekcja z kodem pośrednim zawiera faktyczny kod wykonywalny modułu, który jest interpretowany przez maszynę wirtualną w trakcie uruchomienia systemu.
+Szczegółowy opis reprezentacji i znaczenia opkodów i ich argumentów zawarty został w dodatku \ref{cha:operacjeBeam}.
 
-Fragment pliku z kodem identyfikowana jest przez napis \texttt{Code}. Struktura danych fragmentu zawarta została w tabeli \ref{table:bytecode}. Szczegółowy opis reprezentacji i znaczenia opkodów i ich argumentów zawarty został w dodatku \ref{cha:operacjeBeam}.
+Fragment pliku z kodem identyfikowana jest przez napis \texttt{Code}. Struktura danych fragmentu zawarta została w tabeli \ref{table:bytecode}. 
 
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -487,11 +491,11 @@ Fragment pliku z tablicą identyfikowany jest przez napis \texttt{LitT}. Struktu
 \hline
 \textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Rozmiar stałej 1 w bajtach} \\[3ex]
 \hline
-\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Stała 1 w formacie binarnym}\\[6ex]
+\textbf{12} & \textbf{96} & \multicolumn{16}{|c|}{Stała 1 w External Term Format}\\[8ex]
 \hline
 \textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{Rozmiar stałej 2 w bajtach}\\[3ex]
 \hline
-\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}\\[6ex]
+\textbf{...} & \textbf{...} & \multicolumn{16}{|c|}{...}\\[8ex]
 \hline
 \caption{Struktura tablicy stałych w pliku BEAM}
 \label{table:literaltable} \\
@@ -514,9 +518,9 @@ Fragment ten reprezentowany jest przez napis \texttt{CInf}.
 %---------------------------------------------------------------------------
 \subsection{Tablica linii kodu źródłowego modułu}
 %---------------------------------------------------------------------------
-Fragment pliku binarnego z informacjami o liniach kodu źródłowego modułu zawiera informacje dla instrukcji \texttt{line/1} maszyny wirtualnej o pliku źródłowym i linii, z której pochodzi aktualnie wykonywany fragment kodu. Informacje te wykorzystywane są przy generowaniu stosu wywołań przy wystąpięniu błędu lub wyjątku. Funkcjonalność ta została wprowadzona dopiero w wersji R15 maszyny wirtualnej Erlanga.
+Fragment pliku binarnego z informacjami o liniach kodu źródłowego modułu zawiera informacje dla instrukcji \texttt{line/1} maszyny wirtualnej o pliku źródłowym i linii, z której pochodzi aktualnie wykonywany fragment kodu. Informacje te wykorzystywane są przy generowaniu stosu wywołań przy wystąpięniu błędu lub wyjątku. Funkcjonalność ta została wprowadzona dopiero w wersji R15 maszyny wirtualnej BEAM.
 
-Jeżeli kompilowany plik jest na etapie preprocessingu łączony z innymi plikami z kodem źródłowym (przez użycie atrybutu \texttt{include}) to informacja o tych plikach zostanie zawarta w tym fragmencie. Domyślnie, kompilowany plik nie jest liczony i ma indeks 0. 
+Jeżeli kompilowany plik jest na etapie preprocessingu łączony z innymi plikami z kodem źródłowym (poprzez użycie atrybutu \texttt{include}) to informacja o tych plikach zostanie zawarta w tym fragmencie. Domyślnie, kompilowany plik nie zostanie uwzględniony i zostanie przydzielony mu indeks 0. 
 
 Numer linii koduje się przy użyciu tagu \texttt{0001}, jak w przypadku argumentów instrukcji maszyny wirtualnej, opisanych w sekcji \ref{sec:opsTypes}.
 Rozróżnienie pliku, z którego pochodzi linia odbywa się za pomocą zapamiętania, z którego pliku pochodziła ostatnia linia. Domyślnie jest to plik o indeksie 0. Jeżeli dochodzi do zmiany aktualnego pliku, kolejny numer linii poprzedzony jest indeksem pliku z którego pochodzi, zakodowanym przy użyciu tagu \texttt{0010} (jak w sekcji \ref{sec:opsTypes}). Dlatego też numer linii może zawierać w pliku binarnym 1 lub 2 bajty.
@@ -531,7 +535,7 @@ Fragment pliku z tablicą identyfikowany jest przez napis \texttt{Line}. Struktu
 \hline
 \textbf{0} & \textbf{0} & \multicolumn{16}{|c|}{Wersja (0x000000)} \\[3ex]
 \hline
-\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{0x000000}\\[3ex]
+\textbf{4} & \textbf{32} & \multicolumn{16}{|c|}{Flagi (0x000000)}\\[3ex]
 \hline
 \textbf{8} & \textbf{64} & \multicolumn{16}{|c|}{Liczba instrukcji \texttt{line} w kodzie modułu} \\[3ex]
 \hline
@@ -561,4 +565,4 @@ Fragment pliku z tablicą identyfikowany jest przez napis \texttt{Line}. Struktu
 Plik z modułem zawiera fragment pliku źródłowego z drzewem syntaktycznym pliku z kodem źródłowym o ile został skompilowany z opcją \texttt{debug\_info}.
 Fragment ten identyfikowany jest przez napis \texttt{Abst}. 
 
-Zawartością fragmentu jest drzewo syntaktyczne modułu, w takim formacie jak w sekcji \ref{sec:compilationSyntaxtree} w formacie \emph{External Term Format}.
+Zawartością fragmentu jest drzewo syntaktyczne modułu, w postaci opisanej w sekcji \ref{sec:compilationSyntaxtree} zakodowane w formacie \emph{External Term Format}.

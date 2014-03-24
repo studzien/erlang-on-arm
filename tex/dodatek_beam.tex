@@ -5,7 +5,10 @@
 Dodatek zawiera listę instrukcji maszyny wirtualnej BEAM, jakie może zawierać skompilowany kod pośredni przez nią wykonywany.
 Lista zawiera nazwę operacji, jej argumenty oraz opis jej działania.
 
-Kod operacji oraz każdy argument zajmują zawsze 1 bajt w pliku skompilowanego kodu pośredniego.
+Kod operacji zajmuje zawsze 1 bajt w pliku ze skompilowanym kodem pośrednim modułu.
+
+Argumenty mogą zajmować więcej, zgodnie z opisem w sekcji \ref{sec:opsTypes}.
+
 Kolejość bajtów w zapisie kodu pośredniego to \emph{big endian}.
 
 
@@ -13,6 +16,69 @@ Kolejość bajtów w zapisie kodu pośredniego to \emph{big endian}.
 \label{sec:opsTypes}
 %---------------------------------------------------------------------------
 
+Każdy z tagów jest możliwy do zapisania przy użyciu 3 bitów.
+Jednak w kodowaniu binarnym do zapisu typu używane są dodatkowo 1 lub 2 bity. Dzięki nim możliwe jest rozróżnienie pomiędzy argumentami zapisanymi przy użyciu różnej liczby bajtów.
+
+\begin{longtable}{|c|c|p{9cm}|}
+\hline
+
+\multicolumn{2}{|c|}{\textbf{Tag}} & \multirow{2}{*}{\textbf{Typ}} \\
+\cline{1-2}
+\textbf{binarnie} & \textbf{dziesiętnie} & \\
+\hline
+\endfirsthead
+
+000 & 0 & uniwersalny indeks, np. do tablicy stałych \\
+\hline
+001 & 1 & liczba całkowita \\ 
+\hline
+010 & 2 & indeks do tablicy atomów \\
+\hline
+011 & 3 & numer rejestru X maszyny wirtualnej \\
+\hline
+100 & 4 & numer rejestru Y maszyny wirtualnej \\
+\hline
+101 & 5 & etykieta, używana w funkcjach skoku \\
+\hline
+111 & 7 & złożone wyrażenie (np. lista, liczba zmiennoprzecinkowa) \\
+\hline
+
+\caption{Tagi typów danych w pliku ze skompilowanym modułem}  \\
+\end{longtable}
+
+Jeżeli tagowana liczba jest nieujemna, mniejsza od 16 (możliwe jest zapisanie jej przy użyciu 4 bitów) to argument jest zapisany przy użyciu jednego bajtu a jego postać binarna to:
+$$ \text{X}_1\text{X}_2\text{X}_3\text{X}_4\mathbf{0}\text{\textbf{TTT}}_{(2)}, $$
+gdzie ${\text{X}_1\text{X}_2\text{X}_3\text{X}_4}_{(2)}$ to tagowana liczba, $\text{X}_1$ jest jej najbardziej znaczącym bitem, a $\text{TTT}_{(2)}$ to tag danego typu argumentu.
+
+Na przykład, atom, który w tablicy atomów modułu ma indeks $2_{10} = 10_{2}$, po zakodowaniu będzie miał postać:
+$$0010\mathbf{0010}_{2} = 22_{16} = 34_{10}.$$
+
+W przypadku, gdy liczba jest nieujemna, mniejsza lub równa 16, a mniejsza od 2048 (możliwe jest jej zapisanie przy użyciu 11 bitów), argument jest zapisany przy użyciu dwóch bajtów, których postać binarna to:
+$$  {\text{X}_1\text{X}_2\text{X}_3\mathbf{01}\text{\textbf{TTT}} \enskip \text{X}_4\text{X}_5\text{X}_6\text{X}_7\text{X}_8\text{X}_9\text{X}_{10}\text{X}_{11}}_{(2)}, $$
+gdzie ${\text{X}_1 ... \text{X}_{11}}_{(2)}$ to tagowana liczba, $\text{X}_1$ jest jej najbardziej znaczącym bitem, a ${\text{TTT}}_{(2)}$ to tag danego typu argumentu.
+
+Na przykład, liczba całkowita $565_{10} = {010 \enskip 00110101}_{2}$ po zakodowaniu będzie miała postać:
+$${010\mathbf{01001} \enskip 00110101}_{2} = 4935_{16} = 18741_{10}.$$
+
+Jeżeli argument jest liczbą ujemną lub dodatnią wymagającą w zapisie dwójkowym więcej niż 11 bitów to liczba taka zapisywana jest binarnie w kodzie uzupełnień do dwóch poprzedzona odpowiednim nagłówkiem.
+
+Jeżeli zakodowaną liczbę można zapisać na nie więcej niż 8 bajtach, to nagłówek ma następującą postać:
+
+$$ {\text{N}_1\text{N}_2\text{N}_3 \mathbf{11} \text{\textbf{TTT}}}_{(2)}, $$
+gdzie ${\text{N}_1\text{N}_2\text{N}_3}_{(2)}$ to rozmiar argumentu w bajtach pomniejszony o 2 (jeżeli argument jest liczbą ujemną zajmującą 1 bajt to powinien on zostać dopełniony do 2 bajtów), $\text{N}_1$ jest jego najbardziej znaczącym bitem, a $\text{TTT}_{(2)}$ to tag danego typu argumentu.
+
+Na przykład, aby zapisać na dwóch bajtach liczbę $-21_{10} = {11111111 \enskip 11101011}_{U2}$, jej postać binarną należy poprzedzić nagłówkiem:
+
+$${000\mathbf{11001}}_{2} = 19_{16} = 25_{10}.$$
+
+Jeżeli do zapisania liczby w kodzie uzupełnień do dwóch potrzeba przynajmniej 9 bajtów, wtedy nagłówek ma postać:
+
+$$ {11111\text{\textbf{TTT}} \enskip \text{N}_1\text{N}_2\text{N}_3\text{N}_4 \mathbf{0000}}_{(2)}, $$
+gdzie ${\text{N}_1\text{N}_2\text{N}_3\text{N}_4}_{(2)}$ to rozmiar argumentu w bajtach pomniejszony o 9, $\text{N}_1$ jest jego najbardziej znaczącym bitem, a $\text{TTT}_{(2)}$ to tag danego typu argumentu.
+
+Na przykład, w celu zapisania liczby $2^{(15 \times 8)-1}-1$ na 15 bajtach, należy zapis tej liczby w kodzie U2 poprzedzić następującym nagłówkiem:
+
+$${11111\mathbf{001} \enskip 0110\mathbf{0000}}_{2} = \text{F}960_{16} = 63840_{10}.$$
 
 \section{Lista instrukcji}
 \label{sec:opsOps}
@@ -27,11 +93,11 @@ Kolejość bajtów w zapisie kodu pośredniego to \emph{big endian}.
 \hline
 \endfirsthead
 
-01 & 1 & label Lbl & Wprowadza lokalną dla danego modułu etykietę identyfikującą aktualne miejsce w kodzie. \\
+01 & 1 & \texttt{label Lbl} & Wprowadza lokalną dla danego modułu etykietę identyfikującą aktualne miejsce w kodzie. \\
 \hline
-02 & 2 & func\_info M F A & Definiuje funkcję F, w module M o arności A. \\
+02 & 2 & \texttt{func\_info M F A} & Definiuje funkcję \texttt{F}, w module \texttt{M} o arności \texttt{A}. \\
 \hline
-03 & 3 & int\_code\_end & ???  \\
+03 & 3 & \texttt{int\_code\_end} & ???  \\
 \hline
 
 \caption{Lista operacji maszyny wirtualnej BEAM}  \\
