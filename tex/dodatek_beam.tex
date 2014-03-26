@@ -110,15 +110,15 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 03 & 3 & \texttt{int\_code\_end} & Oznacza koniec kodu.  \\
 \hline
-04 & 4 & \texttt{call A Lbl} & Wywołuje funkcję o arności \texttt{A} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (rejestr \textbf{CP}). \\
+04 & 4 & \texttt{call Arity Lbl} & Wywołuje funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). \\
 \hline
-05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje prawostronnie rekursywnie funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest} słów pamięci na stosie.\\
+05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest} słów pamięci na stosie.\\
 \hline
-06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje prawostronnie rekursywnie funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. \\
+06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. \\
 \hline
 07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). \\
 \hline
-08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje prawostronnie rekursywnie zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea} słów pamięci na stosie.\\
+08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea} słów pamięci na stosie.\\
 \hline
 09 & 9 & \texttt{bif0 Bif Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/0}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
 \hline
@@ -126,11 +126,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
 \hline
-0C & 12 & \texttt{allocate SN L} & Alokuje miejsce dla \texttt{SN} słów na stosie. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
+0C & 12 & \texttt{allocate StackN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
 \hline
-0D & 13 & \texttt{allocate\_heap SN HN L} & Alokuje miejsce dla \texttt{SN} słów na stosie. Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
+0D & 13 & \texttt{allocate\_heap StackN HeapN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Upewnia się że na stercie jest \texttt{HeapN} wolnych słów. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
 \hline
-0E & 14 & \texttt{allocate\_zero SN L} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. \\
+0E & 14 & \texttt{allocate\_zero StackN Live} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. \\
 \hline
 0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć jest wyzerowana. \\
 \hline
@@ -146,7 +146,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 15 & 21 & \texttt{remove\_message} & Usuwa aktualną wiadomość z kolejki wiadomości. Zapisuje wskaźnik do niej w rejestrze \textbf{X0}. Usuwa aktywne przeterminowanie (\emph{timeout}). \\
 \hline
-16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowanie. \\
+16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowania. \\
 \hline
 17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \textbf{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \textbf{Lbl}. \\
 \hline
@@ -196,7 +196,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 3B & 59 & \texttt{select\_val Arg Lbl Dest} & Skacze do etykiety \texttt{Dest[Arg]}. Jeśli nie istnieje skacze do \texttt{Lbl}. \\
 \hline
-3C & 60 & \texttt{select\_tuple\_arity Tuple Lbl Dest} & Sprawdza arność krotki \texttt{Tuple} i skacze do etykiety \texttt{Dest[Arity]}. Jeśli nie istnieje skacze do \texttt{Lbl}. \\
+3C & 60 & \texttt{select\_tuple\_arity Tuple Lbl Dest} & Sprawdza arność krotki \texttt{Tuple} i skacze do etykiety \texttt{Dest[Arity]}. Jeśli etykieta nie istnieje skacze do \texttt{Lbl}. \\
 \hline
 3D & 61 & \texttt{jump Lbl} & Skacze do etykiety \texttt{Lbl}. \\
 \hline
@@ -204,18 +204,19 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 3F & 63 & \texttt{catch\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. \\
 \hline
-40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \text{Dest}. \\
+40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \texttt{Dest}. \\
 \hline
-41 & 65 & \texttt{get\_list Src Hd Tail} & Umieść głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. \\
-42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieść element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}.\\
+41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. \\
 \hline
-43 & 67 & \texttt{get\_tuple\_element Elem Tuple Pos} & Umieść element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}.\\
+42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieszcza element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}.\\
 \hline
-45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy listę \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
+43 & 67 & \texttt{get\_tuple\_element Elem Tuple Pos} & Umieszcza element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}.\\
+\hline
+45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy komórkę listy \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
 \hline
 46 & 70 & \texttt{put\_tuple Dest Arity} & Tworzy krotkę o arności \texttt{Arity} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
 \hline
-47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} w lokalnym kontekście.\\
+47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} na szczycie stosu.\\
 \hline
 48 & 72 & \texttt{badmatch Arg} & Rzuca wyjątek \texttt{badmatch} z argumentem \texttt{Arg}.\\
 \hline
@@ -227,7 +228,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typu argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją.\\
 \hline
-4E & 78 & \texttt{call\_ext\_only Arity Lbl} & Wywołuje prawostronnie rekursywnie zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Lbl} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu.\\
+4E & 78 & \texttt{call\_ext\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Lbl} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu.\\
 \hline
 59 & 89 & \texttt{bs\_put\_integer/5} & \\
 \hline
@@ -237,47 +238,47 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 5C & 92 & \texttt{bs\_put\_string/2} & \\
 \hline
-5E & 94 & \texttt{fclearerror/0} & \\
+5E & 94 & \texttt{fclearerror} &  Czyści flagę błędu zmiennoprzecinkowego, jeśli jest ustawiona. \\
 \hline
-5F & 95 & \texttt{fcheckerror/1} & \\
+5F & 95 & \texttt{fcheckerror Arg0} &  Sprawdza czy \texttt{Arg0} zawiera wartość \texttt{NaN} lub nieskończoność. Jeśli tak, rzuca wyjątek \texttt{badarith}.\\
 \hline
-60 & 96 & \texttt{fmove/2} & \\
+60 & 96 & \texttt{fmove Arg0 Arg1} & Kopiuje wartość \texttt{Arg0} do \texttt{Arg1}. \\
 \hline
-61 & 97 & \texttt{fconv/2} & \\
+61 & 97 & \texttt{fconv Arg0 Arg1} & Konwertuje wartość spod \texttt{Arg0} na liczbę zmiennoprzecinkową i umieszcza ją w rejestrze \texttt{Arg1}.\\
 \hline
-62 & 98 & \texttt{fadd/4} & \\
+62 & 98 & \texttt{fadd Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik dodawania \texttt{Arg1} do \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. \\
 \hline
-63 & 99 & \texttt{fsub/4} & \\
+63 & 99 & \texttt{fsub Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik odejmowania \texttt{Arg2} od \texttt{Arg1}. Argument \texttt{Arg0} jest nieużywany.\\
 \hline
-64 & 100 & \texttt{fmul/4} & \\
+64 & 100 & \texttt{fmul Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik mnożenia \texttt{Arg1} przez \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. \\
 \hline
-65 & 101 & \texttt{fdiv/4} & \\
+65 & 101 & \texttt{fdiv Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik dzielenia \texttt{Arg1} przez \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. \\
 \hline
-66 & 102 & \texttt{fnegate/3} & \\
+66 & 102 & \texttt{fnegate Arg0 Arg1 Arg2} & Zapisuje ujemną wartość z rejestru \texttt{Arg1} w rejestrze \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany.\\
 \hline
-67 & 103 & \texttt{make\_fun2/1} & \\
+67 & 103 & \texttt{make\_fun2 N} & Odczytuje wpis o indeksie \texttt{N} w tablicy lambd modułu i umieszcza go w rejestrze \textbf{X0}. \\
 \hline
-68 & 104 & \texttt{try/2} & \\
+68 & 104 & \texttt{try Dest Label} & Tak jak instrukcja \texttt{catch/2}.  \\
 \hline
-69 & 105 & \texttt{try\_end/1} & \\
+69 & 105 & \texttt{try\_end/1} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie.\\
 \hline
 6A & 106 & \texttt{try\_case/1} & \\
 \hline
-6B & 107 & \texttt{try\_case\_end/1} & \\
+6B & 107 & \texttt{try\_case\_end Reason} &  Rzuca wyjątek \texttt{try\_clause} z argumentem \texttt{Reason}.\\
 \hline
-6C & 108 & \texttt{raise/2} & \\
+6C & 108 & \texttt{raise Stacktrace Reason} & Rzuca wyjątek \texttt{Reason} ze stosem wywołań \texttt{Stacktrace}.\\
 \hline
 6D & 109 & \texttt{bs\_init2/6} & \\
 \hline
 6F & 111 & \texttt{bs\_add/5} & \\
 \hline
-70 & 112 & \texttt{apply/1} & \\
+70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze\textbf{X(\texttt{N+1}}, w module zapisanym w rejestrze \textbf{X(\texttt{N}} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
+\hline 
+71 & 113 & \texttt{apply\_last N Dea} & Skacze do zewnętrznej funkcji tak jak instrukcja \texttt{apply/1}. Ściąga wartość wskaźnika \textbf{CP} ze stosu. Zwalnia \texttt{Dea} miejsc na szczycie stosu.\\
 \hline
-71 & 113 & \texttt{apply\_last/2} & \\
+72 & 114 & \texttt{is\_boolean/2} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani atomem \texttt{true} ani \texttt{false}.\\
 \hline
-72 & 114 & \texttt{is\_boolean/2} & \\
-\hline
-73 & 115 & \texttt{is\_function2/3} & \\
+73 & 115 & \texttt{is\_function2 Lbl Arg1 Arity} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją o arności \texttt{Arity}.\\
 \hline
 74 & 116 & \texttt{bs\_start\_match2/5} & \\
 \hline
@@ -295,11 +296,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 7B & 123 & \texttt{bs\_restore2/2} & \\
 \hline
-7C & 124 & \texttt{gc\_bif1/5} & \\
+7C & 124 & \texttt{gc\_bif1 Lbl Live Bif Arg1 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/1} z argumentem \texttt{Arg1}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.\\
 \hline
-7D & 125 & \texttt{gc\_bif2/6} & \\
+7D & 125 & \texttt{gc\_bif2 Lbl Live Bif Arg1 Arg2 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.  \\
 \hline
-81 & 129 & \texttt{is\_bitstr/2} & \\
+81 & 129 & \texttt{is\_bitstr Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ciągiem bitów.\\
 \hline
 82 & 130 & \texttt{bs\_context\_to\_binary/1} & \\
 \hline
@@ -313,7 +314,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 87 & 135 & \texttt{bs\_private\_append/6} & \\
 \hline
-88 & 136 & \texttt{trim/2} & \\
+88 & 136 & \texttt{trim N Remaining} & Redukuje stos o \texttt{N} słów, zachowując \textbf{CP} na jego szczycie.\\
 \hline
 89 & 137 & \texttt{bs\_init\_bits/6} & \\
 \hline
@@ -339,11 +340,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 94 & 148 & \texttt{bs\_put\_utf32/3} & \\
 \hline
-95 & 149 & \texttt{on\_load/0} & \\
+95 & 149 & \texttt{on\_load} & Oznacza kod wykonywany przy ładowaniu modułu.\\
 \hline
-96 & 150 & \texttt{recv\_mark/1} & \\
+96 & 150 & \texttt{recv\_mark Lbl} & Zapamiętuje aktualną wiadomość z kolejki oraz etykietę \texttt{Label} do instrukcji \texttt{loop\_rec/2}.\\
 \hline
-97 & 151 & \texttt{recv\_set/1} & \\
+97 & 151 & \texttt{recv\_set Lbl} & Jeśli etykieta \texttt{Lbl} wskazuje na instrukcję \texttt{loop\_rec/2} to przepisuje wiadomość zachowaną przez instrukcję \texttt{recv\_mark} do wskaźnika \textbf{SAVE}. \\
 \hline
 98 & 152 & \texttt{gc\_bif3 Lbl Live Bif Arg1 Arg2 Arg3 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/3} z argumentami \texttt{Arg1}, \texttt{Arg2}, \texttt{Arg3}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}. \\
 \hline

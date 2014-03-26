@@ -20,4 +20,4 @@
 \contentsline {chapter}{\numberline {B}Lista instrukcji maszyny wirtualnej BEAM}{19}
 \contentsline {section}{\numberline {B.1}Typy argument\IeC {\'o}w}{19}
 \contentsline {section}{\numberline {B.2}Lista instrukcji}{21}
-\contentsline {chapter}{Bibliografia}{28}
+\contentsline {chapter}{Bibliografia}{29}
