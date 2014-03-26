@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  24 MAR 2014 01:32
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  26 MAR 2014 01:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -566,7 +566,7 @@ File: lstlang3.sty 2004/09/05 1.3 listings language file
 LaTeX Warning: Unused global option(s):
     [pdflatex,11pt].
 
-(./praca.aux (./dodatek_beam.aux))
+(./praca.aux (./dodatek_kompilacja.aux) (./dodatek_beam.aux))
 \openout1 = `praca.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
@@ -730,50 +730,251 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
  [5
 
 ]
+\openout2 = `dodatek_kompilacja.aux'.
+
+ (./dodatek_kompilacja.tex
+Dodatek A.
+
+LaTeX Warning: Reference `sec:erlangMaszyny' on page 6 undefined on input line 
+10.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+)
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 16.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 17.
+ [6
+
+
+
+] [7] [8]
+LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <14.4> not available
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 147.
+
+[9] [10]
+Underfull \vbox (badness 10000) detected at line 257
+ []
+
+[11]
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 284.
+
+Underfull \vbox (badness 10000) detected at line 308
+ []
+
+
+Underfull \vbox (badness 1259) has occurred while \output is active []
+
+ [12]
+Underfull \vbox (badness 10000) detected at line 344
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 374
+ []
+
+[13]
+Underfull \vbox (badness 10000) detected at line 403
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 432
+ []
+
+[14]
+Underfull \vbox (badness 10000) detected at line 470
+ []
+
+[15]
+Underfull \vbox (badness 10000) detected at line 502
+ []
+
+
+Underfull \vbox (badness 1325) has occurred while \output is active []
+
+ [16]
+Underfull \vbox (badness 10000) detected at line 560
+ []
+
+[17]) [18]
 \openout2 = `dodatek_beam.aux'.
 
  (./dodatek_beam.tex
-Dodatek A.
-[6
+Dodatek B.
+[19
 
 
 
-]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 96.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [7] [8])
-[9] (./praca.bbl) [10
+] [20]
+Overfull \hbox (4.80426pt too wide) in paragraph at lines 101--101
+[]|[]| 
+ []
 
 
-] (./praca.aux (./dodatek_beam.aux)) ) 
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+[]|\T1/pcr/m/n/10.95 call_last Arity Lbl
+ []
+
+
+Underfull \hbox (badness 1552) in paragraph at lines 115--116
+\T1/ptm/m/n/10.95 cj¦ o ar-no-±ci \T1/pcr/m/n/10.95 Arity \T1/ptm/m/n/10.95 zna
+j-du-j¡c¡ si¦ pod
+ []
+
+
+Underfull \hbox (badness 4859) in paragraph at lines 119--120
+[]|\T1/ptm/m/n/10.95 Wywoªuje ze-wn¦trzn¡ funk-cj¦ o ar-no-±ci
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--121
+[]|\T1/pcr/m/n/10.95 call_ext_last Arity
+ []
+
+
+Underfull \hbox (badness 3668) in paragraph at lines 121--122
+[]|\T1/ptm/m/n/10.95 Wywoªuje pra-wo-stron-nie re-kur-syw-nie ze-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+[]|\T1/pcr/m/n/10.95 bif2 Bif Arg1 Arg2
+ []
+
+
+Underfull \hbox (badness 1152) in paragraph at lines 131--132
+\T1/ptm/m/n/10.95 U»y-wa-nych jest \T1/pcr/m/n/10.95 L \T1/ptm/m/n/10.95 re-je-
+strów \T1/ptm/b/n/10.95 X\T1/ptm/m/n/10.95 , gdyby w
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--135
+[]|\T1/pcr/m/n/10.95 allocate_heap_zero SN
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 167--167
+[]|\T1/pcr/m/n/10.95 is_eq_exact Lbl Arg1
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--169
+[]|\T1/pcr/m/n/10.95 is_ne_exact Lbl Arg1
+ []
+
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 191--191
+[]|\T1/pcr/m/n/10.95 is_nonempty_list Lbl
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 195--195
+[]|\T1/pcr/m/n/10.95 test_arity Lbl Arg1
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 197--197
+[]|\T1/pcr/m/n/10.95 select_val Arg Lbl
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 199--199
+[]|\T1/pcr/m/n/10.95 select_tuple_arity
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 210--210
+[]|\T1/pcr/m/n/10.95 get_tuple_element Src
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 212--212
+[]|\T1/pcr/m/n/10.95 get_tuple_element
+ []
+
+
+Underfull \hbox (badness 1014) in paragraph at lines 220--221
+[]|\T1/ptm/m/n/10.95 Rzuca wy-j¡-tek \T1/pcr/m/n/10.95 badmatch \T1/ptm/m/n/10.
+95 z ar-gu-men-tem
+ []
+
+[22] [23]
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 226.
+
+Underfull \hbox (badness 1142) in paragraph at lines 226--227
+[]|\T1/ptm/m/n/10.95 Woªa obiekt funk-cyjny o ar-no-±ci \T1/pcr/m/n/10.95 Arity
+\T1/ptm/m/n/10.95 .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 230--230
+[]|\T1/pcr/m/n/10.95 call_ext_only Arity
+ []
+
+
+Underfull \hbox (badness 3668) in paragraph at lines 230--231
+[]|\T1/ptm/m/n/10.95 Wywoªuje pra-wo-stron-nie re-kur-syw-nie ze-
+ []
+
+[24]
+Overfull \hbox (2.27605pt too wide) in paragraph at lines 304--304
+[]|\T1/pcr/m/n/10.95 bs_context_to_binary/1| 
+ []
+
+[25]
+Underfull \hbox (badness 10000) in paragraph at lines 348--348
+[]|\T1/pcr/m/n/10.95 gc_bif3 Lbl Live Bif
+ []
+
+[26]) [27] (./praca.bbl) [28
+
+
+] (./praca.aux (./dodatek_kompilacja.aux)
+(./dodatek_beam.aux))
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 6524 strings out of 493315
- 86291 string characters out of 6137905
- 188662 words of memory out of 5000000
- 9797 multiletter control sequences out of 15000+600000
- 97663 words of font info for 82 fonts, out of 8000000 for 9000
+ 7081 strings out of 493315
+ 92001 string characters out of 6137905
+ 300614 words of memory out of 5000000
+ 10336 multiletter control sequences out of 15000+600000
+ 106712 words of font info for 93 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,11n,45p,358b,406s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2013/texmf-dist/fonts
-/enc/dvips/base/8r.enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmsy8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/courier/ucrr8a.p
-fb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></us
-r/local/texlive/2013/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local
-/texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2
-013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/texmf-
-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts
-/type1/urw/times/utmri8a.pfb>
-Output written on praca.pdf (10 pages, 225202 bytes).
+ 38i,12n,60p,630b,1934s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
+xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
+live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texli
+ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive
+/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/20
+13/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/201
+3/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/
+texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2013/texmf-di
+st/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts
+/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/
+urw/helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a
+.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
+/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/tex
+live/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on praca.pdf (28 pages, 304063 bytes).
 PDF statistics:
- 95 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
+ 161 PDF objects out of 1000 (max. 8388607)
+ 112 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

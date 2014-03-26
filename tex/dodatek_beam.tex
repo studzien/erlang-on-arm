@@ -2,22 +2,29 @@
 \label{cha:operacjeBeam}
 %---------------------------------------------------------------------------
 
-Dodatek zawiera listę instrukcji maszyny wirtualnej BEAM, jakie może zawierać skompilowany kod pośredni przez nią wykonywany.
-Lista zawiera nazwę operacji, jej argumenty oraz opis jej działania.
+Dodatek zawiera listę instrukcji maszyny wirtualnej BEAM, jakie może zawierać skompilowany kod pośredni przez nią wykonywany oraz sposób zapisu argumentów dla instrukcji.
 
-Kod operacji zajmuje zawsze 1 bajt w pliku ze skompilowanym kodem pośrednim modułu.
+Kod danej operacji zajmuje zawsze 1 bajt w pliku ze skompilowanym kodem pośrednim modułu. 
+Argumenty mogą zajmować więcej przestrzeni, zgodnie z opisem w sekcji \ref{sec:opsTypes}.
 
-Argumenty mogą zajmować więcej, zgodnie z opisem w sekcji \ref{sec:opsTypes}.
-
-Kolejość bajtów w zapisie kodu pośredniego to \emph{big endian}.
+Kolejość bajtów w zapisie kodu pośredniego to zawsze \emph{big endian}.
 
 
 \section{Typy argumentów}
 \label{sec:opsTypes}
 %---------------------------------------------------------------------------
+Argumentem jest zawsze liczba całkowita, reprezentująca taką wartość liczbową albo indeks w odpowiedniej tablicy z wartościami (pierwszym indeksem takiej tablicy jest 0). W związku z tym argumenty mogą być różnego typu. Aby rozróżnić argument jednego typu od drugiego poddaje się je odpowiedniemu tagowaniu. Operację wykonuje się bezpośrednio na argumencie, jeśli jest dostatecznie mały, lub na odpowiednim nagłówku poprzedzającym argument. Rozróżnienie to jest spowodowane oszczędnością rozmiaru kodu pośredniego, który musi być przechowywany w pamięci.
 
-Każdy z tagów jest możliwy do zapisania przy użyciu 3 bitów.
+Każdy z tagów, które zostały wymienione w tabeli \ref{table:codeTags}, jest możliwy do zapisania przy użyciu 3 bitów, które zajmują najmniej znaczące bity argumentu.
 Jednak w kodowaniu binarnym do zapisu typu używane są dodatkowo 1 lub 2 bity. Dzięki nim możliwe jest rozróżnienie pomiędzy argumentami zapisanymi przy użyciu różnej liczby bajtów.
+
+Tagowanie odbywa się za pomocą następującej operacji:
+
+$${(0000\text{XXXX} \ll N)}_{(2)} \oplus {000\text{\textbf{SS}}\text{\textbf{TTT}}}_{(2)},$$
+gdzie $\text{XXXX}_{(2)}$ jest tagowaną liczbą, 
+$N=4 \text{ lub } 5$, 
+$\text{\textbf{SS}}_{(2)}$ są dodatkowymi bitami znakującymi rozmiar argumentu, a
+$\text{\textbf{TTT}}_{(2)}$ jest danym tagiem.
 
 \begin{longtable}{|c|c|p{9cm}|}
 \hline
@@ -43,7 +50,8 @@ Jednak w kodowaniu binarnym do zapisu typu używane są dodatkowo 1 lub 2 bity. 
 111 & 7 & złożone wyrażenie (np. lista, liczba zmiennoprzecinkowa) \\
 \hline
 
-\caption{Tagi typów danych w pliku ze skompilowanym modułem}  \\
+\caption{Tagi typów danych w pliku ze skompilowanym modułem} 
+\label{table:codeTags} \\
 \end{longtable}
 
 Jeżeli tagowana liczba jest nieujemna, mniejsza od 16 (możliwe jest zapisanie jej przy użyciu 4 bitów) to argument jest zapisany przy użyciu jednego bajtu a jego postać binarna to:
@@ -60,7 +68,7 @@ gdzie ${\text{X}_1 ... \text{X}_{11}}_{(2)}$ to tagowana liczba, $\text{X}_1$ je
 Na przykład, liczba całkowita $565_{10} = {010 \enskip 00110101}_{2}$ po zakodowaniu będzie miała postać:
 $${010\mathbf{01001} \enskip 00110101}_{2} = 4935_{16} = 18741_{10}.$$
 
-Jeżeli argument jest liczbą ujemną lub dodatnią wymagającą w zapisie dwójkowym więcej niż 11 bitów to liczba taka zapisywana jest binarnie w kodzie uzupełnień do dwóch poprzedzona odpowiednim nagłówkiem.
+Jeżeli argument jest liczbą ujemną lub dodatnią wymagającą w zapisie dwójkowym więcej niż 11 bitów to liczba taka zapisywana jest binarnie w kodzie uzupełnień do dwóch (U2) poprzedzona odpowiednim nagłówkiem.
 
 Jeżeli zakodowaną liczbę można zapisać na nie więcej niż 8 bajtach, to nagłówek ma następującą postać:
 
@@ -71,7 +79,7 @@ Na przykład, aby zapisać na dwóch bajtach liczbę $-21_{10} = {11111111 \ensk
 
 $${000\mathbf{11001}}_{2} = 19_{16} = 25_{10}.$$
 
-Jeżeli do zapisania liczby w kodzie uzupełnień do dwóch potrzeba przynajmniej 9 bajtów, wtedy nagłówek ma postać:
+Jeżeli do zapisania liczby w kodzie uzupełnień do dwóch potrzeba przynajmniej 9 bajtów, wtedy nagłówek jest dwubajtowy i ma postać:
 
 $$ {11111\text{\textbf{TTT}} \enskip \text{N}_1\text{N}_2\text{N}_3\text{N}_4 \mathbf{0000}}_{(2)}, $$
 gdzie ${\text{N}_1\text{N}_2\text{N}_3\text{N}_4}_{(2)}$ to rozmiar argumentu w bajtach pomniejszony o 9, $\text{N}_1$ jest jego najbardziej znaczącym bitem, a $\text{TTT}_{(2)}$ to tag danego typu argumentu.
@@ -83,13 +91,16 @@ $${11111\mathbf{001} \enskip 0110\mathbf{0000}}_{2} = \text{F}960_{16} = 63840_{
 \section{Lista instrukcji}
 \label{sec:opsOps}
 %---------------------------------------------------------------------------
+W tabeli \ref{tab:ops} zawarto listę instrukcji rozumianych przez maszynę wirtualną BEAM wraz z jednobajtowym kodem operacji, listą jej argumentów i krótkim opisem działania.
 
-\begin{longtable}{|c|c|c|p{5cm}|}
+Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte.
+
+\begin{longtable}{|c|c|p{5cm}|p{7cm}|}
 \hline
 
 \multicolumn{2}{|c|}{\textbf{Kod operacji}} & \multirow{2}{*}{\textbf{Nazwa operacji i jej argumenty}} & \multirow{2}{*}{\textbf{Opis operacji i uwagi}} \\
 \cline{1-2}
-\textbf{szesnastkowo} & \textbf{dziesiętnie} & & \\
+\textbf{hex} & \textbf{dec} & & \\
 \hline
 \endfirsthead
 
@@ -97,27 +108,249 @@ $${11111\mathbf{001} \enskip 0110\mathbf{0000}}_{2} = \text{F}960_{16} = 63840_{
 \hline
 02 & 2 & \texttt{func\_info M F A} & Definiuje funkcję \texttt{F}, w module \texttt{M} o arności \texttt{A}. \\
 \hline
-03 & 3 & \texttt{int\_code\_end} & ???  \\
+03 & 3 & \texttt{int\_code\_end} & Oznacza koniec kodu.  \\
+\hline
+04 & 4 & \texttt{call A Lbl} & Wywołuje funkcję o arności \texttt{A} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (rejestr \textbf{CP}). \\
+\hline
+05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje prawostronnie rekursywnie funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest} słów pamięci na stosie.\\
+\hline
+06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje prawostronnie rekursywnie funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. \\
+\hline
+07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). \\
+\hline
+08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje prawostronnie rekursywnie zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea} słów pamięci na stosie.\\
+\hline
+09 & 9 & \texttt{bif0 Bif Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/0}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
+\hline
+0A & 10 & \texttt{bif1 Bif Arg Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/1} z argumentem \texttt{Arg}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
+\hline
+0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
+\hline
+0C & 12 & \texttt{allocate SN L} & Alokuje miejsce dla \texttt{SN} słów na stosie. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
+\hline
+0D & 13 & \texttt{allocate\_heap SN HN L} & Alokuje miejsce dla \texttt{SN} słów na stosie. Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
+\hline
+0E & 14 & \texttt{allocate\_zero SN L} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. \\
+\hline
+0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć jest wyzerowana. \\
+\hline
+10 & 16 & \texttt{test\_heap HN L} & Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie konieczne było uruchomienie \emph{garbage collectora}.\\
+\hline
+11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie.\\
+\hline
+12 & 18 & \texttt{deallocate N} & Przywraca \textbf{CP} ze stosu i dealokuje \texttt{N}+1 słów ze stosu.\\
+\hline
+13 & 19 & \texttt{return} & Wraca do adresu zapisanego we wskaźniku \textbf{CP}.\\
+\hline
+14 & 20 & \texttt{send} & Wysyła wiadomość z rejestru \textbf{X1} do procesu w rejestrze \textbf{X0}. \\
+\hline
+15 & 21 & \texttt{remove\_message} & Usuwa aktualną wiadomość z kolejki wiadomości. Zapisuje wskaźnik do niej w rejestrze \textbf{X0}. Usuwa aktywne przeterminowanie (\emph{timeout}). \\
+\hline
+16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowanie. \\
+\hline
+17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \textbf{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \textbf{Lbl}. \\
+\hline
+18 & 24 & \texttt{loop\_rec\_end Lbl} & Ustawia wskaźnik \textbf{SAVE} na kolejną wiadomość w kolejce wiadomości i wykonuje skok do etykiety \textbf{Lbl}. \\
+\hline
+19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} w etykiecie \texttt{Lbl}.\\
+\hline
+1A & 26 & \texttt{wait\_timeout Lbl T} & Zawiesza proces jak \texttt{wait}. Ustawia przeterminowanie \texttt{T} i zapisuje następną instrukcję, która zostanie wykonana jeśli przeterminowanie się zrealizuje.\\
+\hline
+27 & 39 & \texttt{is\_lt Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest większe lub równe od \texttt{Arg2}.\\
+\hline
+28 & 40 & \texttt{is\_ge Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest mniejsze \texttt{Arg2}.\\
+\hline
+29 & 41 & \texttt{is\_eq Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest arytmetycznie różne od \texttt{Arg2}.\\
+\hline
+2A & 42 & \texttt{is\_ne Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest arytmetycznie równe \texttt{Arg2}.\\
+\hline
+2B & 43 & \texttt{is\_eq\_exact Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest różne \texttt{Arg2}.\\
+\hline
+2C & 44 & \texttt{is\_ne\_exact Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest równe \texttt{Arg2}.\\
+\hline
+2D & 45 & \texttt{is\_integer Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą całkowitą.\\
+\hline
+2E & 46 & \texttt{is\_float Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą rzeczywistą.\\
+\hline
+2F & 47 & \texttt{is\_number Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą.\\
+\hline
+30 & 48 & \texttt{is\_atom Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on atomem.\\
+\hline
+31 & 49 & \texttt{is\_pid Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on identyfikatorem procesu.\\
+\hline
+32 & 50 & \texttt{is\_reference Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on referencją.\\
+\hline
+33 & 51 & \texttt{is\_port Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on portem.\\
+\hline
+34 & 52 & \texttt{is\_nil Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zerem (\textbf{nil}).\\
+\hline
+35 & 53 & \texttt{is\_binary Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on binarią.\\
+\hline
+37 & 55 & \texttt{is\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani listą ani zerem.\\
+\hline
+38 & 56 & \texttt{is\_nonempty\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on niepustą listą.\\
+\hline
+39 & 57 & \texttt{is\_tuple Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on krotką.\\
+\hline
+3A & 58 & \texttt{test\_arity Lbl Arg1 Arity} & Sprawdza arność krotki \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest ona równa \texttt{Arity}.\\
+\hline
+3B & 59 & \texttt{select\_val Arg Lbl Dest} & Skacze do etykiety \texttt{Dest[Arg]}. Jeśli nie istnieje skacze do \texttt{Lbl}. \\
+\hline
+3C & 60 & \texttt{select\_tuple\_arity Tuple Lbl Dest} & Sprawdza arność krotki \texttt{Tuple} i skacze do etykiety \texttt{Dest[Arity]}. Jeśli nie istnieje skacze do \texttt{Lbl}. \\
+\hline
+3D & 61 & \texttt{jump Lbl} & Skacze do etykiety \texttt{Lbl}. \\
+\hline
+3E & 62 & \texttt{catch Dest Lbl} & Tworzy nowy blok \texttt{catch}. Zapisuje etykietę \texttt{Lbl} na \texttt{Dest} miejscu na stosie. \\
+\hline
+3F & 63 & \texttt{catch\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. \\
+\hline
+40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \text{Dest}. \\
+\hline
+41 & 65 & \texttt{get\_list Src Hd Tail} & Umieść głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. \\
+42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieść element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}.\\
+\hline
+43 & 67 & \texttt{get\_tuple\_element Elem Tuple Pos} & Umieść element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}.\\
+\hline
+45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy listę \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
+\hline
+46 & 70 & \texttt{put\_tuple Dest Arity} & Tworzy krotkę o arności \texttt{Arity} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
+\hline
+47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} w lokalnym kontekście.\\
+\hline
+48 & 72 & \texttt{badmatch Arg} & Rzuca wyjątek \texttt{badmatch} z argumentem \texttt{Arg}.\\
+\hline
+49 & 73 & \texttt{if\_end} & Rzuca wyjątek \texttt{if\_clause}.\\
+\hline
+4A & 74 & \texttt{case\_end Arg} & Rzuca wyjątek \texttt{case\_clause} z argumentem \texttt{Arg}.\\
+\hline
+4B & 75 & \texttt{call\_fun Arity} & Woła obiekt funkcyjny o arności \texttt{Arity}. Zakłada, że argumenty znajdują się w rejestrach \textbf{X0}...\textbf{X(\texttt{Arity-1})}, a lambda w rejestrze \textbf{X(\texttt{Arity})}. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
+\hline
+4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typu argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją.\\
+\hline
+4E & 78 & \texttt{call\_ext\_only Arity Lbl} & Wywołuje prawostronnie rekursywnie zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Lbl} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu.\\
+\hline
+59 & 89 & \texttt{bs\_put\_integer/5} & \\
+\hline
+5A & 90 & \texttt{bs\_put\_binary/5} & \\
+\hline
+5B & 91 & \texttt{bs\_put\_float/5} & \\
+\hline
+5C & 92 & \texttt{bs\_put\_string/2} & \\
+\hline
+5E & 94 & \texttt{fclearerror/0} & \\
+\hline
+5F & 95 & \texttt{fcheckerror/1} & \\
+\hline
+60 & 96 & \texttt{fmove/2} & \\
+\hline
+61 & 97 & \texttt{fconv/2} & \\
+\hline
+62 & 98 & \texttt{fadd/4} & \\
+\hline
+63 & 99 & \texttt{fsub/4} & \\
+\hline
+64 & 100 & \texttt{fmul/4} & \\
+\hline
+65 & 101 & \texttt{fdiv/4} & \\
+\hline
+66 & 102 & \texttt{fnegate/3} & \\
+\hline
+67 & 103 & \texttt{make\_fun2/1} & \\
+\hline
+68 & 104 & \texttt{try/2} & \\
+\hline
+69 & 105 & \texttt{try\_end/1} & \\
+\hline
+6A & 106 & \texttt{try\_case/1} & \\
+\hline
+6B & 107 & \texttt{try\_case\_end/1} & \\
+\hline
+6C & 108 & \texttt{raise/2} & \\
+\hline
+6D & 109 & \texttt{bs\_init2/6} & \\
+\hline
+6F & 111 & \texttt{bs\_add/5} & \\
+\hline
+70 & 112 & \texttt{apply/1} & \\
+\hline
+71 & 113 & \texttt{apply\_last/2} & \\
+\hline
+72 & 114 & \texttt{is\_boolean/2} & \\
+\hline
+73 & 115 & \texttt{is\_function2/3} & \\
+\hline
+74 & 116 & \texttt{bs\_start\_match2/5} & \\
+\hline
+75 & 117 & \texttt{bs\_get\_integer2/7} & \\
+\hline
+76 & 118 & \texttt{bs\_get\_float2/7} & \\
+\hline
+77 & 119 & \texttt{bs\_get\_binary2/7} & \\
+\hline
+78 & 120 & \texttt{bs\_skip\_bits2/5} & \\
+\hline
+79 & 121 & \texttt{bs\_test\_tail2/3} & \\
+\hline
+7A & 122 & \texttt{bs\_save2/2} & \\
+\hline
+7B & 123 & \texttt{bs\_restore2/2} & \\
+\hline
+7C & 124 & \texttt{gc\_bif1/5} & \\
+\hline
+7D & 125 & \texttt{gc\_bif2/6} & \\
+\hline
+81 & 129 & \texttt{is\_bitstr/2} & \\
+\hline
+82 & 130 & \texttt{bs\_context\_to\_binary/1} & \\
+\hline
+83 & 131 & \texttt{bs\_test\_unit/3} & \\
+\hline
+84 & 132 & \texttt{bs\_match\_string/4} & \\
+\hline
+85 & 133 & \texttt{bs\_init\_writable/0} & \\
+\hline
+86 & 134 & \texttt{bs\_append/8} & \\
+\hline
+87 & 135 & \texttt{bs\_private\_append/6} & \\
+\hline
+88 & 136 & \texttt{trim/2} & \\
+\hline
+89 & 137 & \texttt{bs\_init\_bits/6} & \\
+\hline
+8A & 138 & \texttt{bs\_get\_utf8/5} & \\
+\hline
+8B & 139 & \texttt{bs\_skip\_utf8/4} & \\
+\hline
+8C & 140 & \texttt{bs\_get\_utf16/5} & \\
+\hline
+8D & 141 & \texttt{bs\_skip\_utf16/4} & \\
+\hline
+8E & 142 & \texttt{bs\_get\_utf32/5} & \\
+\hline
+8F & 143 & \texttt{bs\_skip\_utf32/4} & \\
+\hline
+90 & 144 & \texttt{bs\_utf8\_size/3} & \\
+\hline
+91 & 145 & \texttt{bs\_put\_utf8/3} & \\
+\hline
+92 & 146 & \texttt{bs\_utf16\_size/3} & \\
+\hline
+93 & 147 & \texttt{bs\_put\_utf16/3} & \\
+\hline
+94 & 148 & \texttt{bs\_put\_utf32/3} & \\
+\hline
+95 & 149 & \texttt{on\_load/0} & \\
+\hline
+96 & 150 & \texttt{recv\_mark/1} & \\
+\hline
+97 & 151 & \texttt{recv\_set/1} & \\
+\hline
+98 & 152 & \texttt{gc\_bif3 Lbl Live Bif Arg1 Arg2 Arg3 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/3} z argumentami \texttt{Arg1}, \texttt{Arg2}, \texttt{Arg3}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}. \\
+\hline
+99 & 153 & \texttt{line N} & Znakuje aktualne miejsce jako linia o indeksie \texttt{N} w tablicy linii.\\
 \hline
 
-\caption{Lista operacji maszyny wirtualnej BEAM}  \\
+
+\caption{Lista operacji maszyny wirtualnej BEAM} 
+\label{tab:ops} \\
 \end{longtable}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
