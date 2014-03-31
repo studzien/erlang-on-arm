@@ -81,17 +81,9 @@ typedef struct LoaderState {
 	} chunks[NUM_CHUNK_TYPES];
 
 	// ATOM TABLE RELATED FIELDS
-	// Number of all atoms in the loaded file
-	uint32_t num_atoms;
+	uint32_t num_atoms; // atom count in the module file
+	Eterm* atom; // atom table
 } LoaderState;
-
-/*   BEAM file structure
- *   "FOR1"
- *   Size (4bytes)
- *   "BEAM"
- *
- *
- */
 
 void erts_load(byte* code);
 static int init_iff_file(LoaderState* loader);

@@ -28,11 +28,34 @@ void erts_load(byte* code) {
 	goto free_loader;
 
 	load_error:
-	vPrintString("error\n");
+	vPrintString("error while loading module\n");
 
 	free_loader:
 	vPrintString("freeing loader\n");
 	vPortFree(loader);
+}
+
+
+static int load_atom_table(LoaderState* loader) {
+	// @todo load the actual atom table
+	// @todo check whether the first atom in the table is also name of the module
+	uint8_t i;
+	GetInt(loader, loader->num_atoms);
+	char buf[256];
+
+	// Read all atoms (indexes are 1..num_atoms in order to pick labeled atom directly)
+	loader->num_atoms++;
+	loader->atom = pvPortMalloc(loader->num_atoms*sizeof(Eterm));
+	for(i=1; i<loader->num_atoms; i++) {
+		byte* atom;
+		uint8_t n;
+		GetByte(loader, n);
+		GetString(loader, atom, n);
+		loader->atom[i] = erts_atom_put(atom, n);
+	}
+
+	// @todo check whether load->atom[1] is the module name, if so return an error
+	return 0;
 }
 
 static int init_iff_file(LoaderState* loader) {
@@ -89,8 +112,8 @@ static int scan_iff_file(LoaderState* loader) {
 		}
 
 		// go to the next chunk (the chunk area is padded to 4 bytes)
-		uint8_t reminder = chunk_size % 4;
-		chunk_size += (reminder == 0 ? 0 : (4-reminder));
+		uint8_t remainder = chunk_size % 4;
+		chunk_size += (remainder == 0 ? 0 : (4-remainder));
 		loader->file_p += chunk_size;
 		loader->file_left -= chunk_size;
 	}
@@ -111,27 +134,6 @@ static int verify_chunks(LoaderState* loader) {
 			vPrintString(buffer);
 			return 1;
 		}
-	}
-	return 0;
-}
-
-static int load_atom_table(LoaderState* loader) {
-	// @todo load the actual atom table
-	// @todo check whether the first atom in the table is also name of the module
-	uint8_t i;
-	GetInt(loader, loader->num_atoms);
-	char buf[256];
-
-	// Read all atoms (indexes are 1..num_atoms in order to pick labeled atom directly)
-	loader->num_atoms++;
-	for(i=1; i<loader->num_atoms; i++) {
-		byte* atom;
-		uint8_t n;
-		GetByte(loader, n);
-		GetString(loader, atom, n);
-		strncpy(buf, atom, n);
-		buf[n] = '\0';
-		vPrintString(buf);
 	}
 	return 0;
 }

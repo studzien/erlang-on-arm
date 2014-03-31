@@ -11,7 +11,8 @@ main.d: ../main.c \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code/basic_io.h \
- ../beam/global.h ../beam/beam_load.h ../beam/erl_process.h
+ ../beam/erl_init.h ../beam/global.h ../beam/io.h ../beam/beam_load.h \
+ ../beam/erl_process.h
 
 /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/FreeRTOS.h:
 
@@ -37,7 +38,11 @@ main.d: ../main.c \
 
 /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code/basic_io.h:
 
+../beam/erl_init.h:
+
 ../beam/global.h:
+
+../beam/io.h:
 
 ../beam/beam_load.h:
 
