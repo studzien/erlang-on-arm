@@ -64,6 +64,19 @@ static uint32_t chunk_types[] = {
 		MakeIffId('L','i','n','e')  // 9
 };
 
+typedef struct {
+	Eterm module; //atom for module
+	Eterm function; //atom for function
+	int arity; //function arity
+	uint32_t patches; //location in code to be patches after loading with the global address
+	//BifFunction bf; //pointer to bif function, null otherwise
+} ImportEntry;
+
+typedef struct {
+	uint32_t value;
+	uint32_t patches; //like in ImportEntry;
+} Label;
+
 typedef struct LoaderState {
 	// Pointer to the actual code
 	byte* code_file;
@@ -83,6 +96,22 @@ typedef struct LoaderState {
 	// ATOM TABLE RELATED FIELDS
 	uint32_t num_atoms; // atom count in the module file
 	Eterm* atom; // atom table
+
+	// IMPORT TABLE RELATED FILEDS
+	uint32_t num_imports;
+	ImportEntry* import;
+
+	// LABELS
+	uint32_t num_labels;
+	Label* labels;
+
+	// FUNCTIONS
+	uint32_t num_functions;
+
+	// CODE CHUNK RELATED FIELDS
+	uint32_t code_start;
+
+	uint32_t catches;
 } LoaderState;
 
 void erts_load(byte* code);
@@ -90,5 +119,8 @@ static int init_iff_file(LoaderState* loader);
 static int scan_iff_file(LoaderState* loader);
 static int verify_chunks(LoaderState* loader);
 static int load_atom_table(LoaderState* loader);
+static int read_code_header(LoaderState* loader);
+static int load_code(LoaderState* loader);
+static int load_import_table(LoaderState* loader);
 
 #endif /* BEAM_LOAD_H_ */

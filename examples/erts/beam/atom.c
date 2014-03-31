@@ -45,14 +45,18 @@ Eterm erts_atom_put(const byte* name, int len) {
 int erts_atom_get(const char* name, int len, Eterm* ap) {
 	Atom a;
 	int i;
-	int res;
 
 	a.len = (uint16_t)len;
 	a.name = (byte*)name;
 	i = index_get(&erts_atom_table, (void*)&a);
-	res = i < 0 ? 0 : (*ap = make_atom(i), 1);
 
-	return res;
+	if(i < 0) {
+		return 0;
+	}
+	else {
+		*ap = make_atom(i);
+		return 1;
+	}
 }
 
 void init_atom_table(void) {

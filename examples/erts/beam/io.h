@@ -20,4 +20,11 @@
 #define debug_32(what) do {} while(0)
 #endif
 
+#if DEBUG == 1
+#define debug_8(what) do { vPrintByte(what); } while(0)
+#else
+#define debug_8(what) do {} while(0)
+#endif
+
+
 #endif /* IO_H_ */
