@@ -10,7 +10,7 @@ beam/hash.d: ../beam/hash.c ../beam/hash.h ../beam/global.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/mpu_wrappers.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h \
- ../beam/io.h
+ ../beam/io.h ../beam/sys.h ../beam/erl_term.h ../beam/config.h
 
 ../beam/hash.h:
 
@@ -39,3 +39,9 @@ beam/hash.d: ../beam/hash.c ../beam/hash.h ../beam/global.h \
 /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h:
 
 ../beam/io.h:
+
+../beam/sys.h:
+
+../beam/erl_term.h:
+
+../beam/config.h:

@@ -1,0 +1,576 @@
+15:08:15 **** Incremental Build of configuration Debug for project CMSISv1p30_LPC17xx ****
+make all 
+make: Nothing to be done for `all'.
+15:08:16 **** Incremental Build of configuration Debug for project FreeRTOS_Library ****
+make all 
+Building file: ../portable/heap_2.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -O1 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-m3 -mthumb -MMD -MP -MF"portable/heap_2.d" -MT"portable/heap_2.d" -o "portable/heap_2.o" "../portable/heap_2.c"
+Finished building: ../portable/heap_2.c
+ 
+Building file: ../portable/port.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -O1 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-m3 -mthumb -MMD -MP -MF"portable/port.d" -MT"portable/port.d" -o "portable/port.o" "../portable/port.c"
+Finished building: ../portable/port.c
+ 
+Building file: ../demo_code/basic_io.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -O1 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-m3 -mthumb -MMD -MP -MF"demo_code/basic_io.d" -MT"demo_code/basic_io.d" -o "demo_code/basic_io.o" "../demo_code/basic_io.c"
+Finished building: ../demo_code/basic_io.c
+ 
+Building file: ../list.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -O1 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-m3 -mthumb -MMD -MP -MF"list.d" -MT"list.d" -o "list.o" "../list.c"
+Finished building: ../list.c
+ 
+Building file: ../queue.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -O1 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-m3 -mthumb -MMD -MP -MF"queue.d" -MT"queue.d" -o "queue.o" "../queue.c"
+arm-none-eabi-ar: creating libFreeRTOS_Library.a
+Finished building: ../queue.c
+ 
+Building file: ../tasks.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -O1 -g3 -Wall -c -fmessage-length=0 -mcpu=cortex-m3 -mthumb -MMD -MP -MF"tasks.d" -MT"tasks.d" -o "tasks.o" "../tasks.c"
+Finished building: ../tasks.c
+ 
+Building target: libFreeRTOS_Library.a
+Invoking: MCU Archiver
+arm-none-eabi-ar -r  "libFreeRTOS_Library.a"  ./portable/heap_2.o ./portable/port.o  ./demo_code/basic_io.o ./demo_code/consoleprint.o  ./list.o ./queue.o ./tasks.o   
+Finished building target: libFreeRTOS_Library.a
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size libFreeRTOS_Library.a ; # arm-none-eabi-objdump -h -S libFreeRTOS_Library.a >libFreeRTOS_Library.lss
+   text	   data	    bss	    dec	    hex	filename
+    320	      4	  28696	  29020	   715c	heap_2.o (ex libFreeRTOS_Library.a)
+    344	      4	      0	    348	    15c	port.o (ex libFreeRTOS_Library.a)
+    184	      0	     52	    236	     ec	basic_io.o (ex libFreeRTOS_Library.a)
+     24	      0	      0	     24	     18	consoleprint.o (ex libFreeRTOS_Library.a)
+    164	      0	      0	    164	     a4	list.o (ex libFreeRTOS_Library.a)
+   1252	      0	      0	   1252	    4e4	queue.o (ex libFreeRTOS_Library.a)
+   3264	      0	    256	   3520	    dc0	tasks.o (ex libFreeRTOS_Library.a)
+ 
+15:08:18 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19312	     48	  29396	  48756	   be74	Example01.axf
+ 
+15:08:36 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:11:58 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+Finished building: ../beam/atom.c
+ 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/erl_init.c: In function 'erl_init':
+../beam/erl_init.c:24:6: error: 'i' undeclared (first use in this function)
+../beam/erl_init.c:24:6: note: each undeclared identifier is reported only once for each function it appears in
+Finished building: ../beam/beam_load.c
+ 
+make: *** [beam/erl_init.o] Error 1
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+15:12:07 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building file: ../beam/erl_process.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_process.d" -MT"beam/erl_process.d" -o "beam/erl_process.o" "../beam/erl_process.c"
+Finished building: ../beam/erl_process.c
+ 
+Building file: ../beam/hash.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/hash.d" -MT"beam/hash.d" -o "beam/hash.o" "../beam/hash.c"
+Finished building: ../beam/hash.c
+ 
+Building file: ../beam/index.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
+Finished building: ../beam/index.c
+ 
+Building file: ../main.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"main.d" -MT"main.d" -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19368	     48	  29396	  48812	   beac	Example01.axf
+ 
+15:12:43 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19384	     48	  29396	  48828	   bebc	Example01.axf
+ 
+15:26:48 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+Finished building: ../beam/atom.c
+ 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building file: ../beam/erl_process.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_process.d" -MT"beam/erl_process.d" -o "beam/erl_process.o" "../beam/erl_process.c"
+Finished building: ../beam/erl_process.c
+ 
+Building file: ../beam/hash.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/hash.d" -MT"beam/hash.d" -o "beam/hash.o" "../beam/hash.c"
+Finished building: ../beam/hash.c
+ 
+Building file: ../beam/index.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
+Finished building: ../beam/index.c
+ 
+Building file: ../main.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"main.d" -MT"main.d" -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19288	     48	  29396	  48732	   be5c	Example01.axf
+ 
+15:29:07 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19288	     48	  29396	  48732	   be5c	Example01.axf
+ 
+15:29:37 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:30:24 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19288	     48	  29396	  48732	   be5c	Example01.axf
+ 
+15:31:05 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:33:31 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19304	     48	  29396	  48748	   be6c	Example01.axf
+ 
+15:33:32 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:33:43 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:34:46 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19304	     48	  29396	  48748	   be6c	Example01.axf
+ 
+15:36:06 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19304	     48	  29396	  48748	   be6c	Example01.axf
+ 
+15:36:44 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19288	     48	  29396	  48732	   be5c	Example01.axf
+ 
+15:37:15 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19320	     48	  29396	  48764	   be7c	Example01.axf
+ 
+15:38:05 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19320	     48	  29396	  48764	   be7c	Example01.axf
+ 
+15:38:36 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19304	     48	  29396	  48748	   be6c	Example01.axf
+ 
+15:39:17 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19480	     48	  29396	  48924	   bf1c	Example01.axf
+ 
+15:39:35 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+Finished building: ../beam/beam_load.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19456	     48	  29396	  48900	   bf04	Example01.axf
+ 
+15:47:17 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19568	     48	  29396	  49012	   bf74	Example01.axf
+ 
+15:47:27 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:48:26 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+Finished building: ../beam/atom.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19568	     48	  29396	  49012	   bf74	Example01.axf
+ 
+15:48:35 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+15:51:15 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+Finished building: ../beam/atom.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19576	     48	  29396	  49020	   bf7c	Example01.axf
+ 
+15:54:35 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/index.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
+../beam/index.c:14:17: error: conflicting types for 'index_put'
+../beam/index.h:35:12: note: previous declaration of 'index_put' was here
+../beam/index.c: In function 'index_put_entry':
+../beam/index.c:31:2: error: unknown type name 'uint_16'
+make: *** [beam/index.o] Error 1
+15:56:16 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+In file included from ../beam/atom.h:12:0,
+                 from ../beam/atom.c:9:
+../beam/index.h:35:1: error: unknown type name 'uint_16'
+../beam/atom.c: In function 'erts_atom_put':
+../beam/atom.c:41:30: error: 'uint_16' undeclared (first use in this function)
+../beam/atom.c:41:30: note: each undeclared identifier is reported only once for each function it appears in
+../beam/atom.c:41:38: error: expected ')' before 'aix'
+make: *** [beam/atom.o] Error 1
+15:56:27 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+In file included from ../beam/atom.h:12:0,
+                 from ../beam/atom.c:9:
+../beam/index.h:35:1: error: unknown type name 'uint_16'
+make: *** [beam/atom.o] Error 1
+15:56:36 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+../beam/index.c: In function 'index_put_entry':
+Finished building: ../beam/atom.c
+ 
+../beam/index.c:31:2: error: unknown type name 'uint_16'
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+make: *** [beam/index.o] Error 1
+Finished building: ../beam/erl_init.c
+ 
+Building file: ../beam/index.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
+15:56:48 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/index.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
+Finished building: ../beam/index.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19608	     48	  29396	  49052	   bf9c	Example01.axf
+ 
+15:58:34 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+Finished building: ../beam/atom.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19576	     48	  29396	  49020	   bf7c	Example01.axf
+ 
+16:00:16 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/atom.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
+Finished building: ../beam/atom.c
+ 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building file: ../beam/index.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
+Finished building: ../beam/index.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  19712	     48	  29396	  49156	   c004	Example01.axf
+ 

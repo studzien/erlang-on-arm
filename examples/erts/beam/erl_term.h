@@ -9,7 +9,7 @@
 #define ERL_TERM_H_
 
 // tagged Erlang term (32 bits)
-typedef uint32_t Eterm;
+typedef uint16_t Eterm;
 
 #define _TAG_PRIMARY_SIZE   2
 #define _TAG_PRIMARY_MASK   0x3
@@ -33,7 +33,15 @@ typedef uint32_t Eterm;
 #define _TAG_IMMED2_CATCH   ((0x1 << _TAG_IMMED1_SIZE) | _TAG_IMMED1_IMMED2)
 #define _TAG_IMMED2_NIL     ((0x3 << _TAG_IMMED1_SIZE) | _TAG_IMMED1_IMMED2)
 
-// atom access methods
 #define make_atom(x) ((Eterm)(((x) << _TAG_IMMED2_SIZE) + _TAG_IMMED2_ATOM))
+#define make_small(x) ((uint16_t)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_SMALL))
+
+#define X_REG_DEF 0
+#define Y_REG_DEF 1
+#define R_REG_DEF 2
+
+#define make_rreg() R_REG_DEF
+#define make_xreg(ix) (((ix) << 4) | X_REG_DEF)
+#define make_yreg(ix) (((ix) << 4) | Y_REG_DEF)
 
 #endif /* ERL_TERM_H_ */

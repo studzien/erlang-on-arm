@@ -1,0 +1,13 @@
+/*
+ * erl_init.c
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+
+void erl_exit(char* reason) {
+	vTaskSuspendAll();
+	char buf[1024];
+	vprintf("Erlang VM exited unexpectedly exited with reason: %s", reason);
+}

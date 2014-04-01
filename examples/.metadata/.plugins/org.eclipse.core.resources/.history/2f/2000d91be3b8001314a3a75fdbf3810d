@@ -1,0 +1,29 @@
+/*
+ * atom.h
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#ifndef ATOM_H_
+#define ATOM_H_
+
+#include "global.h"
+
+typedef struct {
+	uint16_t len; // length of atom name
+	int ord0;     // ordinal value of first 3 bytes + 7 bits (used for comparison)
+	byte* name;
+} Atom;
+
+void init_atom_table(void);
+Eterm erts_atom_put(const byte* name, int len);
+void dump_atoms();
+
+// Hashtable callbacks
+static HashValue atom_hash(Atom*);
+static int atom_cmp(Atom*, Atom*);
+static Atom* atom_alloc(Atom*);
+static void atom_free(Atom*);
+
+#endif /* ATOM_H_ */

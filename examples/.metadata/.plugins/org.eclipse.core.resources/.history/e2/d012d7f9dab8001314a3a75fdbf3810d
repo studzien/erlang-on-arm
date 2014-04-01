@@ -1,0 +1,10 @@
+/*
+ * index.c
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#include "index.h"
+
+IndexTable* erts_index_init(Inde)

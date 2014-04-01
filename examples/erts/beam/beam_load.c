@@ -8,6 +8,9 @@
 #include "global.h"
 #include "beam_load.h"
 
+BeamModule* modules = NULL;
+uint32_t n_modules = 0;
+
 void erts_load(byte* code) {
 	LoaderState *loader = pvPortMalloc(sizeof(LoaderState));
 	loader->code_file = code;
@@ -45,6 +48,11 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
+	//Finalize (patch labels, export functions and stuff)
+	if(finalize(loader)) {
+		goto load_error;
+	}
+
 	//Everything should be fine at this point
 	goto free_loader;
 
@@ -53,7 +61,10 @@ void erts_load(byte* code) {
 
 	free_loader:
 	vPrintString("freeing loader\n");
+	vPortFree(loader->labels);
+	vPortFree(loader->atom);
 	vPortFree(loader);
+	debug_32(xPortGetFreeHeapSize());
 }
 
 
@@ -110,11 +121,86 @@ static int load_import_table(LoaderState* loader) {
 }
 
 static int load_code(LoaderState* loader) {
-	uint8_t op;
+	char buf[256];
+	uint8_t op, arity, arg;
+	int i;
+	int c=0;
+
+	loader->code_buffer_used = 0;
+
 	while(loader->file_left) {
 		GetByte(loader, op);
-		debug_8(op);
+		arity = opcode_arities[op];
+
+		loader->code[loader->code_buffer_used++] = make_small(op);
+		for(i=0; i<arity; i++) {
+			get_tag_and_value(loader, loader->code + loader->code_buffer_used);
+			loader->code_buffer_used++;
+		}
 	}
+}
+
+static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
+	uint8_t tag, start;
+	uint32_t value;
+	//@todo handle bignums
+	GetByte(loader, start);
+
+	//1 byte
+	if((start & 0x08) == 0x00) {
+		tag = start & 0x0f;
+		value = start >> 4;
+
+		char buf[256];
+		sprintf(buf, "tag %d val %d\n", tag, value);
+		debug(buf);
+
+	}
+	else {
+		return 1;
+	}
+
+	switch(tag) {
+	case TAG_u:
+	case TAG_i:
+	case TAG_f:
+		*result = make_small(value);
+		break;
+	case TAG_a:
+		*result = loader->atom[value];
+		break;
+	case TAG_x:
+		if(value == 0) {
+			*result = make_rreg();
+		}
+		else {
+			*result = make_xreg(value);
+		}
+		break;
+	case TAG_y:
+		*result = make_yreg(value);
+		break;
+	}
+	return 0;
+}
+
+static int finalize(LoaderState* loader) {
+	n_modules++;
+	BeamModule* old = modules;
+	modules = pvPortMalloc(n_modules * sizeof(BeamModule));
+	if(old != NULL) {
+		memcpy(modules, old, n_modules-1 * sizeof(BeamModule));
+		vPortFree(old);
+	}
+
+	modules[n_modules-1].name = loader->atom[1];
+	modules[n_modules-1].size = loader->code_buffer_used;
+	modules[n_modules-1].code = pvPortMalloc(loader->code_buffer_used*sizeof(BeamInstr));
+	if(modules[n_modules-1].code == NULL) {
+		return 1;
+	}
+	memcpy(modules[n_modules-1].code, loader->code, loader->code_buffer_used*sizeof(BeamInstr));
+	return 0;
 }
 
 static int load_atom_table(LoaderState* loader) {

@@ -12,7 +12,8 @@ beam/erl_process.d: ../beam/erl_process.c \
  ../beam/global.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h \
- ../beam/io.h ../beam/erl_process.h
+ ../beam/io.h ../beam/sys.h ../beam/erl_term.h ../beam/config.h \
+ ../beam/erl_process.h
 
 /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code/basic_io.h:
 
@@ -41,5 +42,11 @@ beam/erl_process.d: ../beam/erl_process.c \
 /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h:
 
 ../beam/io.h:
+
+../beam/sys.h:
+
+../beam/erl_term.h:
+
+../beam/config.h:
 
 ../beam/erl_process.h:

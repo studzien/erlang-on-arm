@@ -109,7 +109,10 @@ typedef struct LoaderState {
 	uint32_t num_functions;
 
 	// CODE CHUNK RELATED FIELDS
-	uint32_t code_start;
+	byte* code_start;
+	BeamInstr code[CODE_BUFFER_SIZE];
+	uint32_t code_buffer_size;
+	uint32_t code_buffer_used;
 
 	uint32_t catches;
 } LoaderState;
@@ -122,5 +125,26 @@ static int load_atom_table(LoaderState* loader);
 static int read_code_header(LoaderState* loader);
 static int load_code(LoaderState* loader);
 static int load_import_table(LoaderState* loader);
+
+static int finalize(LoaderState* loader);
+
+static int get_tag_and_value(LoaderState* loader, BeamInstr* result);
+
+static uint8_t opcode_arities[] = {0,1,3,0,2,3,2,2,3,2,4,5,2,3,2,3,2,1,1,0,0,0,0,2,1,1,2,4,4,4,
+		 4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,
+		 3,1,2,1,2,3,3,3,3,3,2,1,1,0,1,1,3,2,2,2,5,5,5,4,2,1,1,2,2,5,
+		 5,5,2,1,0,1,2,2,4,4,4,4,3,1,2,1,1,1,2,6,3,5,1,2,2,3,5,7,7,7,
+		 5,3,2,2,5,6,2,2,2,2,1,3,4,0,8,6,2,6,5,4,5,4,5,4,3,3,3,3,3,0,
+		 1,1,7,1};
+
+// argument types
+#define TAG_u 0
+#define TAG_i 1
+#define TAG_a 2
+#define TAG_x 3
+#define TAG_y 4
+#define TAG_f 5
+#define TAG_z 7
+
 
 #endif /* BEAM_LOAD_H_ */

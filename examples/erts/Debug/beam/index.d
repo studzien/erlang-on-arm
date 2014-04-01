@@ -11,7 +11,7 @@ beam/index.d: ../beam/index.c ../beam/index.h ../beam/hash.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/mpu_wrappers.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h \
- ../beam/io.h
+ ../beam/io.h ../beam/sys.h ../beam/erl_term.h ../beam/config.h
 
 ../beam/index.h:
 
@@ -42,3 +42,9 @@ beam/index.d: ../beam/index.c ../beam/index.h ../beam/hash.h \
 /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h:
 
 ../beam/io.h:
+
+../beam/sys.h:
+
+../beam/erl_term.h:
+
+../beam/config.h:

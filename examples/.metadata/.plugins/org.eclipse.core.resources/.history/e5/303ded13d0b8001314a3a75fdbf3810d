@@ -1,0 +1,29 @@
+/*
+ * atom.c
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#include "atom.h"
+#include "hash.h"
+
+void init_atom_table(void) {
+	HashFunctions f;
+}
+
+// hashpjw
+static HashValue atom_hash(Atom* obj) {
+	 byte* p = obj->name;
+	 int len = obj->len;
+	 HashValue h = 0, g;
+
+	 while(len--) {
+		h = (h << 4) + *p++;
+		if ((g = h & 0xf0000000)) {
+		    h ^= (g >> 24);
+		    h ^= g;
+		}
+	 }
+	 return h;
+}

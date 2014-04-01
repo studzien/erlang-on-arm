@@ -1,0 +1,24 @@
+/*
+ * erl_init.c
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#include "atom.h"
+
+//called when the vm is initialized;
+void erl_init() {
+	//initialize atom table
+	init_atom_table();
+
+	// start the scheduler
+	vTaskStartScheduler();
+	for( ;; );
+}
+
+void erl_exit(char* reason) {
+	vTaskSuspendAll();
+	char buf[1024];
+	vprintf("Erlang VM exited unexpectedly exited with reason: %s", reason);
+}

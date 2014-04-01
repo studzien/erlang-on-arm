@@ -7,11 +7,11 @@
 
 #include "index.h"
 
-inline IndexSlot* erts_index_lookup(IndexTable* t, uint32_t ix) {
+inline IndexSlot* erts_index_lookup(IndexTable* t, uint16_t ix) {
 	return t->seg_table[ix>>INDEX_PAGE_SHIFT][ix&INDEX_PAGE_MASK];
 }
 
-inline int index_put(IndexTable* t, void* obj) {
+inline int16_t index_put(IndexTable* t, void* obj) {
 	return index_put_entry(t, obj)->index;
 }
 
@@ -28,7 +28,7 @@ IndexTable* erts_index_init(IndexTable* t, char* name, int size, int limit, Hash
 }
 
 IndexSlot* index_put_entry(IndexTable* t, void* obj) {
-	int ix;
+	int16_t ix;
 	IndexSlot* p = (IndexSlot*)hash_put(&t->htable, obj);
 	if(p->index >= 0) {
 		return p;

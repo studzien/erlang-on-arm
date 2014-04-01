@@ -12,7 +12,7 @@
 
 #include "global.h"
 
-typedef uint64_t HashValue;
+typedef uint16_t HashValue;
 
 typedef int (*HCMP_FUN)(void*, void*);
 typedef HashValue (*H_FUN)(void*);

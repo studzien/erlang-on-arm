@@ -10,7 +10,8 @@ beam/erl_init.d: ../beam/erl_init.c ../beam/atom.h ../beam/global.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/mpu_wrappers.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/task.h \
  /Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include/list.h \
- ../beam/io.h ../beam/index.h ../beam/hash.h ../beam/erl_term.h
+ ../beam/io.h ../beam/sys.h ../beam/erl_term.h ../beam/config.h \
+ ../beam/index.h ../beam/hash.h
 
 ../beam/atom.h:
 
@@ -40,8 +41,12 @@ beam/erl_init.d: ../beam/erl_init.c ../beam/atom.h ../beam/global.h \
 
 ../beam/io.h:
 
+../beam/sys.h:
+
+../beam/erl_term.h:
+
+../beam/config.h:
+
 ../beam/index.h:
 
 ../beam/hash.h:
-
-../beam/erl_term.h:

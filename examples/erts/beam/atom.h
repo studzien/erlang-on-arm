@@ -15,8 +15,7 @@
 
 typedef struct {
 	IndexSlot slot; // Atom is an element of IndexTable thus this must be at the top
-	uint16_t len; // length of atom name
-	int ord0;     // ordinal value of first 3 bytes + 7 bits (used for comparison)
+	uint8_t len; // length of atom name
 	byte* name;
 } Atom;
 

@@ -1,0 +1,21 @@
+/*
+ * index.c
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#include "index.h"
+
+IndexTable* erts_index_init(IndexTable* t, char* name, int size, int limit, HashFunctions fun) {
+	unsigned int base_size = ((limit+INDEX_PAGE_SIZE-1)/INDEX_PAGE_SIZE)*sizeof(IndexSlot*);
+	hash_init(&t->htable, name, 3*size/4, fun);
+
+	t->size = 0;
+	t->limit = limit;
+	t->entries = 0;
+	t->type = type;
+	t->seg_table = (IndexSlot***)pvPortMalloc(base_size);
+
+	return t;
+}

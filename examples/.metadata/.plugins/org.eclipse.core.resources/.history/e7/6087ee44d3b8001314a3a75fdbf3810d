@@ -1,0 +1,20 @@
+/*
+ * atom.h
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#ifndef ATOM_H_
+#define ATOM_H_
+
+typedef struct {
+	uint16_t len; // length of atom name
+	int ord0;     // ordinal value of first 3 bytes + 7 bits (used for comparison)
+	byte* name;
+} Atom;
+
+void init_atom_table(void);
+void erts_atom_put(const byte* name, int len, int trunc);
+
+#endif /* ATOM_H_ */

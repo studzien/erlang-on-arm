@@ -1,0 +1,15 @@
+/*
+ * atom.c
+ *
+ *  Created on: Mar 31, 2014
+ *      Author: Studnicki
+ */
+
+#include "atom.h"
+#include "hash.h"
+
+void init_atom_table(void) {
+	HashFunctions f;
+}
+
+static HashValue
