@@ -1,0 +1,19 @@
+/*
+ * beam_emu.c
+ *
+ *  Created on: Oct 26, 2013
+ *      Author: Studnicki
+ */
+
+#include "global.h"
+#include "beam_emu.h"
+
+register Eterm x0;
+register Eterm* reg = NULL;
+register BeamInstr *I = NULL;
+
+void go(BeamInstr* start) {
+	I = start;
+	emulator_loop:
+	OpCase(LABEL)
+}

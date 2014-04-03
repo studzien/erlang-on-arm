@@ -10,7 +10,7 @@
 #include "erl_process.h"
 
 void ErlProcessTask(void* args) {
-	static void* op[] = {&&label, &&func_info, &&int_code_end};
+	/*static void* op[] = {&&label, &&func_info, &&int_code_end};
 
 	Process *p = (Process*)args;
 	p->reds = CONTEXT_REDS;
@@ -35,5 +35,5 @@ void ErlProcessTask(void* args) {
 
 	int_code_end:
 	vPrintString("int_code_end\n");
-	goto emulator_loop;
+	goto emulator_loop;*/
 }

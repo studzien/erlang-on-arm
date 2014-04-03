@@ -1,0 +1,78 @@
+/*
+ * beam_emu.c
+ *
+ *  Created on: Oct 26, 2013
+ *      Author: Studnicki
+ */
+
+#include "global.h"
+#include "beam_emu.h"
+
+void go(BeamInstr* start) {
+	register Eterm x0;
+	register Eterm* reg = NULL;
+	register BeamInstr *I = NULL;
+
+
+	void* jump_table[154];
+	jump_table[1] = &&lb_0x01;
+	jump_table[2] = &&lb_2;
+	jump_table[6] = &&lb_6;
+	jump_table[19] = &&lb_19;
+	jump_table[43] = &&lb_43;
+	jump_table[64] = &&lb_64;
+	jump_table[78] = &&lb_78;
+	jump_table[125] = &&lb_125;
+	jump_table[153] = &&lb_153;
+
+	I = start;
+	emulator_loop:
+
+	GotoOp(*I);
+
+	//1 label/1
+	OpCase(LABEL):
+		debug("label\n");
+		I+=2;
+		Loop();
+	//2 func_info/2
+	OpCase(FUNC_INFO):
+		debug("func_info\n");
+		I+=3;
+		Loop();
+	//6 call_only/2
+	OpCase(CALL_ONLY):
+		debug("call_only\n");
+		I+=3;
+		Loop();
+	//19 return/0
+	OpCase(RETURN):
+		debug("return\n");
+		I+=1;
+		return;
+	//43 is_eq_exact/3
+	OpCase(IS_EQ_EXACT):
+		debug("is_eq_exact\n");
+		I+=4;
+		Loop();
+	//64 move/2
+	OpCase(MOVE):
+		debug("move\n");
+		I+=3;
+		Loop();
+	//78 call_ext_only/2
+	OpCase(CALL_EXT_ONLY):
+		debug("call_ext_only\n");
+		I+=3;
+		Loop();
+	//125 gc_bif_2/6
+	OpCase(GC_BIF2):
+		debug("gc_bif2\n");
+		I+=7;
+		Loop();
+	//153 line/1
+	OpCase(LINE):
+		debug("line\n");
+		I+=2;
+		Loop();
+}

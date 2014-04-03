@@ -7,6 +7,7 @@
 
 #include "atom.h"
 #include "export.h"
+#include "beam_emu.h"
 
 extern BeamModule* modules;
 
@@ -18,6 +19,10 @@ void erl_init() {
 
 	//initialize export table
 	init_export_table();
+
+	//init jump table
+	go(NULL);
+
 
 	byte code[] = FAC2ERL;
 	erts_load(code);
@@ -47,12 +52,7 @@ void erl_init() {
 		debug("exported is null!\n");
 	}
 	else {
-		char buf[256];
-		int i;
-		for(i=0; i<10; i++) {
-			sprintf(buf, "%d\n", (BeamInstr)exported->address[i]);
-			debug(buf);
-		}
+		go(exported->address);
 	}
 
 

@@ -12,6 +12,11 @@
 
 BeamModule* modules = NULL;
 uint32_t n_modules = 0;
+void* jump_table[154];
+
+void jump_table_add(int opcode, void* ptr) {
+	jump_table[opcode] = ptr;
+}
 
 void erts_load(byte* code) {
 	LoaderState *loader = pvPortMalloc(sizeof(LoaderState));
@@ -163,7 +168,8 @@ static int load_code(LoaderState* loader) {
 		arity = opcode_arities[op];
 
 		uint32_t p = loader->code_buffer_used;
-		loader->code[loader->code_buffer_used++] = make_small(op);
+		loader->code[loader->code_buffer_used++] = jump_table[op];
+
 		for(i=0; i<arity; i++) {
 			get_tag_and_value(loader, loader->code + loader->code_buffer_used);
 			loader->code_buffer_used++;
