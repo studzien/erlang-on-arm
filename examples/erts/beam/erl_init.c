@@ -6,6 +6,7 @@
  */
 
 #include "atom.h"
+#include "export.h"
 
 extern BeamModule* modules;
 
@@ -15,9 +16,13 @@ void erl_init() {
 	//initialize atom table
 	init_atom_table();
 
+	//initialize export table
+	init_export_table();
+
 	byte code[] = FAC2ERL;
 	erts_load(code);
-	dump_atoms();
+
+	//dump_atoms();
 	BeamModule module = modules[0];
 	char buf[256];
 	int i;
@@ -27,8 +32,10 @@ void erl_init() {
 		debug(buf);
 	}
 
+	debug_32(xPortGetFreeHeapSize());
 	// start the scheduler
 	vTaskStartScheduler();
+
 	for( ;; );
 }
 

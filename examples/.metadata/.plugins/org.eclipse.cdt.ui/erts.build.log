@@ -1,31 +1,23 @@
-16:00:16 **** Incremental Build of configuration Debug for project erts ****
+02:01:14 **** Incremental Build of configuration Debug for project erts ****
 make all 
-Building file: ../beam/atom.c
+Building file: ../beam/beam_load.c
 Invoking: MCU C Compiler
-arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/atom.d" -MT"beam/atom.d" -o "beam/atom.o" "../beam/atom.c"
-Finished building: ../beam/atom.c
- 
-Building file: ../beam/erl_init.c
-Invoking: MCU C Compiler
-arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
-Finished building: ../beam/erl_init.c
- 
-Building file: ../beam/index.c
-Invoking: MCU C Compiler
-arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/index.d" -MT"beam/index.d" -o "beam/index.o" "../beam/index.c"
-Finished building: ../beam/index.c
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+Finished building: ../beam/beam_load.c
  
 Building target: Example01.axf
 Invoking: MCU Linker
-arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+../beam/beam_load.c:236:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
 Finished building target: Example01.axf
  
 make --no-print-directory post-build
 Performing post-build steps
 arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
    text	   data	    bss	    dec	    hex	filename
-  19712	     48	  29396	  49156	   c004	Example01.axf
+  19984	     48	  29444	  49476	   c144	Example01.axf
  
 
-16:00:17 Build Finished (took 766ms)
+02:01:15 Build Finished (took 471ms)
 

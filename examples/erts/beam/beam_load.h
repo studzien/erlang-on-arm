@@ -68,13 +68,13 @@ typedef struct {
 	Eterm module; //atom for module
 	Eterm function; //atom for function
 	int arity; //function arity
-	uint32_t patches; //location in code to be patches after loading with the global address
+	uint16_t patches; //location in code to be patches after loading with the global address
 	//BifFunction bf; //pointer to bif function, null otherwise
 } ImportEntry;
 
 typedef struct {
 	uint32_t value;
-	uint32_t patches; //like in ImportEntry;
+	uint16_t patches; //like in ImportEntry;
 } Label;
 
 typedef struct LoaderState {
@@ -129,6 +129,7 @@ static int load_import_table(LoaderState* loader);
 static int finalize(LoaderState* loader);
 
 static int get_tag_and_value(LoaderState* loader, BeamInstr* result);
+static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op);
 
 static uint8_t opcode_arities[] = {0,1,3,0,2,3,2,2,3,2,4,5,2,3,2,3,2,1,1,0,0,0,0,2,1,1,2,4,4,4,
 		 4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,

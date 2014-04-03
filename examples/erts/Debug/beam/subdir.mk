@@ -9,6 +9,7 @@ C_SRCS += \
 ../beam/beam_load.c \
 ../beam/erl_init.c \
 ../beam/erl_process.c \
+../beam/export.c \
 ../beam/hash.c \
 ../beam/index.c 
 
@@ -18,6 +19,7 @@ OBJS += \
 ./beam/beam_load.o \
 ./beam/erl_init.o \
 ./beam/erl_process.o \
+./beam/export.o \
 ./beam/hash.o \
 ./beam/index.o 
 
@@ -27,6 +29,7 @@ C_DEPS += \
 ./beam/beam_load.d \
 ./beam/erl_init.d \
 ./beam/erl_process.d \
+./beam/export.d \
 ./beam/hash.d \
 ./beam/index.d 
 

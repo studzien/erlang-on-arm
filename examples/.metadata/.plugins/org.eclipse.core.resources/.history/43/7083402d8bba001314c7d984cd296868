@@ -1,0 +1,42 @@
+/*
+ * export.c
+ *
+ *  Created on: Apr 2, 2014
+ *      Author: Studnicki
+ */
+
+#include "export.h"
+
+void init_export_table(void) {
+	HashFunctions f;
+
+	f.hash = (H_FUN)export_hash;
+	f.cmp = (HCMP_FUN)export_cmp;
+	f.alloc = (HALLOC_FUN)export_alloc;
+	f.free = (HFREE_FUN)export_free;
+}
+
+static HashValue export_hash(Export* e) {
+	return EXPORT_HASH(e->module, e->function, e->arity);
+}
+
+static int export_cmp(Export* tmpl, Export* obj) {
+	return !(tmpl->module == obj->module &&
+			 tmpl->function == obj->function &&
+			 tmpl->arity == obj->arity);
+}
+
+static Export* export_alloc(Export* tmpl) {
+	Export* obj = pvPortMalloc(sizeof(Export));
+	obj->module = tmpl->module;
+	obj->function = tmpl->function;
+	obj->arity = tmpl->arity;
+	obj->address = tmpl->address;
+
+	return obj;
+}
+
+static void export_free(Export* obj) {
+	vPortFree((void*)obj);
+}
+}

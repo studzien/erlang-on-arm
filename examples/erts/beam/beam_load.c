@@ -7,6 +7,8 @@
 
 #include "global.h"
 #include "beam_load.h"
+#include "beam_emu.h"
+#include "export.h"
 
 BeamModule* modules = NULL;
 uint32_t n_modules = 0;
@@ -122,7 +124,8 @@ static int load_import_table(LoaderState* loader) {
 
 static int load_code(LoaderState* loader) {
 	char buf[256];
-	uint8_t op, arity, arg;
+	byte op;
+	uint8_t arity, arg;
 	int i;
 	int c=0;
 
@@ -132,11 +135,32 @@ static int load_code(LoaderState* loader) {
 		GetByte(loader, op);
 		arity = opcode_arities[op];
 
+		uint32_t p = loader->code_buffer_used;
 		loader->code[loader->code_buffer_used++] = make_small(op);
 		for(i=0; i<arity; i++) {
 			get_tag_and_value(loader, loader->code + loader->code_buffer_used);
 			loader->code_buffer_used++;
 		}
+		replace_ext_call(loader, p, op);
+	}
+}
+
+static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op) {
+	//leaves a trace in import entries to finally replace with the export table entry
+	if(EXTERNAL_OP_1(op) || EXTERNAL_OP_2(op) || EXTERNAL_OP_3(op)) {
+		uint8_t arg;
+		if(EXTERNAL_OP_1(op)) {
+			arg = 1;
+		}
+		else if(EXTERNAL_OP_2(op)) {
+			arg = 2;
+		}
+		else {
+			arg = 3;
+		}
+		uint16_t imp = unsigned_val(loader->code[offset+arg]);
+		loader->code[offset+arg] = (BeamInstr)loader->import[imp].patches;
+		loader->import[imp].patches = (uint16_t)(offset+arg);
 	}
 }
 
@@ -150,11 +174,6 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
 	if((start & 0x08) == 0x00) {
 		tag = start & 0x0f;
 		value = start >> 4;
-
-		char buf[256];
-		sprintf(buf, "tag %d val %d\n", tag, value);
-		debug(buf);
-
 	}
 	else {
 		return 1;
@@ -185,6 +204,8 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
 }
 
 static int finalize(LoaderState* loader) {
+	int i;
+
 	n_modules++;
 	BeamModule* old = modules;
 	modules = pvPortMalloc(n_modules * sizeof(BeamModule));
@@ -200,6 +221,27 @@ static int finalize(LoaderState* loader) {
 		return 1;
 	}
 	memcpy(modules[n_modules-1].code, loader->code, loader->code_buffer_used*sizeof(BeamInstr));
+
+	//imports all the external functions and patch all callers with the export table entry
+	for(i = 0; i<loader->num_imports; i++) {
+		Eterm module;
+		Eterm function;
+		uint8_t arity;
+		BeamInstr import;
+		uint16_t current, next;
+
+		module = loader->import[i].module;
+		function = loader->import[i].function;
+		arity = loader->import[i].arity;
+		import = (BeamInstr)(erts_export_put(module, function, arity));
+		current = loader->import[i].patches;
+		while(current != 0) {
+			next = loader->code[current];
+			modules[n_modules-1].code[current] = import;
+			current = next;
+		}
+	}
+
 	return 0;
 }
 

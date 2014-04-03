@@ -75,7 +75,7 @@
 					<entry kind="macro" name="__REDLIB__" value=""/>
 					<entry kind="macro" name="__USE_CMSIS" value="CMSISv1p30_LPC17xx"/>
 				</resource>
-				<resource project-relative-path="beam/beam_load.c">
+				<resource project-relative-path="beam/erl_init.c">
 					<entry kind="includePath" name="/FreeRTOS_Library/demo_code">
 						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 					</entry>
@@ -111,7 +111,7 @@
 					<entry kind="macro" name="__REDLIB__" value=""/>
 					<entry kind="macro" name="__USE_CMSIS" value="CMSISv1p30_LPC17xx"/>
 				</resource>
-				<resource project-relative-path="beam/erl_init.c">
+				<resource project-relative-path="beam/beam_load.c">
 					<entry kind="includePath" name="/FreeRTOS_Library/demo_code">
 						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 					</entry>
@@ -148,6 +148,24 @@
 					<entry kind="macro" name="__USE_CMSIS" value="CMSISv1p30_LPC17xx"/>
 				</resource>
 				<resource project-relative-path="beam/erl_process.c">
+					<entry kind="includePath" name="/FreeRTOS_Library/demo_code">
+						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+					</entry>
+					<entry kind="includePath" name="/CMSISv1p30_LPC17xx/inc">
+						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+					</entry>
+					<entry kind="includePath" name="/FreeRTOS_Library/include">
+						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+					</entry>
+					<entry kind="includePath" name="/FreeRTOS_Library/portable">
+						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+					</entry>
+					<entry kind="macro" name="DEBUG" value=""/>
+					<entry kind="macro" name="__CODE_RED" value=""/>
+					<entry kind="macro" name="__REDLIB__" value=""/>
+					<entry kind="macro" name="__USE_CMSIS" value="CMSISv1p30_LPC17xx"/>
+				</resource>
+				<resource project-relative-path="beam/export.c">
 					<entry kind="includePath" name="/FreeRTOS_Library/demo_code">
 						<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 					</entry>
