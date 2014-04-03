@@ -147,14 +147,6 @@ static int load_code(LoaderState* loader) {
 	}
 }
 
-static void define_label(LoaderState* loader, uint16_t offset, byte op) {
-	//define a pointer to the next instruction when label/1 has been identified
-	if(op == LABEL) {
-		uint16_t value = unsigned_val(loader->code[offset+1]);
-		loader->labels[value].value = offset+2;
-	}
-}
-
 static void replace_local_call(LoaderState* loader, uint16_t offset, byte op) {
 	if(LABEL_OP_1(op) || LABEL_OP_2(op)) {
 		uint8_t arg = LABEL_OP_1(op) ? 1 : 2;
@@ -268,8 +260,7 @@ static int finalize(LoaderState* loader) {
 		current = loader->labels[i].patches;
 		while(current != 0) {
 			next = loader->code[current];
-			modules[n_modules-1].code[current] = (BeamInstr)(loader->code+value);
-			current = next;
+			modules[n_modules-1].code[current] = (BeamInstr)
 		}
 	}
 

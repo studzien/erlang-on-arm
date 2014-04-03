@@ -151,7 +151,7 @@ static void define_label(LoaderState* loader, uint16_t offset, byte op) {
 	//define a pointer to the next instruction when label/1 has been identified
 	if(op == LABEL) {
 		uint16_t value = unsigned_val(loader->code[offset+1]);
-		loader->labels[value].value = offset+2;
+		loader->labels[value] = offset+2;
 	}
 }
 

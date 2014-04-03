@@ -8,7 +8,6 @@
 #ifndef BEAM_EMU_H_
 #define BEAM_EMU_H_
 
-#define LABEL 0x01
 #define CALL_ONLY 0x06
 #define CALL_EXT 0x07
 #define CALL_EXT_LAST 0x08

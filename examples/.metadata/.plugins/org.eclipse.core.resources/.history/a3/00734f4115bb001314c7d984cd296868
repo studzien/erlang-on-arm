@@ -141,17 +141,8 @@ static int load_code(LoaderState* loader) {
 			get_tag_and_value(loader, loader->code + loader->code_buffer_used);
 			loader->code_buffer_used++;
 		}
-		define_label(loader, p, op);
 		replace_ext_call(loader, p, op);
 		replace_local_call(loader, p, op);
-	}
-}
-
-static void define_label(LoaderState* loader, uint16_t offset, byte op) {
-	//define a pointer to the next instruction when label/1 has been identified
-	if(op == LABEL) {
-		uint16_t value = unsigned_val(loader->code[offset+1]);
-		loader->labels[value].value = offset+2;
 	}
 }
 
@@ -257,18 +248,6 @@ static int finalize(LoaderState* loader) {
 		while(current != 0) {
 			next = loader->code[current];
 			modules[n_modules-1].code[current] = import;
-			current = next;
-		}
-	}
-
-	//exchange all labels with the code addresses
-	for(i = 0; i<loader->num_labels; i++) {
-		uint16_t current, next;
-		uint16_t value = loader->labels[i].value;
-		current = loader->labels[i].patches;
-		while(current != 0) {
-			next = loader->code[current];
-			modules[n_modules-1].code[current] = (BeamInstr)(loader->code+value);
 			current = next;
 		}
 	}

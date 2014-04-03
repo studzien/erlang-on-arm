@@ -4432,3 +4432,17 @@ Timeout waiting for LPC-Link v1.1 initialization: Cancelled
 
 !ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 02:01:16.986
 !MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.log 1 0 2014-04-03 11:54:07.020
+!MESSAGE Drivers loaded in 18869 milliseconds
+
+!ENTRY com.crt.debugcommon 4 -1 2014-04-03 11:54:07.107
+!MESSAGE Error received while booting LPC-Link v1.1:
+Timeout waiting for LPC-Link v1.1 initialization: Timeout waiting for LPC-Link v1.1 to initialize.
+
+
+!ENTRY com.crt.log 1 0 2014-04-03 11:54:16.271
+!MESSAGE Drivers loaded in 2691 milliseconds
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 11:54:16.501
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
