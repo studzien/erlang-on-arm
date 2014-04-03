@@ -50,13 +50,6 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
-	//Load export table
-	loader->file_left = loader->chunks[EXP_CHUNK].size;
-	loader->file_p = loader->chunks[EXP_CHUNK].start;
-	if(load_export_table(loader)) {
-		goto load_error;
-	}
-
 	//Finalize (patch labels, export functions and stuff)
 	if(finalize(loader)) {
 		goto load_error;
@@ -71,8 +64,6 @@ void erts_load(byte* code) {
 	free_loader:
 	vPrintString("freeing loader\n");
 	vPortFree(loader->labels);
-	vPortFree(loader->import);
-	vPortFree(loader->export);
 	vPortFree(loader->atom);
 	vPortFree(loader);
 	debug_32(xPortGetFreeHeapSize());
@@ -107,24 +98,6 @@ static int read_code_header(LoaderState* loader) {
 	loader->catches = 0;
 
 	return 0;
-}
-
-static int load_export_table(LoaderState* loader) {
-	uint32_t function, arity, label, value;
-	int i;
-
-	GetInt(loader, loader->num_exports);
-	loader->export = pvPortMalloc(loader->num_exports * sizeof(ExportEntry));
-	for(i=0; i<loader->num_exports; i++) {
-		GetInt(loader, function);
-		loader->export[i].function = loader->atom[function];
-		GetInt(loader, arity);
-		loader->export[i].arity = arity;
-		GetInt(loader, label);
-		value = loader->labels[label].value;
-		loader->export[i].address = (uint16_t)value;
-	}
-
 }
 
 static int load_import_table(LoaderState* loader) {
@@ -268,8 +241,6 @@ static int finalize(LoaderState* loader) {
 	}
 	memcpy(modules[n_modules-1].code, loader->code, loader->code_buffer_used*sizeof(BeamInstr));
 
-	BeamInstr* code = modules[n_modules-1].code;
-
 	//imports all the external functions and patch all callers with the export table entry
 	for(i = 0; i<loader->num_imports; i++) {
 		Eterm module;
@@ -285,17 +256,9 @@ static int finalize(LoaderState* loader) {
 		current = loader->import[i].patches;
 		while(current != 0) {
 			next = loader->code[current];
-			code[current] = import;
+			modules[n_modules-1].code[current] = import;
 			current = next;
 		}
-	}
-
-	//export functions
-	for(i = 0; i<loader->num_exports; i++) {
-		Export *export;
-		export = erts_export_put(loader->atom[1], loader->export[i].function,
-				                 loader->export[i].arity);
-		export->address = (BeamInstr*)(code+loader->export[i].address);
 	}
 
 	//exchange all labels with the code addresses
@@ -305,11 +268,10 @@ static int finalize(LoaderState* loader) {
 		current = loader->labels[i].patches;
 		while(current != 0) {
 			next = loader->code[current];
-			code[current] = (BeamInstr)(code+value);
+			modules[n_modules-1].code[current] = (BeamInstr)(loader->code+value);
 			current = next;
 		}
 	}
-
 
 	return 0;
 }

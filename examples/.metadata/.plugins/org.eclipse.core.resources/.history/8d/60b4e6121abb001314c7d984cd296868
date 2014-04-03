@@ -24,7 +24,6 @@ typedef struct {
 
 void init_export_table(void);
 Export* erts_export_put(Eterm module, Eterm function, uint8_t arity);
-Export* erts_export_get(Export*);
 
 //Hashtable callbacks
 static HashValue export_hash(Export* e);

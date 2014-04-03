@@ -23,38 +23,14 @@ void erl_init() {
 	erts_load(code);
 
 	//dump_atoms();
-	/*BeamModule module = modules[0];
+	BeamModule module = modules[0];
 	char buf[256];
 	int i;
 	debug("code\n");
 	for(i=0; i<module.size; i++) {
 		sprintf(buf, "%d\n", (BeamInstr)module.code[i]);
 		debug(buf);
-	}*/
-
-	Export e;
-	Export *exported;
-	erts_atom_get("fac2", 4, &e.module);
-	erts_atom_get("fac", 3, &e.function);
-	e.arity = 1;
-
-	char buf[256];
-	sprintf(buf, "%d %d %d\n", e.module, e.function, e.arity);
-	debug(buf);
-
-	exported = erts_export_get(&e);
-	if(exported == NULL) {
-		debug("exported is null!\n");
 	}
-	else {
-		char buf[256];
-		int i;
-		for(i=0; i<10; i++) {
-			sprintf(buf, "%d\n", (BeamInstr)exported->address[i]);
-			debug(buf);
-		}
-	}
-
 
 	debug_32(xPortGetFreeHeapSize());
 	// start the scheduler

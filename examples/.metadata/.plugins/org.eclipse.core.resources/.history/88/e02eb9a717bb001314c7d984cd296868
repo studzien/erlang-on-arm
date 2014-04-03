@@ -75,7 +75,7 @@ typedef struct {
 typedef struct {
 	Eterm function;
 	int arity;
-	uint16_t address;
+	BeamInstr* address;
 } ExportEntry;
 
 typedef struct {
@@ -135,7 +135,6 @@ static int load_atom_table(LoaderState* loader);
 static int read_code_header(LoaderState* loader);
 static int load_code(LoaderState* loader);
 static int load_import_table(LoaderState* loader);
-static int load_export_table(LoaderState* loader);
 
 static int finalize(LoaderState* loader);
 

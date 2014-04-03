@@ -886,3 +886,202 @@ arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf 
 11:54:11 **** Incremental Build of configuration Debug for project erts ****
 make all 
 make: Nothing to be done for `all'.
+12:31:46 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'load_export_table':
+../beam/beam_load.c:117:6: error: 'i' undeclared (first use in this function)
+../beam/beam_load.c:117:6: note: each undeclared identifier is reported only once for each function it appears in
+../beam/beam_load.c: In function 'finalize':
+../beam/beam_load.c:281:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+../beam/beam_load.c:305:41: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+make: *** [beam/beam_load.o] Error 1
+12:31:56 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+../beam/beam_load.c:282:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+../beam/beam_load.c:306:41: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Finished building: ../beam/beam_load.c
+ 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building file: ../beam/export.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/export.d" -MT"beam/export.d" -o "beam/export.o" "../beam/export.c"
+Finished building: ../beam/export.c
+ 
+Building file: ../main.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"main.d" -MT"main.d" -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20600	     48	  29444	  50092	   c3ac	Example01.axf
+ 
+12:34:43 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+Finished building: ../beam/beam_load.c
+../beam/beam_load.c:282:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+ 
+Building file: ../beam/erl_init.c
+../beam/beam_load.c:309:41: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20680	     48	  29444	  50172	   c3fc	Example01.axf
+ 
+12:36:47 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+12:38:50 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/export.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/export.d" -MT"beam/export.d" -o "beam/export.o" "../beam/export.c"
+Finished building: ../beam/export.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20672	     48	  29444	  50164	   c3f4	Example01.axf
+ 
+12:52:38 **** Incremental Build of configuration Debug for project erts ****
+make all 
+make: Nothing to be done for `all'.
+12:59:40 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+../beam/beam_load.c:282:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Finished building: ../beam/beam_load.c
+../beam/beam_load.c:306:41: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+ 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20448	     48	  29444	  49940	   c314	Example01.axf
+ 
+13:01:03 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/erl_init.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/erl_init.d" -MT"beam/erl_init.d" -o "beam/erl_init.o" "../beam/erl_init.c"
+Finished building: ../beam/erl_init.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20640	     48	  29444	  50132	   c3d4	Example01.axf
+ 
+13:03:35 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+Finished building: ../beam/beam_load.c
+../beam/beam_load.c:284:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+ 
+../beam/beam_load.c:308:20: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20608	     48	  29444	  50100	   c3b4	Example01.axf
+ 
+13:06:51 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+../beam/beam_load.c:284:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+../beam/beam_load.c:298:25: error: invalid operands to binary + (have 'BeamInstr *' and 'BeamInstr *')
+../beam/beam_load.c:308:20: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+make: *** [beam/beam_load.o] Error 1
+13:12:57 **** Incremental Build of configuration Debug for project erts ****
+make all 
+Building file: ../beam/beam_load.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"beam/beam_load.d" -MT"beam/beam_load.d" -o "beam/beam_load.o" "../beam/beam_load.c"
+../beam/beam_load.c: In function 'finalize':
+Finished building: ../beam/beam_load.c
+../beam/beam_load.c:284:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+ 
+../beam/beam_load.c:308:20: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Building file: ../main.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DDEBUG -D__USE_CMSIS=CMSISv1p30_LPC17xx -D__CODE_RED -D__REDLIB__ -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/demo_code" -I"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/inc" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/include" -I"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/portable" -O1 -g3 -fsigned-char -c -fmessage-length=0 -fno-builtin -ffunction-sections -mcpu=cortex-m3 -mthumb -MMD -MP -MF"main.d" -MT"main.d" -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: Example01.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -L"/Users/Studnicki/work/mgr/examples/CMSISv1p30_LPC17xx/Debug" -L"/Users/Studnicki/work/mgr/examples/FreeRTOS_Library/Debug" -Xlinker --gc-sections -Xlinker -Map=Example01.map -mcpu=cortex-m3 -mthumb -T "example01_Debug.ld" -o "Example01.axf"  ./beam/atom.o ./beam/beam_emu.o ./beam/beam_load.o ./beam/erl_init.o ./beam/erl_process.o ./beam/export.o ./beam/hash.o ./beam/index.o  ./cr_startup_lpc17.o ./main.o   -lCMSISv1p30_LPC17xx -lFreeRTOS_Library
+Finished building target: Example01.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size Example01.axf; # arm-none-eabi-objcopy -O ihex Example01.axf Example01.hex ;
+   text	   data	    bss	    dec	    hex	filename
+  20608	     48	  29444	  50100	   c3b4	Example01.axf
+ 

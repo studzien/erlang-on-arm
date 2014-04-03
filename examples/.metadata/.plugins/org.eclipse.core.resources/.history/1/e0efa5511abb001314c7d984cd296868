@@ -27,12 +27,6 @@ Export* erts_export_put(Eterm module, Eterm function, uint8_t arity) {
 	return (Export*)index_put_entry(&export_table, &export);
 }
 
-Export* erts_export_get(Export* e) {
-	Export* export;
-	export = (Export*)hash_get(&export_table.htable, e);
-	return export;
-}
-
 static HashValue export_hash(Export* e) {
 	return EXPORT_HASH(e->module, e->function, e->arity);
 }

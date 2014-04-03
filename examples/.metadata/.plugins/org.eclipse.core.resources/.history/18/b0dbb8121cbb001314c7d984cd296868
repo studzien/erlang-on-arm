@@ -29,7 +29,7 @@ Export* erts_export_put(Eterm module, Eterm function, uint8_t arity) {
 
 Export* erts_export_get(Export* e) {
 	Export* export;
-	export = (Export*)hash_get(&export_table.htable, e);
+	export = (Export*)hash_get(&export_table.htable, &e);
 	return export;
 }
 

@@ -122,7 +122,7 @@ static int load_export_table(LoaderState* loader) {
 		loader->export[i].arity = arity;
 		GetInt(loader, label);
 		value = loader->labels[label].value;
-		loader->export[i].address = (uint16_t)value;
+		loader->export[i].address = (BeamInstr*)(loader->code + value);
 	}
 
 }
@@ -268,8 +268,6 @@ static int finalize(LoaderState* loader) {
 	}
 	memcpy(modules[n_modules-1].code, loader->code, loader->code_buffer_used*sizeof(BeamInstr));
 
-	BeamInstr* code = modules[n_modules-1].code;
-
 	//imports all the external functions and patch all callers with the export table entry
 	for(i = 0; i<loader->num_imports; i++) {
 		Eterm module;
@@ -285,7 +283,7 @@ static int finalize(LoaderState* loader) {
 		current = loader->import[i].patches;
 		while(current != 0) {
 			next = loader->code[current];
-			code[current] = import;
+			modules[n_modules-1].code[current] = import;
 			current = next;
 		}
 	}
@@ -295,7 +293,9 @@ static int finalize(LoaderState* loader) {
 		Export *export;
 		export = erts_export_put(loader->atom[1], loader->export[i].function,
 				                 loader->export[i].arity);
-		export->address = (BeamInstr*)(code+loader->export[i].address);
+		export->address = loader->export[i].address;
+		char buf[256];
+		sprintf(buf, "%d %d %d\n", export->module, export->function, export->arity);
 	}
 
 	//exchange all labels with the code addresses
@@ -305,7 +305,7 @@ static int finalize(LoaderState* loader) {
 		current = loader->labels[i].patches;
 		while(current != 0) {
 			next = loader->code[current];
-			code[current] = (BeamInstr)(code+value);
+			modules[n_modules-1].code[current] = (BeamInstr)(loader->code+value);
 			current = next;
 		}
 	}

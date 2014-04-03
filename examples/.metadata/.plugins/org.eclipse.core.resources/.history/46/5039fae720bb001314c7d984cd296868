@@ -295,7 +295,7 @@ static int finalize(LoaderState* loader) {
 		Export *export;
 		export = erts_export_put(loader->atom[1], loader->export[i].function,
 				                 loader->export[i].arity);
-		export->address = (BeamInstr*)(code+loader->export[i].address);
+		export->address = code+loader->export[i].address;
 	}
 
 	//exchange all labels with the code addresses

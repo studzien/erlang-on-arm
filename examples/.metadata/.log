@@ -4446,3 +4446,59 @@ Timeout waiting for LPC-Link v1.1 initialization: Timeout waiting for LPC-Link v
 
 !ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 11:54:16.501
 !MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 12:31:58.736
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 12:34:45.315
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 12:36:48.550
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 12:38:52.062
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 12:52:39.491
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 12:59:42.450
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 13:01:05.060
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 13:03:37.808
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 104 2014-04-03 13:06:52.186
+!MESSAGE Program file does not exist
+!STACK 0
+java.io.FileNotFoundException: /Users/Studnicki/work/mgr/examples/erts/Debug/Example01.axf not found
+	at org.eclipse.cdt.dsf.gdb.launching.LaunchUtils.verifyProgramPath(LaunchUtils.java:124)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.checkBinaryDetails(GdbLaunchDelegate.java:286)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:143)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:106)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:94)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:855)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:704)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1047)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1251)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 104 2014-04-03 13:06:52.188
+!MESSAGE /Users/Studnicki/work/mgr/examples/erts/Debug/Example01.axf not found
+!STACK 0
+java.io.FileNotFoundException: /Users/Studnicki/work/mgr/examples/erts/Debug/Example01.axf not found
+	at org.eclipse.cdt.dsf.gdb.launching.LaunchUtils.verifyProgramPath(LaunchUtils.java:124)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.checkBinaryDetails(GdbLaunchDelegate.java:286)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:143)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:106)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:94)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:855)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:704)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1047)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$8.run(DebugUIPlugin.java:1251)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY com.crt.lpcxpresso.brand 4 -1 2014-04-03 13:12:59.615
+!MESSAGE Internal error: cannot find image LPCXpresso_16x16
