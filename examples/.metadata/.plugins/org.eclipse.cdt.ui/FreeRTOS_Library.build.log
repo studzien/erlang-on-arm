@@ -1,4 +1,4 @@
-15:08:16 **** Incremental Build of configuration Debug for project FreeRTOS_Library ****
+01:57:22 **** Incremental Build of configuration Debug for project FreeRTOS_Library ****
 make all 
 Building file: ../portable/heap_2.c
 Invoking: MCU C Compiler
@@ -40,7 +40,7 @@ make --no-print-directory post-build
 Performing post-build steps
 arm-none-eabi-size libFreeRTOS_Library.a ; # arm-none-eabi-objdump -h -S libFreeRTOS_Library.a >libFreeRTOS_Library.lss
    text	   data	    bss	    dec	    hex	filename
-    320	      4	  28696	  29020	   715c	heap_2.o (ex libFreeRTOS_Library.a)
+    320	      4	  26648	  26972	   695c	heap_2.o (ex libFreeRTOS_Library.a)
     344	      4	      0	    348	    15c	port.o (ex libFreeRTOS_Library.a)
     184	      0	     52	    236	     ec	basic_io.o (ex libFreeRTOS_Library.a)
      24	      0	      0	     24	     18	consoleprint.o (ex libFreeRTOS_Library.a)
@@ -49,5 +49,5 @@ arm-none-eabi-size libFreeRTOS_Library.a ; # arm-none-eabi-objdump -h -S libFree
    3264	      0	    256	   3520	    dc0	tasks.o (ex libFreeRTOS_Library.a)
  
 
-15:08:17 Build Finished (took 924ms)
+01:57:23 Build Finished (took 918ms)
 

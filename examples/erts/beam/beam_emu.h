@@ -17,6 +17,31 @@ void go(BeamInstr* start);
 #define y(N) E[N]
 #define r(N) x##N
 
+#define Arg(N) I[(N)+1]
+
+
+#define Resolve(Arg, Dest) do {     \
+	if(is_rreg(Arg))                \
+		Dest = x0;                  \
+	else if(is_xreg(Arg))           \
+		Dest = x(x_reg_index(Arg)); \
+	else if(is_yreg(Arg))           \
+		Dest = y(y_reg_index(Arg)); \
+	else                            \
+		Dest = Arg;                 \
+} while(0)
+
+#define Move(Arg, Dest) do {        \
+	if(is_rreg(Dest))		        \
+		x0 = Arg;                   \
+	else if(is_xreg(Dest))          \
+		x(x_reg_index(Dest)) = Arg; \
+	else if(is_yreg(Dest))          \
+		y(y_reg_index(Dest)) = Arg; \
+	else                            \
+		Dest = Arg;                 \
+} while(0)                          \
+
 #define LABEL 1
 #define FUNC_INFO 2
 #define INT_CODE_END 3

@@ -75,7 +75,7 @@ typedef struct {
 typedef struct {
 	Eterm function;
 	int arity;
-	uint16_t address;
+	uint32_t address;
 } ExportEntry;
 
 typedef struct {

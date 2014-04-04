@@ -9,7 +9,13 @@
 #include "beam_emu.h"
 #include "beam_load.h"
 
-static int init_done = 0;
+int init_done = 0;
+
+Eterm x0;
+Eterm reg[X_REGS_ALLOCATED];
+Eterm E[X_REGS_ALLOCATED];
+Eterm tmp0, tmp1;
+char buf[256];
 
 void go(BeamInstr* start) {
 	//first time this function is called op labels from here are exported to the loader
@@ -23,19 +29,18 @@ void go(BeamInstr* start) {
 		return;
 	}
 
-	register Eterm x0;
-	register Eterm* reg = NULL;
 	register BeamInstr *I = NULL;
-
 	I = start;
 
 	Goto(*I);
 
 	OpCase(LABEL):
+		//ignore
 		debug("label\n");
 		I+=2;
 		Goto(*I);
 	OpCase(FUNC_INFO):
+		//ignore
 		debug("func_info\n");
 		I+=4;
 		Goto(*I);
@@ -53,7 +58,7 @@ void go(BeamInstr* start) {
 		Goto(*I);
 	OpCase(CALL_ONLY):
 		debug("call_only\n");
-		I+=3;
+		I = (BeamInstr*)(Arg(1));
 		Goto(*I);
 	OpCase(CALL_EXT):
 		debug("call_ext\n");
@@ -104,7 +109,7 @@ void go(BeamInstr* start) {
 		I+=2;
 		Goto(*I);
 	OpCase(RETURN):
-		debug("return\n");
+		return;
 		I+=1;
 		Goto(*I);
 	OpCase(SEND):
@@ -201,7 +206,14 @@ void go(BeamInstr* start) {
 		Goto(*I);
 	OpCase(IS_EQ_EXACT):
 		debug("is_eq_exact\n");
-		I+=4;
+		Resolve(Arg(1), tmp0);
+		Resolve(Arg(2), tmp1);
+		if(tmp0 == tmp1) {
+			I+=4;
+		}
+		else {
+			I = (BeamInstr*)(Arg(0));
+		}
 		Goto(*I);
 	OpCase(IS_NE_EXACT):
 		debug("is_ne_exact\n");
@@ -285,6 +297,8 @@ void go(BeamInstr* start) {
 		Goto(*I);
 	OpCase(MOVE):
 		debug("move\n");
+		Resolve(Arg(0), tmp1);
+		Move(tmp1, Arg(1));
 		I+=3;
 		Goto(*I);
 	OpCase(GET_LIST):
@@ -529,6 +543,7 @@ void go(BeamInstr* start) {
 		Goto(*I);
 	OpCase(GC_BIF2):
 		debug("gc_bif2\n");
+		return;
 		I+=7;
 		Goto(*I);
 	OpCase(BS_FINAL2):
@@ -640,7 +655,7 @@ void go(BeamInstr* start) {
 		I+=8;
 		Goto(*I);
 	OpCase(LINE):
-		debug("line\n");
+		//ignore for now
 		I+=2;
 		Goto(*I);
 }

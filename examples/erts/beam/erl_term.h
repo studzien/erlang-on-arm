@@ -9,7 +9,7 @@
 #define ERL_TERM_H_
 
 // tagged Erlang term (32 bits)
-typedef uint16_t Eterm;
+typedef uint32_t Eterm;
 
 #define _TAG_PRIMARY_SIZE   2
 #define _TAG_PRIMARY_MASK   0x3
@@ -45,5 +45,12 @@ typedef uint16_t Eterm;
 #define make_rreg() R_REG_DEF
 #define make_xreg(ix) (((ix) << 4) | X_REG_DEF)
 #define make_yreg(ix) (((ix) << 4) | Y_REG_DEF)
+
+#define is_rreg(x) (((x) & 0xf) == R_REG_DEF)
+#define is_yreg(x) (((x) & 0xf) == Y_REG_DEF)
+#define is_xreg(x) (((x) & 0xf) == X_REG_DEF)
+#define x_reg_index(x) ((x) >> 4)
+#define y_reg_index(x) ((x) >> 4)
+
 
 #endif /* ERL_TERM_H_ */
