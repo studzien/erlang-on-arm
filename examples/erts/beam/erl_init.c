@@ -11,6 +11,8 @@
 
 extern BeamModule* modules;
 
+extern Eterm x0;
+
 //called when the vm is initialized;
 void erl_init() {
 	debug_32(xPortGetFreeHeapSize());
@@ -20,9 +22,11 @@ void erl_init() {
 	//initialize export table
 	init_export_table();
 
+	//initialize BIFs
+	erts_init_bif();
+
 	//init jump table
 	go(NULL);
-
 
 	byte code[] = FAC2ERL;
 	erts_load(code);
@@ -43,11 +47,12 @@ void erl_init() {
 	erts_atom_get("fac", 3, &e.function);
 	e.arity = 1;
 
-	char buf[256];
+	/*char buf[256];
 	sprintf(buf, "%d %d %d\n", e.module, e.function, e.arity);
-	debug(buf);
+	debug(buf);*/
 
 	exported = erts_export_get(&e);
+	x0 = make_small(1);
 	if(exported == NULL) {
 		debug("exported is null!\n");
 	}
@@ -55,6 +60,9 @@ void erl_init() {
 		go(exported->address);
 	}
 
+	char buf[256];
+	sprintf(buf, "%d\n", x0);
+	debug(buf);
 
 	debug_32(xPortGetFreeHeapSize());
 	// start the scheduler

@@ -8,6 +8,7 @@
 #include "global.h"
 #include "beam_emu.h"
 #include "beam_load.h"
+#include "export.h"
 
 int init_done = 0;
 
@@ -543,7 +544,12 @@ void go(BeamInstr* start) {
 		Goto(*I);
 	OpCase(GC_BIF2):
 		debug("gc_bif2\n");
-		return;
+		Export* e = (Export*)Arg(2);
+		Resolve(Arg(3), tmp0);
+		Resolve(Arg(4), tmp1);
+		Eterm args[] = {tmp0, tmp1};
+		Eterm result = (e->bif)(args);
+		Move(result, Arg(5));
 		I+=7;
 		Goto(*I);
 	OpCase(BS_FINAL2):

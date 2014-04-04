@@ -24,6 +24,7 @@ Export* erts_export_put(Eterm module, Eterm function, uint8_t arity) {
 	export.function = function;
 	export.arity = arity;
 	export.address = NULL;
+	export.bif = NULL;
 	return (Export*)index_put_entry(&export_table, &export);
 }
 

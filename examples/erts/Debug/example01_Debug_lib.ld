@@ -1,10 +1,10 @@
 /*
  * GENERATED FILE - DO NOT EDIT
- * (c) Code Red Technologies Ltd, 2008-2014
- * (c) NXP Semiconductors 2013-2014
- * Generated linker script file for LPC1769
- * Created from LibIncTemplate.ld (LPCXpresso v6.1 (0 [Build 164] [2013-10-21] ))
- * By LPCXpresso v6.1.0 [Build 164] [2013-10-21]  on Fri Apr 04 01:57:24 CEST 2014
+ * (c) Code Red Technologies Ltd, 2008-${year}
+ * (c) NXP Semiconductors 2013-${year}
+ * Generated linker script file for 2014
+ * Created from LPC1769 (Fri Apr 04 15:19:49 CEST 2014)
+ * By LibIncTemplate.ld on LPCXpresso v7.1.1 [Build 125] [2014-04-01] 
  */
 
 

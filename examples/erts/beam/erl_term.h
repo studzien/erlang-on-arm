@@ -35,7 +35,7 @@ typedef uint32_t Eterm;
 
 #define make_atom(x) ((Eterm)(((x) << _TAG_IMMED2_SIZE) + _TAG_IMMED2_ATOM))
 
-#define make_small(x) ((uint16_t)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_SMALL))
+#define make_small(x) ((Eterm)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_SMALL))
 #define unsigned_val(x) ((x) >> _TAG_IMMED1_SIZE)
 
 #define X_REG_DEF 0

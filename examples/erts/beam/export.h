@@ -10,6 +10,7 @@
 
 // Export table
 #include "index.h"
+#include "erl_bif.h"
 
 //@todo make N export tables where N is number of possible code versions
 static IndexTable export_table;
@@ -20,6 +21,7 @@ typedef struct {
 	Eterm function;
 	uint8_t arity;
 	BeamInstr* address;
+	BifFunction bif;
 } Export;
 
 void init_export_table(void);

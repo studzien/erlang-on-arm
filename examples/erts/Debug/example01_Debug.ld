@@ -1,10 +1,10 @@
 /*
  * GENERATED FILE - DO NOT EDIT
- * (c) Code Red Technologies Ltd, 2008-2014
- * (c) NXP Semiconductors 2013-2014
- * Generated linker script file for LPC1769
- * Created from generic_c.ld (LPCXpresso v6.1 (0 [Build 164] [2013-10-21] ))
- * By LPCXpresso v6.1.0 [Build 164] [2013-10-21]  on Fri Apr 04 01:57:24 CEST 2014
+ * (c) Code Red Technologies Ltd, 2008-${year}
+ * (c) NXP Semiconductors 2013-${year}
+ * Generated linker script file for 2014
+ * Created from LPC1769 (Fri Apr 04 15:19:49 CEST 2014)
+ * By generic_c.ld on LPCXpresso v7.1.1 [Build 125] [2014-04-01] 
  */
 
 
@@ -28,10 +28,10 @@ SECTIONS
         __section_table_start = .;
         __data_section_table = .;
         LONG(LOADADDR(.data));
-        LONG(    ADDR(.data)) ;
+        LONG(    ADDR(.data));
         LONG(  SIZEOF(.data));
         LONG(LOADADDR(.data_RAM2));
-        LONG(    ADDR(.data_RAM2)) ;
+        LONG(    ADDR(.data_RAM2));
         LONG(  SIZEOF(.data_RAM2));
         __data_section_table_end = .;
         __bss_section_table = .;
@@ -51,7 +51,7 @@ SECTIONS
     .text : ALIGN(4)    
     {
          *(.text*)
-        *(.rodata .rodata.*)
+        *(.rodata .rodata.* .constdata .constdata.*)
         . = ALIGN(4);
         
     } > MFlash512
@@ -79,6 +79,8 @@ SECTIONS
     .data_RAM2 : ALIGN(4)
     {
        FILL(0xff)
+       *(.ramfunc.$RAM2)
+       *(.ramfunc.$RamAHB32)
     	*(.data.$RAM2*)
     	*(.data.$RamAHB32*)
        . = ALIGN(4) ;
@@ -101,6 +103,7 @@ SECTIONS
 	   FILL(0xff)
 	   _data = . ;
 	   *(vtable)
+	   *(.ramfunc*)
 	   *(.data*)
 	   . = ALIGN(4) ;
 	   _edata = . ;

@@ -1,4 +1,4 @@
-portable/port.d: ../portable/port.c \
+beam/erl_bif.d: ../beam/erl_bif.c ../beam/erl_bif.h ../beam/global.h \
  /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/FreeRTOS.h \
  /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/projdefs.h \
  /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/FreeRTOSConfig.h \
@@ -9,7 +9,13 @@ portable/port.d: ../portable/port.c \
  /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/portable/portmacro.h \
  /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/mpu_wrappers.h \
  /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/task.h \
- /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/list.h
+ /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/list.h \
+ ../beam/io.h ../beam/sys.h ../beam/erl_term.h ../beam/config.h \
+ ../beam/atom.h ../beam/index.h ../beam/hash.h ../beam/export.h
+
+../beam/erl_bif.h:
+
+../beam/global.h:
 
 /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/FreeRTOS.h:
 
@@ -32,3 +38,19 @@ portable/port.d: ../portable/port.c \
 /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/task.h:
 
 /Users/rafalstudnicki/work/lpc-erlang/examples/FreeRTOS_Library/include/list.h:
+
+../beam/io.h:
+
+../beam/sys.h:
+
+../beam/erl_term.h:
+
+../beam/config.h:
+
+../beam/atom.h:
+
+../beam/index.h:
+
+../beam/hash.h:
+
+../beam/export.h:

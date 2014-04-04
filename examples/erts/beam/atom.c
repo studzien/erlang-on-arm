@@ -61,11 +61,16 @@ int erts_atom_get(const char* name, int len, Eterm* ap) {
 
 void init_atom_table(void) {
 	HashFunctions f;
+	int i;
 	f.hash = (H_FUN)atom_hash;
 	f.cmp = (HCMP_FUN)atom_cmp;
 	f.alloc = (HALLOC_FUN)atom_alloc;
 	f.free = (HFREE_FUN)atom_free;
 	erts_index_init(&erts_atom_table, "atom_tab", ATOM_TABLE_SIZE, ATOM_TABLE_SIZE, f);
+
+	for(i=0; i<(sizeof(erl_atom_names)/sizeof(erl_atom_names[0])); i++) {
+		erts_atom_put(erl_atom_names[i], strlen(erl_atom_names[i]));
+	}
 }
 
 // Hash-table callbacks
