@@ -80,7 +80,6 @@ void erts_load(byte* code) {
 	vPortFree(loader->export);
 	vPortFree(loader->atom);
 	vPortFree(loader);
-	debug_32(xPortGetFreeHeapSize());
 }
 
 

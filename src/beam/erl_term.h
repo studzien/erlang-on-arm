@@ -38,6 +38,9 @@ typedef uint32_t Eterm;
 #define make_small(x) ((Eterm)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_SMALL))
 #define unsigned_val(x) ((x) >> _TAG_IMMED1_SIZE)
 
+#define pix2pid(x) ((Eterm)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_PID))
+#define pid2pix(x) ((x) >> _TAG_IMMED1_SIZE)
+
 #define X_REG_DEF 0
 #define Y_REG_DEF 1
 #define R_REG_DEF 2

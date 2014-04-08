@@ -8,6 +8,8 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+#define REDUCTIONS 2000
+#define MAX_PROCESSES 50
 #define ATOM_TABLE_SIZE 128
 #define EXPORT_TABLE_SIZE 128
 #define CODE_BUFFER_SIZE 1024

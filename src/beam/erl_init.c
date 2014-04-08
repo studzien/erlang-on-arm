@@ -25,48 +25,26 @@ void erl_init() {
 	//initialize BIFs
 	erts_init_bif();
 
+	//initialize process table
+	init_process_table();
+
 	//init jump table
-	go(NULL);
+	process_main(NULL);
 
 	byte code[] = FAC2ERL;
 	erts_load(code);
 
-	//dump_atoms();
-	/*BeamModule module = modules[0];
-	char buf[256];
-	int i;
-	debug("code\n");
-	for(i=0; i<module.size; i++) {
-		sprintf(buf, "%d\n", (BeamInstr)module.code[i]);
-		debug(buf);
-	}*/
-
+	//create the root process
 	Export e;
 	Export *exported;
 	erts_atom_get("fac2", 4, &e.module);
 	erts_atom_get("fac", 3, &e.function);
 	e.arity = 1;
+	erl_create_process(NULL, e.module, e.function, make_small(7), NULL);
 
-	/*char buf[256];
-	sprintf(buf, "%d %d %d\n", e.module, e.function, e.arity);
-	debug(buf);*/
-
-	exported = erts_export_get(&e);
-	x0 = make_small(7);
-	if(exported == NULL) {
-		debug("exported is null!\n");
-	}
-	else {
-		go(exported->address);
-	}
-
-	char buf[256];
-	sprintf(buf, "%d\n", x0);
-	debug(buf);
-
-	debug_32(xPortGetFreeHeapSize());
 	// start the scheduler
 	vTaskStartScheduler();
+	debug_32(xPortGetFreeHeapSize());
 
 	for( ;; );
 }

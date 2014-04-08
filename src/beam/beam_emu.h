@@ -8,7 +8,9 @@
 #ifndef BEAM_EMU_H_
 #define BEAM_EMU_H_
 
-void go(BeamInstr* start);
+#include "erl_process.h"
+
+void process_main(void* p);
 
 #define OpCase(OpCode) lb_##OpCode
 #define Goto(Rel) goto *(Rel)
@@ -17,7 +19,7 @@ void go(BeamInstr* start);
 #define y(N) E[N]
 #define r(N) x##N
 
-#define Arg(N) I[(N)+1]
+#define Arg(N) p->i[(N)+1]
 
 
 #define Resolve(Arg, Dest) do {     \

@@ -8,13 +8,31 @@
 #ifndef ERL_PROCESS_H_
 #define ERL_PROCESS_H_
 
-#define CONTEXT_REDS 3
+#include "global.h"
+#include "basic_io.h"
+#include "export.h"
 
 void ErlProcessTask(void* args);
 
+
 typedef struct {
-	byte* code;
-	uint16_t reds;
-} Process;
+
+} ErlSpawnOpts;
+
+struct ErlProcess {
+	Eterm id;
+
+	struct ErlProcess* parent; //parent process
+	BeamInstr* i; // program counter
+
+	xTaskHandle* handle;
+
+	uint8_t active; //is taken from pool?
+};
+
+typedef struct ErlProcess ErlProcess;
+
+void init_process_table(void);
+Eterm erl_create_process(ErlProcess*, Eterm, Eterm, Eterm, ErlSpawnOpts*);
 
 #endif /* ERL_PROCESS_H_ */

@@ -14,8 +14,8 @@
 #include "task.h"
 #include "io.h"
 #include "sys.h"
-#include "erl_term.h"
 #include "config.h"
+#include "erl_term.h"
 
 typedef uint8_t byte;
 
