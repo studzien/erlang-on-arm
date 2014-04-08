@@ -54,12 +54,6 @@ void emptyTask(void* args) {
 int main( void )
 {
 	erl_init();
-
-	//xTaskCreate(emptyTask, "empty", 240, NULL, 1, NULL);
-	//xTaskCreate(ErlProcessTask, "ErlProcess", 240, &p1, 1, NULL);
-	//xTaskCreate(ErlProcessTask, "ErlProcess", 240, &p2, 1, NULL);
-	//xTaskCreate(ErlProcessTask, "ErlProcess", 240, &p3, 1, NULL);
-
 	return 0;
 }
 

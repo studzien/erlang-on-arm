@@ -12,7 +12,7 @@
 
 BeamModule* modules = NULL;
 uint32_t n_modules = 0;
-void* jump_table[154];
+void* jump_table[ALL_OPCODES];
 
 void jump_table_add(int opcode, void* ptr) {
 	jump_table[opcode] = ptr;

@@ -24,7 +24,7 @@ void process_main(void* arg) {
 	if(!init_done) {
 		int i;
 		void* temp[] = { JUMP_TABLE };
-		for(i=0; i<154; i++) {
+		for(i=0; i<ALL_OPCODES; i++) {
 				jump_table_add(i, temp[i]);
 		}
 		init_done = 1;
@@ -107,11 +107,7 @@ void process_main(void* arg) {
 		p->i +=2;
 		Goto(*(p->i));
 	OpCase(RETURN):
-		do {} while(0);
-		char buf[256];
-		sprintf(buf, "%d\n", x0);
-		debug(buf);
-		p->i +=1;
+		p->i = p->cp;
 		Goto(*(p->i));
 	OpCase(SEND):
 		debug("send\n");
@@ -664,4 +660,14 @@ void process_main(void* arg) {
 		//ignore for now
 		p->i +=2;
 		Goto(*(p->i));
+
+	//special vm ops
+	OpCase(NORMAL_EXIT):
+		//@todo do a lot of stuff when exiting a process
+		do {} while(0);
+		char buf[256];
+		sprintf(buf, "%d\n", x0);
+		debug(buf);
+		erts_do_exit_process(p, atom_normal);
+
 }

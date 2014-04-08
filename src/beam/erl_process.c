@@ -12,6 +12,8 @@ ErlProcess* proc_tab;
 uint16_t last_proc;
 extern Eterm x0;
 
+extern void* jump_table[];
+
 void init_process_table(void) {
 	int i;
 	proc_tab = pvPortMalloc(MAX_PROCESSES * sizeof(ErlProcess));
@@ -21,8 +23,16 @@ void init_process_table(void) {
 	}
 }
 
+void erts_do_exit_process(ErlProcess* p, Eterm reason) {
+	debug("stopping process\n");
+	vTaskDelete(*(p->handle));
+	vPortFree(p->handle);
+	p->active = 0;
+}
 
-//@todo mutex on this
+
+//mutexes are not needed here since we have one scheduler and there will be no context switch
+//until a process is created or deleted
 Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm args, ErlSpawnOpts* opts) {
 	int i;
 	if(last_proc == MAX_PROCESSES) {
@@ -53,8 +63,13 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	proc_tab[last_proc].parent = parent;
 	proc_tab[last_proc].handle = handle;
 	proc_tab[last_proc].id = pid;
-	//@todo check what if exported not found
+	//@todo throw an error if exported was not found
 	proc_tab[last_proc].i = exported->address;
+	proc_tab[last_proc].cp = (BeamInstr*)&jump_table[NORMAL_EXIT];
+	BeamInstr* instr = jump_table[NORMAL_EXIT];
+	char buf[256];
+	sprintf(buf, "%d\n", instr);
+	debug(buf);
 	proc_tab[last_proc].active = 1;
 
 	//start process inside the FreeRTOS scheduler

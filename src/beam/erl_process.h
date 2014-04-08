@@ -11,6 +11,7 @@
 #include "global.h"
 #include "basic_io.h"
 #include "export.h"
+#include "atom.h"
 
 void ErlProcessTask(void* args);
 
@@ -24,6 +25,7 @@ struct ErlProcess {
 
 	struct ErlProcess* parent; //parent process
 	BeamInstr* i; // program counter
+	BeamInstr* cp; // continuation pointer
 
 	xTaskHandle* handle;
 
@@ -34,5 +36,6 @@ typedef struct ErlProcess ErlProcess;
 
 void init_process_table(void);
 Eterm erl_create_process(ErlProcess*, Eterm, Eterm, Eterm, ErlSpawnOpts*);
+void erts_do_exit_process(ErlProcess*, Eterm);
 
 #endif /* ERL_PROCESS_H_ */
