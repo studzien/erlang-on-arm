@@ -40,11 +40,18 @@ void erl_init() {
 	erts_atom_get("fac2", 4, &e.module);
 	erts_atom_get("fac", 3, &e.function);
 	e.arity = 1;
-	erl_create_process(NULL, e.module, e.function, make_small(7), NULL);
 
-	// start the scheduler
-	vTaskStartScheduler();
 	debug_32(xPortGetFreeHeapSize());
+
+	erl_create_process(NULL, e.module, e.function, make_small(7), NULL);
+	//erl_create_process(NULL, e.module, e.function, make_small(7), NULL);
+	//erl_create_process(NULL, e.module, e.function, make_small(4), NULL);
+
+	debug_32(xPortGetFreeHeapSize());
+
+
+	// start the scheduler (cooperative)
+	vTaskStartScheduler();
 
 	for( ;; );
 }

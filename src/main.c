@@ -42,15 +42,6 @@
 #include "beam/beam_load.h"
 #include "beam/erl_process.h"
 
-
-
-void emptyTask(void* args) {
-	vPrintString("dummy\n");
-	for(;;) {
-		vTaskDelay(portTICK_RATE_MS/500);
-	}
-}
-
 int main( void )
 {
 	erl_init();

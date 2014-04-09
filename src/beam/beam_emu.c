@@ -17,9 +17,11 @@ Eterm reg[X_REGS_ALLOCATED];
 Eterm E[X_REGS_ALLOCATED];
 Eterm tmp0, tmp1;
 char buf[256];
+int i;
 
 void process_main(void* arg) {
 	ErlProcess* p = (ErlProcess*)arg;
+
 	//first time this function is called op labels from here are exported to the loader
 	if(!init_done) {
 		int i;
@@ -30,6 +32,8 @@ void process_main(void* arg) {
 		init_done = 1;
 		return;
 	}
+
+	x0 = p->arg_reg[0];
 
 	Goto(*(p->i));
 
@@ -56,8 +60,10 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	OpCase(CALL_ONLY):
 		debug("call_only\n");
+		p->arity = (uint8_t)unsigned_val(Arg(0));
 		p->i = (BeamInstr*)(Arg(1));
-		Goto(*(p->i));
+		p->fcalls--;
+		goto maybe_yield;
 	OpCase(CALL_EXT):
 		debug("call_ext\n");
 		p->i +=3;
@@ -540,6 +546,7 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	OpCase(GC_BIF2):
 		debug("gc_bif2\n");
+		do {} while(0);
 		Export* e = (Export*)Arg(2);
 		Resolve(Arg(3), tmp0);
 		Resolve(Arg(4), tmp1);
@@ -664,10 +671,36 @@ void process_main(void* arg) {
 	//special vm ops
 	OpCase(NORMAL_EXIT):
 		//@todo do a lot of stuff when exiting a process
-		do {} while(0);
-		char buf[256];
-		sprintf(buf, "%d\n", x0);
+		sprintf(buf, "Result: %d\n", unsigned_val(x0));
 		debug(buf);
 		erts_do_exit_process(p, atom_normal);
 
+	maybe_yield:
+	if(p->fcalls <= 0) {
+		if(p->arity > p->max_arg_reg) {
+			if(p->arg_reg != p->def_arg_reg) {
+				vPortFree(p->arg_reg);
+			}
+			p->arg_reg = (Eterm*)pvPortMalloc(p->arity * sizeof(p->arg_reg[0]));
+			p->max_arg_reg = p->arity;
+		}
+		for(i=1; i<p->arity; i++) {
+			p->arg_reg[i] = x(i);
+		}
+		p->arg_reg[0] = r(0);
+		p->fcalls = REDUCTIONS;
+
+		taskYIELD();
+
+		//restore
+		for(i=0; i<p->arity; i++) {
+			if(i == 0) {
+				r(0) = p->arg_reg[0];
+			}
+			else {
+				x(i) = p->arg_reg[i];
+			}
+		}
+	}
+	Goto(*(p->i));
 }

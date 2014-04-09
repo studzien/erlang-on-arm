@@ -30,6 +30,19 @@ struct ErlProcess {
 	xTaskHandle* handle;
 
 	uint8_t active; //is taken from pool?
+
+	// Saved x registers
+	// number of live argument registers
+	uint8_t arity;
+	// argument register (when context switch happens during call to function of arity >= 4)
+	Eterm* arg_reg;
+	// maxmimum number of registers available
+	uint8_t max_arg_reg;
+	// default array of argument registers (used when arity <= 3)
+	Eterm def_arg_reg[3];
+
+	// Number of reductions left to execute
+	int16_t fcalls;
 };
 
 typedef struct ErlProcess ErlProcess;

@@ -22,7 +22,6 @@ void process_main(void* p);
 
 #define Arg(N) p->i[(N)+1]
 
-
 #define Resolve(Arg, Dest) do {     \
 	if(is_rreg(Arg))                \
 		Dest = x0;                  \

@@ -24,7 +24,6 @@ void init_process_table(void) {
 }
 
 void erts_do_exit_process(ErlProcess* p, Eterm reason) {
-	debug("stopping process\n");
 	vTaskDelete(*(p->handle));
 	vPortFree(p->handle);
 	p->active = 0;
@@ -57,7 +56,6 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	//@todo fix arity when list term is implemented
 	export.arity = 1;
 	exported = erts_export_get(&export);
-	x0 = args;
 
 	Eterm pid = pix2pid(last_proc);
 	proc_tab[last_proc].parent = parent;
@@ -66,14 +64,19 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	//@todo throw an error if exported was not found
 	proc_tab[last_proc].i = exported->address;
 	proc_tab[last_proc].cp = (BeamInstr*)&jump_table[NORMAL_EXIT];
-	BeamInstr* instr = jump_table[NORMAL_EXIT];
-	char buf[256];
-	sprintf(buf, "%d\n", instr);
-	debug(buf);
+	proc_tab[last_proc].arity = 0;
+	proc_tab[last_proc].arg_reg = proc_tab[last_proc].def_arg_reg;
+	proc_tab[last_proc].max_arg_reg = sizeof(proc_tab[last_proc].def_arg_reg)/sizeof(proc_tab[last_proc].def_arg_reg[0]);
+	for(i=0; i<3; i++) {
+		proc_tab[last_proc].def_arg_reg[i] = 0;
+	}
+	proc_tab[last_proc].fcalls = REDUCTIONS;
 	proc_tab[last_proc].active = 1;
 
+	proc_tab[last_proc].arg_reg[0] = args;
+
 	//start process inside the FreeRTOS scheduler
-	xTaskCreate(process_main, "erlang process", 240, (void*)&proc_tab[last_proc], 1, handle);
+	xTaskCreate(process_main, "erlang process", 250, (void*)&proc_tab[last_proc], 1, handle);
 	last_proc++;
 
 	return pid;
