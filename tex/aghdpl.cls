@@ -8,14 +8,14 @@
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\message{*** [aghdpl.cls] ---  (MSz, GJN)  v0.22 <05.04.2011>  ***}       
+\message{*** [aghdpl.cls] ---  (MSz, GJN)  v2.0 <19.11.2013>  ***}       
 
 \newif\ifpdflatex\pdflatexfalse
 \NeedsTeXFormat{LaTeX2e} % 
 \ProvidesClass{aghdpl} 
 \DeclareOption{pdflatex}{\pdflatextrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}} 
-\ProcessOptions\LoadClass[a4paper,oneside]{report} 
+\ProcessOptions\LoadClass[a4paper,twoside,openright]{report} 
 
 \RequirePackage{times}
 \RequirePackage[T1]{fontenc}
@@ -27,7 +27,7 @@
 \RequirePackage{titlesec}
 \RequirePackage{tocloft}
 
-\geometry{lmargin=30mm, rmargin=20mm, tmargin=25mm, bmargin=25mm, foot=10mm, head=10mm}
+\geometry{lmargin=30mm, rmargin=20mm, tmargin=30mm, bmargin=30mm, foot=10mm, head=10mm}
 \definecolor{Green}{rgb}{0.1,0.5,0.1}
 
 \def\shorttitlePL#1   {\gdef\@shorttitlePL{#1}}
@@ -35,19 +35,13 @@
 \def\shortauthor#1    {\gdef\@shortauthor{#1}}
 \def\titlePL#1        {\gdef\@titlePL{#1}}
 \def\titleEN#1        {\gdef\@titleEN{#1}}
-\def\facultyEN#1      {\gdef\@facultyEN{#1}}
-\def\facultyPL#1      {\gdef\@facultyPL{#1}}
-\def\thesistypePL#1   {\gdef\@thesistypePL{#1}}
-\def\thesistypeEN#1   {\gdef\@thesistypeEN{#1}}
-\def\supervisorPL#1   {\gdef\@supervisorPL{#1}}
-\def\supervisorEN#1   {\gdef\@supervisorEN{#1}}
+\def\faculty#1      {\gdef\@faculty{#1}}
+\def\thesistype#1   {\gdef\@thesistype{#1}}
+\def\supervisor#1   {\gdef\@supervisor{#1}}
 \def\acknowledgements#1   {\gdef\@acknowledgements{#1}}
-\def\departmentPL#1   {\gdef\@departmentPL{#1}}
-\def\departmentEN#1   {\gdef\@departmentEN{#1}}
+\def\department#1   {\gdef\@department{#1}}
+\def\degreeprogramme#1 {\gdef\@degreeprogramme{#1}}
 
-% \thesisheaders
-% 
-% \pagestyle{fancy}
 
 %\bibliographystyle{abbrv}
 \linespread{1.3}
@@ -55,95 +49,88 @@
 
 %------------------------------------------------------------------------------
 
+
+\def\thesisheaders{
+\fancyfoot[LE,RO]{\small \@shortauthor\quad\textit{\@shorttitlePL}}
+}
+
+\def\thesistable{
+\begin{tabular}{p{45mm}l}
+Autor: & {\itshape \@author}\\[-1mm]
+Kierunek studiów: & {\itshape \@degreeprogramme}\\[-1mm]
+Opiekun pracy: & {\itshape \@supervisor}\\
+\end{tabular}
+}
+
+\DeclareOption{en}{
+\def\thesisheaders{
+\fancyfoot[LE,RO]{\small \@shortauthor\quad\textit{\@shorttitleEN}}
+}
+
+\def\thesistable{
+\begin{tabular}{p{45mm}l}
+Author: & {\itshape \@author}\\[-1mm]
+Degree programme: & {\itshape \@degreeprogramme}\\[-1mm]
+Supervisor: & {\itshape \@supervisor}\\
+\end{tabular}
+}
+}
+
+\ProcessOptions
+
 \newcommand{\titlepages}{%
 
 \newpage \titlepage 
 
 \begin{center}
+\vspace*{1.5cm}
 
-{\sffamily{\Large{\bfseries{\textsc Akademia G\'{o}rniczo-Hutnicza\\[2mm]
-im. Stanis\l{}awa Staszica w Krakowie}}}
+\includegraphics[scale=0.6]{agh}
 
-\vspace*{1mm}\rule{\textwidth}{1mm}\vspace*{1mm}
+\vspace*{2mm}
 
-{\large \@facultyPL}}\\\vspace*{2mm}
-{\large\textsc{\@departmentPL}}\vspace*{1cm}
+{\sffamily{\large{\bfseries{\scshape Akademia G\'{o}rniczo-Hutnicza im. Stanis\l{}awa Staszica w Krakowie}}}
 
-\ifpdflatex\includegraphics[scale=0.3]{agh}
-\else\includegraphics[scale=0.7]{agh}
-\fi
-\vspace*{1cm}
+\vspace*{1mm}
 
-{\huge\scshape \@thesistypePL}\\\vspace*{2cm}
+{\small\bfseries \MakeUppercase{\@faculty}}}
+\vspace*{3mm}
 
-{\LARGE\scshape \@author}\\\vspace*{2cm}
+{\small{\MakeUppercase{\@department}}}
+\vspace*{12mm}
 
-{\LARGE{\bfseries\scshape \@titlePL}}\\\vspace*{3cm}
+{\sffamily\Large \@thesistype}
+\vspace*{9mm}
 
-\begin{flushright}
-\begin{minipage}[!h]{6cm} 
-\large{\scshape Promotor:}\\ \@supervisorPL
-\end{minipage}
-\end{flushright}
+{\sffamily\Large\itshape \@titlePL}
+\vspace*{1mm}
 
-\vfill{\Large Krak\'{o}w \@date}
-
+{\sffamily\Large\itshape \@titleEN}
+\vspace*{38mm}
 \end{center}
 
-\clearpage \titlepage \vspace*{15cm} \vfill
+\noindent
+{\sffamily
+\thesistable
+}
 
-\begin{flushright}
-\begin{minipage}[!h]{12cm}
-\mbox{\large{\scshape \textbf{O\'SWIADCZENIE AUTORA PRACY}}}\\[3mm] 
-{\scshape O\'swiadczam, \'swiadomy odpowiedzialno\'sci karnej za po\'swiadczenie nieprawdy, \.ze niniejsz\k{a} prac\k{e} dyplomow\k{a} wykona\l{}em osobi\'scie i samodzielnie, i nie korzysta\l{}em ze \'zr\'ode\l{} innych ni\.z wymienione w pracy.}\\
-\end{minipage}
+\vspace*{17mm}
 
-\vspace{2cm}
+\centerline{\small\sffamily Krak\'{o}w, \@date}
 
-\makebox[6cm][s]{\dotfill}\par
-\makebox[6cm][c]{\small PODPIS}
+\clearpage \titlepage 
 
-\end{flushright}
+{~~}\vspace{20mm}
 
-\clearpage \titlepage
+{\large\itshape O\'swiadczam, \'swiadomy(-a) odpowiedzialno\'sci karnej za po\'swiadczenie nieprawdy, \.ze \mbox{niniejsz\k{a}} prac\k{e} dyplomow\k{a} wykona\l{}em(-am) osobi\'scie i samodzielnie i nie korzysta\l{}em(-am) ze \'zr\'ode\l{} innych ni\.z wymienione w pracy.}
 
-\begin{center}
-
-{\sffamily{\Large{\bfseries{\textsc AGH\\[2mm]
-University of Science and Technology in Krakow}}}
-
-\vspace*{1mm}\rule{\textwidth}{1mm}\vspace*{1mm}
-
-{\large \@facultyEN}}\\\vspace*{2mm}
-{\large\textsc{\@departmentEN}}\vspace*{1cm}
-
-\ifpdflatex\includegraphics[scale=0.3]{agh}
-\else\includegraphics[scale=0.7]{agh}
-\fi
-\vspace*{1cm}
-
-{\huge\scshape \@thesistypeEN}\\\vspace*{2cm}
-
-{\LARGE\scshape \@author}\\\vspace*{2cm}
-
-{\LARGE{\bfseries\scshape \@titleEN}}\\\vspace*{3cm}
-
-\begin{flushright}
-\begin{minipage}[!h]{6cm} 
-\large{\scshape Supervisor:}\\ \@supervisorEN
-\end{minipage}
-\end{flushright}
-
-\vfill{\Large Krakow \@date}
-
-\end{center}
 
 \clearpage \titlepage
 
 \vspace*{15cm} \vfill
 \begin{flushright} 
-\begin{minipage}[!h]{8cm}
-{\Large \@acknowledgements}
+\begin{minipage}[!h]{10cm}
+{\Large\itshape \@acknowledgements}
 \end{minipage}
 \end{flushright}
 
@@ -153,17 +140,6 @@ University of Science and Technology in Krakow}}}
 
 }
 
-\def\thesisheaders{
-\fancyfoot[L]{\small \@shortauthor\quad\textit{\@shorttitlePL}}
-}
-
-\DeclareOption{en}{
-\def\thesisheaders{
-\fancyfoot[L]{\small \@shortauthor\quad\textit{\@shorttitleEN}}
-}
-}
-
-\ProcessOptions
 
 \pagestyle{fancy}
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
@@ -172,8 +148,10 @@ University of Science and Technology in Krakow}}}
 \renewcommand{\footrulewidth}{0.5pt}
 \fancyhf{}
 \fancyhead{}
-\fancyhead[L]{\slshape{\small \rightmark}}
-\fancyhead[R]{\bfseries \thepage}
+%\fancyhead[L]{\slshape{\small \rightmark}}
+\fancyhead[RE,LO]{\slshape{\small \rightmark}}
+%\fancyhead[R]{\bfseries \thepage}
+\fancyhead[RO,LE]{\bfseries \thepage}
 
 \thesisheaders
 

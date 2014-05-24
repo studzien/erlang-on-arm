@@ -13,7 +13,7 @@ Kolejość bajtów w zapisie kodu pośredniego to zawsze \emph{big endian}.
 \section{Typy argumentów}
 \label{sec:opsTypes}
 %---------------------------------------------------------------------------
-Argumentem jest zawsze liczba całkowita, reprezentująca taką wartość liczbową albo indeks w odpowiedniej tablicy z wartościami (pierwszym indeksem takiej tablicy jest 0). W związku z tym argumenty mogą być różnego typu. Aby rozróżnić argument jednego typu od drugiego poddaje się je odpowiedniemu tagowaniu. Operację wykonuje się bezpośrednio na argumencie, jeśli jest dostatecznie mały, lub na odpowiednim nagłówku poprzedzającym argument. Rozróżnienie to jest spowodowane oszczędnością rozmiaru kodu pośredniego, który musi być przechowywany w pamięci.
+Argumentem jest zawsze liczba całkowita, reprezentująca wartość liczbową bądź indeks w odpowiedniej tablicy z wartościami (pierwszym indeksem takiej tablicy jest 0). W związku z tym argumenty mogą być różnego typu. Aby rozróżnić argument jednego typu od drugiego poddaje się je odpowiedniemu tagowaniu. Operację wykonuje się bezpośrednio na argumencie, jeśli jest dostatecznie mały, lub na odpowiednim nagłówku poprzedzającym argument. Rozróżnienie to jest spowodowane oszczędnością rozmiaru kodu pośredniego, który musi być przechowywany w pamięci.
 
 Każdy z tagów, które zostały wymienione w tabeli \ref{table:codeTags}, jest możliwy do zapisania przy użyciu 3 bitów, które zajmują najmniej znaczące bity argumentu.
 Jednak w kodowaniu binarnym do zapisu typu używane są dodatkowo 1 lub 2 bity. Dzięki nim możliwe jest rozróżnienie pomiędzy argumentami zapisanymi przy użyciu różnej liczby bajtów.
@@ -148,9 +148,9 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowania. \\
 \hline
-17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \textbf{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \textbf{Lbl}. \\
+17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \texttt{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \texttt{Lbl}. \\
 \hline
-18 & 24 & \texttt{loop\_rec\_end Lbl} & Ustawia wskaźnik \textbf{SAVE} na kolejną wiadomość w kolejce wiadomości i wykonuje skok do etykiety \textbf{Lbl}. \\
+18 & 24 & \texttt{loop\_rec\_end Lbl} & Ustawia wskaźnik \textbf{SAVE} na kolejną wiadomość w kolejce wiadomości i wykonuje skok do etykiety \texttt{Lbl}. \\
 \hline
 19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} w etykiecie \texttt{Lbl}.\\
 \hline
@@ -184,7 +184,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 34 & 52 & \texttt{is\_nil Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zerem (\textbf{nil}).\\
 \hline
-35 & 53 & \texttt{is\_binary Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on binarią.\\
+35 & 53 & \texttt{is\_binary Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zmienną binarną.\\
 \hline
 37 & 55 & \texttt{is\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani listą ani zerem.\\
 \hline
@@ -226,17 +226,17 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 4B & 75 & \texttt{call\_fun Arity} & Woła obiekt funkcyjny o arności \texttt{Arity}. Zakłada, że argumenty znajdują się w rejestrach \textbf{X0}...\textbf{X(\texttt{Arity-1})}, a lambda w rejestrze \textbf{X(\texttt{Arity})}. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
 \hline
-4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typu argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją.\\
+4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typ argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją.\\
 \hline
 4E & 78 & \texttt{call\_ext\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Lbl} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu.\\
 \hline
-59 & 89 & \texttt{bs\_put\_integer/5} & \\
+59 & 89 & \texttt{bs\_put\_integer Fail Size Unit Flags Src} & Umieszcza liczbę całkowitą w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa liczba znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia zmiennej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. \\
 \hline
-5A & 90 & \texttt{bs\_put\_binary/5} & \\
+5A & 90 & \texttt{bs\_put\_binary  Fail Size Unit Flags Src} & Umieszcza zmienną binarną w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa zmienna znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia zmiennej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. \\
 \hline
-5B & 91 & \texttt{bs\_put\_float/5} & \\
+5B & 91 & \texttt{bs\_put\_float Fail Size Unit Flags Src} & Umieszcza liczbę zmiennoprzecinkową w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa liczba znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia liczby zmiennoprzecinkowej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. \\
 \hline
-5C & 92 & \texttt{bs\_put\_string/2} & \\
+5C & 92 & \texttt{bs\_put\_string Size Bytes} & Bezpośrednio umieszcza bajty w utworzonym wcześniej kontekście zmiennej binarnej. Źródłowe bajty wskazywane są przez wskaźnik \texttt{Bytes} a ich liczba do przekopiowania to \texttt{Size}. \\
 \hline
 5E & 94 & \texttt{fclearerror} &  Czyści flagę błędu zmiennoprzecinkowego, jeśli jest ustawiona. \\
 \hline
@@ -260,19 +260,19 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 68 & 104 & \texttt{try Dest Label} & Tak jak instrukcja \texttt{catch/2}.  \\
 \hline
-69 & 105 & \texttt{try\_end/1} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie.\\
+69 & 105 & \texttt{try\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. Jeśli nie ma zapisanej wartości w rejestrze \textbf{R0} oznacza to że w bloku \texttt{catch} złapano wyjątek. W takim przypadku dokonywane jest przepisanie wartości rejestrów: \textbf{R0} = \textbf{X1}, \textbf{X1} = \textbf{X2} i \textbf{X2} = \textbf{X3}.\\
 \hline
-6A & 106 & \texttt{try\_case/1} & \\
+6A & 106 & \texttt{try\_case Dest} & Jak instrukcja \texttt{try\_end/1}. \\
 \hline
 6B & 107 & \texttt{try\_case\_end Reason} &  Rzuca wyjątek \texttt{try\_clause} z argumentem \texttt{Reason}.\\
 \hline
 6C & 108 & \texttt{raise Stacktrace Reason} & Rzuca wyjątek \texttt{Reason} ze stosem wywołań \texttt{Stacktrace}.\\
 \hline
-6D & 109 & \texttt{bs\_init2/6} & \\
+6D & 109 & \texttt{bs\_init2 Fail Sz Words Regs Flags Dst} & Inicjalizuje miejsce dla zmiennej binarnej o rozmiarze \texttt{Sz}. Zapewnia, że oprócz tego rozmiaru po inicjalizacji dostępne będzie dodatkowo \texttt{Words} słów maszynowych. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie inicjalizacji konieczne było uruchomienie \emph{garbage collectora}. Adres skoku \texttt{Fail} oraz opcje \texttt{Flags} są aktualnie nieużywane. \\
 \hline
-6F & 111 & \texttt{bs\_add/5} & \\
+6F & 111 & \texttt{bs\_add Fail S1 S2 Unit Dst} & Oblicza sumę bitów w \texttt{S1} i liczby jednostek \texttt{Unit} w \texttt{S2}. Wynik przechowuje w \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
 \hline
-70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze\textbf{X(\texttt{N+1}}, w module zapisanym w rejestrze \textbf{X(\texttt{N}} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
+70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze\textbf{X(\texttt{N+1})}, w module zapisanym w rejestrze \textbf{X(\texttt{N})} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
 \hline 
 71 & 113 & \texttt{apply\_last N Dea} & Skacze do zewnętrznej funkcji tak jak instrukcja \texttt{apply/1}. Ściąga wartość wskaźnika \textbf{CP} ze stosu. Zwalnia \texttt{Dea} miejsc na szczycie stosu.\\
 \hline
@@ -280,21 +280,21 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 73 & 115 & \texttt{is\_function2 Lbl Arg1 Arity} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją o arności \texttt{Arity}.\\
 \hline
-74 & 116 & \texttt{bs\_start\_match2/5} & \\
+74 & 116 & \texttt{bs\_start\_match2 Fail Bin X Y Dst} & Sprawdza czy \texttt{Bin} jest kontekstem zmiennej binarnej z odpowiednią liczbą miejsc do zapisania tymczasowych przesunięć bitowych (\emph{offsetów}) określonych przez liczbę \texttt{Y}. Jeśli aktualna liczba miejsc jest za mała tworzony jest nowy kontekst porównywania zmiennej binarnej z odpowiednią liczbą miejsc, który zostanie zapisany w miejscu \texttt{Dst}. W przypadku niepowodzenia dokonany zostanie skok do etykiety \texttt{Fail}. \texttt{X} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}.\\
 \hline
-75 & 117 & \texttt{bs\_get\_integer2/7} & \\
+75 & 117 & \texttt{bs\_get\_integer2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę całkowitą z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. \\
 \hline
-76 & 118 & \texttt{bs\_get\_float2/7} & \\
+76 & 118 & \texttt{bs\_get\_float2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę zmiennoprzecinkową z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. \\
 \hline
-77 & 119 & \texttt{bs\_get\_binary2/7} & \\
+77 & 119 & \texttt{bs\_get\_binary2 Fail Ms Live Sz Unit Flags Dst} & Pobiera zmienną binarną z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. \\
 \hline
-78 & 120 & \texttt{bs\_skip\_bits2/5} & \\
+78 & 120 & \texttt{bs\_skip\_bits2 Fail Ms Sz Unit Flags} & Pomija \texttt{Sz} jednostek wyrażonych w \texttt{Unit} z kontekstu zmiennej binarnej \texttt{Ms}. Opcje operacji wyrażone są za pomocą liczby całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \\
 \hline
-79 & 121 & \texttt{bs\_test\_tail2/3} & \\
+79 & 121 & \texttt{bs\_test\_tail2 Fail Ms Bits} & Sprawdza, czy kontekst zmiennej binarnej \texttt{Ms} ma jeszcze dokładnie \texttt{Bits} niedopasowanych bitów. Wykonuje skok do etykiety \texttt{Fail} jeżeli tak nie jest.  \\
 \hline
-7A & 122 & \texttt{bs\_save2/2} & \\
+7A & 122 & \texttt{bs\_save2 Reg Index} & Zapisuje aktualne przesunięcie bitowe \emph{offset} z kontekstu zmiennej binarnej zawartego w rejestrze \texttt{Reg} i zapisuje do jego tablicy \emph{offsetów}.\\
 \hline
-7B & 123 & \texttt{bs\_restore2/2} & \\
+7B & 123 & \texttt{bs\_restore2 Reg Index} & Odczytuje przesunięcie bitowe kontekstu zmiennej binarnej zapisanego w rejestrze \texttt{Reg} z indeksu \texttt{Index}. Zapisuje go jako aktualne dla tego kontekstu. \\
 \hline
 7C & 124 & \texttt{gc\_bif1 Lbl Live Bif Arg1 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/1} z argumentem \texttt{Arg1}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.\\
 \hline
@@ -302,43 +302,43 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 81 & 129 & \texttt{is\_bitstr Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ciągiem bitów.\\
 \hline
-82 & 130 & \texttt{bs\_context\_to\_binary/1} & \\
+82 & 130 & \texttt{bs\_context\_to\_binary Reg} & Zamienia kontekst zmiennej binarnej znajdującej się w rejestrze \texttt{Reg} na właściwą zmienną binarną.\\
 \hline
-83 & 131 & \texttt{bs\_test\_unit/3} & \\
+83 & 131 & \texttt{bs\_test\_unit Fail Ms Unit} & Sprawdza czy rozmiar niedopasowanego jeszcze fragmentu kontekstu zmiennej binarnej \texttt{Ms} jest podzielny przez \texttt{Unit}. Jeżeli nie, wykonywany jest skok do etykiety \texttt{Fail}. \\
 \hline
-84 & 132 & \texttt{bs\_match\_string/4} & \\
+84 & 132 & \texttt{bs\_match\_string Fail Ms Bits Val} & Dokonuje porównania \texttt{Bits} bitów, począwszy od miejsca wskazywanego przez wskaźnik \texttt{Val} z kontekstem zmiennej binarnej \texttt{Ms}. Jeżeli porównywane wartości nie są równe dokonywany jest skok do etykiety \texttt{Fail}. \\
 \hline
-85 & 133 & \texttt{bs\_init\_writable/0} & \\
+85 & 133 & \texttt{bs\_init\_writable} & Alokuje miejsce o rozmiarze \textbf{R0} na stercie procesu. Tworzy w zaalokowanym miejscu strukturę zmiennej binarnej. Dodatkowo tworzy wskaźnik do utworzonej struktury, który umieszczony zostanie w rejestrze \textbf{R0}. \\
 \hline
-86 & 134 & \texttt{bs\_append/8} & \\
+86 & 134 & \texttt{bs\_append Fail Size Extra Live Unit Bin Flags Dst} & Dopisuje \texttt{Size} jednostek \texttt{Unit} do zmiennej binarnej \texttt{Bin} i zapisuje wynik do \texttt{Dst}. Jeśli nie ma wystarczająco dużej ilości miejsca, tworzona jest nowa struktura na stercie z odpowiednią ilością miejsca, powiększona dodatkowo o \texttt{Extra} słów maszynowych. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. \\
 \hline
-87 & 135 & \texttt{bs\_private\_append/6} & \\
+87 & 135 & \texttt{bs\_private\_append Fail Size Unit Bin Flags Dst} & Operacja ma działanie podobne do operacji \texttt{bs\_append/8} jednak w przypadku zbyt małej ilości miejsca dokonuje realokacji aktualnej zmiennej.\\
 \hline
 88 & 136 & \texttt{trim N Remaining} & Redukuje stos o \texttt{N} słów, zachowując \textbf{CP} na jego szczycie.\\
 \hline
-89 & 137 & \texttt{bs\_init\_bits/6} & \\
+89 & 137 & \texttt{bs\_init\_bits Fail Sz Words Regs Flags Dst} & Alokuje zmienną binarną na stercie o rozmiarze \texttt{Sz} bitów. Jeżeli rozmiar nie jest podzielny przez 8, tworzony jest wskaźnik na strukturę z zapisaną ilością zajmowanych bitów. Wynik operacji zapisany jest do \texttt{Dst}. Upewnia się że na stercie jest dodatkowo \texttt{Words} słów maszynowych możliwych do zaalokowania. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. W razie niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcei alokacji konieczne było uruchomienie \emph{garbage collectora}.\\
 \hline
-8A & 138 & \texttt{bs\_get\_utf8/5} & \\
+8A & 138 & \texttt{bs\_get\_utf8 Fail Ms Arg2 Arg3 Dst} & Pobiera znak zapisany w UTF-8 z kontekstu zmiennej binarnej \texttt{Ms} i zapisuje go do \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argumenty \texttt{Arg2} oraz \texttt{Arg3} są aktualnie nieużywane. \\
 \hline
-8B & 139 & \texttt{bs\_skip\_utf8/4} & \\
+8B & 139 & \texttt{bs\_skip\_utf8 Fail Ms Arg2 Arg3} & Pomija znak zakodowany w UTF-8 w kontekście zmiennej binarnej \texttt{Ms}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argumenty \texttt{Arg2} oraz \texttt{Arg3} są aktualnie nieużywane. \\
 \hline
-8C & 140 & \texttt{bs\_get\_utf16/5} & \\
+8C & 140 & \texttt{bs\_get\_utf16 Fail Ms Arg2 Flags Dst} & Pobiera znak zapisany w UTF-16 z kontekstu zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags} i zapisuje go do \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argument \texttt{Arg2} jest aktualnie nieużywany. \\
 \hline
-8D & 141 & \texttt{bs\_skip\_utf16/4} & \\
+8D & 141 & \texttt{bs\_skip\_utf16 Fail Ms Arg2 Flags} & Pomija znak zakodowany w UTF-16 w kontekście zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argument \texttt{Arg2} jest aktualnie nieużywany.\\
 \hline
-8E & 142 & \texttt{bs\_get\_utf32/5} & \\
+8E & 142 & \texttt{bs\_get\_utf32 Fail Ms Live Flags Dst} & Pobiera znak zapisany w UTF-32 z kontekstu zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags} i zapisuje go do \texttt{Dst}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
 \hline
-8F & 143 & \texttt{bs\_skip\_utf32/4} & \\
+8F & 143 & \texttt{bs\_skip\_utf32 Fail Ms Live Flags} & Pomija znak zakodowany w UTF-32 w kontekście zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
 \hline
-90 & 144 & \texttt{bs\_utf8\_size/3} & \\
+90 & 144 & \texttt{bs\_utf8\_size Fail Literal Dst} & Oblicza liczbę bajtów koniecznych do zapisania \texttt{Literal} w UTF-8 i zapisuje wynik do \texttt{Dst}. Argument \texttt{Fail} jest aktualnie nieużywany. \\
 \hline
-91 & 145 & \texttt{bs\_put\_utf8/3} & \\
+91 & 145 & \texttt{bs\_put\_utf8 Fail Flags Src} & Umieszcza znak zakodowany w UTF-8 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej. Argumenty \texttt{Fail} i \texttt{Flags} są aktualnie nieużywane. \\
 \hline
-92 & 146 & \texttt{bs\_utf16\_size/3} & \\
+92 & 146 & \texttt{bs\_utf16\_size Fail Literal Dst} & Oblicza liczbę bajtów koniecznych do zapisania \texttt{Literal} w UTF-16 i zapisuje wynik do \texttt{Dst}. Argument \texttt{Fail} jest aktualnie nieużywany. \\
 \hline
-93 & 147 & \texttt{bs\_put\_utf16/3} & \\
+93 & 147 & \texttt{bs\_put\_utf16 Fail Flags Literal} & Umieszcza znak zakodowany w UTF-16 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. Argument \texttt{Fail} jest aktualnie nieużywany.\\
 \hline
-94 & 148 & \texttt{bs\_put\_utf32/3} & \\
+94 & 148 & \texttt{bs\_put\_utf32 Fail Flags Literal} &  Umieszcza znak zakodowany w UTF-32 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
 \hline
 95 & 149 & \texttt{on\_load} & Oznacza kod wykonywany przy ładowaniu modułu.\\
 \hline

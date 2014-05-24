@@ -7,12 +7,16 @@ Oprócz tego dodatek dokumentuje, na potrzeby projektu, zawartość pliku ze sko
 %---------------------------------------------------------------------------
 \section{Wprowadzenie}
 
-.Narzędzia przeznaczone do generacji wszystkich form pośrednich kodu źródłowego opisanych w niniejszym rozdziale zostały napisane w języku Erlang. Dostępne są one w pakiecie aplikacji \texttt{compiler} dostarczanej wraz z maszyną wirtualną BEAM.
+Narzędzia przeznaczone do generacji wszystkich form pośrednich kodu źródłowego opisanych w niniejszym rozdziale zostały napisane w języku Erlang. Dostępne są one w pakiecie aplikacji \texttt{compiler} dostarczanej wraz z maszyną wirtualną BEAM.
 
 %---------------------------------------------------------------------------
 \section{Kod źródłowy}
 
-\begin{lstlisting}[style=erlang, caption=Plik fac.erl, label=facERL]
+Listingi \ref{lis:facERL} oraz \ref{lis:facHRL} prezentują prosty, przykładowy moduł zaimplementowany w języku Erlang, którego zadaniem jest obliczanie silni za pomocą funkcji rekurencyjnej ogonowo.
+
+Elementy takie jak używanie rekordu do przechowywania akumulatora funkcji czy zwracanie krotki informującej w przypadku błędu zaciemniają nieco sposób działania funkcji. W tym przykładzie zostały one jednak zawarte w celu przeanalizowania przekształceń, jakim poddawany jest kod źródłowy w trakcie poszczególnych kroków kompilacji.
+
+\begin{lstlisting}[style=erlang, caption=Plik fac.erl, label=lis:facERL]
 -module(fac).
 
 -export([fac/1]).
@@ -32,14 +36,23 @@ fac(_) ->
     {error, ?ERROR}.
 \end{lstlisting}
 
-\begin{lstlisting}[style=erlang, caption=Plik fac.hrl, label=facHRL]
+\begin{lstlisting}[style=erlang, caption=Plik fac.hrl, label=lis:facHRL]
 -record(factorial, {n, acc=1}).
 \end{lstlisting}
 
 %---------------------------------------------------------------------------
 \section{Preprocessing}
 
-\begin{lstlisting}[style=erlang, caption=Moduł fac po pierwszym przetworzeniu, label=facP]
+Pierwszym krokiem w procesie otrzymywania kodu maszynowego Erlanga jest wstępne przetwarzanie wykonywane przez preprocesor kompilatora.
+
+Krok ten jest dwuetapowy. W pierwszym, z plikiem modułu łączone są pliki, które zostały do niego włączone poprzez użycie dyrektywy \texttt{\-include}. W miejscach dołączania zewnętrznych plików dodawane są także dyrektywy \texttt{\-file} po to, aby przy debugowaniu skompilowanego modułu można było zidentyfikować z którego pliku pochodzą dane fragmenty kodu. Na tym etapie podstawiane są również wartości makr. Jeżeli w opcjach kompilacji zdefiniowana jest operacja \texttt{\{parse\_transform, Module\}} modyfikująca drzewo składniowe modułu to zostanie ona również wykonywana w tym kroku.
+Kod modułu po tym kroku został przedstawiony na listingu \ref{lis:facP}.
+
+Kolejnym krokiem jest rozwinięcie rekordów do krotek (rekordy są tylko lukrem składniowym języka Erlang, upraszczającym operacje na krotkach o dużej liczbie pól) oraz dołączenie funkcji \texttt{module\_info/0} oraz \texttt{module\_info/1}, które znajdują się w każdym skompilowanym module.
+Funkcje te zwracają informacje o skompilowanym module, takie jak np. eksportowane funkcje.
+Kod modułu po wykonaniu tej operacji został przedstawiony na listingu \ref{lis:facE}.
+
+\begin{lstlisting}[style=erlang, caption=Moduł \texttt{fac} po pierwszym przetworzeniu, label=lis:facP]
 -file("fac.erl", 1).
 
 -module(fac).
@@ -64,7 +77,7 @@ fac(_) ->
     {error,"Invalid argument"}.
 \end{lstlisting}
 
-\begin{lstlisting}[style=erlang, caption=Moduł fac po drugim przetworzeniu, label=facE]
+\begin{lstlisting}[style=erlang, caption=Moduł \texttt{fac} po drugim przetworzeniu, label=lis:facE]
 -file("fac.erl", 1).
 
 -file("fac.hrl", 1).
@@ -89,61 +102,133 @@ module_info(X) ->
     erlang:get_module_info(fac, X).
 \end{lstlisting}
 %---------------------------------------------------------------------------
-\section{Transformacje drzewa syntaktycznego}
+\section{Drzewo składniowe}
 \label{sec:compilationSyntaxtree}
 
-\begin{lstlisting}[style=erlang, caption=Drzewo syntaktyczne modułu fac, label=facAE]
+Formatem, jakiego używa kompilator Erlanga do wykonywania poszczególnych kroków kompilacji jest drzewo składniowe modułu. Warto w tym miejscu przypomnieć, że programista również może ingerować w drzewo składniowe modułu, używając wspomnianej już opcji kompilacji \texttt{parse\_transform}.
+
+Drzewo składniowe dla przykładowego modułu \texttt{fac}, po przetwarzaniu wstępnym, zostało przedstawione na listingu \ref{lis:facAE}.
+
+\begin{lstlisting}[style=erlang, caption=Drzewo składniowe modułu fac, label=lis:facAE]
 [{attribute,1,file,{"fac.erl",1}},
- {attribute,1,module,fac},
- {attribute,5,export,[{fac,1}]},
- {attribute,1,file,{"fac.hrl",1}},
- {attribute,1,record,
-     {factorial,
-         [{record_field,1,{atom,1,n}},
-          {record_field,1,{atom,1,acc},{integer,1,1}}]}},
- {attribute,9,file,{"fac.erl",9}},
- {function,10,fac,1,
-     [{clause,10,
-          [{record,10,factorial,
-               [{record_field,10,{atom,10,n},{integer,10,0}},
-                {record_field,10,{atom,10,acc},{var,10,'Acc'}}]}],
-          [],
-          [{var,11,'Acc'}]},
-      {clause,12,
-          [{record,12,factorial,
-               [{record_field,12,{atom,12,n},{var,12,'N'}},
-                {record_field,12,{atom,12,acc},{var,12,'Acc'}}]}],
-          [],
-          [{call,13,
-               {atom,13,fac},
-               [{record,13,factorial,
-                    [{record_field,13,
-                         {atom,13,n},
-                         {op,13,'-',{var,13,'N'},{integer,13,1}}},
-                     {record_field,13,
-                         {atom,13,acc},
-                         {op,13,'*',{var,13,'N'},{var,13,'Acc'}}}]}]}]},
-      {clause,14,
-          [{var,14,'N'}],
-          [[{call,14,{atom,14,is_integer},[{var,14,'N'}]}]],
-          [{call,15,
-               {atom,15,fac},
-               [{record,15,factorial,
-                    [{record_field,15,{atom,15,n},{var,15,'N'}}]}]}]},
-      {clause,16,
-          [{var,16,'N'}],
-          [[{call,16,{atom,16,is_binary},[{var,16,'N'}]}]],
-          [{call,17,
-               {atom,17,fac},
-               [{call,17,{atom,17,binary_to_integer},[{var,17,'N'}]}]}]},
-      {clause,18,
-          [{var,18,'_'}],
-          [],
-          [{tuple,19,[{atom,19,error},{string,19,"Invalid argument"}]}]}]},
- {eof,20}]
+         {attribute,1,file,{"fac.hrl",1}},
+         {attribute,7,file,{"fac.erl",7}},
+         {function,8,fac,1,
+             [{clause,8,
+                  [{tuple,8,[{atom,8,factorial},{integer,8,0},{var,8,'Acc'}]}],
+                  [],
+                  [{var,9,'Acc'}]},
+              {clause,10,
+                  [{tuple,10,
+                       [{atom,10,factorial},{var,10,'N'},{var,10,'Acc'}]}],
+                  [],
+                  [{call,11,
+                       {atom,11,fac},
+                       [{tuple,11,
+                            [{atom,11,factorial},
+                             {op,11,'-',{var,11,'N'},{integer,11,1}},
+                             {op,11,'*',{var,11,'N'},{var,11,'Acc'}}]}]}]},
+              {clause,12,
+                  [{var,12,'N'}],
+                  [[{call,12,
+                        {remote,12,{atom,12,erlang},{atom,12,is_integer}},
+                        [{var,12,'N'}]}]],
+                  [{call,13,
+                       {atom,13,fac},
+                       [{tuple,13,
+                            [{atom,13,factorial},
+                             {var,13,'N'},
+                             {integer,1,1}]}]}]},
+              {clause,14,
+                  [{var,14,'N'}],
+                  [[{call,14,
+                        {remote,14,{atom,14,erlang},{atom,14,is_binary}},
+                        [{var,14,'N'}]}]],
+                  [{call,15,
+                       {atom,15,fac},
+                       [{call,15,
+                            {remote,15,
+                                {atom,15,erlang},
+                                {atom,15,binary_to_integer}},
+                            [{var,15,'N'}]}]}]},
+              {clause,16,
+                  [{var,16,'_'}],
+                  [],
+                  [{tuple,17,
+                       [{atom,17,error},{string,17,"Invalid argument"}]}]}]},
+         {function,0,module_info,0,
+             [{clause,0,[],[],
+                  [{call,0,
+                       {remote,0,{atom,0,erlang},{atom,0,get_module_info}},
+                       [{atom,0,fac}]}]}]},
+         {function,0,module_info,1,
+             [{clause,0,
+                  [{var,0,'X'}],
+                  [],
+                  [{call,0,
+                       {remote,0,{atom,0,erlang},{atom,0,get_module_info}},
+                       [{atom,0,fac},{var,0,'X'}]}]}]}]
 \end{lstlisting}
+
+Drzewo składniowe modułów może zostać także wykorzystane w sytuacji, jeżeli chcemy utworzyć kompilator innego języka programowania, który kompilowałby kod źródłowy w tym języku do kodu maszynowego Erlanga. W efekcie możliwe będzie uruchamianie programów napisanych w tym języku na dowolnej maszynie wirtualnej Erlanga. Wydaje się to być dobrym pomysłem dla języków, które mogą wynieść dużo korzyści z uruchamiania programów w nich napisanych na maszynie mającej takie właściwości jak BEAM. Przykładem tego może być język Elixir.
 %---------------------------------------------------------------------------
-\section{Kod pośredni (\emph{bytecode})}
+\section{Core Erlang}
+\label{sec:compilationCore}
+
+Kolejnym krokiem kompilacji jest transformacja kodu do innego języka - Core Erlanga. Jest to język funkcyjny, składnią przypominający Erlanga. Jednak ze względu na uproszczenie składni, pozwala on na łatwiejszą maszynową optymalizację i konwersję do kodu pośredniego maszyny wirtualnej (bajtkodu).
+
+Kod rozważanego w tym dodatku modułu, w języku Core Erlang, został umieszczony na listingu \ref{lis:facCORE}.
+
+\begin{lstlisting}[style=erlang, caption=Moduł \texttt{fac} w Core Erlang, label=lis:facCORE]
+module 'fac' ['fac'/1,
+	      'module_info'/0,
+	      'module_info'/1]
+    attributes []
+'fac'/1 =
+    %% Line 4
+    fun (_cor0) ->
+	case _cor0 of
+	  <1> when 'true' ->
+	      %% Line 5
+	      1
+	  %% Line 6
+	  <N>
+	      when call 'erlang':'is_integer'
+		    (_cor0) ->
+	      let <_cor1> =
+		  %% Line 7
+		  call 'erlang':'-'
+		      (N, 1)
+	      in  let <_cor2> =
+		      %% Line 7
+		      apply 'fac'/1
+			  (_cor1)
+		  in  %% Line 7
+		      call 'erlang':'*'
+			  (N, _cor2)
+	  %% Line 8
+	  <_X_Other> when 'true' ->
+	      %% Line 9
+	      'not_integer'
+	end
+'module_info'/0 =
+    fun () ->
+	call 'erlang':'get_module_info'
+	    ('fac')
+'module_info'/1 =
+    fun (_cor0) ->
+	call 'erlang':'get_module_info'
+	    ('fac', _cor0)
+end
+\end{lstlisting}
+
+%---------------------------------------------------------------------------
+\section{Kod pośredni -  (\emph{bytecode})}
+
+Dopiero z modułu w postaci Core Erlang generowany jest bajtkod - kod maszynowy rozumiany przez maszynę wirtualną Erlanga. Język maszynowy zawiera instrukcje z określonego zestawu instrukcji, których pełna lista wraz z opisem argumentów znajduje się w dodatku \ref{cha:opeacjeBeam}.
+
+Wygenerowany kod pośredni dla przykładowego modułu silni, w formie listy krotek, został zawarty na listingu \ref{lis:facS}. Na listingu zawarty jest kod pośredni dla każdej z funkcji modułu (oznaczonej krotką \texttt{\{function, ...\}}). Pierwszym elementem każdej krotki wewnątrz funkcji jest nazwa operacji, a kolejnymi argumenty tej operacji.
+
 \begin{lstlisting}[style=erlang, caption=\emph{Bytecode} modułu fac, label=facS]
 {module, fac}.  %% version = 0
 
@@ -221,6 +306,8 @@ module_info(X) ->
     {call_ext_only,2,{extfunc,erlang,get_module_info,2}}.
 \end{lstlisting}
 
+Kod modułu w postaci kodu pośredniego jest jeszcze na zbyt wysokim poziomie abstrakcji, aby mógł bezpośrednio zostać zrozumiany przez maszynę wirtualną. Wszystkie argumenty operacji użyte w kodzie, takie jak np. odnośniki do etykiet czy atomy muszą zostać zapisane w odpowiednich tablicach i ich indeksy w odpowiedniej formie mogą dopiero zostać użyte jako właściwe argumenty operacji. Oprócz tego same nazwy operacji muszą zostać zamienione na odpowiadające im opkody. Czynności te wykonywane są w kolejnym kroku - generacji pliku binarnego z kodem modułu, opisanym w kolejnej sekcji.
+
 %---------------------------------------------------------------------------
 \section{Plik binarny BEAM}
 %---------------------------------------------------------------------------
@@ -267,7 +354,7 @@ Obok opisu każdego fragmentu, w nawiasie podano ciąg znaków będący jego ide
 Ponadto, w pliku mogą znajdować się następujące fragmenty:
 \begin{itemize}
 \item tablica funkcji lokalnych dla danego modułu (\texttt{LocT});
-\item tablica lambd wykorzystwanych przed moduł (\texttt{FunT});
+\item tablica lambd wykorzystywanych przed moduł (\texttt{FunT});
 \item tablica stałych wykorzystywanych przed moduł (\texttt{LitT});
 \item lista atrybutów modułu (\texttt{Attr});
 \item lista dodatkowych informacji o kompilacji modułu (\texttt{CInf)};
@@ -503,7 +590,7 @@ Fragment pliku z tablicą identyfikowany jest przez napis \texttt{LitT}. Struktu
 %---------------------------------------------------------------------------
 \subsection{Lista atrybutów modułu}
 %---------------------------------------------------------------------------
-Fragment pliku binarnego z listą atrybutów modułu zawiera listę dwójek (proplistę) ze wszystkimi dodatkowymi atrybutami, z jakimi został skompilowany dany moduł (np. informacje o wersji czy autorze). Lista ta zapisana jest binarnie w postaci \emph{External Term Format}.
+Fragment pliku binarnego z listą atrybutów modułu zawiera listę dwójek (\emph{proplistę}) ze wszystkimi dodatkowymi atrybutami, z jakimi został skompilowany dany moduł (np. informacje o wersji czy autorze). Lista ta zapisana jest binarnie w postaci \emph{External Term Format}.
 
 Fragment ten reprezentowany jest przez napis \texttt{Attr}.
 

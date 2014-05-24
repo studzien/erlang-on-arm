@@ -22,7 +22,7 @@ Zadaniom można również nadawać priorytety. Jeżeli przeznaczone do wykonania
 Samo zadanie można znajdować się w kilku stanach w zależności m.in. od tego, czy planista wybrał je do wykonania, czy dopiero oczekuje ono na swoją kolej. Pełny diagram stanów, w jakich może znajdować się zadanie w systemie FreeRTOS zaprezentowany został na rys. \ref{fig:taskstate}.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.7, clip, trim=0 40mm 75mm 20mm]{taskstate}}
+\centerline{\includegraphics[scale=1, clip, trim=0 180mm 0 15mm]{freertos_task_state}}
 \caption{Diagram stanów zadania w systemie FreeRTOS}
 \label{fig:taskstate}
 \end{figure}
@@ -88,18 +88,20 @@ Mikrokontroler ten ma następujące parametry:
 \begin{itemize}
 \item 64 kB SRAM;
 \item 512 kB pamięci flash;
-\item 4xUART;
-\item 3xI\textsuperscript{2}C;
-\item SPI;
-\item 2xSSP;
-\item 2xCAN;
-\item PWM;
-\item USB 2.0
+\item posiada 4 interfejsy UART (\emph{Universal Asynchronous Receiver-Transmitter});
+\item posiada 3 interfejsy I\textsuperscript{2}C / TWI (\emph{Two-Wire Interface});
+\item posiada 1 interfejs SPI (\emph{Serial Peripherial Interface});
+\item posiada 2 interfejsy SSP (\emph{Synchronous Serial Port});
+\item posiada 2 interfejsy CAN (\emph{Controller Area Network});
+\item posiada interfejs modulacji sygnału cyfrowego PWM (\emph{Pulse-Width Modulation});
+\item posiada 1 interfejs USB 2.0 (\emph{Universal Serial Bus})
 \end{itemize}
+
+Dokładne właściwości wymienionych wyżej elementów mikrokontrolera zawarte są w jego nocie katalogowej \cite{NXP2014}.
 
 W sprzedaży dostępna jest tania płytka rozwojowa ze wspomnianym mikrokontrolerem, produkowana przez firmę NXP, posiadająca zintegrowany interfejs JTAG. Przez tę samą firmę udostępnianie jest również środowisko deweloperskie pozwalające na łatwą kompilację i debugowanie rozwijanego oprogramowania - LPCExpresso.
 
-Maszyna wirtualna opisywana w niniejszej pracy została rozwijana na ww. mikrokontrolerze, z użyciem ww. narzędzi dewloperskich. Można założyć, że maszyna wirtualna Erlanga prezentowana w niniejszej pracy będzie działać z portami systemu FreeRTOS na inne platformy sprzętowe. Część z opisanych w pracy funkcjonalności, w szczególności dotyczących operacji wejścia/wyjścia, jest specyficzna dla wersji systemu dla mikokontrolera LPC1769.
+Maszyna wirtualna opisywana w niniejszej pracy została rozwijana na ww. mikrokontrolerze, z użyciem ww. narzędzi deweloperskich. Można założyć, że maszyna wirtualna Erlanga prezentowana w niniejszej pracy będzie działać z portami systemu FreeRTOS na inne platformy sprzętowe. Część z opisanych w pracy funkcjonalności, w szczególności dotyczących operacji wejścia/wyjścia, jest specyficzna dla wersji systemu dla mikokontrolera LPC1769.
 
 %---------------------------------------------------------------------------
 \section{Podsumowanie}
