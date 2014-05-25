@@ -1,10 +1,14 @@
 \select@language {polish}
-\contentsline {chapter}{\numberline {1}System operacyjny FreeRTOS}{7}
-\contentsline {section}{\numberline {1.1}Zadania i planista (\emph {scheduler})}{7}
-\contentsline {section}{\numberline {1.2}Kolejki}{8}
-\contentsline {section}{\numberline {1.3}Przerwania}{9}
-\contentsline {section}{\numberline {1.4}Zarz\IeC {\k a}dzanie zasobami}{9}
-\contentsline {section}{\numberline {1.5}Zarz\IeC {\k a}dzanie pami\IeC {\k e}ci\IeC {\k a}}{10}
-\contentsline {section}{\numberline {1.6}FreeRTOS i LPC17xx}{10}
-\contentsline {section}{\numberline {1.7}Podsumowanie}{11}
-\contentsline {chapter}{Bibliografia}{12}
+\contentsline {chapter}{\numberline {1}Zaimplementowane elementy maszyny wirtualnej}{7}
+\contentsline {section}{\numberline {1.1}Modu\IeC {\l } \IeC {\l }aduj\IeC {\k a}cy kod (\emph {loader})}{7}
+\contentsline {section}{\numberline {1.2}Typy danych}{7}
+\contentsline {section}{\numberline {1.3}Tablice}{7}
+\contentsline {subsection}{\numberline {1.3.1}Tablica atom\IeC {\'o}w}{8}
+\contentsline {subsection}{\numberline {1.3.2}Tablica eksportowanych funkcji}{9}
+\contentsline {section}{\numberline {1.4}Interpreter kodu maszynowego}{10}
+\contentsline {section}{\numberline {1.5}Procesy}{10}
+\contentsline {section}{\numberline {1.6}Planista (\emph {scheduler})}{10}
+\contentsline {section}{\numberline {1.7}Funkcje wbudowane (\emph {Built-In Functions})}{10}
+\contentsline {section}{\numberline {1.8}\emph {Garbage collector}}{10}
+\contentsline {section}{\numberline {1.9}Mechanizmy zarz\IeC {\k a}dzania czasem}{10}
+\contentsline {chapter}{Bibliografia}{11}

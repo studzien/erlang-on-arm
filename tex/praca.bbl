@@ -1,49 +1,8 @@
 \begin{thebibliography}{1}
 
-\bibitem{ErlangVxWorks}
-Ericsson AB.
-\newblock {Erlang Embedded Systems User's Guide}, 1997.
-
-\bibitem{ExternalTermFormat}
-Ericsson AB.
-\newblock {Erlang External Term Format}.
-\newblock \url{http://erlang.org/doc/apps/erts/erl_ext_dist.html}, 2014.
-\newblock [data dostępu: 21.03.2014].
-
-\bibitem{Barry2011}
-Richard Barry.
-\newblock {\em {Using the FreeRTOS Real Time Kernel}}.
-\newblock {Real Time Engineers Ltd.}, 2011.
-
-\bibitem{Gray85whydo}
-Jim Gray.
-\newblock {Why Do Computers Stop And What Can Be Done About It?}, 1985.
-
-\bibitem{Kharchenko2012}
-Maxim Kharchenko.
-\newblock {Erlang on Xen, A quest to lower startup latency}.
-\newblock {\em Erlang Factory SF Bay Area 2012, San Francisco}, 2012.
-
-\bibitem{ErlangEmbedded}
-Erlang~Solutions Ltd.
-\newblock {Erlang Embedded}.
-\newblock \url{http://www.erlang-embedded.com}, 2013.
-\newblock [data dostępu: 17.03.2014].
-
-\bibitem{morrison1985ea}
-J.~Morrison.
-\newblock {EA IFF 85: Standard for interchange format files}.
-\newblock {\em Amiga ROM Kernel Reference Manual: Devices (3rd edition),
-  Addison-Wesley}, 1(99):1, 1985.
-
-\bibitem{NXP2014}
-NXP Semiconductors.
-\newblock {\em {LPC1769/68/67/66/65/64/63. Product data sheet.}}
-\newblock {NXP Semiconductors, N.V.}, 2014.
-
-\bibitem{Stritzinger2013}
-Peer Stritzinger.
-\newblock {Full Metal Erlang}.
-\newblock {\em Erlang User Conference 2013, Stockholm}, 2013.
+\bibitem{Aho1986}
+Alfred~V. Aho, Ravi Sethi, and Jeffrey~D. Ullman.
+\newblock {\em Compilers: Principles, Techniques, and Tools}.
+\newblock Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA, 1986.
 
 \end{thebibliography}
