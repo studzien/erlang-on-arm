@@ -19,6 +19,9 @@ Eterm tmp0, tmp1;
 char buf[256];
 int i;
 
+BeamInstr beam_apply[2];
+extern void* jump_table[];
+
 void process_main(void* arg) {
 	ErlProcess* p = (ErlProcess*)arg;
 
@@ -29,12 +32,15 @@ void process_main(void* arg) {
 		for(i=0; i<ALL_OPCODES; i++) {
 				jump_table_add(i, temp[i]);
 		}
+
+		beam_apply[0] = (BeamInstr)jump_table[BEAM_APPLY];
+		beam_apply[1] = (BeamInstr)jump_table[NORMAL_EXIT];
+
 		init_done = 1;
 		return;
 	}
 
-	x0 = p->arg_reg[0];
-
+	restore_registers(p);
 	Goto(*(p->i));
 
 	OpCase(LABEL):
@@ -667,9 +673,16 @@ void process_main(void* arg) {
 		//ignore for now
 		p->i +=2;
 		Goto(*(p->i));
-
 	//special vm ops
+	OpCase(BEAM_APPLY):
+		debug("beam_apply");
+		do {} while(0);
+		BeamInstr* next = apply(p, r(0), x(1), x(2));
+		p->cp = p->i + 1;
+		p->i = next;
+		Goto(*(p->i));
 	OpCase(NORMAL_EXIT):
+		debug("normal_exit");
 		//@todo do a lot of stuff when exiting a process
 		sprintf(buf, "Result: %d\n", unsigned_val(x0));
 		debug(buf);
@@ -677,6 +690,7 @@ void process_main(void* arg) {
 
 	maybe_yield:
 	if(p->fcalls <= 0) {
+		//@todo test this
 		if(p->arity > p->max_arg_reg) {
 			if(p->arg_reg != p->def_arg_reg) {
 				vPortFree(p->arg_reg);
@@ -692,15 +706,29 @@ void process_main(void* arg) {
 
 		taskYIELD();
 
-		//restore
-		for(i=0; i<p->arity; i++) {
-			if(i == 0) {
-				r(0) = p->arg_reg[0];
-			}
-			else {
-				x(i) = p->arg_reg[i];
-			}
-		}
+		restore_registers(p);
 	}
 	Goto(*(p->i));
+}
+
+void restore_registers(ErlProcess* p) {
+	//restore
+	for(i=0; i<p->arity; i++) {
+		if(i == 0) {
+			r(0) = p->arg_reg[0];
+		}
+		else {
+			x(i) = p->arg_reg[i];
+		}
+	}
+}
+
+BeamInstr* apply(ErlProcess* p, Eterm module, Eterm function, Eterm args) {
+	Export e;
+	e.module = module;
+	e.function = function;
+	e.arity = 1;
+	Export *export = erts_export_get(&e);
+	r(0) = args;
+	return export->address;
 }

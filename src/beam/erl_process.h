@@ -23,6 +23,12 @@ typedef struct {
 struct ErlProcess {
 	Eterm id;
 
+	Eterm* htop; // heap top
+	Eterm* stop; // stack top
+	Eterm* heap; // heap start
+	Eterm* hend; // heap end
+	uint16_t heap_sz; // size of heaps in words
+
 	struct ErlProcess* parent; //parent process
 	BeamInstr* i; // program counter
 	BeamInstr* cp; // continuation pointer
@@ -34,12 +40,12 @@ struct ErlProcess {
 	// Saved x registers
 	// number of live argument registers
 	uint8_t arity;
-	// argument register (when context switch happens during call to function of arity >= 4)
+	// argument register (when context switch happens during call to function of arity >= 7)
 	Eterm* arg_reg;
 	// maxmimum number of registers available
 	uint8_t max_arg_reg;
-	// default array of argument registers (used when arity <= 3)
-	Eterm def_arg_reg[3];
+	// default array of argument registers (used when arity <= 6)
+	Eterm def_arg_reg[6];
 
 	// Number of reductions left to execute
 	int16_t fcalls;

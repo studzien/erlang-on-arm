@@ -11,6 +11,8 @@
 #include "erl_process.h"
 
 void process_main(void* p);
+BeamInstr* apply(ErlProcess* p, Eterm module, Eterm function, Eterm args);
+inline void restore_registers(ErlProcess* p);
 
 #define OpCase(OpCode) lb_##OpCode
 #define OpCode(OpCode) (&&lb_##OpCode)
@@ -197,7 +199,8 @@ void process_main(void* p);
 #define RECV_SET 151
 #define GC_BIF3 152
 #define LINE 153
-#define NORMAL_EXIT 154
+#define BEAM_APPLY 154
+#define NORMAL_EXIT 155
 
 //opcodes that have an external label as a first argument
 #define EXTERNAL_OP_1(op) (((op)==BIF0)||((op)==BIF1)||((op)==BIF2))
@@ -364,6 +367,7 @@ void process_main(void* p);
 		&&lb_RECV_SET,\
 		&&lb_GC_BIF3,\
 		&&lb_LINE,\
+		&&lb_BEAM_APPLY,\
 		&&lb_NORMAL_EXIT
 
 static uint8_t opcode_arities[] = {0,1,3,0,2,3,2,2,3,2,4,5,2,3,2,3,2,1,1,0,0,0,0,2,1,1,2,4,4,4,

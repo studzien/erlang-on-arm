@@ -7,12 +7,15 @@
 
 #include "erl_process.h"
 #include "beam_emu.h"
+#include "erl_gc.h"
 
 ErlProcess* proc_tab;
 uint16_t last_proc;
 extern Eterm x0;
 
 extern void* jump_table[];
+//BeamInstr to beam_apply and normal_exit ops, needed for apply/3 when spawning
+extern BeamInstr beam_apply[];
 
 void init_process_table(void) {
 	int i;
@@ -50,33 +53,40 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 
 	xTaskHandle *handle = pvPortMalloc(sizeof(xTaskHandle));
 
-	Export export, *exported;
-	export.module = module;
-	export.function = function;
-	//@todo fix arity when list term is implemented
-	export.arity = 1;
-	exported = erts_export_get(&export);
-
+	ErlProcess* p = &proc_tab[last_proc];
 	Eterm pid = pix2pid(last_proc);
-	proc_tab[last_proc].parent = parent;
-	proc_tab[last_proc].handle = handle;
-	proc_tab[last_proc].id = pid;
-	//@todo throw an error if exported was not found
-	proc_tab[last_proc].i = exported->address;
-	proc_tab[last_proc].cp = (BeamInstr*)&jump_table[NORMAL_EXIT];
-	proc_tab[last_proc].arity = 0;
-	proc_tab[last_proc].arg_reg = proc_tab[last_proc].def_arg_reg;
-	proc_tab[last_proc].max_arg_reg = sizeof(proc_tab[last_proc].def_arg_reg)/sizeof(proc_tab[last_proc].def_arg_reg[0]);
-	for(i=0; i<3; i++) {
-		proc_tab[last_proc].def_arg_reg[i] = 0;
-	}
-	proc_tab[last_proc].fcalls = REDUCTIONS;
-	proc_tab[last_proc].active = 1;
+	p->parent = parent;
+	p->handle = handle;
+	p->id = pid;
 
-	proc_tab[last_proc].arg_reg[0] = args;
+	//@todo throw an error if exported was not found
+	p->arity = 3;
+	p->arg_reg = p->def_arg_reg;
+	p->max_arg_reg = sizeof(p->def_arg_reg)/sizeof(p->def_arg_reg[0]);
+	for(i=0; i<3; i++) {
+		p->def_arg_reg[i] = 0;
+	}
+	p->fcalls = REDUCTIONS;
+	p->active = 1;
+
+	// initialize heap
+	unsigned int arg_size = size_object(args);
+	unsigned int heap_need = arg_size;
+	unsigned int sz = erts_next_heap_size(heap_need);
+
+	p->heap = (Eterm*)pvPortMalloc(sz * sizeof(Eterm));
+	p->stop = p->hend = p->heap + sz;
+	p->htop = p->heap;
+	p->heap_sz = sz;
+
+	p->i = (BeamInstr*)(beam_apply);
+	p->cp = (BeamInstr*)(beam_apply + 1);
+	p->arg_reg[0] = module;
+	p->arg_reg[1] = function;
+	p->arg_reg[2] = copy_struct(args, arg_size, &p->htop);
 
 	//start process inside the FreeRTOS scheduler
-	xTaskCreate(process_main, "erlang process", 250, (void*)&proc_tab[last_proc], 1, handle);
+	xTaskCreate(process_main, "erlang process", 250, (void*)p, 1, handle);
 	last_proc++;
 
 	return pid;

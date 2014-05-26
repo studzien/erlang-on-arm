@@ -18,6 +18,7 @@
 #include "erl_term.h"
 
 typedef uint8_t byte;
+typedef int16_t SInt;
 
 typedef Eterm BeamInstr;
 
