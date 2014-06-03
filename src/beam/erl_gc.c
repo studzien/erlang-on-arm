@@ -25,6 +25,9 @@ void erts_init_gc(void) {
 
 // returns the next heap size to use
 unsigned int erts_next_heap_size(unsigned int size) {
+	char buf[256];
+	sprintf(buf, "needed size: %d", size);
+	debug(buf);
 	int i;
 	for(i=0; i<MAX_HEAP_SIZES; i++) {
 		if(heap_sizes[i] > size) {

@@ -724,11 +724,25 @@ void restore_registers(ErlProcess* p) {
 }
 
 BeamInstr* apply(ErlProcess* p, Eterm module, Eterm function, Eterm args) {
+	int arity = 0;
+	Eterm tmp = args;
+
+	while(is_list(tmp)) {
+		if(arity == 0) {
+			r(0) = CAR(list_val(tmp));
+		}
+		else {
+			x(arity) = CAR(list_val(tmp));
+		}
+		arity++;
+		tmp = CDR(list_val(tmp));
+	}
+
 	Export e;
 	e.module = module;
 	e.function = function;
-	e.arity = 1;
+	e.arity = arity;
+
 	Export *export = erts_export_get(&e);
-	r(0) = args;
 	return export->address;
 }

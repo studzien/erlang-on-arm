@@ -55,5 +55,18 @@ typedef uint32_t Eterm;
 #define x_reg_index(x) ((x) >> 4)
 #define y_reg_index(x) ((x) >> 4)
 
+#define CONS(hp, car, cdr) \
+	(CAR(hp)=(car), CDR(hp)=(cdr), make_list(hp))
 
+#define CAR(x) ((x)[0])
+#define CDR(x) ((x)[1])
+
+#define make_list(x) ((Eterm)(x) + TAG_PRIMARY_LIST)
+#define list_val(x) ((Eterm*)((x) - TAG_PRIMARY_LIST))
+#define is_list(x)      (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_LIST)
+
+#define NIL (((Eterm)(0) << _TAG_IMMED2_SIZE) | _TAG_IMMED2_NIL)
+
+#define is_immed(x) (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_IMMED1)
+#define IS_CONST(x) is_immed((x))
 #endif /* ERL_TERM_H_ */

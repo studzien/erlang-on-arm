@@ -31,6 +31,9 @@ void erl_init() {
 	//init jump table
 	process_main(NULL);
 
+	//initialize garbage collector
+	erts_init_gc();
+
 	byte code[] = FAC2ERL;
 	erts_load(code);
 
@@ -43,9 +46,13 @@ void erl_init() {
 
 	debug_32(xPortGetFreeHeapSize());
 
-	erl_create_process(NULL, e.module, e.function, make_small(7), NULL);
-	//erl_create_process(NULL, e.module, e.function, make_small(7), NULL);
-	//erl_create_process(NULL, e.module, e.function, make_small(4), NULL);
+	Eterm* hp = pvPortMalloc(1 * sizeof(Eterm));
+	Eterm args = NIL;
+	args = CONS(hp, make_small(7), args);
+
+	erl_create_process(NULL, e.module, e.function, args, NULL);
+	//erl_create_process(NULL, e.module, e.function, args, NULL);
+	//erl_create_process(NULL, e.module, e.function, args, NULL);
 
 	debug_32(xPortGetFreeHeapSize());
 

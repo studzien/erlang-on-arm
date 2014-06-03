@@ -86,7 +86,7 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	p->arg_reg[2] = copy_struct(args, arg_size, &p->htop);
 
 	//start process inside the FreeRTOS scheduler
-	xTaskCreate(process_main, "erlang process", 250, (void*)p, 1, handle);
+	xTaskCreate(process_main, "erlang process",  250, (void*)p, 1, handle);
 	last_proc++;
 
 	return pid;
