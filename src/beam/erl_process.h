@@ -10,8 +10,16 @@
 
 #include "global.h"
 #include "basic_io.h"
-#include "export.h"
 #include "atom.h"
+
+#define HEAP_START(p)    (p)->heap
+#define HEAP_TOP(p)      (p)->htop
+#define HEAP_LIMIT(p)    (p)->stop
+#define HEAP_END(p)		 (p)->hend
+#define HEAP_SIZE(p)     (p)->heap_sz
+#define STACK_START(p)   (p)->hend
+#define STACK_TOP(p)	 (p)->stop
+#define STACK_END(p)     (p)->htop
 
 void ErlProcessTask(void* args);
 

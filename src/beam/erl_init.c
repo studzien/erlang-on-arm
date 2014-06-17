@@ -8,10 +8,13 @@
 #include "atom.h"
 #include "export.h"
 #include "beam_emu.h"
+#include "erl_arith.h"
 
 extern BeamModule* modules;
 
 extern Eterm x0;
+
+extern ErlProcess* proc_tab;
 
 //called when the vm is initialized;
 void erl_init() {
@@ -50,15 +53,26 @@ void erl_init() {
 	Eterm args = NIL;
 	args = CONS(hp, make_small(7), args);
 
-	erl_create_process(NULL, e.module, e.function, args, NULL);
+	Eterm pid = erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
+
+	Eterm small1 = make_small(0x8000000);
+	debug_term(small1);
+
+	ErlProcess p = proc_tab[pid2pix(pid)];
+	Eterm big = erts_mixed_plus(&p, small1, make_small(1));
+	//sprintf(buf, "big: %u %u\n", big, *boxed_val(big));
+	//debug(buf);
+	debug_term(big);
 
 	debug_32(xPortGetFreeHeapSize());
 
 
+
+
 	// start the scheduler (cooperative)
-	vTaskStartScheduler();
+	//vTaskStartScheduler();
 
 	for( ;; );
 }

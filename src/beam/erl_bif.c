@@ -6,6 +6,7 @@
  */
 
 #include "erl_bif.h"
+#include "erl_arith.h"
 #include "export.h"
 
 void erts_init_bif(void) {
@@ -22,15 +23,15 @@ void erts_init_bif(void) {
 	}
 }
 
-Eterm plus_2(Eterm* args) {
-	return args[0] + (args[1] & 0xfff0);
+Eterm plus_2(ErlProcess* p, Eterm* args) {
+	return erts_mixed_plus(p, args[0], args[1]);
 }
 
-Eterm minus_2(Eterm* args) {
+Eterm minus_2(ErlProcess* p, Eterm* args) {
 	return args[0] - (args[1] & 0xfff0);
 }
 
-Eterm multiply_2(Eterm* args) {
+Eterm multiply_2(ErlProcess* p, Eterm* args) {
 	Eterm arg0 = unsigned_val(args[0]);
 	Eterm arg1 = unsigned_val(args[1]);
 	return make_small(arg0*arg1);

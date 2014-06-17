@@ -557,7 +557,7 @@ void process_main(void* arg) {
 		Resolve(Arg(3), tmp0);
 		Resolve(Arg(4), tmp1);
 		Eterm args[] = {tmp0, tmp1};
-		Eterm result = (e->bif)(args);
+		Eterm result = (e->bif)(p, args);
 		Move(result, Arg(5));
 		p->i +=7;
 		Goto(*(p->i));

@@ -8,10 +8,10 @@
 #ifndef ERL_BIF_H_
 #define ERL_BIF_H_
 
-#include "global.h"
+#include "erl_process.h"
 #include "atom.h"
 
-typedef Eterm (*BifFunction)(Eterm*);
+typedef Eterm (*BifFunction)(ErlProcess*, Eterm*);
 typedef struct {
 	Eterm module;
 	Eterm function;
@@ -19,11 +19,12 @@ typedef struct {
 	BifFunction f;
 } BifEntry;
 
+
 void erts_init_bif(void);
 
-Eterm plus_2(Eterm*);
-Eterm minus_2(Eterm*);
-Eterm multiply_2(Eterm*);
+Eterm plus_2(ErlProcess*, Eterm*);
+Eterm minus_2(ErlProcess*, Eterm*);
+Eterm multiply_2(ErlProcess*, Eterm*);
 
 static BifEntry bif_table[] = {
 		{atom_erlang, atom_plus, 2, plus_2},

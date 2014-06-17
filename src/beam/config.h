@@ -8,6 +8,9 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
+#define SMALL_BITS (28)
+#define SMALL_DIGITS (8)
+
 #define MAX_OPCODE 154
 #define SPECIAL_OPCODES 1
 #define ALL_OPCODES MAX_OPCODE+SPECIAL_OPCODES+1
