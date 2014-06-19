@@ -57,14 +57,17 @@ void erl_init() {
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
 
-	Eterm small1 = make_small(0x8000000);
+	Eterm small1 = make_small(0x7FFFFFF);
 	debug_term(small1);
 
 	ErlProcess p = proc_tab[pid2pix(pid)];
-	Eterm big = erts_mixed_plus(&p, small1, make_small(1));
+	Eterm big = erts_mixed_plus(&p, small1, small1);
 	//sprintf(buf, "big: %u %u\n", big, *boxed_val(big));
 	//debug(buf);
 	debug_term(big);
+
+	Eterm big2 = erts_mixed_plus(&p, big, big);
+	debug_term(big2);
 
 	debug_32(xPortGetFreeHeapSize());
 

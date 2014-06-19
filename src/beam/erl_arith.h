@@ -13,6 +13,6 @@
 #include "erl_term.h"
 
 Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1);
-
+static Eterm erts_big_plus(ErlProcess* p, Eterm arg0, Eterm arg1);
 
 #endif /* ERL_ARITH_H_ */

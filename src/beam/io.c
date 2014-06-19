@@ -33,7 +33,7 @@ void debug_term(Eterm term) {
 		case _TAG_HEADER_POS_BIG:
 			written = sprintf(buf, "big(");
 			for(i=0; i<header_arity(*boxed); i++) {
-				written += sprintf(buf+written, "%u ", *(boxed+i+1));
+				written += sprintf(buf+written, "%#010x", *(boxed+i+1));
 			}
 			sprintf(buf+written, ") ");
 			break;
@@ -41,7 +41,7 @@ void debug_term(Eterm term) {
 		case _TAG_HEADER_NEG_BIG:
 			written = sprintf(buf, "big(-");
 			for(i=0; i<header_arity(*boxed); i++) {
-				written += sprintf(buf+written, "%u ", *(boxed+i+1));
+				written += sprintf(buf+written, "%#010x", *(boxed+i+1));
 			}
 			sprintf(buf+written, ") ");
 			break;

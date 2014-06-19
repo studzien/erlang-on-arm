@@ -41,6 +41,7 @@ typedef uint32_t UInt;
 
 #define make_atom(x) ((Eterm)(((x) << _TAG_IMMED2_SIZE) + _TAG_IMMED2_ATOM))
 
+#define MAX_SMALL   (((1) << (SMALL_BITS-1))-1)
 #define make_small(x) ((Eterm)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_SMALL))
 #define unsigned_val(x) ((x) >> _TAG_IMMED1_SIZE)
 #define signed_val(x) ((SInt)(x) >> _TAG_IMMED1_SIZE)
@@ -125,9 +126,24 @@ typedef uint32_t UInt;
 #define boxed_val(x) ((Eterm*) ((x) - TAG_PRIMARY_BOXED))
 #define header_arity(x) ((x) >> _HEADER_ARITY_OFFS)
 
+#define is_not_boxed(x)    ((x) & (_TAG_PRIMARY_MASK-TAG_PRIMARY_BOXED))
+#define is_boxed(x)  (!is_not_boxed((x)))
+
 /* bignum access methods */
 #define make_pos_bignum_header(sz)  _make_header((sz),_TAG_HEADER_POS_BIG)
 #define make_neg_bignum_header(sz)  _make_header((sz),_TAG_HEADER_NEG_BIG)
+#define is_bignum_header(x)    (((x) & (_TAG_HEADER_MASK-_BIG_SIGN_BIT)) == _TAG_HEADER_POS_BIG)
+#define bignum_header_is_neg(x) ((x) & _BIG_SIGN_BIT)
 #define make_big(x) make_boxed((x))
 #define big_val(x) boxed_val((x))
+#define bignum_header_arity(x)  header_arity((x))
+#define BIG_ARITY_MAX       ((1 << 19)-1)
+#define make_big(x) make_boxed((x))
+#define is_big(x)   (is_boxed((x)) && is_bignum_header(*boxed_val((x))))
+#define is_not_big(x)   (!is_big((x)))
+
+#define SMALL_MINUS_ONE make_small(-1)
+#define SMALL_ZERO make_small(0)
+#define SMALL_ONE  make_small(1)
+
 #endif /* ERL_TERM_H_ */
