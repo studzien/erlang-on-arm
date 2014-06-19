@@ -31,7 +31,7 @@ Eterm minus_2(ErlProcess* p, Eterm* args) {
 	return erts_mixed_minus(p, args[0], args[1]);
 }
 
-Eterm multiply_2(ErlProcess* p, Eterm* args) {
+Eterm times_2(ErlProcess* p, Eterm* args) {
 	Eterm arg0 = unsigned_val(args[0]);
 	Eterm arg1 = unsigned_val(args[1]);
 	return make_small(arg0*arg1);

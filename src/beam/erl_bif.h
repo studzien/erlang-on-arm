@@ -24,12 +24,12 @@ void erts_init_bif(void);
 
 Eterm plus_2(ErlProcess*, Eterm*);
 Eterm minus_2(ErlProcess*, Eterm*);
-Eterm multiply_2(ErlProcess*, Eterm*);
+Eterm times_2(ErlProcess*, Eterm*);
 
 static BifEntry bif_table[] = {
 		{atom_erlang, atom_plus, 2, plus_2},
 		{atom_erlang, atom_minus, 2, minus_2},
-		{atom_erlang, atom_multiply, 2, multiply_2}
+		{atom_erlang, atom_times, 2, times_2}
 };
 
 #endif /* ERL_BIF_H_ */
