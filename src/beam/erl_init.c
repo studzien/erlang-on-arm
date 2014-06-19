@@ -69,6 +69,12 @@ void erl_init() {
 	Eterm big2 = erts_mixed_plus(&p, big, big);
 	debug_term(big2);
 
+	Eterm big3 = erts_mixed_minus(&p, big2, big);
+	debug_term(big3);
+
+	Eterm zero = erts_mixed_minus(&p, big2, big2);
+	debug_term(zero);
+
 	debug_32(xPortGetFreeHeapSize());
 
 

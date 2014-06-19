@@ -28,7 +28,7 @@ Eterm plus_2(ErlProcess* p, Eterm* args) {
 }
 
 Eterm minus_2(ErlProcess* p, Eterm* args) {
-	return args[0] - (args[1] & 0xfff0);
+	return erts_mixed_minus(p, args[0], args[1]);
 }
 
 Eterm multiply_2(ErlProcess* p, Eterm* args) {

@@ -15,6 +15,7 @@ typedef UInt     ErtsDigit;
 
 Eterm small_to_big(SInt, Eterm*);
 Eterm big_plus(Eterm, Eterm, Eterm*);
+Eterm big_minus(Eterm, Eterm, Eterm*);
 
 #define D_EXP (sizeof(Eterm)*8)
 

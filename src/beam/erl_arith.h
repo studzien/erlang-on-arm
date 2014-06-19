@@ -15,4 +15,7 @@
 Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1);
 static Eterm erts_big_plus(ErlProcess* p, Eterm arg0, Eterm arg1);
 
+Eterm erts_mixed_minus(ErlProcess* p, Eterm arg0, Eterm arg1);
+static Eterm erts_big_minus(ErlProcess* p, Eterm arg0, Eterm arg1);
+
 #endif /* ERL_ARITH_H_ */

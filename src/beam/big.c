@@ -153,3 +153,11 @@ Eterm big_plus(Eterm x, Eterm y, Eterm* r) {
     return big_plus_minus(BIG_V(xp),BIG_SIZE(xp),(short) BIG_SIGN(xp),
             BIG_V(yp),BIG_SIZE(yp),(short) BIG_SIGN(yp), r);
 }
+
+Eterm big_minus(Eterm x, Eterm y, Eterm* r) {
+	Eterm *xp = big_val(x);
+	Eterm *yp = big_val(y);
+
+    return big_plus_minus(BIG_V(xp),BIG_SIZE(xp),(short) BIG_SIGN(xp),
+            BIG_V(yp),BIG_SIZE(yp),(short) !BIG_SIGN(yp), r);
+}
