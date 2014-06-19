@@ -10,8 +10,6 @@
 #include "beam_emu.h"
 #include "export.h"
 
-BeamModule* modules = NULL;
-uint32_t n_modules = 0;
 void* jump_table[ALL_OPCODES];
 
 void jump_table_add(int opcode, void* ptr) {
@@ -169,6 +167,7 @@ static int load_code(LoaderState* loader) {
 		uint32_t p = loader->code_buffer_used;
 		loader->code[loader->code_buffer_used++] = (BeamInstr)jump_table[op];
 
+
 		for(i=0; i<arity; i++) {
 			get_tag_and_value(loader, loader->code + loader->code_buffer_used);
 			loader->code_buffer_used++;
@@ -230,6 +229,8 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
 		return 1;
 	}
 
+
+
 	switch(tag) {
 	case TAG_u:
 	case TAG_i:
@@ -251,29 +252,24 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
 		*result = make_yreg(value);
 		break;
 	}
+
 	return 0;
 }
 
 static int finalize(LoaderState* loader) {
 	int i;
 
-	n_modules++;
-	BeamModule* old = modules;
-	modules = pvPortMalloc(n_modules * sizeof(BeamModule));
-	if(old != NULL) {
-		memcpy(modules, old, n_modules-1 * sizeof(BeamModule));
-		vPortFree(old);
-	}
+	BeamModule *module = pvPortMalloc(sizeof(BeamModule));
 
-	modules[n_modules-1].name = loader->atom[1];
-	modules[n_modules-1].size = loader->code_buffer_used;
-	modules[n_modules-1].code = pvPortMalloc(loader->code_buffer_used*sizeof(BeamInstr));
-	if(modules[n_modules-1].code == NULL) {
+	module->name = loader->atom[1];
+	module->size = loader->code_buffer_used;
+	module->code = pvPortMalloc(loader->code_buffer_used*sizeof(BeamInstr));
+	if(module->code == NULL) {
 		return 1;
 	}
-	memcpy(modules[n_modules-1].code, loader->code, loader->code_buffer_used*sizeof(BeamInstr));
 
-	BeamInstr* code = modules[n_modules-1].code;
+	BeamInstr* code = module->code;
+	memcpy(code, loader->code, loader->code_buffer_used*sizeof(BeamInstr));
 
 	//imports all the external functions and patch all callers with the export table entry
 	for(i = 0; i<loader->num_imports; i++) {
@@ -315,7 +311,6 @@ static int finalize(LoaderState* loader) {
 			current = next;
 		}
 	}
-
 
 	return 0;
 }

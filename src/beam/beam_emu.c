@@ -43,6 +43,8 @@ void process_main(void* arg) {
 	restore_registers(p);
 	Goto(*(p->i));
 
+	Export *e;
+
 	OpCase(LABEL):
 		//ignore
 		debug("label\n");
@@ -364,7 +366,8 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	OpCase(CALL_EXT_ONLY):
 		debug("call_ext_only\n");
-		p->i +=3;
+		e = (Export*)(Arg(1));
+		p->i = e->address;
 		Goto(*(p->i));
 	OpCase(BS_START_MATCH):
 		debug("bs_start_match\n");
@@ -553,7 +556,7 @@ void process_main(void* arg) {
 	OpCase(GC_BIF2):
 		debug("gc_bif2\n");
 		do {} while(0);
-		Export* e = (Export*)Arg(2);
+		e = Arg(2);
 		Resolve(Arg(3), tmp0);
 		Resolve(Arg(4), tmp1);
 		Eterm args[] = {tmp0, tmp1};
@@ -675,14 +678,14 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	//special vm ops
 	OpCase(BEAM_APPLY):
-		debug("beam_apply");
+		debug("beam_apply\n");
 		do {} while(0);
 		BeamInstr* next = apply(p, r(0), x(1), x(2));
 		p->cp = p->i + 1;
 		p->i = next;
 		Goto(*(p->i));
 	OpCase(NORMAL_EXIT):
-		debug("normal_exit");
+		debug("normal_exit\n");
 		//@todo do a lot of stuff when exiting a process
 		sprintf(buf, "Result: %d\n", unsigned_val(x0));
 		debug(buf);
