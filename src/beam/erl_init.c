@@ -5,6 +5,7 @@
  *      Author: Studnicki
  */
 
+#include "config.h"
 #include "atom.h"
 #include "export.h"
 #include "beam_emu.h"
@@ -17,6 +18,21 @@ extern BeamModule* modules;
 extern Eterm x0;
 
 extern ErlProcess* proc_tab;
+
+// heap test
+void heap_test(void* p) {
+	for(;;) {
+		if(uxTaskGetNumberOfTasks() < 3) {
+			debug("After processes exited: ");
+			debug_32(xPortGetFreeHeapSize());
+			break;
+		}
+		taskYIELD();
+	}
+
+	vTaskDelete(NULL);
+}
+
 
 //called when the vm is initialized;
 void erl_init() {
@@ -54,8 +70,6 @@ void erl_init() {
 	erts_atom_get(ENTRYPOINT_F, ENTRYPOINT_F_LEN, &e.function);
 	e.arity = ENTRYPOINT_ARITY;
 
-	debug_32(xPortGetFreeHeapSize());
-
 	Eterm args = NIL;
 
 	if(ENTRYPOINT_ARITY > 0) {
@@ -65,39 +79,13 @@ void erl_init() {
 		}
 	}
 
+
+	debug_32(xPortGetFreeHeapSize());
 	erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
-/*
-	Eterm small1 = make_small(0x7FFFFFF);
-	//debug_term(small1);
 
-	ErlProcess p = proc_tab[pid2pix(pid)];
-	//Eterm big = erts_mixed_plus(&p, small1, small1);
-	//sprintf(buf, "big: %u %u\n", big, *boxed_val(big));
-	//debug(buf);
-	//debug_term(big);
-
-	//Eterm big2 = erts_mixed_plus(&p, big, big);
-	//debug_term(big2);
-
-	//Eterm big3 = erts_mixed_minus(&p, big2, big);
-	//debug_term(big3);
-
-	//Eterm zero = erts_mixed_minus(&p, big2, big2);
-	//debug_term(zero);
-
-	Eterm five = make_small(5);
-	Eterm big1 = erts_mixed_times(&p, small1, five);
-	debug_term(big1);
-
-	Eterm big2 = erts_mixed_times(&p, big1, big1);
-	debug_term(big2);
-
-	debug_32(xPortGetFreeHeapSize());
-
-*/
-
+	xTaskCreate(heap_test, "heap test",  100, NULL, tskIDLE_PRIORITY, NULL);
 
 	// start the scheduler (cooperative)
 	vTaskStartScheduler();

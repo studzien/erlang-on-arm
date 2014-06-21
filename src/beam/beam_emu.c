@@ -16,7 +16,7 @@ Eterm x0;
 Eterm reg[X_REGS_ALLOCATED];
 Eterm E[X_REGS_ALLOCATED];
 Eterm tmp0, tmp1;
-char buf[256];
+char buf[50];
 int i;
 
 BeamInstr beam_apply[2];
@@ -24,6 +24,9 @@ extern void* jump_table[];
 
 void process_main(void* arg) {
 	ErlProcess* p = (ErlProcess*)arg;
+
+	Export *e;
+	BeamInstr* next;
 
 	//first time this function is called op labels from here are exported to the loader
 	if(!init_done) {
@@ -43,7 +46,6 @@ void process_main(void* arg) {
 	restore_registers(p);
 	Goto(*(p->i));
 
-	Export *e;
 
 	OpCase(LABEL):
 		//ignore
@@ -69,6 +71,11 @@ void process_main(void* arg) {
 	OpCase(CALL_ONLY):
 		debug("call_only\n");
 		p->arity = (uint8_t)unsigned_val(Arg(0));
+		debug("calling ");
+		debug_term_buf(x0, buf);
+		//debug_term_buf(x(1), buf);
+		debug("\n");
+		//debug_32(xPortGetFreeHeapSize());
 		p->i = (BeamInstr*)(Arg(1));
 		p->fcalls--;
 		goto maybe_yield;
@@ -216,7 +223,7 @@ void process_main(void* arg) {
 		p->i +=4;
 		Goto(*(p->i));
 	OpCase(IS_EQ_EXACT):
-		debug("is_eq_exact\n");
+		//debug("is_eq_exact\n");
 		Resolve(Arg(1), tmp0);
 		Resolve(Arg(2), tmp1);
 		if(tmp0 == tmp1) {
@@ -307,7 +314,7 @@ void process_main(void* arg) {
 		p->i +=2;
 		Goto(*(p->i));
 	OpCase(MOVE):
-		debug("move\n");
+		//debug("move\n");
 		Resolve(Arg(0), tmp1);
 		Move(tmp1, Arg(1));
 		p->i +=3;
@@ -365,10 +372,11 @@ void process_main(void* arg) {
 		p->i +=3;
 		Goto(*(p->i));
 	OpCase(CALL_EXT_ONLY):
-		debug("call_ext_only\n");
+		//debug("call_ext_only\n");
 		e = (Export*)(Arg(1));
 		p->i = e->address;
-		Goto(*(p->i));
+		p->fcalls--;
+		goto maybe_yield;
 	OpCase(BS_START_MATCH):
 		debug("bs_start_match\n");
 		p->i +=3;
@@ -554,9 +562,8 @@ void process_main(void* arg) {
 		p->i +=6;
 		Goto(*(p->i));
 	OpCase(GC_BIF2):
-		debug("gc_bif2\n");
-		do {} while(0);
-		e = Arg(2);
+		//debug("gc_bif2\n");
+		e = (Export*)Arg(2);
 		Resolve(Arg(3), tmp0);
 		Resolve(Arg(4), tmp1);
 		Eterm args[] = {tmp0, tmp1};
@@ -678,17 +685,15 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	//special vm ops
 	OpCase(BEAM_APPLY):
-		debug("beam_apply\n");
-		do {} while(0);
-		BeamInstr* next = apply(p, r(0), x(1), x(2));
+		next = apply(p, r(0), x(1), x(2));
 		p->cp = p->i + 1;
 		p->i = next;
 		Goto(*(p->i));
 	OpCase(NORMAL_EXIT):
-		debug("normal_exit\n");
 		//@todo do a lot of stuff when exiting a process
-		sprintf(buf, "Result: %d\n", unsigned_val(x0));
-		debug(buf);
+		debug("Result: ");
+		debug_term(x0);
+		debug("\n");
 		erts_do_exit_process(p, atom_normal);
 
 	maybe_yield:

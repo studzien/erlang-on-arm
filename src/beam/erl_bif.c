@@ -32,7 +32,5 @@ Eterm minus_2(ErlProcess* p, Eterm* args) {
 }
 
 Eterm times_2(ErlProcess* p, Eterm* args) {
-	Eterm arg0 = unsigned_val(args[0]);
-	Eterm arg1 = unsigned_val(args[1]);
-	return make_small(arg0*arg1);
+	return erts_mixed_times(p, args[0], args[1]);
 }

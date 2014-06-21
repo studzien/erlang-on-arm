@@ -191,9 +191,15 @@ static inline void maybe_shrink(ErlProcess* p, Eterm* hp, Eterm res, UInt alloc)
 		if (p->heap <= hp && hp < p->htop) {
 			p->htop = hp;
 		}
+		else {
+			erts_heap_frag_shrink(p, hp);
+		}
 	} else if ((actual = BIG_NEED_SIZE(bignum_header_arity(*hp))) < alloc) {
 		if (p->heap <= hp && hp < p->htop) {
 			p->htop = hp+actual;
+		}
+		else {
+			erts_heap_frag_shrink(p, hp+actual);
 		}
 	}
 }

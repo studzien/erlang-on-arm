@@ -8,7 +8,6 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
-#define DEBUG 1
 
 #include "FreeRTOS.h"
 #include "task.h"

@@ -225,6 +225,12 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
 		tag = start & 0x0f;
 		value = start >> 4;
 	}
+	//2 bytes
+	else if((start & 0x08) == 0x08) {
+		tag = start & 0x07;
+		GetByte(loader, value);
+		value |= (start & 0xe0) << 3;
+	}
 	else {
 		return 1;
 	}

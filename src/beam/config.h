@@ -23,4 +23,6 @@
 #define MAX_REG 255
 #define X_REGS_ALLOCATED (MAX_REG+3)
 
+#define DEBUG 1
+
 #endif /* CONFIG_H_ */

@@ -17,6 +17,32 @@ extern void* jump_table[];
 //BeamInstr to beam_apply and normal_exit ops, needed for apply/3 when spawning
 extern BeamInstr beam_apply[];
 
+inline void erts_heap_frag_shrink(ErlProcess* p, Eterm* hp) {
+	ErlHeapFragment *hf = MBUF(p);
+	hf->used_size = hp - hf->mem;
+}
+
+Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra) {
+	ErlHeapFragment *bp = MBUF(p);
+	Eterm *htop;
+
+	//there is enough space on the current HeapFragment
+	if(bp != NULL && need <= (bp->alloc_size - bp->used_size)) {
+		Eterm *ret = bp->mem + bp->used_size;
+		bp->used_size += need;
+		return ret;
+	}
+
+	UInt n = need+xtra;
+	bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(n));
+	bp->next = MBUF(p);
+	MBUF(p) = bp;
+	bp->alloc_size = n;
+	bp->used_size = need;
+
+	return bp->mem;
+}
+
 void init_process_table(void) {
 	int i;
 	proc_tab = pvPortMalloc(MAX_PROCESSES * sizeof(ErlProcess));
@@ -27,11 +53,32 @@ void init_process_table(void) {
 }
 
 void erts_do_exit_process(ErlProcess* p, Eterm reason) {
-	vTaskDelete(*(p->handle));
-	vPortFree(p->handle);
+	delete_process(p);
 	p->active = 0;
+	xTaskHandle handle = *(p->handle);
+	vPortFree(p->handle);
+	vTaskDelete(handle);
 }
 
+
+void delete_process(ErlProcess* p) {
+	// free heap
+	vPortFree(HEAP_START(p));
+
+	// free heap fragments
+	ErlHeapFragment *mb,*next;
+	mb = MBUF(p);
+	while(mb != NULL) {
+		next = mb->next;
+		vPortFree(mb);
+		mb = next;
+	}
+
+	// clean argument registers
+	if(p->arg_reg != p->def_arg_reg) {
+		vPortFree(p->arg_reg);
+	}
+}
 
 //mutexes are not needed here since we have one scheduler and there will be no context switch
 //until a process is created or deleted
@@ -86,7 +133,7 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	p->arg_reg[2] = copy_struct(args, arg_size, &p->htop);
 
 	//start process inside the FreeRTOS scheduler
-	xTaskCreate(process_main, "erlang process",  250, (void*)p, 1, handle);
+	xTaskCreate(process_main, "erlang process",  350, (void*)p, 1, p->handle);
 	last_proc++;
 
 	return pid;
