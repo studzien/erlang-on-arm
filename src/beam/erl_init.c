@@ -81,11 +81,13 @@ void erl_init() {
 
 
 	debug_32(xPortGetFreeHeapSize());
+
 	erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
 	//erl_create_process(NULL, e.module, e.function, args, NULL);
+	//erl_create_process(NULL, e.module, e.function, args, NULL);
 
-	xTaskCreate(heap_test, "heap test",  100, NULL, tskIDLE_PRIORITY, NULL);
+	//xTaskCreate(heap_test, "heap test",  100, NULL, tskIDLE_PRIORITY, NULL);
 
 	// start the scheduler (cooperative)
 	vTaskStartScheduler();

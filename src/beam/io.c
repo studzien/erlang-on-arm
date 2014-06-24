@@ -7,6 +7,19 @@
 
 #include "io.h"
 
+void dump_stack(ErlProcess* p, Eterm* stop) {
+	Eterm* hp;
+	char buf[50];
+	sprintf(buf, "process %u stack dump (starts at %u):\n", p->id, STACK_START(p));
+	debug(buf);
+
+	for(hp = stop; hp < STACK_START(p); hp++) {
+		debug_term_buf(*hp, buf);
+	}
+
+	debug("\n");
+}
+
 void debug_term(Eterm term) {
 	char buf[50];
 	return debug_term_buf(term, buf);
@@ -36,7 +49,7 @@ void debug_term_buf(Eterm term, char* buf) {
 		switch(*boxed & _TAG_HEADER_MASK) {
 
 		case _TAG_HEADER_POS_BIG:
-			sprintf(buf, "big(+ ");
+			sprintf(buf, "@%u big(+ ", boxed);
 			debug(buf);
 			for(i=0; i<header_arity(*boxed); i++) {
 				sprintf(buf, "%#010x ", *(boxed+i+1));
@@ -47,7 +60,7 @@ void debug_term_buf(Eterm term, char* buf) {
 			break;
 
 		case _TAG_HEADER_NEG_BIG:
-			sprintf(buf, "big(- ");
+			sprintf(buf, "@%u big(- ", boxed);
 			debug(buf);
 			for(i=0; i<header_arity(*boxed); i++) {
 				sprintf(buf, "%#010x ", *(boxed+i+1));
@@ -66,7 +79,7 @@ void debug_term_buf(Eterm term, char* buf) {
 		break;
 
 	default:
-		sprintf(buf, "(not recognized) ");
+		sprintf(buf, "(not recognized %u) ", term);
 		debug(buf);
 	}
 }

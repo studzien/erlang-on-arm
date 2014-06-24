@@ -9,7 +9,51 @@
 #include "erl_vm.h"
 #include "big.h"
 
-Eterm erts_mixed_times(ErlProcess* p, Eterm arg0, Eterm arg1) {
+
+static inline void maybe_shrink(ErlProcess* p, Eterm* hp, Eterm res, UInt alloc)
+{
+	UInt actual;
+
+	if (is_immed(res)) {
+		if (p->heap <= hp && hp < p->htop) {
+			p->htop = hp;
+		}
+		else {
+			erts_heap_frag_shrink(p, hp);
+		}
+	} else if ((actual = BIG_NEED_SIZE(bignum_header_arity(*hp))) < alloc) {
+		if (p->heap <= hp && hp < p->htop) {
+			p->htop = hp+actual;
+		}
+		else {
+			erts_heap_frag_shrink(p, hp+actual);
+		}
+	}
+}
+
+static inline void trim_heap(ErlProcess* p, Eterm* hp, Eterm res)
+{
+	UInt actual;
+
+	if (is_immed(res)) {
+		HEAP_TOP(p) = hp;
+	}
+	else {
+		Eterm *new_htop;
+		new_htop = hp + bignum_header_arity(*hp) + 1;
+		HEAP_TOP(p) = new_htop;
+	}
+}
+
+
+// gc bifs are not allowed to allocate heap fragments
+#define erts_heap_frag_shrink horrible error
+#define maybe_shrink horrible error
+
+Eterm erts_gc_mixed_times(ErlProcess* p, Eterm* reg, UInt live) {
+	Eterm arg0 = reg[live];
+	Eterm arg1 = reg[live+1];
+
 	SInt ires;
 	Eterm* hp;
 	Eterm res;
@@ -40,7 +84,14 @@ Eterm erts_mixed_times(ErlProcess* p, Eterm arg0, Eterm arg1) {
 				// result is BIG
 				hdr = big_res[0];
 				UInt arity = bignum_header_arity(hdr);
-				hp = HAlloc(p, BIG_NEED_SIZE(arity));
+				UInt need = BIG_NEED_SIZE(arity);
+
+				if(ERTS_NEED_GC(p, need)) {
+					erts_garbage_collect(p, need, reg, live);
+				}
+
+				hp = HEAP_TOP(p);
+				HEAP_TOP(p) += need;
 				res = make_big(hp);
 				*hp++ = hdr;
 				*hp++ = big_res[1];
@@ -58,7 +109,7 @@ Eterm erts_mixed_times(ErlProcess* p, Eterm arg0, Eterm arg1) {
 				return arg1;
 			}
 			arg0 = small_to_big(signed_val(arg0), tmp_big1);
-			return erts_big_times(p, arg0, arg1);
+			return erts_gc_big_times(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 	}
 	else if(is_big(arg0)) {
@@ -70,10 +121,10 @@ Eterm erts_mixed_times(ErlProcess* p, Eterm arg0, Eterm arg1) {
 				return arg0;
 			}
 			arg1 = small_to_big(signed_val(arg1), tmp_big2);
-			return erts_big_times(p, arg0, arg1);
+			return erts_gc_big_times(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 		else if(is_big(arg1)) {
-			return erts_big_times(p, arg0, arg1);
+			return erts_gc_big_times(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 	}
 
@@ -81,7 +132,10 @@ Eterm erts_mixed_times(ErlProcess* p, Eterm arg0, Eterm arg1) {
 
 }
 
-Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1) {
+Eterm erts_gc_mixed_plus(ErlProcess* p, Eterm* reg, UInt live) {
+	Eterm arg0 = reg[live];
+	Eterm arg1 = reg[live+1];
+
 	SInt ires;
 	Eterm* hp;
 	Eterm res;
@@ -99,7 +153,11 @@ Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 			}
 			// result is BIG
 			else {
-				hp = HAlloc(p, 2);
+				if(ERTS_NEED_GC(p, 2)) {
+					erts_garbage_collect(p, 2, reg, live);
+				}
+				hp = HEAP_TOP(p);
+				HEAP_TOP(p) += 2;
 				res = small_to_big(ires, hp);
 				return res;
 			}
@@ -111,7 +169,7 @@ Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 			}
 			// SMALL + BIG
 			arg0 = small_to_big(signed_val(arg0), tmp_big1);
-			return erts_big_plus(p, arg0, arg1);
+			return erts_gc_big_plus(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 	}
 	else if(is_big(arg0)) {
@@ -122,11 +180,11 @@ Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 			}
 			// BIG + SMALL
 			arg1 = small_to_big(signed_val(arg1), tmp_big2);
-			return erts_big_plus(p, arg0, arg1);
+			return erts_gc_big_plus(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 		//BIG + BIG
 		else if(is_big(arg1)) {
-			return erts_big_plus(p, arg0, arg1);
+			return erts_gc_big_plus(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 	}
 
@@ -134,7 +192,10 @@ Eterm erts_mixed_plus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 
 }
 
-Eterm erts_mixed_minus(ErlProcess* p, Eterm arg0, Eterm arg1) {
+Eterm erts_gc_mixed_minus(ErlProcess* p, Eterm* reg, UInt live) {
+	Eterm arg0 = reg[live];
+	Eterm arg1 = reg[live+1];
+
 	SInt ires;
 	Eterm* hp;
 	Eterm res;
@@ -152,7 +213,12 @@ Eterm erts_mixed_minus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 			}
 			// result is BIG
 			else {
-				hp = HAlloc(p, 2);
+				if(ERTS_NEED_GC(p, 2)) {
+					erts_garbage_collect(p, 2, reg, live);
+				}
+
+				hp = HEAP_TOP(p);
+				HEAP_TOP(p) += 2;
 				res = small_to_big(ires, hp);
 				return res;
 			}
@@ -160,7 +226,7 @@ Eterm erts_mixed_minus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 		else if(is_big(arg1)) {
 			// SMALL - BIG
 			arg0 = small_to_big(signed_val(arg0), tmp_big1);
-			return erts_big_minus(p, arg0, arg1);
+			return erts_gc_big_minus(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 	}
 	else if(is_big(arg0)) {
@@ -171,11 +237,11 @@ Eterm erts_mixed_minus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 			}
 			// BIG - SMALL
 			arg1 = small_to_big(signed_val(arg1), tmp_big2);
-			return erts_big_minus(p, arg0, arg1);
+			return erts_gc_big_minus(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 		//BIG + BIG
 		else if(is_big(arg1)) {
-			return erts_big_minus(p, arg0, arg1);
+			return erts_gc_big_minus(p, arg0, arg1, tmp_big1, tmp_big2, reg, live);
 		}
 	}
 
@@ -183,56 +249,75 @@ Eterm erts_mixed_minus(ErlProcess* p, Eterm arg0, Eterm arg1) {
 
 }
 
-static inline void maybe_shrink(ErlProcess* p, Eterm* hp, Eterm res, UInt alloc)
-{
-	UInt actual;
 
-	if (is_immed(res)) {
-		if (p->heap <= hp && hp < p->htop) {
-			p->htop = hp;
-		}
-		else {
-			erts_heap_frag_shrink(p, hp);
-		}
-	} else if ((actual = BIG_NEED_SIZE(bignum_header_arity(*hp))) < alloc) {
-		if (p->heap <= hp && hp < p->htop) {
-			p->htop = hp+actual;
-		}
-		else {
-			erts_heap_frag_shrink(p, hp+actual);
-		}
-	}
-}
-
-Eterm erts_big_times(ErlProcess* p, Eterm arg0, Eterm arg1) {
+Eterm erts_gc_big_times(ErlProcess* p, Eterm arg0, Eterm arg1,
+						Eterm* tmp_big0, Eterm* tmp_big1, Eterm* reg, UInt live) {
 	UInt size = big_size(arg0) + big_size(arg1);
 	UInt need_heap = BIG_NEED_SIZE(size);
 
-	Eterm *hp = HAlloc(p, need_heap);
+	if(ERTS_NEED_GC(p, need_heap)) {
+		erts_garbage_collect(p, need_heap, reg, live+2);
+		if(arg0 != make_big(tmp_big0)) {
+			arg0 = reg[live];
+		}
+		if(arg1 != make_big(tmp_big1)) {
+			arg1 = reg[live+1];
+		}
+	}
+
+	Eterm *hp = HEAP_TOP(p);
+	HEAP_TOP(p) += need_heap;
+
 	Eterm res = big_times(arg0, arg1, hp);
-	maybe_shrink(p, hp, res, need_heap);
+	trim_heap(p, hp, res);
 
 	return res;
 }
 
-Eterm erts_big_plus(ErlProcess* p, Eterm arg0, Eterm arg1) {
+Eterm erts_gc_big_plus(ErlProcess* p, Eterm arg0, Eterm arg1,
+					  Eterm* tmp_big0, Eterm* tmp_big1, Eterm* reg, UInt live) {
 	UInt size = MAX(big_size(arg0), big_size(arg1))+1;
 	UInt need_heap = BIG_NEED_SIZE(size);
 
-	Eterm *hp = HAlloc(p, need_heap);
+	if(ERTS_NEED_GC(p, need_heap)) {
+		erts_garbage_collect(p, need_heap, reg, live+2);
+		if(arg0 != make_big(tmp_big0)) {
+			arg0 = reg[live];
+		}
+		if(arg1 != make_big(tmp_big1)) {
+			arg1 = reg[live+1];
+		}
+	}
+
+	Eterm *hp = HEAP_TOP(p);
+	HEAP_TOP(p) += need_heap;
+
 	Eterm res = big_plus(arg0, arg1, hp);
-	maybe_shrink(p, hp, res, need_heap);
+	trim_heap(p, hp, res);
 
 	return res;
 }
 
-Eterm erts_big_minus(ErlProcess* p, Eterm arg0, Eterm arg1) {
+Eterm erts_gc_big_minus(ErlProcess* p, Eterm arg0, Eterm arg1,
+						Eterm* tmp_big0, Eterm* tmp_big1, Eterm* reg, UInt live) {
 	UInt size = MAX(big_size(arg0), big_size(arg1))+1;
 	UInt need_heap = BIG_NEED_SIZE(size);
 
-	Eterm *hp = HAlloc(p, need_heap);
+	if(ERTS_NEED_GC(p, need_heap)) {
+		erts_garbage_collect(p, need_heap, reg, live+2);
+		if(arg0 != make_big(tmp_big0)) {
+			arg0 = reg[live];
+		}
+		if(arg1 != make_big(tmp_big1)) {
+			arg1 = reg[live+1];
+		}
+	}
+
+	Eterm *hp = HEAP_TOP(p);
+	HEAP_TOP(p) += need_heap;
+
 	Eterm res = big_minus(arg0, arg1, hp);
-	maybe_shrink(p, hp, res, need_heap);
+	trim_heap(p, hp, res);
 
 	return res;
 }

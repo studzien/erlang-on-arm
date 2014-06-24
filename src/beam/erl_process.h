@@ -72,6 +72,17 @@ struct ErlProcess {
 
 	// Pointer to message buffer list and heap fragments
 	ErlHeapFragment *mbuf;
+
+	// Total number of reductions
+	UInt reductions;
+	// Total number of context switches
+	UInt context_switches;
+
+	// Number of ticks during start
+	UInt started_at;
+
+	// Number of GC ticks
+	UInt gc_ticks;
 };
 
 typedef struct ErlProcess ErlProcess;

@@ -11,7 +11,6 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-#include "io.h"
 #include "sys.h"
 #include "config.h"
 #include "erl_term.h"

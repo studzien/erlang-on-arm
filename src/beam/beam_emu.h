@@ -9,10 +9,12 @@
 #define BEAM_EMU_H_
 
 #include "erl_process.h"
+#include "io.h"
 
 void process_main(void* p);
 BeamInstr* apply(ErlProcess* p, Eterm module, Eterm function, Eterm args);
 inline void restore_registers(ErlProcess* p);
+static inline void allocate_heap(ErlProcess* p, UInt stack_need, UInt heap_need, UInt live);
 
 #define OpCase(OpCode) lb_##OpCode
 #define OpCode(OpCode) (&&lb_##OpCode)
@@ -211,7 +213,7 @@ inline void restore_registers(ErlProcess* p);
 
 //opcodes that have a local label as a first argument
 #define LABEL_OP_1(op) ((op)==IS_EQ_EXACT)
-#define LABEL_OP_2(op) ((op)==CALL_ONLY)
+#define LABEL_OP_2(op) ((op)==CALL_ONLY || (op)==CALL)
 
 #define JUMP_TABLE NULL,\
 		&&lb_LABEL,\

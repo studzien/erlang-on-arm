@@ -11,7 +11,7 @@
 #include "erl_process.h"
 #include "atom.h"
 
-typedef Eterm (*BifFunction)(ErlProcess*, Eterm*);
+typedef Eterm (*BifFunction)(ErlProcess*, Eterm*, UInt);
 typedef struct {
 	Eterm module;
 	Eterm function;
@@ -22,14 +22,14 @@ typedef struct {
 
 void erts_init_bif(void);
 
-Eterm plus_2(ErlProcess*, Eterm*);
-Eterm minus_2(ErlProcess*, Eterm*);
-Eterm times_2(ErlProcess*, Eterm*);
+Eterm splus_2(ErlProcess*, Eterm*, UInt);
+Eterm sminus_2(ErlProcess*, Eterm*, UInt);
+Eterm stimes_2(ErlProcess*, Eterm*, UInt);
 
 static BifEntry bif_table[] = {
-		{atom_erlang, atom_plus, 2, plus_2},
-		{atom_erlang, atom_minus, 2, minus_2},
-		{atom_erlang, atom_times, 2, times_2}
+		{atom_erlang, atom_splus, 2, splus_2},
+		{atom_erlang, atom_sminus, 2, sminus_2},
+		{atom_erlang, atom_stimes, 2, stimes_2}
 };
 
 #endif /* ERL_BIF_H_ */

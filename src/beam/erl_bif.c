@@ -23,14 +23,14 @@ void erts_init_bif(void) {
 	}
 }
 
-Eterm plus_2(ErlProcess* p, Eterm* args) {
-	return erts_mixed_plus(p, args[0], args[1]);
+Eterm splus_2(ErlProcess* p, Eterm* reg, UInt live) {
+	return erts_gc_mixed_plus(p, reg, live);
 }
 
-Eterm minus_2(ErlProcess* p, Eterm* args) {
-	return erts_mixed_minus(p, args[0], args[1]);
+Eterm sminus_2(ErlProcess* p, Eterm* reg, UInt live) {
+	return erts_gc_mixed_minus(p, reg, live);
 }
 
-Eterm times_2(ErlProcess* p, Eterm* args) {
-	return erts_mixed_times(p, args[0], args[1]);
+Eterm stimes_2(ErlProcess* p, Eterm* reg, UInt live) {
+	return erts_gc_mixed_times(p, reg, live);
 }

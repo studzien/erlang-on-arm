@@ -14,13 +14,23 @@ int init_done = 0;
 
 Eterm x0;
 Eterm reg[X_REGS_ALLOCATED];
-Eterm E[X_REGS_ALLOCATED];
+Eterm* E, *HTOP;
 Eterm tmp0, tmp1;
 char buf[50];
 int i;
 
 BeamInstr beam_apply[2];
 extern void* jump_table[];
+extern UInt reclaimed;
+extern UInt garbage_cols;
+
+#define SWAPIN             \
+    HTOP = HEAP_TOP(p);  \
+    E = p->stop
+
+#define SWAPOUT            \
+    HEAP_TOP(p) = HTOP;  \
+    p->stop = E
 
 void process_main(void* arg) {
 	ErlProcess* p = (ErlProcess*)arg;
@@ -43,6 +53,7 @@ void process_main(void* arg) {
 		return;
 	}
 
+	SWAPIN;
 	restore_registers(p);
 	Goto(*(p->i));
 
@@ -62,22 +73,27 @@ void process_main(void* arg) {
 		p->i +=1;
 	OpCase(CALL):
 		debug("call\n");
-		p->i +=3;
-		Goto(*(p->i));
+		p->cp = p->i+3;
+		p->arity = (uint8_t)unsigned_val(Arg(0));
+		p->i = (BeamInstr*)(Arg(1));
+		p->fcalls--;
+		p->reductions++;
+		//dump_stack(p, E);
+		goto maybe_yield;
 	OpCase(CALL_LAST):
 		debug("call_last\n");
 		p->i +=4;
 		Goto(*(p->i));
 	OpCase(CALL_ONLY):
-		debug("call_only\n");
+		//debug("call_only\n");
 		p->arity = (uint8_t)unsigned_val(Arg(0));
-		debug("calling ");
-		debug_term_buf(x0, buf);
-		//debug_term_buf(x(1), buf);
-		debug("\n");
-		//debug_32(xPortGetFreeHeapSize());
+		//sprintf(buf, "pid %u calling ", p->id);
+		//debug(buf);
+		//debug_term_buf(x0, buf);
+		//debug("\n");
 		p->i = (BeamInstr*)(Arg(1));
 		p->fcalls--;
+		p->reductions++;
 		goto maybe_yield;
 	OpCase(CALL_EXT):
 		debug("call_ext\n");
@@ -109,6 +125,14 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	OpCase(ALLOCATE_ZERO):
 		debug("allocate_zero\n");
+		do {} while(0);
+		Eterm *ptr;
+		UInt StackN = unsigned_val(Arg(0));
+		UInt Live = unsigned_val(Arg(1));
+		allocate_heap(p, StackN, 0, Live);
+		for(ptr = E+StackN; E > ptr; ptr--) {
+			make_blank(*ptr);
+		}
 		p->i +=3;
 		Goto(*(p->i));
 	OpCase(ALLOCATE_HEAP_ZERO):
@@ -125,9 +149,15 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	OpCase(DEALLOCATE):
 		debug("deallocate\n");
+		p->cp = (BeamInstr*)E[0];
+		E += unsigned_val(Arg(0)) + 1;
 		p->i +=2;
 		Goto(*(p->i));
 	OpCase(RETURN):
+		debug("return\n");
+		debug_term_buf(x0, buf);
+		debug("\n");
+
 		p->i = p->cp;
 		Goto(*(p->i));
 	OpCase(SEND):
@@ -376,6 +406,7 @@ void process_main(void* arg) {
 		e = (Export*)(Arg(1));
 		p->i = e->address;
 		p->fcalls--;
+		p->reductions++;
 		goto maybe_yield;
 	OpCase(BS_START_MATCH):
 		debug("bs_start_match\n");
@@ -562,14 +593,17 @@ void process_main(void* arg) {
 		p->i +=6;
 		Goto(*(p->i));
 	OpCase(GC_BIF2):
-		//debug("gc_bif2\n");
 		e = (Export*)Arg(2);
-		Resolve(Arg(3), tmp0);
-		Resolve(Arg(4), tmp1);
-		Eterm args[] = {tmp0, tmp1};
-		Eterm result = (e->bif)(p, args);
+		UInt live = unsigned_val(Arg(1));
+		reg[0] = r(0);
+		Resolve(Arg(3), reg[live]);
+		Resolve(Arg(4), reg[live+1]);
+		Eterm result = (e->bif)(p, reg, live);
+		r(0) = reg[0];
 		Move(result, Arg(5));
 		p->i +=7;
+		p->fcalls--;
+		p->reductions++;
 		Goto(*(p->i));
 	OpCase(BS_FINAL2):
 		debug("bs_final2\n");
@@ -691,14 +725,24 @@ void process_main(void* arg) {
 		Goto(*(p->i));
 	OpCase(NORMAL_EXIT):
 		//@todo do a lot of stuff when exiting a process
+		do {} while(0);
+		UInt ticks = LPC_TIM0->TC;
 		debug("Result: ");
 		debug_term(x0);
 		debug("\n");
+		sprintf(buf, "Reclaimed: %u words\n", reclaimed); debug(buf);
+		sprintf(buf, "Garbage cols: %u\n", garbage_cols); debug(buf);
+		sprintf(buf, "Reductions: %u\n", p->reductions); debug(buf);
+		sprintf(buf, "Context switches %u\n", p->context_switches); debug(buf);
+		sprintf(buf, "Ticks: %u\n", ticks - p->started_at); debug(buf);
+		sprintf(buf, "GC ticks: %u\n", p->gc_ticks); debug(buf);
+		sprintf(buf, "Heap size: %u words\n", p->heap_sz); debug(buf);
 		erts_do_exit_process(p, atom_normal);
 
 	maybe_yield:
 	if(p->fcalls <= 0) {
 		//@todo test this
+		p->context_switches++;
 		if(p->arity > p->max_arg_reg) {
 			if(p->arg_reg != p->def_arg_reg) {
 				vPortFree(p->arg_reg);
@@ -712,7 +756,13 @@ void process_main(void* arg) {
 		p->arg_reg[0] = r(0);
 		p->fcalls = REDUCTIONS;
 
+		debug("swapping out\n");
+		SWAPOUT;
 		taskYIELD();
+		SWAPIN;
+		debug("swapping in\n");
+
+		dump_stack(p, E);
 
 		restore_registers(p);
 	}
@@ -753,4 +803,20 @@ BeamInstr* apply(ErlProcess* p, Eterm module, Eterm function, Eterm args) {
 
 	Export *export = erts_export_get(&e);
 	return export->address;
+}
+
+void allocate_heap(ErlProcess* p, UInt stack_need, UInt heap_need, UInt live) {
+	int needed = stack_need+1;
+	if(E - HTOP < (needed + heap_need)) {
+		SWAPOUT;
+		reg[0] = r(0);
+		p->fcalls -= erts_garbage_collect(p, needed+heap_need, reg, live);
+		r(0) = reg[0];
+		SWAPIN;
+	}
+	E -= needed;
+	*E = (Eterm)(p->cp);
+
+	p->cp = 0;
+
 }

@@ -64,7 +64,7 @@ typedef uint32_t UInt;
 #define is_yreg(x) (((x) & 0xf) == Y_REG_DEF)
 #define is_xreg(x) (((x) & 0xf) == X_REG_DEF)
 #define x_reg_index(x) ((x) >> 4)
-#define y_reg_index(x) ((x) >> 4)
+#define y_reg_index(x) (((x) >> 4)+1)
 
 #define CONS(hp, car, cdr) \
 	(CAR(hp)=(car), CDR(hp)=(cdr), make_list(hp))
@@ -77,6 +77,7 @@ typedef uint32_t UInt;
 #define is_list(x)      (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_LIST)
 
 #define NIL (((Eterm)(0) << _TAG_IMMED2_SIZE) | _TAG_IMMED2_NIL)
+#define make_blank(X)   ((X) = NIL)
 
 #define is_immed(x) (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_IMMED1)
 #define IS_CONST(x) is_immed((x))
@@ -145,5 +146,8 @@ typedef uint32_t UInt;
 #define SMALL_MINUS_ONE make_small(-1)
 #define SMALL_ZERO make_small(0)
 #define SMALL_ONE  make_small(1)
+
+#define offset_ptr(x, offs) ((x)+((offs)*sizeof(Eterm)))
+#define ptr_val(x) ((Eterm*) ((x) & ~((UInt) 0x3)))
 
 #endif /* ERL_TERM_H_ */

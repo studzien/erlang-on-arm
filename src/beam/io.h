@@ -8,10 +8,11 @@
 #ifndef IO_H_
 #define IO_H_
 
-#include "erl_term.h"
+#include "erl_process.h"
 
 void debug_term(Eterm term);
 void debug_term_buf(Eterm term, char* buf);
+void dump_stack(ErlProcess* p, Eterm* stop);
 
 #if (DEBUG == 1)
 #define debug(what) do { vPrintString(what); } while(0)

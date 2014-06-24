@@ -40,9 +40,9 @@ static char* erl_atom_names[] = {
 };
 
 #define atom_erlang make_atom(0)
-#define atom_plus make_atom(1)
-#define atom_minus make_atom(2)
-#define atom_times make_atom(3)
+#define atom_splus make_atom(1)
+#define atom_sminus make_atom(2)
+#define atom_stimes make_atom(3)
 #define atom_normal make_atom(4)
 
 #endif /* ATOM_H_ */
