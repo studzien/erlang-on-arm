@@ -1,0 +1,29 @@
+\BOOKMARK [0][-]{chapter.1}{Zaimplementowane elementy maszyny wirtualnej}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Modu\233 \233adujacy kod \(loader\)}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Tablice}{chapter.1}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Tablica atom\363w}{section.1.2}% 4
+\BOOKMARK [2][-]{subsection.1.2.2}{Tablica eksportowanych funkcji}{section.1.2}% 5
+\BOOKMARK [1][-]{section.1.3}{Typy danych}{chapter.1}% 6
+\BOOKMARK [2][-]{subsection.1.3.1}{Wartosci bezposrednie a posrednie}{section.1.3}% 7
+\BOOKMARK [2][-]{subsection.1.3.2}{Wartosci bezposrednie}{section.1.3}% 8
+\BOOKMARK [2][-]{subsection.1.3.3}{Listy}{section.1.3}% 9
+\BOOKMARK [2][-]{subsection.1.3.4}{Krotki}{section.1.3}% 10
+\BOOKMARK [2][-]{subsection.1.3.5}{Duze liczby}{section.1.3}% 11
+\BOOKMARK [2][-]{subsection.1.3.6}{Niezaimplementowane typy danych}{section.1.3}% 12
+\BOOKMARK [1][-]{section.1.4}{Interpreter kodu maszynowego}{chapter.1}% 13
+\BOOKMARK [2][-]{subsection.1.4.1}{Maszyna stosowa a rejestrowa}{section.1.4}% 14
+\BOOKMARK [2][-]{subsection.1.4.2}{Model interpretera}{section.1.4}% 15
+\BOOKMARK [1][-]{section.1.5}{Procesy}{chapter.1}% 16
+\BOOKMARK [1][-]{section.1.6}{Planista \(scheduler\)}{chapter.1}% 17
+\BOOKMARK [1][-]{section.1.7}{Funkcje wbudowane \(Built-In Functions\)}{chapter.1}% 18
+\BOOKMARK [2][-]{subsection.1.7.1}{Funkcje og\363lne \(modu\233 erlang\)}{section.1.7}% 19
+\BOOKMARK [2][-]{subsection.1.7.2}{Listy \(modu\233 lists\)}{section.1.7}% 20
+\BOOKMARK [2][-]{subsection.1.7.3}{GPIO i obs\233uga przerwan \(modu\233 lpc\137gpio\)}{section.1.7}% 21
+\BOOKMARK [2][-]{subsection.1.7.4}{SPI \(modu\233 lpc\137spi\)}{section.1.7}% 22
+\BOOKMARK [1][-]{section.1.8}{Garbage collector}{chapter.1}% 23
+\BOOKMARK [1][-]{section.1.9}{Mechanizmy zarzadzania czasem}{chapter.1}% 24
+\BOOKMARK [1][-]{section.1.10}{Podsumowanie r\363znic z maszyna BEAM}{chapter.1}% 25
+\BOOKMARK [0][-]{appendix.A}{Lista instrukcji maszyny wirtualnej BEAM}{}% 26
+\BOOKMARK [1][-]{section.A.1}{Typy argument\363w}{appendix.A}% 27
+\BOOKMARK [1][-]{section.A.2}{Lista instrukcji}{appendix.A}% 28
+\BOOKMARK [0][-]{table.A.2}{Bibliografia}{}% 29

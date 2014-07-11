@@ -1,0 +1,39 @@
+\chapter{Kompilator aplikacji}
+\label{cha:builder}
+%---------------------------------------------------------------------------
+
+Dodatek zawiera opis działania pomocnicznego narzędzia utworzonego dla potrzeb pracy, służącego do przygotowywania skompilowanych modułów Erlanga do włączenia w maszynę wirtualną uruchamianą pod systemem FreeRTOS.
+
+
+\section{Opis aplikacji}
+\label{sec:builderOpis}
+%---------------------------------------------------------------------------
+Maszyna wirtualna Erlanga dla systemu FreeRTOS implementowana w ramach pracy, na obecnym poziomie zaawansowania wymaga wkompilowania bajtkodu modułu w maszynę wirtualną.
+Kod źródłowy maszyny oczekuje specjalnie przygotowanego pliku \texttt{modules.h}, który zawiera kod modułów a~także moduł, funkcję i argumenty, które zaczną być wykonywane w momencie startu maszyny.
+Cały kod źródłowy maszyny wirtualnej może zostać następnie skompilowany wraz z mikrojądrem FreeRTOS, za pomocą platformy NXP LPCXpresso \cite{LPCXpresso}, przeznaczonej do rozwijania i programowania aplikacji na mikrokontrolery serii LPC.
+
+Niniejsze narzędzie służy właśnie do generowania pliku \texttt{modules.h}, którego skopiowanie do katalogu z kodem źródłowym maszyny wirtualnej spowoduje włączenie wybranych modułów do maszyny wirtualnej.
+Oprócz tego, przed wygenerowaniem właściwego pliku wyjściowego, narzędzie dokonuje rozpakowania fragmentów kodu modułu, które zostały spakowane algorytmem \textbf{zlib}.
+Funkcjonalność ta została uwzględniona ze względu na fakt, że moduł ładujący kod w maszynie opisywanej w pracy nie posiada zaimplementowanego algorytmu dekompresji tego formatu.
+
+\section{Kompilacja narzędzia}
+\label{sec:builderKompilacja}
+%---------------------------------------------------------------------------
+
+Narzędzie zostało zaimplementowane w języku Erlang, dlatego też do jego kompilacji wymagany jest kompilator Erlanga. Narzędziem budującym projekt jest \texttt{rebar}, który również jest wymagany.
+
+Aby skompilować aplikację, wystarczy użyć komendy \texttt{make} w głównym katalogu aplikacji. Plikiem wyjściowym będzie plik wykonywalny \texttt{freertos}, stanowiący samodzielną aplikację. Możliwe zatem jest skopiowanie go do wygodnego w użyciu folderu, np. uwzględnionego w domyślnej ścieżce dla aplikacji.
+
+\section{Użycie narzędzia}
+\label{sec:builderUzycie}
+%---------------------------------------------------------------------------
+
+Aplikacja jest aplikacją konsolową, która jako obowiązkowe argumenty przyjmuje listę plików źródłowych Erlanga, które zostaną skompilowane do pliku nagłówkowego maszyny wirtualnej.
+
+Aby skompilować aplikację opisaną w rozdziale \ref{sec:przykladySilnia}, należy po wejściu do katalogu z przykładem użyć komendy \texttt{freertos *.erl} (zakładając że skompilowane wcześniej narzędzie znajduje się w~ścieżce domyślnej). Efektem polecenia będzie wygenerowany plik \texttt{modules.h}, który następnie należy skompilować razem z maszyną wirtualną.
+
+Istnieje możliwość wyboru pliku wyjściowego poprzez użycie opcji \texttt{-o} lub \texttt{-{}-output}, jeżeli pożądane jest wygenerowanie innego pliku niż domyślnego \texttt{modules.h} w bieżącym katalogu.
+
+Istnieje również możliwość wyboru początkowej funkcji programu (domyślnie jest to \texttt{main:main()}) z użyciem opcji \texttt{-m} lub \texttt{-{}-module} dla modułu, \texttt{-f} lub \texttt{-{}-function} dla funkcji oraz \texttt{-a} lub \texttt{-{}-argument} dla argumentów.
+
+Opis użycia narzędzia można zawsze wyświetlić uruchamiając aplikację \texttt{freertos} bez użycia żadnych argumentów.

@@ -7,14 +7,14 @@ Oprócz tego dodatek dokumentuje, na potrzeby projektu, zawartość pliku ze sko
 %---------------------------------------------------------------------------
 \section{Wprowadzenie}
 
-Narzędzia przeznaczone do generacji wszystkich form pośrednich kodu źródłowego opisanych w niniejszym rozdziale zostały napisane w języku Erlang. Dostępne są one w pakiecie aplikacji \texttt{compiler} dostarczanej wraz z maszyną wirtualną BEAM.
+Narzędzia przeznaczone do generacji wszystkich form pośrednich kodu źródłowego opisanych w~niniejszym rozdziale zostały napisane w języku Erlang. Dostępne są one w pakiecie aplikacji \texttt{compiler} dostarczanej wraz z maszyną wirtualną BEAM.
 
 %---------------------------------------------------------------------------
 \section{Kod źródłowy}
 
-Listingi \ref{lis:facERL} oraz \ref{lis:facHRL} prezentują prosty, przykładowy moduł zaimplementowany w języku Erlang, którego zadaniem jest obliczanie silni za pomocą funkcji rekurencyjnej ogonowo.
+Listingi \ref{lis:facERL} oraz \ref{lis:facHRL} prezentują prosty, przykładowy moduł zaimplementowany w języku Erlang, którego zadaniem jest obliczanie silni za pomocą funkcji ogonowo-rekurencyjnej.
 
-Elementy takie jak używanie rekordu do przechowywania akumulatora funkcji czy zwracanie krotki informującej w przypadku błędu zaciemniają nieco sposób działania funkcji. W tym przykładzie zostały one jednak zawarte w celu przeanalizowania przekształceń, jakim poddawany jest kod źródłowy w trakcie poszczególnych kroków kompilacji.
+Elementy takie jak używanie rekordu do przechowywania akumulatora funkcji czy zwracanie krotki informującej o błędzie zaciemniają nieco sposób działania funkcji. W tym przykładzie zostały one jednak zawarte w celu przeanalizowania przekształceń, jakim poddawany jest kod źródłowy w~trakcie poszczególnych kroków kompilacji.
 
 \begin{lstlisting}[style=erlang, caption=Plik fac.erl, label=lis:facERL]
 -module(fac).
@@ -45,12 +45,14 @@ fac(_) ->
 
 Pierwszym krokiem w procesie otrzymywania kodu maszynowego Erlanga jest wstępne przetwarzanie wykonywane przez preprocesor kompilatora.
 
-Krok ten jest dwuetapowy. W pierwszym, z plikiem modułu łączone są pliki, które zostały do niego włączone poprzez użycie dyrektywy \texttt{\-include}. W miejscach dołączania zewnętrznych plików dodawane są także dyrektywy \texttt{\-file} po to, aby przy debugowaniu skompilowanego modułu można było zidentyfikować z którego pliku pochodzą dane fragmenty kodu. Na tym etapie podstawiane są również wartości makr. Jeżeli w opcjach kompilacji zdefiniowana jest operacja \texttt{\{parse\_transform, Module\}} modyfikująca drzewo składniowe modułu to zostanie ona również wykonywana w tym kroku.
-Kod modułu po tym kroku został przedstawiony na listingu \ref{lis:facP}.
+Krok ten jest dwuetapowy. W pierwszym, z plikiem modułu łączone są pliki, które zostały do niego włączone poprzez użycie dyrektywy \texttt{\-include}. W miejscach dołączania zewnętrznych plików dodawane są także dyrektywy \texttt{\-file} po to, aby przy debugowaniu skompilowanego modułu można było zidentyfikować z którego pliku pochodzą dane fragmenty kodu. Na tym etapie podstawiane są również wartości makr. Jeżeli w opcjach kompilacji zdefiniowana jest operacja \texttt{\{parse\_transform, Module\}} modyfikująca drzewo składniowe modułu to zostanie ona również wykonywana w tym kroku, przekazując do dalszej kompilacji wynik działania funkcji \texttt{Module:parse\_transform/2}.
+
+Kod modułu po tym kroku został przedstawiony na listingu \ref{lis:facP}. Wygenerowanie kodu w tej postaci jest możliwe przy użyciu kompilatora z opcją \texttt{-P}: \texttt{erlc -P fac.erl}.
 
 Kolejnym krokiem jest rozwinięcie rekordów do krotek (rekordy są tylko lukrem składniowym języka Erlang, upraszczającym operacje na krotkach o dużej liczbie pól) oraz dołączenie funkcji \texttt{module\_info/0} oraz \texttt{module\_info/1}, które znajdują się w każdym skompilowanym module.
 Funkcje te zwracają informacje o skompilowanym module, takie jak np. eksportowane funkcje.
-Kod modułu po wykonaniu tej operacji został przedstawiony na listingu \ref{lis:facE}.
+
+Kod modułu po wykonaniu tej operacji został przedstawiony na listingu \ref{lis:facE}. Wygenerowanie kodu w tej postaci jest możliwe przy użyciu kompilatora z opcją \texttt{-E}: \texttt{erlc -E fac.erl}.
 
 \begin{lstlisting}[style=erlang, caption=Moduł \texttt{fac} po pierwszym przetworzeniu, label=lis:facP]
 -file("fac.erl", 1).
@@ -170,12 +172,12 @@ Drzewo składniowe dla przykładowego modułu \texttt{fac}, po przetwarzaniu wst
                        [{atom,0,fac},{var,0,'X'}]}]}]}]
 \end{lstlisting}
 
-Drzewo składniowe modułów może zostać także wykorzystane w sytuacji, jeżeli chcemy utworzyć kompilator innego języka programowania, który kompilowałby kod źródłowy w tym języku do kodu maszynowego Erlanga. W efekcie możliwe będzie uruchamianie programów napisanych w tym języku na dowolnej maszynie wirtualnej Erlanga. Wydaje się to być dobrym pomysłem dla języków, które mogą wynieść dużo korzyści z uruchamiania programów w nich napisanych na maszynie mającej takie właściwości jak BEAM. Przykładem tego może być język Elixir.
+Drzewo składniowe modułów może zostać także wykorzystane w sytuacji, jeżeli chcemy utworzyć kompilator innego języka programowania, który kompilowałby kod źródłowy w tym języku do kodu maszynowego Erlanga. W efekcie możliwe będzie uruchamianie programów napisanych w tym języku na dowolnej maszynie wirtualnej Erlanga. Wydaje się to być dobrym pomysłem dla języków, które mogą wynieść dużo korzyści z uruchamiania programów w nich napisanych na maszynie mającej takie właściwości jak BEAM. Przykładem tego może być język Elixir \cite{elixir}.
 %---------------------------------------------------------------------------
 \section{Core Erlang}
 \label{sec:compilationCore}
 
-Kolejnym krokiem kompilacji jest transformacja kodu do innego języka - Core Erlanga. Jest to język funkcyjny, składnią przypominający Erlanga. Jednak ze względu na uproszczenie składni, pozwala on na łatwiejszą maszynową optymalizację i konwersję do kodu pośredniego maszyny wirtualnej (bajtkodu).
+Kolejnym krokiem kompilacji jest transformacja kodu do innego języka - Core Erlang. Jest to język funkcyjny, składnią przypominający język Erlang. Jednak ze względu na uproszczenie składni, pozwala on na łatwiejszą maszynową optymalizację i konwersję do kodu pośredniego maszyny wirtualnej (bajtkodu).
 
 Kod rozważanego w tym dodatku modułu, w języku Core Erlang, został umieszczony na listingu \ref{lis:facCORE}.
 
@@ -223,11 +225,13 @@ end
 \end{lstlisting}
 
 %---------------------------------------------------------------------------
-\section{Kod pośredni -  (\emph{bytecode})}
+\section{Kod pośredni -  bajtkod}
 
-Dopiero z modułu w postaci Core Erlang generowany jest bajtkod - kod maszynowy rozumiany przez maszynę wirtualną Erlanga. Język maszynowy zawiera instrukcje z określonego zestawu instrukcji, których pełna lista wraz z opisem argumentów znajduje się w dodatku \ref{cha:opeacjeBeam}.
+Dopiero z modułu w postaci Core Erlang generowany jest bajtkod - kod maszynowy rozumiany przez maszynę wirtualną Erlanga. Język maszynowy zawiera instrukcje z określonego zestawu instrukcji, których pełna lista wraz z opisem argumentów znajduje się w dodatku \ref{cha:operacjeBeam}.
 
-Wygenerowany kod pośredni dla przykładowego modułu silni, w formie listy krotek, został zawarty na listingu \ref{lis:facS}. Na listingu zawarty jest kod pośredni dla każdej z funkcji modułu (oznaczonej krotką \texttt{\{function, ...\}}). Pierwszym elementem każdej krotki wewnątrz funkcji jest nazwa operacji, a kolejnymi argumenty tej operacji.
+Wygenerowanie kodu w tej postaci jest możliwe przy użyciu kompilatora z opcją \texttt{-S}: \texttt{erlc -S fac.erl}.
+
+Wygenerowany kod pośredni dla przykładowego modułu silni, w formie listy krotek, został zawarty na listingu \ref{facS}. Na listingu zawarty jest kod pośredni dla każdej z funkcji modułu (oznaczonej krotką \texttt{\{function, ...\}}). Pierwszym elementem każdej krotki wewnątrz funkcji jest nazwa operacji, a~kolejnymi argumenty tej operacji.
 
 \begin{lstlisting}[style=erlang, caption=\emph{Bytecode} modułu fac, label=facS]
 {module, fac}.  %% version = 0
@@ -306,7 +310,7 @@ Wygenerowany kod pośredni dla przykładowego modułu silni, w formie listy krot
     {call_ext_only,2,{extfunc,erlang,get_module_info,2}}.
 \end{lstlisting}
 
-Kod modułu w postaci kodu pośredniego jest jeszcze na zbyt wysokim poziomie abstrakcji, aby mógł bezpośrednio zostać zrozumiany przez maszynę wirtualną. Wszystkie argumenty operacji użyte w kodzie, takie jak np. odnośniki do etykiet czy atomy muszą zostać zapisane w odpowiednich tablicach i ich indeksy w odpowiedniej formie mogą dopiero zostać użyte jako właściwe argumenty operacji. Oprócz tego same nazwy operacji muszą zostać zamienione na odpowiadające im opkody. Czynności te wykonywane są w kolejnym kroku - generacji pliku binarnego z kodem modułu, opisanym w kolejnej sekcji.
+Kod modułu w postaci kodu pośredniego jest jeszcze na zbyt wysokim poziomie abstrakcji, aby mógł bezpośrednio zostać zrozumiany przez maszynę wirtualną. Wszystkie argumenty operacji użyte w~kodzie, takie jak np. odnośniki do etykiet czy atomy muszą zostać zapisane w odpowiednich tablicach i ich indeksy w odpowiedniej formie mogą dopiero zostać użyte jako właściwe argumenty operacji. Oprócz tego same nazwy operacji muszą zostać zamienione na odpowiadające im opkody. Czynności te wykonywane są w kolejnym kroku - generacji pliku binarnego z kodem modułu, opisanym w kolejnej sekcji.
 
 %---------------------------------------------------------------------------
 \section{Plik binarny BEAM}
@@ -369,7 +373,7 @@ Warto zaznaczyć również, że sposób implementacji maszyny wirtualnej BEAM ni
 %---------------------------------------------------------------------------
 \subsection{Tablica atomów}
 %---------------------------------------------------------------------------
-Tablica atomów zawiera listę wszystkich atomów, które używane są przez dany moduł. W trakcie ładowania kodu modułu przez maszynę wirtualną, atomy, które nie wystepowały we wcześniej załadowanych modułach, zostają wstawione do globalnej tablicy atomów (w postaci tablicy z hashowaniem).
+Tablica atomów zawiera listę wszystkich atomów, które używane są przez dany moduł. W trakcie ładowania kodu modułu przez maszynę wirtualną, atomy, które nie występowały we wcześniej załadowanych modułach, zostają wstawione do globalnej tablicy atomów (w postaci tablicy z hashowaniem).
 
 Ponieważ długość atomu zapisana jest na jednym bajcie, nazwa atomu może mieć maksymalnie 255 znaków.
 
@@ -462,7 +466,7 @@ Identyfikowany jest on przez napis \texttt{ImpT}. Struktura danych fragmentu zaw
 %---------------------------------------------------------------------------
 \subsection{Tablica eksportowanych funkcji}
 %---------------------------------------------------------------------------
-Fragment pliku binarnego z tablicą eksportowanych funkcji zawiera informacje o funkcjach z modułu, które widoczne są z poziomu innych modułów.
+Fragment pliku binarnego z tablicą eksportowanych funkcji zawiera informacje o funkcjach z modułu, które widoczne są z~poziomu innych modułów.
 
 Identyfikowany jest on przez napis \texttt{ExpT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:exporttable}.
 
@@ -491,7 +495,7 @@ Identyfikowany jest on przez napis \texttt{ExpT}. Struktura danych fragmentu zaw
 %---------------------------------------------------------------------------
 \subsection{Tablica funkcji lokalnych}
 %---------------------------------------------------------------------------
-Fragment pliku binarnego z tablicą lokalnych funkcji zawiera informacje o funkcjach zaimplementowanych w module (w tym lambd), które wykorzystywane są tylko przez ten moduł i nie są widoczne z poziomu innych modułów.
+Fragment pliku binarnego z tablicą lokalnych funkcji zawiera informacje o funkcjach zaimplementowanych w module (w tym lambd), które wykorzystywane są tylko przez ten moduł i nie są widoczne z~poziomu innych modułów.
 
 Identyfikowany jest on przez napis \texttt{LocT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:localtable}.
 
@@ -522,7 +526,7 @@ Identyfikowany jest on przez napis \texttt{LocT}. Struktura danych fragmentu zaw
 %---------------------------------------------------------------------------
 Fragment pliku binarnego z tablicą lambd zawiera informacje o obiektach funkcyjnych, które wykorzystywane są przez ten moduł.
 
-Lambdy indentyfikowane są poprzez atomy, które powstały przez złączenie nazwy funkcji, w której zostały zdefiniowane oraz kolejny indeks lambdy zdefiniowanej w danej funkcji.
+Lambdy indentyfikowane są poprzez atomy, które powstały przez złączenie nazwy funkcji, w~której zostały zdefiniowane oraz kolejny indeks lambdy zdefiniowanej w danej funkcji.
 Np. kolejne obiekty funkcyjne zdefiniowane w funkcji \texttt{foo/1} będą identyfikowane przez atomy \texttt{-foo/1-fun-0-}, \texttt{-foo/1-fun-1-} itd.
 
 Fragment pliku tablicą lambdy identyfikowany jest przez napis \texttt{FunT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:lambdatable}.
@@ -560,10 +564,10 @@ Fragment pliku tablicą lambdy identyfikowany jest przez napis \texttt{FunT}. St
 %---------------------------------------------------------------------------
 Fragment pliku binarnego z tablicą lambd stałych zawiera informacje o stałych (listy, napisy, duże liczby) które wykorzystywane są przez ten moduł.
 
-Właściwa lista wartości stałych (od bajtu 4 do końca fragmentu) przechowywana jest w pliku w postaci skompresowanej algorytmem \textbf{zlib}.
-Stałe zapisane są w formacie binarnym w formacie \emph{External Term Format}, opisanym w dokumencie \cite{ExternalTermFormat}.
+Właściwa lista wartości stałych (od bajtu 4 do końca fragmentu) przechowywana jest w pliku w~postaci skompresowanej algorytmem \textbf{zlib}. Podany rozmiar w bajtach dotyczy nieskompresowanej tablicy stałych.
+Stałe zapisane są w formacie binarnym w formacie \emph{External Term Format}, opisanym w~dokumencie \cite{ExternalTermFormat}.
 
-Fragment pliku z tablicą identyfikowany jest przez napis \texttt{LitT}. Struktura danych fragmentu zawarta została w tabeli \ref{table:literaltable}.
+Fragment pliku z tablicą identyfikowany jest przez napis \texttt{LitT}. Struktura danych fragmentu (w~zdekompresowanej postaci) zawarta została w tabeli \ref{table:literaltable}.
 
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -590,7 +594,7 @@ Fragment pliku z tablicą identyfikowany jest przez napis \texttt{LitT}. Struktu
 %---------------------------------------------------------------------------
 \subsection{Lista atrybutów modułu}
 %---------------------------------------------------------------------------
-Fragment pliku binarnego z listą atrybutów modułu zawiera listę dwójek (\emph{proplistę}) ze wszystkimi dodatkowymi atrybutami, z jakimi został skompilowany dany moduł (np. informacje o wersji czy autorze). Lista ta zapisana jest binarnie w postaci \emph{External Term Format}.
+Fragment pliku binarnego z listą atrybutów modułu zawiera listę dwójek (tzw. \emph{proplistę}) ze wszystkimi dodatkowymi atrybutami, z jakimi został skompilowany dany moduł (np. informacje o wersji czy autorze). Lista ta zapisana jest binarnie w postaci \emph{External Term Format}.
 
 Fragment ten reprezentowany jest przez napis \texttt{Attr}.
 

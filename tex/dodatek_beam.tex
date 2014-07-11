@@ -15,12 +15,12 @@ Kolejość bajtów w zapisie kodu pośredniego to zawsze \emph{big endian}.
 %---------------------------------------------------------------------------
 Argumentem jest zawsze liczba całkowita, reprezentująca wartość liczbową bądź indeks w odpowiedniej tablicy z wartościami (pierwszym indeksem takiej tablicy jest 0). W związku z tym argumenty mogą być różnego typu. Aby rozróżnić argument jednego typu od drugiego poddaje się je odpowiedniemu tagowaniu. Operację wykonuje się bezpośrednio na argumencie, jeśli jest dostatecznie mały, lub na odpowiednim nagłówku poprzedzającym argument. Rozróżnienie to jest spowodowane oszczędnością rozmiaru kodu pośredniego, który musi być przechowywany w pamięci.
 
-Każdy z tagów, które zostały wymienione w tabeli \ref{table:codeTags}, jest możliwy do zapisania przy użyciu 3 bitów, które zajmują najmniej znaczące bity argumentu.
+Każdy z tagów, które zostały wymienione w tabeli \ref{table:codeTags}, jest możliwy do zapisania przy użyciu 3~bitów, które zajmują najmniej znaczące bity argumentu.
 Jednak w kodowaniu binarnym do zapisu typu używane są dodatkowo 1 lub 2 bity. Dzięki nim możliwe jest rozróżnienie pomiędzy argumentami zapisanymi przy użyciu różnej liczby bajtów.
 
 Tagowanie odbywa się za pomocą następującej operacji:
 
-$${(0000\text{XXXX} \ll N)}_{(2)} \oplus {000\text{\textbf{SS}}\text{\textbf{TTT}}}_{(2)},$$
+$${(0000\text{XXXX} \ll N)}_{(2)} \vee {000\text{\textbf{SS}}\text{\textbf{TTT}}}_{(2)},$$
 gdzie $\text{XXXX}_{(2)}$ jest tagowaną liczbą, 
 $N=4 \text{ lub } 5$, 
 $\text{\textbf{SS}}_{(2)}$ są dodatkowymi bitami znakującymi rozmiar argumentu, a
@@ -93,262 +93,264 @@ $${11111\mathbf{001} \enskip 0110\mathbf{0000}}_{2} = \text{F}960_{16} = 63840_{
 %---------------------------------------------------------------------------
 W tabeli \ref{tab:ops} zawarto listę instrukcji rozumianych przez maszynę wirtualną BEAM wraz z jednobajtowym kodem operacji, listą jej argumentów i krótkim opisem działania.
 
+Na liście oznaczono operacje, które zostały zaimplementowane w maszynie wirtualnej opisywanej w pracy. Brak implementacji poszczególnych instrukcji podyktowanym jest brakiem wsparcia pewnych funkcjonalności lub typów danych w maszynie.
+
 Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte.
 
-\begin{longtable}{|c|c|p{5cm}|p{7cm}|}
+\begin{longtable}{|c|c|p{5cm}|p{6.75cm}|c|}
 \hline
 
-\multicolumn{2}{|c|}{\textbf{Kod operacji}} & \multirow{2}{*}{\textbf{Nazwa operacji i jej argumenty}} & \multirow{2}{*}{\textbf{Opis operacji i uwagi}} \\
+\multicolumn{2}{|c|}{\textbf{Kod operacji}} & \multirow{2}{*}{\textbf{Nazwa operacji i jej argumenty}} & \multirow{2}{*}{\textbf{Opis operacji i uwagi}} & \multirow{2}{*}{\textbf{Jest?}} \\
 \cline{1-2}
-\textbf{hex} & \textbf{dec} & & \\
+\textbf{hex} & \textbf{dec} & & & \\
 \hline
-\endfirsthead
+\endhead
 
-01 & 1 & \texttt{label Lbl} & Wprowadza lokalną dla danego modułu etykietę identyfikującą aktualne miejsce w kodzie. \\
+01 & 1 & \texttt{label Lbl} & Wprowadza lokalną dla danego modułu etykietę identyfikującą aktualne miejsce w kodzie. & \cmark\\
 \hline
-02 & 2 & \texttt{func\_info M F A} & Definiuje funkcję \texttt{F}, w module \texttt{M} o arności \texttt{A}. \\
+02 & 2 & \texttt{func\_info M F A} & Definiuje funkcję \texttt{F}, w module \texttt{M} o arności \texttt{A}. & \cmark\\
 \hline
-03 & 3 & \texttt{int\_code\_end} & Oznacza koniec kodu.  \\
+03 & 3 & \texttt{int\_code\_end} & Oznacza koniec kodu. & \cmark \\
 \hline
-04 & 4 & \texttt{call Arity Lbl} & Wywołuje funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). \\
+04 & 4 & \texttt{call Arity Lbl} & Wywołuje funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \cmark \\
 \hline
-05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest} słów pamięci na stosie.\\
+05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest} słów pamięci na stosie. & \xmark \\
 \hline
-06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. \\
+06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. & \cmark \\
 \hline
-07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). \\
+07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \xmark \\
 \hline
-08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea} słów pamięci na stosie.\\
+08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea}+1 słów pamięci na stosie. Przywraca wskaźnik \textbf{CP} ze stosu. & \xmark \\
 \hline
-09 & 9 & \texttt{bif0 Bif Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/0}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
+09 & 9 & \texttt{bif0 Bif Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/0}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \xmark \\
 \hline
-0A & 10 & \texttt{bif1 Bif Arg Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/1} z argumentem \texttt{Arg}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
+0A & 10 & \texttt{bif1 Bif Arg Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/1} z argumentem \texttt{Arg}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \xmark \\
 \hline
-0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. \\
+0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \xmark \\
 \hline
-0C & 12 & \texttt{allocate StackN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
+0C & 12 & \texttt{allocate StackN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \xmark \\
 \hline
-0D & 13 & \texttt{allocate\_heap StackN HeapN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Upewnia się że na stercie jest \texttt{HeapN} wolnych słów. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. \\
+0D & 13 & \texttt{allocate\_heap StackN HeapN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Upewnia się że na stercie jest \texttt{HeapN} wolnych słów. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \xmark \\
 \hline
-0E & 14 & \texttt{allocate\_zero StackN Live} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. \\
+0E & 14 & \texttt{allocate\_zero StackN Live} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. & \cmark \\
 \hline
-0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć jest wyzerowana. \\
+0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć jest wyzerowana. & \xmark \\
 \hline
-10 & 16 & \texttt{test\_heap HN L} & Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie konieczne było uruchomienie \emph{garbage collectora}.\\
+10 & 16 & \texttt{test\_heap HN L} & Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie konieczne było uruchomienie \emph{garbage collectora}. & \xmark\\
 \hline
-11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie.\\
+11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie. & \xmark \\
 \hline
-12 & 18 & \texttt{deallocate N} & Przywraca \textbf{CP} ze stosu i dealokuje \texttt{N}+1 słów ze stosu.\\
+12 & 18 & \texttt{deallocate N} & Przywraca \textbf{CP} ze stosu i dealokuje \texttt{N}+1 słów ze stosu. & \cmark \\
 \hline
-13 & 19 & \texttt{return} & Wraca do adresu zapisanego we wskaźniku \textbf{CP}.\\
+13 & 19 & \texttt{return} & Wraca do adresu zapisanego we wskaźniku \textbf{CP}. & \cmark \\
 \hline
-14 & 20 & \texttt{send} & Wysyła wiadomość z rejestru \textbf{X1} do procesu w rejestrze \textbf{X0}. \\
+14 & 20 & \texttt{send} & Wysyła wiadomość z rejestru \textbf{X1} do procesu w rejestrze \textbf{X0}. & \xmark \\
 \hline
-15 & 21 & \texttt{remove\_message} & Usuwa aktualną wiadomość z kolejki wiadomości. Zapisuje wskaźnik do niej w rejestrze \textbf{X0}. Usuwa aktywne przeterminowanie (\emph{timeout}). \\
+15 & 21 & \texttt{remove\_message} & Usuwa aktualną wiadomość z kolejki wiadomości. Zapisuje wskaźnik do niej w rejestrze \textbf{X0}. Usuwa aktywne przeterminowanie (\emph{timeout}). & \xmark \\
 \hline
-16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowania. \\
+16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowania. & \xmark \\
 \hline
-17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \texttt{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \texttt{Lbl}. \\
+17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \texttt{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \texttt{Lbl}. & \xmark  \\
 \hline
-18 & 24 & \texttt{loop\_rec\_end Lbl} & Ustawia wskaźnik \textbf{SAVE} na kolejną wiadomość w kolejce wiadomości i wykonuje skok do etykiety \texttt{Lbl}. \\
+18 & 24 & \texttt{loop\_rec\_end Lbl} & Ustawia wskaźnik \textbf{SAVE} na kolejną wiadomość w kolejce wiadomości i wykonuje skok do etykiety \texttt{Lbl}. & \xmark \\
 \hline
-19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} w etykiecie \texttt{Lbl}.\\
+19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} w etykiecie \texttt{Lbl}. & \xmark \\
 \hline
-1A & 26 & \texttt{wait\_timeout Lbl T} & Zawiesza proces jak \texttt{wait}. Ustawia przeterminowanie \texttt{T} i zapisuje następną instrukcję, która zostanie wykonana jeśli przeterminowanie się zrealizuje.\\
+1A & 26 & \texttt{wait\_timeout Lbl T} & Zawiesza proces jak \texttt{wait}. Ustawia przeterminowanie \texttt{T} i zapisuje następną instrukcję, która zostanie wykonana jeśli przeterminowanie się zrealizuje. & \xmark \\
 \hline
-27 & 39 & \texttt{is\_lt Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest większe lub równe od \texttt{Arg2}.\\
+27 & 39 & \texttt{is\_lt Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest większe lub równe od \texttt{Arg2}. & \xmark \\
 \hline
-28 & 40 & \texttt{is\_ge Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest mniejsze \texttt{Arg2}.\\
+28 & 40 & \texttt{is\_ge Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest mniejsze \texttt{Arg2}. & \xmark \\
 \hline
-29 & 41 & \texttt{is\_eq Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest arytmetycznie różne od \texttt{Arg2}.\\
+29 & 41 & \texttt{is\_eq Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest arytmetycznie różne od \texttt{Arg2}. & \xmark \\
 \hline
-2A & 42 & \texttt{is\_ne Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest arytmetycznie równe \texttt{Arg2}.\\
+2A & 42 & \texttt{is\_ne Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest arytmetycznie równe \texttt{Arg2}. & \xmark \\
 \hline
-2B & 43 & \texttt{is\_eq\_exact Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest różne \texttt{Arg2}.\\
+2B & 43 & \texttt{is\_eq\_exact Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest różne \texttt{Arg2}. & \cmark \\
 \hline
-2C & 44 & \texttt{is\_ne\_exact Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest równe \texttt{Arg2}.\\
+2C & 44 & \texttt{is\_ne\_exact Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest równe \texttt{Arg2}. & \xmark \\
 \hline
-2D & 45 & \texttt{is\_integer Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą całkowitą.\\
+2D & 45 & \texttt{is\_integer Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą całkowitą. & \xmark \\
 \hline
-2E & 46 & \texttt{is\_float Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą rzeczywistą.\\
+2E & 46 & \texttt{is\_float Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą rzeczywistą. & \xmark \\
 \hline
-2F & 47 & \texttt{is\_number Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą.\\
+2F & 47 & \texttt{is\_number Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on liczbą. & \xmark \\
 \hline
-30 & 48 & \texttt{is\_atom Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on atomem.\\
+30 & 48 & \texttt{is\_atom Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on atomem. & \xmark \\
 \hline
-31 & 49 & \texttt{is\_pid Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on identyfikatorem procesu.\\
+31 & 49 & \texttt{is\_pid Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on identyfikatorem procesu. & \xmark \\
 \hline
-32 & 50 & \texttt{is\_reference Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on referencją.\\
+32 & 50 & \texttt{is\_reference Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on referencją. & \xmark \\
 \hline
-33 & 51 & \texttt{is\_port Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on portem.\\
+33 & 51 & \texttt{is\_port Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on portem. & \xmark \\
 \hline
-34 & 52 & \texttt{is\_nil Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zerem (\textbf{nil}).\\
+34 & 52 & \texttt{is\_nil Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zerem (\textbf{nil}). & \xmark \\
 \hline
-35 & 53 & \texttt{is\_binary Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zmienną binarną.\\
+35 & 53 & \texttt{is\_binary Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zmienną binarną. & \xmark \\
 \hline
-37 & 55 & \texttt{is\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani listą ani zerem.\\
+37 & 55 & \texttt{is\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani listą ani zerem. & \xmark \\
 \hline
-38 & 56 & \texttt{is\_nonempty\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on niepustą listą.\\
+38 & 56 & \texttt{is\_nonempty\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on niepustą listą. & \xmark \\
 \hline
-39 & 57 & \texttt{is\_tuple Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on krotką.\\
+39 & 57 & \texttt{is\_tuple Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on krotką. & \xmark \\
 \hline
-3A & 58 & \texttt{test\_arity Lbl Arg1 Arity} & Sprawdza arność krotki \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest ona równa \texttt{Arity}.\\
+3A & 58 & \texttt{test\_arity Lbl Arg1 Arity} & Sprawdza arność krotki \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest ona równa \texttt{Arity}. & \xmark \\
 \hline
-3B & 59 & \texttt{select\_val Arg Lbl Dest} & Skacze do etykiety \texttt{Dest[Arg]}. Jeśli nie istnieje skacze do \texttt{Lbl}. \\
+3B & 59 & \texttt{select\_val Arg Lbl Dest} & Skacze do etykiety \texttt{Dest[Arg]}. Jeśli nie istnieje skacze do \texttt{Lbl}. & \xmark \\
 \hline
-3C & 60 & \texttt{select\_tuple\_arity Tuple Lbl Dest} & Sprawdza arność krotki \texttt{Tuple} i skacze do etykiety \texttt{Dest[Arity]}. Jeśli etykieta nie istnieje skacze do \texttt{Lbl}. \\
+3C & 60 & \texttt{select\_tuple\_arity Tuple Lbl Dest} & Sprawdza arność krotki \texttt{Tuple} i skacze do etykiety \texttt{Dest[Arity]}. Jeśli etykieta nie istnieje skacze do \texttt{Lbl}. & \xmark \\
 \hline
-3D & 61 & \texttt{jump Lbl} & Skacze do etykiety \texttt{Lbl}. \\
+3D & 61 & \texttt{jump Lbl} & Skacze do etykiety \texttt{Lbl}. & \cmark \\
 \hline
-3E & 62 & \texttt{catch Dest Lbl} & Tworzy nowy blok \texttt{catch}. Zapisuje etykietę \texttt{Lbl} na \texttt{Dest} miejscu na stosie. \\
+3E & 62 & \texttt{catch Dest Lbl} & Tworzy nowy blok \texttt{catch}. Zapisuje etykietę \texttt{Lbl} na \texttt{Dest} miejscu na stosie. & \xmark \\
 \hline
-3F & 63 & \texttt{catch\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. \\
+3F & 63 & \texttt{catch\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. & \xmark  \\
 \hline
-40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \texttt{Dest}. \\
+40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \texttt{Dest}. & \cmark \\
 \hline
-41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. \\
+41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. & \xmark \\
 \hline
-42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieszcza element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}.\\
+42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieszcza element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}. & \xmark \\
 \hline
-43 & 67 & \texttt{get\_tuple\_element Elem Tuple Pos} & Umieszcza element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}.\\
+43 & 67 & \texttt{get\_tuple\_element Elem Tuple Pos} & Umieszcza element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}. & \xmark \\
 \hline
-45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy komórkę listy \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
+45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy komórkę listy \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}. & \xmark \\
 \hline
-46 & 70 & \texttt{put\_tuple Dest Arity} & Tworzy krotkę o arności \texttt{Arity} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}.\\
+46 & 70 & \texttt{put\_tuple Dest Arity} & Tworzy krotkę o arności \texttt{Arity} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}. & \xmark \\
 \hline
-47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} na szczycie stosu.\\
+47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} na szczycie stosu. & \xmark \\
 \hline
-48 & 72 & \texttt{badmatch Arg} & Rzuca wyjątek \texttt{badmatch} z argumentem \texttt{Arg}.\\
+48 & 72 & \texttt{badmatch Arg} & Rzuca wyjątek \texttt{badmatch} z argumentem \texttt{Arg}. & \xmark \\
 \hline
-49 & 73 & \texttt{if\_end} & Rzuca wyjątek \texttt{if\_clause}.\\
+49 & 73 & \texttt{if\_end} & Rzuca wyjątek \texttt{if\_clause}. & \xmark \\
 \hline
-4A & 74 & \texttt{case\_end Arg} & Rzuca wyjątek \texttt{case\_clause} z argumentem \texttt{Arg}.\\
+4A & 74 & \texttt{case\_end Arg} & Rzuca wyjątek \texttt{case\_clause} z argumentem \texttt{Arg}. & \xmark \\
 \hline
-4B & 75 & \texttt{call\_fun Arity} & Woła obiekt funkcyjny o arności \texttt{Arity}. Zakłada, że argumenty znajdują się w rejestrach \textbf{X0}...\textbf{X(\texttt{Arity-1})}, a lambda w rejestrze \textbf{X(\texttt{Arity})}. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
+4B & 75 & \texttt{call\_fun Arity} & Woła obiekt funkcyjny o arności \texttt{Arity}. Zakłada, że argumenty znajdują się w rejestrach \textbf{X0}...\textbf{X(\texttt{Arity-1})}, a lambda w rejestrze \textbf{X(\texttt{Arity})}. Zapisuje następną instrukcję we wskaźniku \textbf{CP}. & \xmark \\
 \hline
-4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typ argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją.\\
+4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typ argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją. & \xmark \\
 \hline
-4E & 78 & \texttt{call\_ext\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Lbl} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu.\\
+4E & 78 & \texttt{call\_ext\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Lbl} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. & \cmark \\
 \hline
-59 & 89 & \texttt{bs\_put\_integer Fail Size Unit Flags Src} & Umieszcza liczbę całkowitą w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa liczba znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia zmiennej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. \\
+59 & 89 & \texttt{bs\_put\_integer Fail Size Unit Flags Src} & Umieszcza liczbę całkowitą w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa liczba znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia zmiennej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. & \xmark  \\
 \hline
-5A & 90 & \texttt{bs\_put\_binary  Fail Size Unit Flags Src} & Umieszcza zmienną binarną w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa zmienna znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia zmiennej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. \\
+5A & 90 & \texttt{bs\_put\_binary  Fail Size Unit Flags Src} & Umieszcza zmienną binarną w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa zmienna znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia zmiennej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. & \xmark  \\
 \hline
-5B & 91 & \texttt{bs\_put\_float Fail Size Unit Flags Src} & Umieszcza liczbę zmiennoprzecinkową w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa liczba znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia liczby zmiennoprzecinkowej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. \\
+5B & 91 & \texttt{bs\_put\_float Fail Size Unit Flags Src} & Umieszcza liczbę zmiennoprzecinkową w utworzonym wcześniej kontekście zmiennej binarnej, zajmując w nim rozmiar \texttt{Size} w jednostkach \texttt{Unit}. Źródłowa liczba znajduje się w rejestrze \texttt{Src}. Flagi dotyczące sposobu umieszczenia liczby zmiennoprzecinkowej w kontekście znajdują się w liczbie całkowitej \texttt{Flags}. Adres skoku \texttt{Fail} jest nieużywany. & \xmark  \\
 \hline
-5C & 92 & \texttt{bs\_put\_string Size Bytes} & Bezpośrednio umieszcza bajty w utworzonym wcześniej kontekście zmiennej binarnej. Źródłowe bajty wskazywane są przez wskaźnik \texttt{Bytes} a ich liczba do przekopiowania to \texttt{Size}. \\
+5C & 92 & \texttt{bs\_put\_string Size Bytes} & Bezpośrednio umieszcza bajty w utworzonym wcześniej kontekście zmiennej binarnej. Źródłowe bajty wskazywane są przez wskaźnik \texttt{Bytes} a ich liczba do przekopiowania to \texttt{Size}. & \xmark \\
 \hline
-5E & 94 & \texttt{fclearerror} &  Czyści flagę błędu zmiennoprzecinkowego, jeśli jest ustawiona. \\
+5E & 94 & \texttt{fclearerror} &  Czyści flagę błędu zmiennoprzecinkowego, jeśli jest ustawiona. & \xmark \\
 \hline
-5F & 95 & \texttt{fcheckerror Arg0} &  Sprawdza czy \texttt{Arg0} zawiera wartość \texttt{NaN} lub nieskończoność. Jeśli tak, rzuca wyjątek \texttt{badarith}.\\
+5F & 95 & \texttt{fcheckerror Arg0} &  Sprawdza czy \texttt{Arg0} zawiera wartość \texttt{NaN} lub nieskończoność. Jeśli tak, rzuca wyjątek \texttt{badarith}. & \xmark \\
 \hline
-60 & 96 & \texttt{fmove Arg0 Arg1} & Kopiuje wartość \texttt{Arg0} do \texttt{Arg1}. \\
+60 & 96 & \texttt{fmove Arg0 Arg1} & Kopiuje wartość \texttt{Arg0} do \texttt{Arg1}. & \xmark  \\
 \hline
-61 & 97 & \texttt{fconv Arg0 Arg1} & Konwertuje wartość spod \texttt{Arg0} na liczbę zmiennoprzecinkową i umieszcza ją w rejestrze \texttt{Arg1}.\\
+61 & 97 & \texttt{fconv Arg0 Arg1} & Konwertuje wartość spod \texttt{Arg0} na liczbę zmiennoprzecinkową i umieszcza ją w rejestrze \texttt{Arg1}. & \xmark \\
 \hline
-62 & 98 & \texttt{fadd Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik dodawania \texttt{Arg1} do \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. \\
+62 & 98 & \texttt{fadd Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik dodawania \texttt{Arg1} do \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. & \xmark  \\
 \hline
-63 & 99 & \texttt{fsub Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik odejmowania \texttt{Arg2} od \texttt{Arg1}. Argument \texttt{Arg0} jest nieużywany.\\
+63 & 99 & \texttt{fsub Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik odejmowania \texttt{Arg2} od \texttt{Arg1}. Argument \texttt{Arg0} jest nieużywany. & \xmark \\
 \hline
-64 & 100 & \texttt{fmul Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik mnożenia \texttt{Arg1} przez \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. \\
+64 & 100 & \texttt{fmul Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik mnożenia \texttt{Arg1} przez \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. & \xmark  \\
 \hline
-65 & 101 & \texttt{fdiv Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik dzielenia \texttt{Arg1} przez \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. \\
+65 & 101 & \texttt{fdiv Arg0 Arg1 Arg2 Arg3} & Zapisuje w rejestrze \texttt{Arg3} wynik dzielenia \texttt{Arg1} przez \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. & \xmark  \\
 \hline
-66 & 102 & \texttt{fnegate Arg0 Arg1 Arg2} & Zapisuje ujemną wartość z rejestru \texttt{Arg1} w rejestrze \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany.\\
+66 & 102 & \texttt{fnegate Arg0 Arg1 Arg2} & Zapisuje ujemną wartość z rejestru \texttt{Arg1} w rejestrze \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. & \xmark \\
 \hline
-67 & 103 & \texttt{make\_fun2 N} & Odczytuje wpis o indeksie \texttt{N} w tablicy lambd modułu i umieszcza go w rejestrze \textbf{X0}. \\
+67 & 103 & \texttt{make\_fun2 N} & Odczytuje wpis o indeksie \texttt{N} w tablicy lambd modułu i umieszcza go w rejestrze \textbf{X0}. & \xmark  \\
 \hline
-68 & 104 & \texttt{try Dest Label} & Tak jak instrukcja \texttt{catch/2}.  \\
+68 & 104 & \texttt{try Dest Label} & Tak jak instrukcja \texttt{catch/2}.  & \xmark  \\
 \hline
-69 & 105 & \texttt{try\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. Jeśli nie ma zapisanej wartości w rejestrze \textbf{R0} oznacza to że w bloku \texttt{catch} złapano wyjątek. W takim przypadku dokonywane jest przepisanie wartości rejestrów: \textbf{R0} = \textbf{X1}, \textbf{X1} = \textbf{X2} i \textbf{X2} = \textbf{X3}.\\
+69 & 105 & \texttt{try\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. Jeśli nie ma zapisanej wartości w rejestrze \textbf{R0} oznacza to że w bloku \texttt{catch} złapano wyjątek. W takim przypadku dokonywane jest przepisanie wartości rejestrów: \textbf{R0} = \textbf{X1}, \textbf{X1} = \textbf{X2} i \textbf{X2} = \textbf{X3}. & \xmark \\
 \hline
-6A & 106 & \texttt{try\_case Dest} & Jak instrukcja \texttt{try\_end/1}. \\
+6A & 106 & \texttt{try\_case Dest} & Jak instrukcja \texttt{try\_end/1}. & \xmark  \\
 \hline
-6B & 107 & \texttt{try\_case\_end Reason} &  Rzuca wyjątek \texttt{try\_clause} z argumentem \texttt{Reason}.\\
+6B & 107 & \texttt{try\_case\_end Reason} &  Rzuca wyjątek \texttt{try\_clause} z argumentem \texttt{Reason}. & \xmark \\
 \hline
-6C & 108 & \texttt{raise Stacktrace Reason} & Rzuca wyjątek \texttt{Reason} ze stosem wywołań \texttt{Stacktrace}.\\
+6C & 108 & \texttt{raise Stacktrace Reason} & Rzuca wyjątek \texttt{Reason} ze stosem wywołań \texttt{Stacktrace}. & \xmark \\
 \hline
-6D & 109 & \texttt{bs\_init2 Fail Sz Words Regs Flags Dst} & Inicjalizuje miejsce dla zmiennej binarnej o rozmiarze \texttt{Sz}. Zapewnia, że oprócz tego rozmiaru po inicjalizacji dostępne będzie dodatkowo \texttt{Words} słów maszynowych. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie inicjalizacji konieczne było uruchomienie \emph{garbage collectora}. Adres skoku \texttt{Fail} oraz opcje \texttt{Flags} są aktualnie nieużywane. \\
+6D & 109 & \texttt{bs\_init2 Fail Sz Words Regs Flags Dst} & Inicjalizuje miejsce dla zmiennej binarnej o rozmiarze \texttt{Sz}. Zapewnia, że oprócz tego rozmiaru po inicjalizacji dostępne będzie dodatkowo \texttt{Words} słów maszynowych. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie inicjalizacji konieczne było uruchomienie \emph{garbage collectora}. Adres skoku \texttt{Fail} oraz opcje \texttt{Flags} są aktualnie nieużywane. & \xmark  \\
 \hline
-6F & 111 & \texttt{bs\_add Fail S1 S2 Unit Dst} & Oblicza sumę bitów w \texttt{S1} i liczby jednostek \texttt{Unit} w \texttt{S2}. Wynik przechowuje w \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
+6F & 111 & \texttt{bs\_add Fail S1 S2 Unit Dst} & Oblicza sumę bitów w \texttt{S1} i liczby jednostek \texttt{Unit} w \texttt{S2}. Wynik przechowuje w \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze\textbf{X(\texttt{N+1})}, w module zapisanym w rejestrze \textbf{X(\texttt{N})} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}.\\
+70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze\textbf{X(\texttt{N+1})}, w module zapisanym w rejestrze \textbf{X(\texttt{N})} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}. & \xmark \\
 \hline 
-71 & 113 & \texttt{apply\_last N Dea} & Skacze do zewnętrznej funkcji tak jak instrukcja \texttt{apply/1}. Ściąga wartość wskaźnika \textbf{CP} ze stosu. Zwalnia \texttt{Dea} miejsc na szczycie stosu.\\
+71 & 113 & \texttt{apply\_last N Dea} & Skacze do zewnętrznej funkcji tak jak instrukcja \texttt{apply/1}. Ściąga wartość wskaźnika \textbf{CP} ze stosu. Zwalnia \texttt{Dea} miejsc na szczycie stosu. & \xmark \\
 \hline
-72 & 114 & \texttt{is\_boolean/2} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani atomem \texttt{true} ani \texttt{false}.\\
+72 & 114 & \texttt{is\_boolean/2} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani atomem \texttt{true} ani \texttt{false}. & \xmark \\
 \hline
-73 & 115 & \texttt{is\_function2 Lbl Arg1 Arity} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją o arności \texttt{Arity}.\\
+73 & 115 & \texttt{is\_function2 Lbl Arg1 Arity} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją o arności \texttt{Arity}. & \xmark \\
 \hline
-74 & 116 & \texttt{bs\_start\_match2 Fail Bin X Y Dst} & Sprawdza czy \texttt{Bin} jest kontekstem zmiennej binarnej z odpowiednią liczbą miejsc do zapisania tymczasowych przesunięć bitowych (\emph{offsetów}) określonych przez liczbę \texttt{Y}. Jeśli aktualna liczba miejsc jest za mała tworzony jest nowy kontekst porównywania zmiennej binarnej z odpowiednią liczbą miejsc, który zostanie zapisany w miejscu \texttt{Dst}. W przypadku niepowodzenia dokonany zostanie skok do etykiety \texttt{Fail}. \texttt{X} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}.\\
+74 & 116 & \texttt{bs\_start\_match2 Fail Bin X Y Dst} & Sprawdza czy \texttt{Bin} jest kontekstem zmiennej binarnej z odpowiednią liczbą miejsc do zapisania tymczasowych przesunięć bitowych (\emph{offsetów}) określonych przez liczbę \texttt{Y}. Jeśli aktualna liczba miejsc jest za mała tworzony jest nowy kontekst porównywania zmiennej binarnej z odpowiednią liczbą miejsc, który zostanie zapisany w miejscu \texttt{Dst}. W przypadku niepowodzenia dokonany zostanie skok do etykiety \texttt{Fail}. \texttt{X} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark \\
 \hline
-75 & 117 & \texttt{bs\_get\_integer2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę całkowitą z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. \\
+75 & 117 & \texttt{bs\_get\_integer2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę całkowitą z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark  \\
 \hline
-76 & 118 & \texttt{bs\_get\_float2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę zmiennoprzecinkową z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. \\
+76 & 118 & \texttt{bs\_get\_float2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę zmiennoprzecinkową z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark  \\
 \hline
-77 & 119 & \texttt{bs\_get\_binary2 Fail Ms Live Sz Unit Flags Dst} & Pobiera zmienną binarną z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. \\
+77 & 119 & \texttt{bs\_get\_binary2 Fail Ms Live Sz Unit Flags Dst} & Pobiera zmienną binarną z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}.  & \xmark \\
 \hline
-78 & 120 & \texttt{bs\_skip\_bits2 Fail Ms Sz Unit Flags} & Pomija \texttt{Sz} jednostek wyrażonych w \texttt{Unit} z kontekstu zmiennej binarnej \texttt{Ms}. Opcje operacji wyrażone są za pomocą liczby całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \\
+78 & 120 & \texttt{bs\_skip\_bits2 Fail Ms Sz Unit Flags} & Pomija \texttt{Sz} jednostek wyrażonych w \texttt{Unit} z kontekstu zmiennej binarnej \texttt{Ms}. Opcje operacji wyrażone są za pomocą liczby całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}.  & \xmark \\
 \hline
-79 & 121 & \texttt{bs\_test\_tail2 Fail Ms Bits} & Sprawdza, czy kontekst zmiennej binarnej \texttt{Ms} ma jeszcze dokładnie \texttt{Bits} niedopasowanych bitów. Wykonuje skok do etykiety \texttt{Fail} jeżeli tak nie jest.  \\
+79 & 121 & \texttt{bs\_test\_tail2 Fail Ms Bits} & Sprawdza, czy kontekst zmiennej binarnej \texttt{Ms} ma jeszcze dokładnie \texttt{Bits} niedopasowanych bitów. Wykonuje skok do etykiety \texttt{Fail} jeżeli tak nie jest. & \xmark   \\
 \hline
-7A & 122 & \texttt{bs\_save2 Reg Index} & Zapisuje aktualne przesunięcie bitowe \emph{offset} z kontekstu zmiennej binarnej zawartego w rejestrze \texttt{Reg} i zapisuje do jego tablicy \emph{offsetów}.\\
+7A & 122 & \texttt{bs\_save2 Reg Index} & Zapisuje aktualne przesunięcie bitowe \emph{offset} z kontekstu zmiennej binarnej zawartego w rejestrze \texttt{Reg} i zapisuje do jego tablicy \emph{offsetów}. & \xmark \\
 \hline
-7B & 123 & \texttt{bs\_restore2 Reg Index} & Odczytuje przesunięcie bitowe kontekstu zmiennej binarnej zapisanego w rejestrze \texttt{Reg} z indeksu \texttt{Index}. Zapisuje go jako aktualne dla tego kontekstu. \\
+7B & 123 & \texttt{bs\_restore2 Reg Index} & Odczytuje przesunięcie bitowe kontekstu zmiennej binarnej zapisanego w rejestrze \texttt{Reg} z indeksu \texttt{Index}. Zapisuje go jako aktualne dla tego kontekstu. & \xmark  \\
 \hline
-7C & 124 & \texttt{gc\_bif1 Lbl Live Bif Arg1 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/1} z argumentem \texttt{Arg1}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.\\
+7C & 124 & \texttt{gc\_bif1 Lbl Live Bif Arg1 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/1} z argumentem \texttt{Arg1}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}. & \xmark \\
 \hline
-7D & 125 & \texttt{gc\_bif2 Lbl Live Bif Arg1 Arg2 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.  \\
+7D & 125 & \texttt{gc\_bif2 Lbl Live Bif Arg1 Arg2 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.  & \cmark  \\
 \hline
-81 & 129 & \texttt{is\_bitstr Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ciągiem bitów.\\
+81 & 129 & \texttt{is\_bitstr Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ciągiem bitów. & \xmark \\
 \hline
-82 & 130 & \texttt{bs\_context\_to\_binary Reg} & Zamienia kontekst zmiennej binarnej znajdującej się w rejestrze \texttt{Reg} na właściwą zmienną binarną.\\
+82 & 130 & \texttt{bs\_context\_to\_binary Reg} & Zamienia kontekst zmiennej binarnej znajdującej się w rejestrze \texttt{Reg} na właściwą zmienną binarną. & \xmark \\
 \hline
-83 & 131 & \texttt{bs\_test\_unit Fail Ms Unit} & Sprawdza czy rozmiar niedopasowanego jeszcze fragmentu kontekstu zmiennej binarnej \texttt{Ms} jest podzielny przez \texttt{Unit}. Jeżeli nie, wykonywany jest skok do etykiety \texttt{Fail}. \\
+83 & 131 & \texttt{bs\_test\_unit Fail Ms Unit} & Sprawdza czy rozmiar niedopasowanego jeszcze fragmentu kontekstu zmiennej binarnej \texttt{Ms} jest podzielny przez \texttt{Unit}. Jeżeli nie, wykonywany jest skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-84 & 132 & \texttt{bs\_match\_string Fail Ms Bits Val} & Dokonuje porównania \texttt{Bits} bitów, począwszy od miejsca wskazywanego przez wskaźnik \texttt{Val} z kontekstem zmiennej binarnej \texttt{Ms}. Jeżeli porównywane wartości nie są równe dokonywany jest skok do etykiety \texttt{Fail}. \\
+84 & 132 & \texttt{bs\_match\_string Fail Ms Bits Val} & Dokonuje porównania \texttt{Bits} bitów, począwszy od miejsca wskazywanego przez wskaźnik \texttt{Val} z kontekstem zmiennej binarnej \texttt{Ms}. Jeżeli porównywane wartości nie są równe dokonywany jest skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-85 & 133 & \texttt{bs\_init\_writable} & Alokuje miejsce o rozmiarze \textbf{R0} na stercie procesu. Tworzy w zaalokowanym miejscu strukturę zmiennej binarnej. Dodatkowo tworzy wskaźnik do utworzonej struktury, który umieszczony zostanie w rejestrze \textbf{R0}. \\
+85 & 133 & \texttt{bs\_init\_writable} & Alokuje miejsce o rozmiarze \textbf{R0} na stercie procesu. Tworzy w zaalokowanym miejscu strukturę zmiennej binarnej. Dodatkowo tworzy wskaźnik do utworzonej struktury, który umieszczony zostanie w rejestrze \textbf{R0}. & \xmark  \\
 \hline
-86 & 134 & \texttt{bs\_append Fail Size Extra Live Unit Bin Flags Dst} & Dopisuje \texttt{Size} jednostek \texttt{Unit} do zmiennej binarnej \texttt{Bin} i zapisuje wynik do \texttt{Dst}. Jeśli nie ma wystarczająco dużej ilości miejsca, tworzona jest nowa struktura na stercie z odpowiednią ilością miejsca, powiększona dodatkowo o \texttt{Extra} słów maszynowych. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. \\
+86 & 134 & \texttt{bs\_append Fail Size Extra Live Unit Bin Flags Dst} & Dopisuje \texttt{Size} jednostek \texttt{Unit} do zmiennej binarnej \texttt{Bin} i zapisuje wynik do \texttt{Dst}. Jeśli nie ma wystarczająco dużej ilości miejsca, tworzona jest nowa struktura na stercie z odpowiednią ilością miejsca, powiększona dodatkowo o \texttt{Extra} słów maszynowych. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}.  & \xmark \\
 \hline
-87 & 135 & \texttt{bs\_private\_append Fail Size Unit Bin Flags Dst} & Operacja ma działanie podobne do operacji \texttt{bs\_append/8} jednak w przypadku zbyt małej ilości miejsca dokonuje realokacji aktualnej zmiennej.\\
+87 & 135 & \texttt{bs\_private\_append Fail Size Unit Bin Flags Dst} & Operacja ma działanie podobne do operacji \texttt{bs\_append/8} jednak w przypadku zbyt małej ilości miejsca dokonuje realokacji aktualnej zmiennej. & \xmark \\
 \hline
-88 & 136 & \texttt{trim N Remaining} & Redukuje stos o \texttt{N} słów, zachowując \textbf{CP} na jego szczycie.\\
+88 & 136 & \texttt{trim N Remaining} & Redukuje stos o \texttt{N} słów, zachowując \textbf{CP} na jego szczycie. & \xmark \\
 \hline
-89 & 137 & \texttt{bs\_init\_bits Fail Sz Words Regs Flags Dst} & Alokuje zmienną binarną na stercie o rozmiarze \texttt{Sz} bitów. Jeżeli rozmiar nie jest podzielny przez 8, tworzony jest wskaźnik na strukturę z zapisaną ilością zajmowanych bitów. Wynik operacji zapisany jest do \texttt{Dst}. Upewnia się że na stercie jest dodatkowo \texttt{Words} słów maszynowych możliwych do zaalokowania. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. W razie niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcei alokacji konieczne było uruchomienie \emph{garbage collectora}.\\
+89 & 137 & \texttt{bs\_init\_bits Fail Sz Words Regs Flags Dst} & Alokuje zmienną binarną na stercie o rozmiarze \texttt{Sz} bitów. Jeżeli rozmiar nie jest podzielny przez 8, tworzony jest wskaźnik na strukturę z zapisaną ilością zajmowanych bitów. Wynik operacji zapisany jest do \texttt{Dst}. Upewnia się że na stercie jest dodatkowo \texttt{Words} słów maszynowych możliwych do zaalokowania. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. W razie niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcei alokacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark \\
 \hline
-8A & 138 & \texttt{bs\_get\_utf8 Fail Ms Arg2 Arg3 Dst} & Pobiera znak zapisany w UTF-8 z kontekstu zmiennej binarnej \texttt{Ms} i zapisuje go do \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argumenty \texttt{Arg2} oraz \texttt{Arg3} są aktualnie nieużywane. \\
+8A & 138 & \texttt{bs\_get\_utf8 Fail Ms Arg2 Arg3 Dst} & Pobiera znak zapisany w UTF-8 z kontekstu zmiennej binarnej \texttt{Ms} i zapisuje go do \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argumenty \texttt{Arg2} oraz \texttt{Arg3} są aktualnie nieużywane.  & \xmark \\
 \hline
-8B & 139 & \texttt{bs\_skip\_utf8 Fail Ms Arg2 Arg3} & Pomija znak zakodowany w UTF-8 w kontekście zmiennej binarnej \texttt{Ms}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argumenty \texttt{Arg2} oraz \texttt{Arg3} są aktualnie nieużywane. \\
+8B & 139 & \texttt{bs\_skip\_utf8 Fail Ms Arg2 Arg3} & Pomija znak zakodowany w UTF-8 w kontekście zmiennej binarnej \texttt{Ms}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argumenty \texttt{Arg2} oraz \texttt{Arg3} są aktualnie nieużywane. & \xmark  \\
 \hline
-8C & 140 & \texttt{bs\_get\_utf16 Fail Ms Arg2 Flags Dst} & Pobiera znak zapisany w UTF-16 z kontekstu zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags} i zapisuje go do \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argument \texttt{Arg2} jest aktualnie nieużywany. \\
+8C & 140 & \texttt{bs\_get\_utf16 Fail Ms Arg2 Flags Dst} & Pobiera znak zapisany w UTF-16 z kontekstu zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags} i zapisuje go do \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argument \texttt{Arg2} jest aktualnie nieużywany. & \xmark  \\
 \hline
-8D & 141 & \texttt{bs\_skip\_utf16 Fail Ms Arg2 Flags} & Pomija znak zakodowany w UTF-16 w kontekście zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argument \texttt{Arg2} jest aktualnie nieużywany.\\
+8D & 141 & \texttt{bs\_skip\_utf16 Fail Ms Arg2 Flags} & Pomija znak zakodowany w UTF-16 w kontekście zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. Argument \texttt{Arg2} jest aktualnie nieużywany. & \xmark \\
 \hline
-8E & 142 & \texttt{bs\_get\_utf32 Fail Ms Live Flags Dst} & Pobiera znak zapisany w UTF-32 z kontekstu zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags} i zapisuje go do \texttt{Dst}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
+8E & 142 & \texttt{bs\_get\_utf32 Fail Ms Live Flags Dst} & Pobiera znak zapisany w UTF-32 z kontekstu zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags} i zapisuje go do \texttt{Dst}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark \\
 \hline
-8F & 143 & \texttt{bs\_skip\_utf32 Fail Ms Live Flags} & Pomija znak zakodowany w UTF-32 w kontekście zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
+8F & 143 & \texttt{bs\_skip\_utf32 Fail Ms Live Flags} & Pomija znak zakodowany w UTF-32 w kontekście zmiennej binarnej \texttt{Ms}, używając opcji zapisanych w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-90 & 144 & \texttt{bs\_utf8\_size Fail Literal Dst} & Oblicza liczbę bajtów koniecznych do zapisania \texttt{Literal} w UTF-8 i zapisuje wynik do \texttt{Dst}. Argument \texttt{Fail} jest aktualnie nieużywany. \\
+90 & 144 & \texttt{bs\_utf8\_size Fail Literal Dst} & Oblicza liczbę bajtów koniecznych do zapisania \texttt{Literal} w UTF-8 i zapisuje wynik do \texttt{Dst}. Argument \texttt{Fail} jest aktualnie nieużywany. & \xmark  \\
 \hline
-91 & 145 & \texttt{bs\_put\_utf8 Fail Flags Src} & Umieszcza znak zakodowany w UTF-8 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej. Argumenty \texttt{Fail} i \texttt{Flags} są aktualnie nieużywane. \\
+91 & 145 & \texttt{bs\_put\_utf8 Fail Flags Src} & Umieszcza znak zakodowany w UTF-8 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej. Argumenty \texttt{Fail} i \texttt{Flags} są aktualnie nieużywane. & \xmark  \\
 \hline
-92 & 146 & \texttt{bs\_utf16\_size Fail Literal Dst} & Oblicza liczbę bajtów koniecznych do zapisania \texttt{Literal} w UTF-16 i zapisuje wynik do \texttt{Dst}. Argument \texttt{Fail} jest aktualnie nieużywany. \\
+92 & 146 & \texttt{bs\_utf16\_size Fail Literal Dst} & Oblicza liczbę bajtów koniecznych do zapisania \texttt{Literal} w UTF-16 i zapisuje wynik do \texttt{Dst}. Argument \texttt{Fail} jest aktualnie nieużywany. & \xmark  \\
 \hline
-93 & 147 & \texttt{bs\_put\_utf16 Fail Flags Literal} & Umieszcza znak zakodowany w UTF-16 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. Argument \texttt{Fail} jest aktualnie nieużywany.\\
+93 & 147 & \texttt{bs\_put\_utf16 Fail Flags Literal} & Umieszcza znak zakodowany w UTF-16 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. Argument \texttt{Fail} jest aktualnie nieużywany. & \xmark  \\
 \hline
-94 & 148 & \texttt{bs\_put\_utf32 Fail Flags Literal} &  Umieszcza znak zakodowany w UTF-32 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. \\
+94 & 148 & \texttt{bs\_put\_utf32 Fail Flags Literal} &  Umieszcza znak zakodowany w UTF-32 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-95 & 149 & \texttt{on\_load} & Oznacza kod wykonywany przy ładowaniu modułu.\\
+95 & 149 & \texttt{on\_load} & Oznacza kod wykonywany przy ładowaniu modułu. & \xmark \\
 \hline
-96 & 150 & \texttt{recv\_mark Lbl} & Zapamiętuje aktualną wiadomość z kolejki oraz etykietę \texttt{Label} do instrukcji \texttt{loop\_rec/2}.\\
+96 & 150 & \texttt{recv\_mark Lbl} & Zapamiętuje aktualną wiadomość z kolejki oraz etykietę \texttt{Label} do instrukcji \texttt{loop\_rec/2}. & \xmark \\
 \hline
-97 & 151 & \texttt{recv\_set Lbl} & Jeśli etykieta \texttt{Lbl} wskazuje na instrukcję \texttt{loop\_rec/2} to przepisuje wiadomość zachowaną przez instrukcję \texttt{recv\_mark} do wskaźnika \textbf{SAVE}. \\
+97 & 151 & \texttt{recv\_set Lbl} & Jeśli etykieta \texttt{Lbl} wskazuje na instrukcję \texttt{loop\_rec/2} to przepisuje wiadomość zachowaną przez instrukcję \texttt{recv\_mark} do wskaźnika \textbf{SAVE}. & \xmark  \\
 \hline
-98 & 152 & \texttt{gc\_bif3 Lbl Live Bif Arg1 Arg2 Arg3 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/3} z argumentami \texttt{Arg1}, \texttt{Arg2}, \texttt{Arg3}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}. \\
+98 & 152 & \texttt{gc\_bif3 Lbl Live Bif Arg1 Arg2 Arg3 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/3} z argumentami \texttt{Arg1}, \texttt{Arg2}, \texttt{Arg3}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}. & \xmark  \\
 \hline
-99 & 153 & \texttt{line N} & Znakuje aktualne miejsce jako linia o indeksie \texttt{N} w tablicy linii.\\
+99 & 153 & \texttt{line N} & Znakuje aktualne miejsce jako linia o indeksie \texttt{N} w tablicy linii. & \xmark \\
 \hline
 
 

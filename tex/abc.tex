@@ -1,0 +1,20 @@
+\documentclass[a4paper]{article}
+
+\usepackage{gnuplottex}
+
+\begin{document}
+
+\begin{gnuplot}[terminal=pdf,terminaloptions={font ",10" linewidth 3}]
+	plot sin(x), cos(x)
+\end{gnuplot}
+
+\begin{gnuplot}[terminal=epslatex,scale=0.8]
+	set grid
+	set title 'gnuplottex test $e^x$'
+	set ylabel '$y$'
+	set xlabel '$x$'
+	plot exp(x) with linespoints
+\end{gnuplot}
+
+
+\end{document}

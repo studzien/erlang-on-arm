@@ -7,12 +7,31 @@
 \usepackage{multirow}
 
 % dodatkowe pakiety
+\usepackage{hyperref}
 \usepackage{enumerate}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage{amsmath}
+
+\usepackage{gnuplottex}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multicol}
+
+\usepackage{textgreek}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+\usepackage{multicol,caption}
+\usepackage{fixltx2e}
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
 \lstloadlanguages{TeX}
 
 \lstset{
@@ -45,6 +64,7 @@
   xleftmargin=\parindent,
   language=C,
   showstringspaces=false,
+  showlines=true,
   basicstyle=\footnotesize\ttfamily,
   keywordstyle=\bfseries\color{green!40!black},
   commentstyle=\itshape\color{purple!40!black},
@@ -59,8 +79,8 @@
 \author{Rafał Studnicki}
 \shortauthor{R. Studnicki}
 
-\titlePL{Podstawowa funkcjonalność Erlanga dla systemu FreeRTOS}
-\titleEN{Implementation of basic features of Erlang for FreeRTOS}
+\titlePL{Realizacja podstawowej funkcjonalności maszyny wirtualnej Erlanga dla systemu FreeRTOS}
+\titleEN{Implementation of basic features of Erlang Virtual Machine for FreeRTOS}
 
 \shorttitlePL{Podstawowa funkcjonalność Erlanga dla systemu FreeRTOS}
 \shorttitleEN{Implementation of basic features of Erlang for FreeRTOS}
@@ -98,8 +118,10 @@
 %\include{rozdzial6}
 
 \appendix
+%\include{dodatek_cd}
+%\include{dodatek_builder}
 %\include{dodatek_kompilacja}
-%\include{dodatek_beam}
+\include{dodatek_beam}
 
 \bibliographystyle{plain}
 \addcontentsline{toc}{chapter}{Bibliografia}

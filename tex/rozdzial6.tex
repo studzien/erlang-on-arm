@@ -1,3 +1,19 @@
 \chapter{Podsumowanie}
 \label{cha:podsumowanie}
 
+\section{Wnioski}
+\label{sec:podsumowanieWnioski}
+
+\section{Dalszy rozwój projektu}
+\label{sec:podsumowanieDalszy}
+
+W ramach przyszłych prac warto dokonać próby rozwoju projektu w następujących aspektach:
+
+\begin{itemize}
+\item rozbudowa narzędzia budującego aplikacje, tak aby możliwe było zbudowanie maszyny wirtualnej ze skompilowanymi modułami wraz z odpowiednim portem systemu FreeRTOS w jednym kroku;
+\item implementacja pozostałych opkodów;
+\item implementacja pozostałych typów danych, takich jak binaria czy referencje;
+\item implementacja własnej logiki planisty, co pozwoli na oszczędność pamięci używanej przez zadanie systemu FreeRTOS;
+\item implementacja protokołu \emph{Distributed Erlang} \cite{DistributedErlang} i integracja go ze stosem TCP/IP dedykowanym dla systemu FreeRTOS;
+\item umożliwienie ładowania kodu do pamięci za pomocą \emph{Distributed Erlang}, dzięki czemu wkompilowywanie kodu modułów w kod maszyny wirtualnej przestanie być konieczne.
+\end{itemize}
