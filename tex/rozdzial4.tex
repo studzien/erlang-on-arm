@@ -2,7 +2,7 @@
 \label{cha:maszyna}
 
 Maszyna wirtualna jest warstwą abstrakcji uruchamianą pod kontrolą pewnego systemu operacyjnego.
-Powinna ona emulować fizyczny procesor w taki sam sposób niezależnie od systemu operacyjnego czy fizycznej architektury, na jakiej została uruchomiona.
+Powinna ona emulować fizyczny procesor w taki sam sposób niezależnie od systemu operacyjnego czy fizycznej architektury na jakiej została uruchomiona.
 Dzięki temu możliwe jest uruchomienie tego samego kodu, nazywanego kodem pośrednim, przystosowanego do architektury maszyny wirtualnej, pod kontrolą różnych systemów operacyjnych i na różnych architekturach sprzętowych.
 
 Wśród funkcjonalności wirtualnego procesa, które powinna implementować maszyna wirtualna dowolnego języka można wymienić:
@@ -13,7 +13,7 @@ Wśród funkcjonalności wirtualnego procesa, które powinna implementować masz
 \item interpreter kodu pośredniego, pobierający kolejną instrukcję do wykonania, dekodujący jej argumenty i wykonujący ją.
 \end{itemize}
 
-W rozdziale wymieniono elementy maszyny wirtualnej Erlanga, które zaimplementowane ramach w pracy, tak aby powyższy zbiór funkcjonalności zapewniał możliwość wykonywania kodu modułów skompilowanych przy użyciu kompilatora Erlanga w wersji R16.
+W rozdziale wymieniono elementy maszyny wirtualnej Erlanga, które zaimplementowano w pracy, tak aby powyższy zbiór funkcjonalności zapewniał możliwość wykonywania kodu modułów skompilowanych przy użyciu kompilatora Erlanga w wersji R16.
 Opis poszczególnych elementów zawiera wyjaśnienie ich sposobu działania, ich roli w maszynie wirtualnej, a także porównania
 funkcjonalności do maszyny wirtualnej BEAM.
 
@@ -25,7 +25,7 @@ Wszystkie opisywane funkcjonalności zostały zaimplementowane w języku C, podo
 
 Moduł opisany w niniejszym podrozdziale został zaimplementowany w pliku źródłowym \texttt{beam\_load.c}.
 
-Podstawowym zadaniem \emph{loadera} jest wykonanie zestawu operacji, po których będzie możliwe wykonanie kodu programu, zawartego w pliku będącym efektem kompilacji modułu w języku Erlang, z~poziomu interpretera kodu pośredniego w maszynie wirtualnej.
+Podstawowym zadaniem \emph{loadera} jest wykonanie zestawu operacji po których będzie możliwe wykonanie kodu programu, zawartego w pliku będącym efektem kompilacji modułu w języku Erlang, z~poziomu interpretera kodu pośredniego w maszynie wirtualnej.
 W maszynie BEAM źródłem plików binarnych może być system plików systemu operacyjnego lub inny węzeł Erlanga znajdujący się w tym samym klastrze. Aby pliki te mogły być wykonywane na maszynie zaimplementowanej w ramach pracy, która nie obsługuje ani systemu plików ani protokołu klastrowania, muszą one ulec przetworzeniu i zostać wkompilowane w kod maszyny wirtualnej. Dokonywane jest to za pomocą narzędzia opisanego w~dodatku \ref{cha:builder}.
 
 Zawartość pliku, który poddawany jest przetwarzaniu w module została szczegółowo opisana w dodatku \ref{cha:erlangKompilacja}, który ze względu na brak oficjalnej dokumentacji powstał na potrzeby niniejszej pracy.
@@ -33,14 +33,14 @@ Zawartość pliku, który poddawany jest przetwarzaniu w module została szczeg�
 Aby możliwe było wykonywanie kodu pośredniego przez maszynę wirtualną, konieczne jest wykonanie następujących kroków:
 \begin{itemize}
 \item załadowanie lokalnej tablicy atomów (fragment \texttt{Atom}) do globalnej tablicy atomów (por. \ref{sub:maszynaTablicaAtomow});
-\item załadowanie lokalnej tablicy eksportowanych funkcji (fragment \texttt{ExpT}) do globalnej tablicy (por. \ref{sub:maszynaTablicaEksportow});
+\item załadowanie lokalnej tablicy eksportowanych funkcji (fragment \texttt{ExpT}) do jej globalnego odpowiednika (por. \ref{sub:maszynaTablicaEksportow});
 \item sparsowanie wyrażeń w postaci \emph{External Term Format}, umieszczonych we fragmencie \texttt{LitT} i~umieszczenie ich w pamięci o globalnym dostępie (globalnej stercie);
 \item wyszukanie w globalnej tablicy eksportów funkcji zewnętrznych używanych przez moduł (fragment \texttt{ImpT});
-\item podstawienie wyrażeń rozpoznawanych globalnie (por. \ref{sec:maszynaTypy}) za wyrażenia lokalne, opisane w podrozdziale \ref{sec:opsTypes}, we fragmencie \texttt{Code}. Do rozważanych wyrażeń należą: atomy, etykiety lokalnych funkcji, odnośniki do funkcji znajdujących się w innych modułach oraz wyrażenia umieszczone na globalnej stercie;
-\item podstawienie za numery operacji z sekcji \texttt{Code}, opisane w podrozdziale \ref{sec:opsOps}), wskaźników do odpowiedniej sekcji interpretera kodu maszynowego wykonującemu daną instrukcję (por. \ref{sec:maszynaInterpreter}).
+\item podstawienie wyrażeń rozpoznawanych globalnie (por. \ref{sec:maszynaTypy}) za wyrażenia lokalne, opisane w podrozdziale \ref{sec:opsTypes} we fragmencie \texttt{Code}. Do rozważanych wyrażeń należą: atomy, etykiety lokalnych funkcji, odnośniki do funkcji znajdujących się w innych modułach oraz wyrażenia umieszczone na globalnej stercie;
+\item podstawienie za numery operacji z sekcji \texttt{Code} (opisane w podrozdziale \ref{sec:opsOps}) wskaźników do odpowiedniej sekcji interpretera kodu maszynowego wykonującemu daną instrukcję (por. \ref{sec:maszynaInterpreter}).
 \end{itemize}
 
-\emph{Loader} maszyny wirtualnej BEAM wykonuje jeszcze jeden bardzo istotny krok, którego nie wykonuje maszyna zaimplementowana w pracy. Jest nim zastosowanie gramatyki modyfikującej w bardzo istotny sposób kod maszynowy zawarty w pliku binarnym. Gramatykę tę można znaleźć w pliku \texttt{ops.tab} w kodzie źródłowym maszyny BEAM. Wynikowy zestaw instrukcji, odpowiadający instrukcjom faktycznie interpretowanym przez BEAM, jest dużo bardziej obszerny od zestawu który może zostać wygenerowany przez kompilator i został opisany w dodatku \ref{cha:operacjeBeam}. Motywacją do zmiany kodu maszynowego w~ten sposób jest m.in. optymalizacja czasu wykonania często występujących po sobie operacji. W przeciwieństwie do oryginalnej maszyny wirtualnej, interpreter zawarty w niniejszej maszynie wirtualnej dokonuje bezpośredniej interpretacji opkodów, które znajdują się w pliku binarnym z kodem pośrednim.
+\emph{Loader} maszyny wirtualnej BEAM wykonuje jeszcze jeden bardzo istotny krok, którego nie wykonuje maszyna zaimplementowana w pracy. Jest nim zastosowanie gramatyki modyfikującej w bardzo istotny sposób kod maszynowy zawarty w pliku binarnym. Gramatykę tę można znaleźć w pliku \texttt{ops.tab} w kodzie źródłowym maszyny BEAM. Wynikowy zestaw instrukcji, odpowiadający instrukcjom faktycznie interpretowanym przez BEAM, jest dużo bardziej obszerny od zestawu który może zostać wygenerowany przez kompilator. Motywacją do zmiany kodu maszynowego w~ten sposób jest m.in. optymalizacja czasu wykonania często występujących po sobie operacji. W przeciwieństwie do oryginalnej maszyny wirtualnej, interpreter zawarty w niniejszej maszynie wirtualnej dokonuje bezpośredniej interpretacji opkodów, które znajdują się w pliku binarnym z kodem pośrednim.
 
 %---------------------------------------------------------------------------
 \section{Tablice}
@@ -52,19 +52,19 @@ Biorąc pod uwagę modułowy charakter aplikacji napisanych w języku Erlang, ma
 
 Strukturą danych przeznaczoną do tego celu jest tablica z haszowaniem wspomagana przez tablicę indeksów. Połączenie tych dwóch struktur umożliwia wstawienie nowego elementu oraz sprawdzenie jego indeksu w czasie stałym (konieczne jest wyliczenie skrótu). W takim samym czasie (nie jest do tego jednak konieczne wyliczanie skrótu) możliwe jest znalezienie obiektu znając jego indeks. Co więcej, w~reprezentacji kodu maszynowego posługiwanie się indeksami obiektów trywializuje ich porównywanie czy pobieranie ich wartości w trakcie jego wykonywania.
 
-Wybór takiej struktury danych ma więc charakter optymalizacyjny. W maszynie wirtualnej tablicowanymi obiektami są: \textbf{atomy} i \textbf{eksportowane funkcje}. Maszyna wirtualna BEAM dodatkowo tablicuje również \textbf{moduły}, gdzie przechowywane są informacje o wskaźnikach do początku kodu modułu w dwóch wersjach: nowej i starej, które mogą działać w maszynie wirtualnej niezależnie od siebie. Ponieważ jednak maszyna rozważana w pracy w obecnej fazie rozwoju nie zapewnia możliwości dynamicznego ładowania modułów, implementacja tej struktury nie było konieczne.
+Wybór takiej struktury danych ma więc charakter optymalizacyjny. W maszynie wirtualnej tablicowanymi obiektami są: atomy i eksportowane funkcje. Maszyna wirtualna BEAM dodatkowo tablicuje również moduły, gdzie przechowywane są informacje o wskaźnikach do początku kodu modułu w dwóch wersjach: nowej i starej, które mogą działać w maszynie wirtualnej niezależnie od siebie. Ponieważ jednak maszyna rozważana w pracy w obecnej fazie rozwoju nie zapewnia możliwości dynamicznego ładowania modułów, implementacja tej struktury nie było konieczne.
 
 Na rysunku \ref{fig:atomtable} przedstawiono sposób w jaki wewnątrz maszyny wirtualnej przechowywane są stablicowane dane.  Przykład ten dotyczy dwuelementowej tablicy atomów, które były do niej wstawiane w~kolejności: \texttt{erlang}, \texttt{+}. Strzałki na diagramie reprezentują przechowywanie wskaźników na struktury atomów przez tablice: z haszowaniem i indeksów.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=1, clip, trim=0 200mm 90mm 0]{atom_table}}
+\centerline{\includegraphics[scale=1, clip, trim=10mm 200mm 90mm 10mm]{atom_table}}
 \caption{Przykład przechowywania danych stablicowanych danych wewnątrz maszyny wirtualnej.}
 \label{fig:atomtable}
 \end{figure}
 
 W maszynie BEAM, w przypadku uruchomionych dużych systemów, powyższe struktury danych mogą zawierać bardzo dużą liczbę elementów, nawet rzędu kilkudziesięciu tysięcy. Zupełnie inaczej sytuacja wygląda w niniejszej maszynie wirtualnej ze względu na jej przeznaczenie, którym są systemy wbudowane i wynikające z tego restrykcyjne limity dostępnej pamięci RAM. Rozmiary tablic nie powinny zatem przekraczać liczby elementów wyrażonej w setkach atomów czy funkcji eksportowanych. Niemniej jednak, ze względu na możliwość uruchomienia systemu FreeRTOS na mikrokontrolerach o różnych parametrach, pozostawiono możliwość zdefiniowania maksymalnej liczby elementów, jakie mogą zostać wstawione do tablic. Zaimplementowano również mechanizmy automatycznego rozszerzania tablic wraz ze wzrostem liczby elementów, w celu optymalizacji pamięci zajmowanej przez tablice.
 
-Ważną cechą charakterystyczną tablic w maszynie wirtualnej jest również fakt, że raz wstawionego do nich obiektu nie można z niej usunąć. W kontekście maszyny wirtualnej rozważanej w pracy ta cecha nie ma większego znaczenia, gdyż obecnie nie umożliwia ona dynamicznego ładowania modułów po jej uruchomieniu. Jednak w przypadku maszyny BEAM nie należy zapominać o tej cesze np. w sytuacji, gdy program dynamicznie generuje atomy. Tablica atomów w BEAM może przechowywać aż 1048576 atomów, należy jednak mieć na uwadze to, że próba dodania atomu do pełnej już tablicy zakończy się zakończeniem procesu maszyny wirtualnej.
+Ważną cechą charakterystyczną tablic w maszynie wirtualnej jest również fakt, że raz wstawionego do nich obiektu nie można z niej usunąć. W kontekście maszyny wirtualnej rozważanej w pracy ta cecha nie ma większego znaczenia, gdyż obecnie nie umożliwia ona dynamicznego ładowania modułów po jej uruchomieniu. Jednak w przypadku maszyny BEAM nie należy zapominać o tej cesze np. w sytuacji, gdy program generuje atomy w sposób dynamiczny. Tablica atomów w BEAM może przechowywać aż 1048576 atomów, należy jednak mieć na uwadze to, że próba dodania atomu do pełnej już tablicy zakończy się zakończeniem procesu maszyny wirtualnej.
 
 %---------------------------------------------------------------------------
 \subsection{Tablica atomów}
@@ -92,10 +92,10 @@ Ponieważ równość indeksów w tablicy eksportów jest równoważna z równoś
 \section{Typy danych}
 \label{sec:maszynaTypy}
 
-Erlang jest językiem programowania o dynamicznym, lecz silnym typowaniu. Oznacza to, że każda zmienna, po przypisaniu do niej wartości ma ustalony konkretny typ danych, którego nie można zmienić. Niemożliwe jest również rzutowanie zmiennej na innych typ danych - konwersja do innego typu musi zostać wykonana jawnie a nowa zmienna zajmuje w takiej sytuacji inne miejsce w~pamięci programu.
+Erlang jest językiem programowania o dynamicznym, lecz silnym typowaniu. Oznacza to, że każda zmienna, po przypisaniu do niej wartości ma ustalony konkretny typ danych, którego nie można zmienić. Niemożliwe jest również rzutowanie zmiennej na inny typ danych - konwersja do innego typu musi zostać wykonana jawnie a nowa zmienna zajmuje w takiej sytuacji inne miejsce w~pamięci programu.
 
 Wszystkie wyrażenia rozpoznawane przez interpreter kodu maszynowego Erlanga zapisane są w~postaci wyrażenia takiego samego typu, z punktu widzenia języka C, o długości równej słowu maszynowemu dla danej architektury.
-W celu rozróżnienia typów zmiennych w pamięci programu, w maszynie wirtualnej wprowadzony został mechanizm \textbf{tagowania}, czyli oznaczania w różny sposób zmiennych w~pamięci, w~zależności od ich typu. Mechanizm ten został zaprojektowany w taki sposób, aby dodatkowy rozmiar w pamięci przeznaczony dla typu był jak najmniejszy. Sposób jego działania został przedstawiony w niniejszej sekcji.
+W celu rozróżnienia typów zmiennych w pamięci programu, w maszynie wirtualnej wprowadzony został mechanizm \textbf{tagowania}, czyli oznaczania w różny sposób zmiennych w~pamięci, w~zależności od ich typu. Mechanizm ten został zaprojektowany w taki sposób, aby dodatkowy rozmiar w pamięci przeznaczony dla typu był jak najmniejszy. Sposób jego działania został przedstawiony w niniejszym podrozdziale.
 
 \subsection{Wartości bezpośrednie a pośrednie}
 \label{sub:typyTypy}
@@ -192,14 +192,14 @@ Listy są jednym ze złożonych typów danych obsługiwanych przez język Erlang
 W maszynie wirtualnej zaimplementowane zostały przy użyciu listy jednokierunkowej.
 Wyrażenie, które służy np. do przechowywania listy na stosie procesu lub przekazywania jej jako argument do funkcji otagowane jest jako typ \textbf{CONS} (por. \ref{sub:typyTypy}) i zawiera wskaźnik do pierwszego elementu listy. Element listy jest zwykłym wyrażeniem erlangowym, a więc zajmuje jedno słowo maszynowe. Słowem maszynowym następującym po elemencie jest kolejne wyrażenie typu \textbf{CONS}, które zawiera wskaźnik do kolejnego elementu listy. Wyrażenie to może być również typu \textbf{NIL} (por. \ref{sub:typyImmediates}), co oznacza że dany element był ostatnim elementem listy.
 
-W Erlangu nie ma osobnego typu do przechowywania ciągu znaków. Udostępniony lukier składniowy pozwala jednak na posługiwanie się napisami, np. w postaci: \texttt{"hello"}. Wyrażenie tego typu zostanie jednak zinterpretowane jak lista liczb całkowitych, odpowiadającymi kodom ASCII kolejnych liter w napisie. W tym przypadku będzie to następująca lista: \texttt{[104,101,108,108,111]}.
+W Erlangu nie ma osobnego typu do przechowywania ciągu znaków. Udostępniony lukier składniowy pozwala jednak na posługiwanie się napisami, np. w postaci: \texttt{"hello"}. Wyrażenie tego typu zostanie jednak zinterpretowane jako lista liczb całkowitych, odpowiadającymi kodom ASCII kolejnych liter w napisie. W tym przypadku będzie to następująca lista: \texttt{[104,101,108,108,111]}.
 
 Na rysunku \ref{fig:listonheap} zaprezentowano przykładową stertę procesu Erlanga zawierającą powyższą listę, wraz z wyjaśnieniem typu i wartości zawartych w poszczególnych słowach maszynowych. 
 Wyrażenie będące początkiem listy znajduje się w~pierwszym wierszu sterty.
 Strzałki na diagramie reprezentują zawieranie wskaźnika do innego miejsca w pamięci przez wyrażenie z którego wychodzą.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=1, clip, trim=0 180mm 45mm 0]{list_on_heap}}
+\centerline{\includegraphics[scale=1, clip, trim=10mm 180mm 45mm 10mm]{list_on_heap}}
 \caption{Przykład przechowywania listy na stercie procesu}
 \label{fig:listonheap}
 \end{figure}
@@ -223,7 +223,7 @@ gdzie bity \texttt{A} oznaczają rozmiar (arność) krotki. Wyrażenia wchodząc
 Na rysunku \ref{fig:tupleonheap} zaprezentowany został przykład przechowywania danych wewnątrz krotki na stercie procesu, jak w przykładzie na rys. \ref{fig:listonheap}, czyli krotki \texttt{\{104,101,108,108,111\}}.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=1, clip, trim=0 210mm 45mm 0]{tuple_on_heap}}
+\centerline{\includegraphics[scale=1, clip, trim=10mm 210mm 45mm 10mm]{tuple_on_heap}}
 \caption{Przykład przechowywania krotki na stercie procesu}
 \label{fig:tupleonheap}
 \end{figure}
@@ -244,7 +244,7 @@ gdzie bity \texttt{A} oznaczają liczbę słów maszynowych, które składają s
 Na rysunku \ref{fig:bignumonheap} zaprezentowany został przykład przechowania liczby $10^{28}$ na stercie procesu.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=1, clip, trim=0 223mm 45mm 0]{bignum_on_heap}}
+\centerline{\includegraphics[scale=1, clip, trim=10mm 223mm 45mm 10mm]{bignum_on_heap}}
 \caption{Przykład przechowywania dużej liczby na stercie procesu}
 \label{fig:bignumonheap}
 \end{figure}
@@ -254,7 +254,7 @@ Na rysunku \ref{fig:bignumonheap} zaprezentowany został przykład przechowania 
 
 Typy danych dostępne w maszynie BEAM, które nie zostały zaimplementowane w pracy to:
 \begin{itemize}
-\item \textbf{lambdy} (tag \textbf{FUN}) - ten typ danych używany jest w komunikacji między węzłami wewnątrz klastra Erlanga, co nie jest aktualnie obsługiwane przez maszynę wirtualną, lambdy pojawiające się w kodzie źródłowym modułów reprezentowane są za pomocą funkcji lokalnych i nie potrzebują osobnego typu danych do poprawnego działania;
+\item \textbf{lambdy} (tag \textbf{FUN}) - ten typ danych używany jest w komunikacji między węzłami wewnątrz klastra Erlanga, co nie jest aktualnie obsługiwane przez maszynę wirtualną. Lambdy pojawiające się w kodzie źródłowym modułów reprezentowane są za pomocą funkcji lokalnych i nie potrzebują osobnego typu danych do poprawnego działania;
 \item \textbf{referencje} (tag \textbf{REF}) - referencje z~założenia używane są do oznaczania wiadomości wysyłanych do innych węzłów z uruchomioną maszyną wirtualną a klastrowanie nie jest wspierane przez implementowaną maszynę wirtualną;
 \item \textbf{porty} (tag \textbf{PORT}) - porty używane są do identyfikacji procesów uruchomionych w systemie operacyjnym poza maszyną wirtualną Erlanga, a do których delegowane są pewne operacje, wykonywane na poziomie systemu operacyjnego. Wykonanie tych operacji (jak np. operacje na plikach) z~założenia może zająć pewien dłuższy okres czasu, co mogłoby zakłócić harmonogramowanie procesów. Typ danych nie został zaimplementowany, gdyż w maszynie wirtualnej wszystkie operacje wykonywane na poziomie mikrojądra zostały zaimplementowane przy pomocy funkcji wbudowanych (por. \ref{sec:maszynaBIF});
 \item \textbf{liczby zmiennoprzecinkowe} (tag \textbf{FLONUM}) - ten typ danych nie został zaimplementowany w~wersji maszyny opisywanej w pracy. Liczby zmiennoprzecinkowe rzadko wykorzystywane są w programowaniu urządzeń wbudowanych ze względu na bardzo duży narzut czasowych w przypadku mikrokontrolerów nie mających koprocesora (np. procesor ARM Cortex-M3 nie posiada FPU). M.in. z tego powodu do maszyny BEAM arytmetyka zmiennoprzecinkowa została dodana dopiero w wersji R8;
@@ -300,7 +300,7 @@ Interpreter korzysta z następujących rejestrów:
 
 Na listingu \ref{lis:maxS} zaprezentowany został przykładowy kod pośredni funkcji o arności 3, wyliczającej maksimum ze wszystkich jej argumentów, wykorzystujący do tego celu funkcję wbudowaną \texttt{erlang:max/2}. Wyjaśnienie działania poszczególnych operacji zostało zawarte w dodatku \ref{cha:operacjeBeam}.
 
-\begin{lstlisting}[style=erlang, caption=Fragment kodu pośredniego liczącego maksimum z trzech wyrażeń modułu, label=lis:maxS]
+\begin{lstlisting}[style=erlang, caption=Kod pośredni funkcji zwracającej maksimum z trzech argumentów, label=lis:maxS]
 {allocate,1,3}.
 {move,{x,2},{y,0}}.
 {call_ext,2,{extfunc,erlang,max,2}}.
@@ -308,12 +308,12 @@ Na listingu \ref{lis:maxS} zaprezentowany został przykładowy kod pośredni fun
 {call_ext_last,2,{extfunc,erlang,max,2},1}.
 \end{lstlisting}
 
-Na rysunkach od \ref{fig:max1} do \ref{fig:max8} zaprezentowano zawartość rejestrów X (interpretera) i Y (na stosie procesu) po wykonaniu poszczególnych operacji kodu powyższego dla argumentów: \texttt{5,7,9}. Zapis \texttt{\{l,1\}} oznacza, że wskaźnik do instrukcji wskazuje na linię 1 z przykładu na listingu \ref{lis:maxS}, z kolei \texttt{erlang:max/2} oznacza, że wskaźnik do instrukcji wskazuje na początek tej funkcji wbudowanej. Przez zapis \texttt{CP} rozumiana jest wartość wskaźnika \textbf{CP} w chwili wywołania funkcji. 
+Na rysunkach od \ref{fig:max1} do \ref{fig:max8} zaprezentowano zawartość rejestrów X (interpretera) i Y (stos procesu) po wykonaniu poszczególnych operacji kodu powyższego dla argumentów: \texttt{5,7,9}. Zapis \texttt{\{l,1\}} oznacza, że wskaźnik do instrukcji wskazuje na linię 1 z przykładu na listingu \ref{lis:maxS}, z kolei \texttt{erlang:max/2} oznacza, że wskaźnik do instrukcji wskazuje na początek tej funkcji wbudowanej. Przez zapis \texttt{CP} rozumiana jest wartość wskaźnika \textbf{CP} w chwili wywołania funkcji. 
 
-Jak można zauważyć na rys. \ref{fig:max1} wszystkie trzy argumenty zostały umieszczone w rejestrach \textbf{X}: 0,~1~i~2. Instrukcja \texttt{\{allocate,1,3\}}, znajdująca się w pierwszej linii powoduje rozszerzenie stosu procesu o 2 wyrażenia, z czego na szczycie stosu umieszczany jest adres powrotu, z jakim została wywołana funkcja, zapisany pod wskaźnikiem \textbf{CP}.
+Jak można zauważyć na rys. \ref{fig:max1} wszystkie trzy argumenty zostały umieszczone w rejestrach \textbf{X}: 0,~1~i~2. Instrukcja \texttt{\{allocate,1,3\}}, znajdująca się w pierwszej linii powoduje rozszerzenie stosu procesu o 2 wyrażenia, z czego na szczycie stosu umieszczany jest adres powrotu, z jakim została wywołana funkcja, zapisany pod wskaźnikiem \textbf{CP}. Jeżeli w trakcie wykonania tej instrukcji konieczne byłoby uruchomienie \emph{garbage collectora}, drugi argument informuje o tym, że aktualnie w użyciu są 3 rejestry \textbf{X} i nie jest możliwe zwolnienie obszarów pamięci do których one się odnoszą.
 
 W linii 2 (rys. \ref{fig:max3}) dokonane zostaje przeniesienie wyrażenia z rejestru \textbf{X\textsubscript{2}} do rejestru \textbf{Y\textsubscript{0}}, który jest pierwszym wyrażeniem na stosie poniżej jego szczytu.
-Należy zauważyć, że pomimo wykorzystania stosu do zapisu zmiennych lokalnych, które nie zostaną zmodyfikowane pomiędzy wywołania funkcji, do operacji na nim nie wykorzystuje się operacji stosowych.
+Należy zauważyć, że pomimo wykorzystania stosu do zapisu zmiennych lokalnych, które nie zostaną zmodyfikowane pomiędzy wywołaniami funkcji, do operacji na nim nie wykorzystuje się operacji stosowych.
 Nie należy zatem wiązać wykorzystania stosu procesu z faktem, że maszyna wirtualna jest maszyną stosową.
 
 Przed wywołaniem funkcji \texttt{erlang:max/2} w linii 3, jako adres powrotu zostaje zapisana kolejna instrukcja w module, znajdująca się w linii 4. Argumentami wywoływanej funkcji są wartości znajdujące się w rejestrach \textbf{X\textsubscript{0}} i \textbf{X\textsubscript{1}}. Wywołana funkcja w momencie powrotu przepisuje wskaźnik powrotu (\textbf{CP}) na kolejną instrukcję do wykonania (\textbf{IP}). Wartość zwrócona z funkcji znajduje się w rejestrze \textbf{X\textsubscript{0}}. 
@@ -329,7 +329,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_1}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_1}
 \captionof{figure}{Rejestry przed wykonaniem instrukcji w linii 1}
 \label{fig:max1}
 \end{Figure}
@@ -337,7 +337,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_2}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_2}
 \captionof{figure}{Rejestry przed wykonaniem instrukcji w linii 2}
 \label{fig:max2}
 \end{Figure}
@@ -345,7 +345,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_3}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_3}
 \captionof{figure}{Rejestry przed wykonaniem instrukcji w linii 3}
 \label{fig:max3}
 \end{Figure}
@@ -353,7 +353,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_4}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_4}
 \captionof{figure}{Rejestry przed wywołaniem funkcji w linii 3}
 \label{fig:max4}
 \end{Figure}
@@ -361,7 +361,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_5}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_5}
 \captionof{figure}{Rejestry przed wykonaniem instrukcji w linii 4}
 \label{fig:max5}
 \end{Figure}
@@ -369,7 +369,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_6}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_6}
 \captionof{figure}{Rejestry przed wykonaniem instrukcji w linii 5}
 \label{fig:max6}
 \end{Figure}
@@ -377,7 +377,7 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_7}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_7}
 \captionof{figure}{Rejestry przed wywołaniem funkcji w linii 5}
 \label{fig:max7}
 \end{Figure}
@@ -385,49 +385,352 @@ Wartość zwrócona z trójargumentowej funkcji znajduje się w rejestrze \textb
 \vspace{-4mm}
 \begin{Figure}
  \centering
- \includegraphics[scale=0.65, clip, trim=0 215mm 110mm 0]{interpreter_max_8}
+ \includegraphics[scale=0.65, clip, trim=10mm 215mm 110mm 10mm]{interpreter_max_8}
 \captionof{figure}{Rejestry po wykonaniu instrukcji w~linii 5, a zarazem i całej funkcji}
 \label{fig:max8}
 \end{Figure}
 \end{multicols}
 \end{figure}
 
+\subsection{Sposób implementacji}
+\label{sub:interpreterImplementacja}
+
+Z implementacyjnego punktu widzenia kod interpretera kodu pośredniego w maszynie zaimplementowanej w pracy interpretuje kod adresowany bezpośrednio (\emph{Directly Threaded Code} \cite{Ertl}). Oznacza to, że operacja przekazywana do interpretera zapisana jest nie w postaci opkodu, ale zawiera wskaźnik do etykiety implementującej daną instrukcję. Odpowiedniej podmiany, w momencie ładowania pliku z modułem dokonuje \emph{loader}.
+
+Maszyna wirtualna BEAM implementuje także sposób adresowania operacji przez ich opkod, na wypadek gdyby kompilator języka C użyty do jej kompilacji nie obsługiwał rozszerzenia standardu GNU C,~jakim są wskaźniki do etykiet.
+Metoda \emph{Switch Threading} nie wymaga podmiany w żaden sposób oryginalnych opkodów, jednak interpretacja kodu pośredniego z jej użyciem jest dużo wolniejsza.
+Powodem tego jest fakt, że kod każdej operacji przed jej wykonaniem należy sprawdzić z całym zestawem obsługiwanych opkodów w instrukcji \texttt{switch}, aż do napotkania właściwej.
+W maszynie na system FreeRTOS wykorzystano tylko adresowanie bezpośrednie, gdyż kompilator \textbf{gcc} wykorzystywany do jej kompilacji posiada ww. funkcjonalność.
+
+Zestaw instrukcji zaimplementowanych w maszynie wirtualnej wraz z opisem ich działania został zaprezentowany w dodatku \ref{cha:operacjeBeam}.
+Dodatek ten wymienia operacje, jakie możliwe są do otrzymania w pliku z kodem pośrednim z kompilatora języka Erlang.
+Maszyna wirtualna BEAM implementuje jednak nieco większy zestaw instrukcji, który zostaje podmieniany w kodzie maszynowym w momencie ładowania modułu do pamięci (por. \ref{sec:maszynaLoader}).
+
+Dodatkowymi operacjami, wykorzystywanymi wewnętrznie przez maszynę wirtualną, zaimplementowanymi w interpreterze są: \texttt{beam\_apply/0} oraz \texttt{normal\_exit/0}, służące do kontroli cyklu życia procesu.
+W momencie startu procesu jako pierwsza instrukcja do wykonania (wskaźnik \textbf{IP}) zostaje ustawiona pierwsza z tych operacji, po wcześniejszym zapisaniu do pierwszych trzech rejestrów \textbf{X}: modułu, funkcji i listy argumentów będących początkowymi dla tego procesu.
+Następnie operacja ta wywołuje właśnie tę funkcję.
+Jako adres powrotu z wywołania funkcji początkowej (wskaźnik \textbf{CP}) ustawiana jest druga z dodatkowych instrukcji, która kończy działanie procesu z powodu osiągnięcia końca jego kodu.
 
 %---------------------------------------------------------------------------
 \section{Procesy}
 \label{sec:maszynaProcesy}
 
+Logika procesu opisana w niniejszym podrozdziale została zaimplementowana w pliku źródłowym \texttt{erl\_process.c}.
+
+\subsection{Tablica procesów}
+\label{sub:procTablica}
+
+Stuktura procesów przechowywana jest w prealokowanej tablicy o konfigurowalnym rozmiarze.
+W~zaimplementowanej maszynie domyślnie rozmiar ten wynosi 25.
+Tak mała liczba procesów została wybrana ze względu na duże ograniczenia zasobów platformy docelowej dla maszyny.
+
+Procesy identyfikowane są wewnątrz maszyny wirtualnej przez identyfikator procesu (\textbf{PID}, por. \ref{sub:typyImmediates}).
+Ten bezpośredni typ danych przechowuje indeks procesu w ww. tablicy, dzięki czemu możliwe jest szybkie znalezienie struktury procesu, który konieczny jest do wykonania instrukcji przez interpreter kodu.
+
+\subsection{Struktura procesu}
+\label{sub:procStruktura}
+
+W strukturze przechowującej informacje o procesie zostały zawarte dane niezbędne do poprawnego wykonywania przez niego kodu.
+Spośród nich można wymienić:
+\begin{itemize}
+\item wspomniany wcześniej identyfikator procesu (\textbf{PID});
+\item blok pamięci zajmowany przez wyrażenia wykorzystywane przez proces, zawierający stertę i stos. Został on szczegółowo opisany w podrozdziale \ref{sec:maszynaGC};
+\item wskaźniki przechowujące aktualnie wykonywaną przez proces instrukcję oraz adres powrotu;
+\item liczba redukcji jakie pozostały do wywłaszczenia procesu;
+\item uchwyt do zadania w systemie FreeRTOS, w kontekście którego wykonywany jest kod procesu;
+\item pamięć do przechowania wartości rejestrów \textbf{X} w sytuacji gdy proces przestanie być wykonywany na rzecz innego procesu (por. \ref{sec:maszynaScheduler});
+\item kolejka wiadomości, które zostały wysłane do procesu;
+\item informacje statystyczne związane z cyklem życia procesu, takie jak liczba wykonanych redukcji czy liczba wykonanych odśmieceń na procesie w trakcie jego działania.
+\end{itemize}
+
+Podstawową różnicą między implementacją maszyny a maszyny BEAM jest sposób wykonywania kodu pośredniego procesu.
+Maszyna BEAM implementuje własny algorytm harmonogramowania, biorąc na siebie odpowiedzialność za utrzymywanie kolejki procesów do wykonania i zarządzania kolejnością ich wykonania. Logika procesu nie jest zatem opakowana w żadną warstwę abstrakcji. 
+Z kolei maszyna zaimplementowana w pracy do zarządzania kolejnością procesów wykorzystuje \emph{scheduler} wbudowany w mikrojądro FreeRTOS, a procesy są instancjami zadań przez niego zarządzanych (por. podrozdział \ref{sec:rtosScheduler}).
+Powodem wykorzystania takiego podejścia jest mały narzut pamięciowy i czasowy związany z uruchamianiem zadań, a także wbudowana obsługa priorytetów zadań i możliwość konfiguracji parametrów planisty.
+
+Różnicą w strukturze procesu jest także uproszczenie obszaru pamięci dla wyrażeń procesu do jednej, podstawowej sterty. 
+Maszyna BEAM wykorzystuje bardziej zaawansowane, generacyjne podejście przechowując wyrażenia na dwóch stertach.
+Technika ta opisana została w podrozdziale \ref{sec:maszynaGC}.
+
+W maszynie rozważanej w pracy nie została także zaimplementowany słownik procesu.
+
+TODO: kolejka wiadomości, link
+
+\subsection{Komunikacja międzyprocesowa}
+\label{sub:procKolejka}
+
+TODO
+
+\subsection{Monitorowanie procesów}
+\label{sub:procMonitory}
+
+TODO
+
 %---------------------------------------------------------------------------
 \section{Planista (\emph{scheduler})}
 \label{sec:maszynaScheduler}
 
-preemptive/cooperative, redukcje, wywłaszczenie, priorytety
+W systemie współbieżnym procesy mogą działać na jeden z dwóch sposobów:
+\begin{itemize}
+\item we współbieżności konkurencyjnej (\emph{preemptive}), w której planista decyduje o tym kiedy przerwać wykonywanie pewnego procesu i wznowić inne;
+\item we współbieżności współpracującej (\emph{cooperative}), w której proces decyduje kiedy przerwać swoje wykonywanie po to, aby \emph{scheduler} mógł wybrać inny proces do wykonania.
+\end{itemize}
+
+Z punktu widzenia programisty Erlanga procesy uruchomione w ramach systemu działają we współbieżności konkurencyjnej, gdyż planista sam zarządza kolejką procesów przeznaczonych do wykonania.
+Implementacja logiki procesu w maszynie wirtualnej opiera się jednak na współbieżności współpracującej, ponieważ to ona jest odpowiedzialna za wywołanie funkcji wybierającej kolejny proces do wykonania w odpowiedniej chwili. Wynika to z faktu, że wywłaszczenie aktualnie wykonywanego procesu może nastąpić tylko pod pewnymi warunkami.
+
+Pierwszym z nich jest spadek licznika redukcji w danym procesie do zera.
+Redukcja jest pojęciem wprowadzonym na potrzeby działania \emph{schedulera} w maszynie wirtualnej BEAM.
+Jedna redukcja to wywołanie jednej funkcji (zewnętrznej lub wewnętrznej, operacja z rodziny \textbf{CALL\_*}).
+Domyślnie, w maszynie BEAM, gdy \emph{scheduler} wznawia działanie procesu, ten dostaje możliwość wykonania 2000 redukcji zanim będzie musiał oddać dostęp do mocy obliczeniowej innemu procesowi.
+W maszynie zaimplementowanej w pracy, ze względu na mniejszą moc obliczeniową docelowej platformy, wartość ta została zmniejszona do 300, podlega ona jednak konfiguracji.
+Aby nie doprowadzić do sytuacji, w której można zauważyć znaczącą rozbieżność w czasie dostępu do procesora pomiędzy różnymi procesami, redukcje liczone są także dla innych operacji.
+I tak np. funkcje wbudowane czy uruchomienie \emph{garbage collectora} również modyfikują w pewien arbitralny sposób licznik redukcji w procesie. 
+
+Zmiana wykonywanego procesu może wystąpić tylko przed wywołaniem funkcji (czyli przed instrukcją z rodziny \textbf{CALL\_*}), tj. w chwili gdy mamy pewność że wszystkie lokalne zmienne zapisane są na stosie procesu a rejestry \textbf{X} wypełnione są argumentami funkcji.
+
+Procedura zmiany aktualnie wykonywanego procesu polega na odpowiednim zapamiętaniu struktur interpretera w pamięciu procesu przerywającego swoje działanie i odtworzenie tego samego rodzaju danych z pamięciu procesu, który swoje działanie wznawia.
+Została ona zaprezentowana na rysunku \ref{fig:preemption}.
+Wstrzymywane jest działanie procesu 1, w którego strukturze zapamiętywane są argumenty funkcji którą miał właśnie wywołać.
+Zapisywany jest także wskaźnik na szczyt jego stosu oraz wskaźniki instrukcji i~adres powrotu. Na rysunku symbolicznie zostało to oznaczone czerownymi strzałkami.
+Proces 2 z kolei wznawia swoje wykonanie. Licznik redukcji zostaje ustawiony ponownie na 300 i wykonywane są operacje odwrotne niż w przypadku procesu 1.
+Oznaczone one zostały symbolicznie strzałkami w kolorze zielonym.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8, clip, trim=10mm 145mm 30mm 10mm]{preemption}}
+\caption{Operacje wykonywane w trakcie zmiany wykonywanego procesu}
+\label{fig:preemption}
+\end{figure}
+
+Istnieje możliwość uruchomienia maszyny wirtualnej BEAM w architekturze SMP (\emph{Symmetric Multiprocessing}), co domyślnie powoduje uruchomienie jednej instancji \emph{schedulera} na jednym fizycznym wątku procesora.
+Synchronizację między planistami zapewniają w niej skomplikowane mechanizmy będące przedmiotem ciągłej optymalizacji.
+Maszynę zaimplementowaną w pracy można uruchomić jednak tylko z~wykorzystaniem tylko jednego fizycznego wątku.
+Pomimo badań nad uruchomieniem \emph{schedulera} mikrojądra FreeRTOS na architekturze wielordzeniowej \cite{Mistry2011}, oficjalna dystrybucja wspiera obecnie tylko architekturę jednordzeniową.
+
+TODO: priorytety
 
 %---------------------------------------------------------------------------
 \section{Funkcje wbudowane (\emph{Built-In Functions})}
 \label{sec:maszynaBIF}
 
+W niniejszym podrozdziale zaprezentowano zbiór zaimplementowanych funkcji wbudowanych w~maszynę wirtualną dla systemu FreeRTOS.
+Z punktu widzenia programisty funkcja wbudowana jest zwykłą funkcją zaimplementowaną w zewnętrznym module, jej implementacja jest jednak częścią kodu maszyny wirtualnej w języku C.
+Nie jest zatem wykonywana ona jako kod pośredni przez interpreter, ale jako kod maszynowy danej architektury, co wpływa pozytywnie na szybkość jej wykonania.
+Każdej funkcji wbudowanej odpowiada wpis w tablicy funkcji eksportowanych, podobnie jak funkcjom eksportowanym z załadowanych modułów.
+Wpis ten zamiast wskaźnika do instrukcji kodu maszynowego do wykonania zawiera wskaźnik do funkcji zaimplementowanej w języku C.
+
 \subsection{Funkcje ogólne (moduł \texttt{erlang})}
 \label{sub:bifErlang}
+Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{erl\_bif.c}.
+
+\begin{longtable}{|c|c|p{10cm}|}
+\hline
+
+Funkcja & Argumenty & Opis \\
+\endfirsthead
+\hline
+\texttt{splus/2} & \texttt{Arg1 Arg2} & Zwraca \texttt{Arg1 + Arg2} \\
+\hline
+\texttt{sminus/2} & \texttt{Arg1 Arg2} & Zwraca \texttt{Arg1 - Arg2} \\
+\hline
+\texttt{stimes/2} & \texttt{Arg1 Arg2} & Zwraca \texttt{Arg1 * Arg2} \\
+\hline
+\caption{Zaimplementowane funkcje wbudowane w module \texttt{erlang}} 
+\label{table:bifErlang} \\
+\end{longtable}
+
+TODO
 
 \subsection{Listy (moduł \texttt{lists})}
 \label{sub:bifLists}
 
+TODO
+
 \subsection{GPIO i obsługa przerwań (moduł \texttt{lpc\_gpio})}
 \label{sub:bifGPIO}
+Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{lpc\_gpio\_bif.c}.
+
+\begin{longtable}{|c|c|p{10cm}|}
+\hline
+
+Funkcja & Argumenty & Opis \\
+\endfirsthead
+\hline
+\texttt{output/2} & \texttt{Port Pin} & Ustawia pin \texttt{Pin} na porcie \texttt{Port} mikrokontrolera w tryb wyjścia\\
+\hline
+\texttt{high/2} & \texttt{Port Pin} & Ustawia stan wysoki na pinie \texttt{Pin} na porcie \texttt{Port} \\
+\hline
+\texttt{low/2} & \texttt{Port Pin} & Ustawia stan niski na pinie \texttt{Pin} na porcie \texttt{Port} \\
+\hline
+\caption{Zaimplementowane funkcje wbudowane w module \texttt{lpc\_gpio}} 
+\label{table:bifGpio} \\
+\end{longtable}
+
+TODO
 
 \subsection{SPI (moduł \texttt{lpc\_spi})}
 \label{sub:bifSPI}
+
+TODO
 
 %---------------------------------------------------------------------------
 \section{\emph{Garbage collector}}
 \label{sec:maszynaGC}
 
-Cheney, długość sterty, rootset, gc
+Moduł opisany w niniejszym podrozdziale został zaimplementowany w pliku źródłowym \texttt{erl\_gc.c}.
+
+\subsection{Pamięć zajmowana przez proces}
+\label{sub:gcHeap}
+
+Blok pamięci zajmowany przez proces do przechowywania wyrażeń których używa nosi nazwę sterty i zarządzany jest automatycznie przez \emph{garbage collector}.
+Obszar pamięci ten podzielony jest na dwie części:
+\begin{itemize}
+\item stertę, służącą do przechowywania danych złożonych (krotki, listy) lub opakowanych (\textbf{BOXED}), z których proces może korzystać nawet przez cały czas swojego życia;
+\item stos, którego zadaniem jest zachowywanie informacji pomiędzy wywołaniami funkcji, takich jak zmienne lokalne czy adresy powrotu.
+\end{itemize}
+
+Pojęcie sterty jest w niniejszej pracy używane wymiennie w odniesieniu albo do całego zaalokowanego dla procesu bloku pamięci albo do pierwszej wspomnianej jego części.
+Proces przechowuje kilka wskaźników dzięki którym możliwa jest identyfikacja odpowiednich fragmentów pamięci i wykonywanie operacji na nich. Należą do nich:
+\begin{itemize}
+\item \textbf{HEAP}, oznaczający początek całego bloku pamięci, a zarazem i sterty;
+\item \textbf{HTOP}, oznaczający koniec sterty;
+\item \textbf{STOP}, oznaczający początek stosu;
+\item \textbf{HEND}, oznaczający koniec bloku pamięci, a zarazem i stosu.
+\end{itemize}
+Graficzne odniesienie wskaźników do miejsc w pamięci procesu zostało zaprezentowane na rysunku \ref{fig:heap}. 
+Jak można zauważyć, wyrażenia dodawane do sterty procesu umieszczane są począwszy od początku całego bloku pamięci.
+Z kolei wyrażenia dodawane na stos umieszczane są od końca bloku, w~kierunku jego początku.
+Wskazywanie przez wskaźniki \textbf{HTOP} oraz \textbf{STOP} na to samo miejsce w~pamięci oznacza, że na stercie procesu skończyło się miejsce i konieczne jest uruchomienie \emph{garbage collectora}.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=1, clip, trim=10mm 235mm 65mm 10mm]{heap}}
+\caption{Struktura pamięci zajmowanej przez proces wraz ze wskaźnikami na poszczegóne struktury}
+\label{fig:heap}
+\end{figure}
+
+Sterta zaalokowana dla procesu może mieć jeden z pewnych ustalonych z góry rozmiarów, należący do ciągu:
+
+\begin{equation}
+h_{n} = \left\lbrace
+\begin{array}{rcl}
+12 & \text{dla} & n = 1,\\
+38 & \text{dla} & n = 2,\\
+h_{n-1} + h_{n-2} + 1 & \text{dla} & n > 2
+\end{array}
+\right.
+\end{equation}
+
+Rozmiar ten wyrażony jest w słowach maszynowych i dla maszyny BEAM domyślnie wynosi 233 (6. wyraz ciągu).
+W maszynie zaimplementowanej w pracy domyślnym, początkowym rozmiarem sterty procesu jest 12 słów maszynowych ze względu na mniejsze zapotrzebowanie na pamięć, wynikające~z~przeznaczenia aplikacji.
+
+\subsection{Algorytm Cheneya}
+\label{sub:gcCheney}
+
+Algorytmem odśmiecania wykorzystywanym w maszynie wirtualnej Erlanga jest algorytm Cheneya \cite{Cheney1970}.
+Jest on algorytmem kopiującym, którego działanie polega na zaalokowaniu nowego bloku pamięci i przeniesieniu do niego wszystkich obecnie używanych obiektów.
+Kolejnym krokiem jest przepisanie wszystkich istniejących referencji do poprzedniego bloku pamięci.
+Na końcu następuje zwolnienie starego bloku pamięci.
+Ten prosty algorytm pasuje do filozofii języka, gdzie każdy uruchomiony proces korzysta tylko i wyłącznie z pamięci zajmowanej przez samego siebie.
+Dzięki temu możliwe jest uruchamianie \emph{garbage collectora} w kontekście każdego procesu z osobna.
+Nie powoduje to zatrzymań działania całego uruchomionego systemu na czas odśmiecania sterty procesu.
+Algorytm zostanie uruchomiony w~sytuacji, gdy na stercie nie ma wolnej liczby słów maszynowych potrzebnej do zaalokowania w danej chwili lub zostanie on wywołany \emph{explicite} przez funkcję \texttt{erlang:garbage\_collect/0-2}.
+
+Działanie algorytmu Cheneya uruchomionego w procesie erlangowego zostało zaprezentowano na rysunkach od \ref{fig:gc0} do \ref{fig:gc6}.
+Do zilustrowania sposobu działania algorytmu posłużono się abstrakcją trójkolorową, służącą do znalezienia obiektów których pamięć można zwolnić, wykorzystującą do ich oznaczania trzech kolorów:
+\begin{itemize}
+\item białego, oznaczającego że stan obiektu jest w tym momencie nieznany, ale nie napotkano jeszcze żadnego obiektu odwołującego się do niego;
+\item szarego, obiekt jest wykorzystywany i nie można go usunąć, ale nie przetworzono jeszcze obiektów zależnych od niego;
+\item czarnego, obiekt, podobnie jak obiekty od niego zależne, są wykorzystywane.
+\end{itemize}
+Celem algorytmu odśmiecania jest osiągnięcie takiego stanu, w którym wszystkie obiekty będą oznaczone kolorem czarnym (obiekty wykorzystywane) lub białym (obiekty niewykorzystywane które można usunąć z pamięci).
+Na początku działania algorytmu, początkowy zbiór wyrażeń oznaczony jest kolorem szarym.
+Ze względu na kopiujący charakter algorytmu, kolor obiektów na dotychczasowej stercie procesu będzie zawsze biały.
+Obiekty przekopiowane na nową stertę będą z kolei tylko szare lub czarne.
+
+Do początkowego zbioru wyrażeń, które odnosić będą się do używanej pamięci, w zaimplementowanej maszynie należą:
+stos procesu, używane rejestry \textbf{X} i kolejka wiadomości (rys. \ref{fig:gc0}). W maszynie wirtualnej BEAM do tego zbioru należy jeszcze kilka innych struktur, jak np. słownik procesu.
+
+Pierwszym krokiem działania algorytmu jest zaalokowanie sterty procesu o takiej samej długości jak dotychczasowa (rys. \ref{fig:gc1}).
+Następnie przetwarzane są kolejne elementy zbioru szarego, a wyrażenia do których zawierają referencję kopiowane są na nową stertę.
+Tak jest w przypadku wyrażenia \textbf{H\textsubscript{3}}, do którego odnosi się rejestr \textbf{X\textsubscript{0}}.
+Wyrażenie to zostało przekopiowane na nową stertę i referencja do nowego wyrażenia została zapisana w tym rejestrze.
+Obiekt \textbf{H\textsubscript{3}'} miał w tym momencie kolor szary.
+Dlatego, że on sam zawierał referencję do wyrażenia \textbf{H\textsubscript{0}}, to wyrażenie także musiało zostać przeniesione na nową stertę.
+Przeniesiony obiekt nie zawierał już referencji do żadnego innego obiektu, dlatego zaraz po oznaczeniu go kolorem szarym można było zmienić jego kolor na czarny.
+Dopiero po podmianie referencji w~wyrażeniu \textbf{H\textsubscript{3}'} do obiektu \textbf{H\textsubscript{0}'} można było oznaczyć ten pierwszy kolorem czarnym (rys. \ref{fig:gc2}).
+Należy również zauważyć, że staremu obiektowi \textbf{H\textsubscript{3}} przypisano jego kopię na nowej stercie.
+Zabieg ten wykonany został po to, aby kolejne obiekty ze zbioru szarego odnoszące się do niego nie kopiowały go na nową stertę, ale zaktualizowały referencję do jego istniejącej już kopii.
+
+Analogicznie, na nową stertę przeniesione zostało wyrażenie \textbf{H\textsubscript{2}}, do którego odnosiła się wiadomość \textbf{M\textsubscript{0}} (rys. \ref{fig:gc3}).
+Ostatnim analizowanym zbiorem szarym był stos procesu, w którym wyrażenie \textbf{S\textsubscript{0}} odnosiło się do, przeniesionego już wcześniej, wyrażenia \textbf{H\textsubscript{0}}. Dlatego też w tym kroku wystarczające było przepisanie referencji do kopii tego obiektu do wyrażenia na stosie.
+
+Przedostatnim krokiem działania algorytmu było skopiowanie stosu procesu, gdyż znajduje się on zawsze w tym samym bloku pamięci co sterta, a więc również zostaje usunięty w trakcie działania \emph{garbage collectora}.
+Dokonano także przepisania odpowiednich wskaźników oznaczających początek sterty i stosu procesu (rys. \ref{fig:gc5}).
+
+Końcowym krokiem działania algorytmu było zwolnienie dotychczas używanego bloku pamięci. Jak można zauważyć, na nowej stercie nie ma wyrażenia \textbf{H\textsubscript{1}}, które nie było już wykorzystywane w momencie uruchomienia algorytmu.
+
+Jeżeli dojdzie do sytuacji, w której po uruchomieniu \emph{garbage collectora} na stercie nie będzie odpowiedniej ilości miejsca dla nowych obiektów, dokonane zostanie rozszerzenie sterty. Polega ono na zaalokowaniu nowego obszaru pamięci, o kolejnym możliwym rozmiarze niż obecny i przeniesieniu stosu oraz wszystkich wyrażeń ze sterty.
+W takiej sytuacji konieczne jest również przepisanie referencji obiektów do nowych miejsc w pamięci.
+Po zakończeniu tego procesu źródłowa sterta jest zwalniania.
+
+Analogiczną operację wykonuje się w sytuacji, gdy pamięć zajmowana przez nowe obiekty zajmuje co najwyżej pewnien ustalony rozmiar.
+W maszynie wirtualnej został on ustalony na połowę rozmiaru starej sterty.
+W takiej sytuacji sterta procesu jest zmniejszana do najbliższego wymaganemu rozmiarowi i, podobnie jak w przypadku rozszerzania sterty, zawartość sterty i stos przenoszone są do nowego bloku pamięci.
+
+\begin{figure}[p]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_0}}
+\caption{Sterta poddawana odśmiecaniu. Szary zbiór stanowi stos procesu, rejestry \textbf{X} i kolejka wiadomości procesu.}
+\label{fig:gc0}
+
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_1}}
+\caption{Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.}
+\label{fig:gc1}
+
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_2}}
+\caption{Przeniesienie wyrażeń mających źródło w rejestrach na nową stertę.}
+\label{fig:gc2}
+\end{figure}
+
+\begin{figure}[p]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_3}}
+\caption{Przeniesienie wyrażeń mających źródło w kolejce wiadomości.}
+\label{fig:gc3}
+
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_4}}
+\caption{Podmiana wskaźnika do już przeniesionego wyrażenia.}
+\label{fig:gc4}
+
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 180mm 45mm 10mm]{gc_5}}
+\caption{Kopiowanie stosu na nową stertę i przepisanie odpowiednich wskaźników.}
+\label{fig:gc5}
+\end{figure}
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 180mm 45mm 10mm]{gc_6}}
+\caption{Zwolnienie pamięci zajmowanej przez starą stertę.}
+\label{fig:gc6}
+\end{figure}
+
+\subsection{Podejście generacyjne w maszynie BEAM}
+\label{sub:gcGeneracje}
+
+Maszyna BEAM w procesie odśmiecania korzysta dodatkowo z podejścia generacyjnego.
+Opiera się ono na obserwacji, że większość utworzonych obiektów usuwana jest z pamięci stosunkowo wcześnie, a~obiekty które ,,przetrwały'' przynajmniej jedno uruchomienie \emph{garbage collectora} prawdopodobnie przetrwają i kolejne.
+Prowadzi to do podziału obiektów na dwie generacje, którym przypisane są osobne sterty: ,,młodą'' i ,,starą''.
+Pierwsza z nich zawiera niedawno utworzone obiekty, które nie zostały poddane jeszcze żadnemu procesowi odśmiecania.
+Druga z kolei przechowuje obiekty, które zostały utworzone w pamięci przed przynajmniej jednym uruchomieniem \emph{garbage collectora}.
+Odśmiecanie ,,starej'' sterty odbywa się z założenia zdecydowanie rzadziej niż jest to w przypadku obszaru pamięci z nowymi obiektami.
+Częstość ta w maszynie wirtualnej BEAM jest parametrem konfigurowalnym przez zmienną środowiskową \texttt{ERL\_FULLSWEEP\_AFTER}, której wartość mówi co ile uruchomień \emph{garbage collectora} na ,,młodej'' generacji obiektów uruchomiony on zostanie również dla ,,starej'' generacji.
+Im większa wartość, tym sam proces odśmiecenia trwa zdecydowanie krócej, proces wykorzystuje jednak więcej pamięci.
+
+W maszynie wirtualnej zaimplementowanej w pracy nie została zaimplementowana ta optymalizacja algorytmu odśmiecania. 
+
 
 %---------------------------------------------------------------------------
 \section{Mechanizmy zarządzania czasem}
 \label{sec:maszynaTimer}
+
+TODO: bify/instrukcje zarządzające czasem, koło czasowe, powiązanie z fizycznymi zegarami mikrokontrolera 
 
 %---------------------------------------------------------------------------
 \section{Podsumowanie różnic z maszyną BEAM}
@@ -452,7 +755,7 @@ Kolorem niebieskim z kolei oznaczone zostały elementy, które nie zostały zaim
 Strzałki na diagramie przedstawiają fakt przechowywania wskaźników na elementy w jednym obszarze pamięci przed drugi.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=1, clip, trim=0 160mm 55mm 0]{erts_memory}}
+\centerline{\includegraphics[scale=1, clip, trim=10mm 165mm 55mm 10mm]{erts_memory}}
 \caption{Elementy maszyny wirtualnej Erlanga jako obszary pamięci.}
 \label{fig:ertsmemory}
 \end{figure}

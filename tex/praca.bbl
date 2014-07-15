@@ -33,10 +33,22 @@ Richard Barry.
 \newblock {\em {Using the FreeRTOS Real Time Kernel}}.
 \newblock {Real Time Engineers Ltd.}, 2011.
 
+\bibitem{Cheney1970}
+C.~J. Cheney.
+\newblock A nonrecursive list compacting algorithm.
+\newblock {\em Commun. ACM}, 13(11):677--678, November 1970.
+
 \bibitem{RFM73}
 HopeRF Electronic.
 \newblock {\em {RFM73 Datasheet}}.
 \newblock {Hope Microelectronics Co. Ltd.}, 2006.
+
+\bibitem{Ertl}
+Anton Ertl.
+\newblock {Threaded Code}.
+\newblock \url{http://www.complang.tuwien.ac.at/forth/threaded-code.html},
+  2004.
+\newblock [data dostępu: 12.07.2014].
 
 \bibitem{Gray85whydo}
 Jim Gray.
@@ -60,11 +72,22 @@ Erlang~Solutions Ltd.
 \newblock \url{http://www.erlang-embedded.com}, 2013.
 \newblock [data dostępu: 17.03.2014].
 
+\bibitem{Mistry2011}
+James Mistry.
+\newblock {FreeRTOS and Multicore}.
+\newblock Master's thesis, University of York, United Kingdom, 2011.
+
 \bibitem{morrison1985ea}
 J.~Morrison.
 \newblock {EA IFF 85: Standard for interchange format files}.
 \newblock {\em Amiga ROM Kernel Reference Manual: Devices (3rd edition),
   Addison-Wesley}, 1(99):1, 1985.
+
+\bibitem{elixir}
+Plataformatec.
+\newblock {Elixir Language}.
+\newblock \url{http://elixir-lang.org/}, 2014.
+\newblock [data dostępu: 7.07.2014].
 
 \bibitem{NXP2014}
 NXP Semiconductors.

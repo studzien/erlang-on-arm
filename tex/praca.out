@@ -1,29 +1,92 @@
-\BOOKMARK [0][-]{chapter.1}{Zaimplementowane elementy maszyny wirtualnej}{}% 1
-\BOOKMARK [1][-]{section.1.1}{Modu\233 \233adujacy kod \(loader\)}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{Tablice}{chapter.1}% 3
-\BOOKMARK [2][-]{subsection.1.2.1}{Tablica atom\363w}{section.1.2}% 4
-\BOOKMARK [2][-]{subsection.1.2.2}{Tablica eksportowanych funkcji}{section.1.2}% 5
-\BOOKMARK [1][-]{section.1.3}{Typy danych}{chapter.1}% 6
-\BOOKMARK [2][-]{subsection.1.3.1}{Wartosci bezposrednie a posrednie}{section.1.3}% 7
-\BOOKMARK [2][-]{subsection.1.3.2}{Wartosci bezposrednie}{section.1.3}% 8
-\BOOKMARK [2][-]{subsection.1.3.3}{Listy}{section.1.3}% 9
-\BOOKMARK [2][-]{subsection.1.3.4}{Krotki}{section.1.3}% 10
-\BOOKMARK [2][-]{subsection.1.3.5}{Duze liczby}{section.1.3}% 11
-\BOOKMARK [2][-]{subsection.1.3.6}{Niezaimplementowane typy danych}{section.1.3}% 12
-\BOOKMARK [1][-]{section.1.4}{Interpreter kodu maszynowego}{chapter.1}% 13
-\BOOKMARK [2][-]{subsection.1.4.1}{Maszyna stosowa a rejestrowa}{section.1.4}% 14
-\BOOKMARK [2][-]{subsection.1.4.2}{Model interpretera}{section.1.4}% 15
-\BOOKMARK [1][-]{section.1.5}{Procesy}{chapter.1}% 16
-\BOOKMARK [1][-]{section.1.6}{Planista \(scheduler\)}{chapter.1}% 17
-\BOOKMARK [1][-]{section.1.7}{Funkcje wbudowane \(Built-In Functions\)}{chapter.1}% 18
-\BOOKMARK [2][-]{subsection.1.7.1}{Funkcje og\363lne \(modu\233 erlang\)}{section.1.7}% 19
-\BOOKMARK [2][-]{subsection.1.7.2}{Listy \(modu\233 lists\)}{section.1.7}% 20
-\BOOKMARK [2][-]{subsection.1.7.3}{GPIO i obs\233uga przerwan \(modu\233 lpc\137gpio\)}{section.1.7}% 21
-\BOOKMARK [2][-]{subsection.1.7.4}{SPI \(modu\233 lpc\137spi\)}{section.1.7}% 22
-\BOOKMARK [1][-]{section.1.8}{Garbage collector}{chapter.1}% 23
-\BOOKMARK [1][-]{section.1.9}{Mechanizmy zarzadzania czasem}{chapter.1}% 24
-\BOOKMARK [1][-]{section.1.10}{Podsumowanie r\363znic z maszyna BEAM}{chapter.1}% 25
-\BOOKMARK [0][-]{appendix.A}{Lista instrukcji maszyny wirtualnej BEAM}{}% 26
-\BOOKMARK [1][-]{section.A.1}{Typy argument\363w}{appendix.A}% 27
-\BOOKMARK [1][-]{section.A.2}{Lista instrukcji}{appendix.A}% 28
-\BOOKMARK [0][-]{table.A.2}{Bibliografia}{}% 29
+\BOOKMARK [0][-]{chapter.1}{Wprowadzenie}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Programowanie i zastosowanie system\363w wbudowanych}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Wykorzystanie Erlanga w programowaniu system\363w wbudowanych}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Cele pracy}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.4}{Zawartosc pracy}{chapter.1}% 5
+\BOOKMARK [0][-]{chapter.2}{System operacyjny FreeRTOS}{}% 6
+\BOOKMARK [1][-]{section.2.1}{Zadania i planista \(scheduler\)}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.2}{Kolejki}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.3}{Przerwania}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.4}{Zarzadzanie zasobami}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.5}{Zarzadzanie pamiecia}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.6}{FreeRTOS i LPC176x}{chapter.2}% 12
+\BOOKMARK [1][-]{section.2.7}{Podsumowanie}{chapter.2}% 13
+\BOOKMARK [0][-]{chapter.3}{Jezyk programowania Erlang}{}% 14
+\BOOKMARK [0][-]{chapter.4}{Zaimplementowane elementy maszyny wirtualnej}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Modu\233 \233adujacy kod \(loader\)}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{Tablice}{chapter.4}% 17
+\BOOKMARK [2][-]{subsection.4.2.1}{Tablica atom\363w}{section.4.2}% 18
+\BOOKMARK [2][-]{subsection.4.2.2}{Tablica eksportowanych funkcji}{section.4.2}% 19
+\BOOKMARK [1][-]{section.4.3}{Typy danych}{chapter.4}% 20
+\BOOKMARK [2][-]{subsection.4.3.1}{Wartosci bezposrednie a posrednie}{section.4.3}% 21
+\BOOKMARK [2][-]{subsection.4.3.2}{Wartosci bezposrednie}{section.4.3}% 22
+\BOOKMARK [2][-]{subsection.4.3.3}{Listy}{section.4.3}% 23
+\BOOKMARK [2][-]{subsection.4.3.4}{Krotki}{section.4.3}% 24
+\BOOKMARK [2][-]{subsection.4.3.5}{Duze liczby}{section.4.3}% 25
+\BOOKMARK [2][-]{subsection.4.3.6}{Niezaimplementowane typy danych}{section.4.3}% 26
+\BOOKMARK [1][-]{section.4.4}{Interpreter kodu maszynowego}{chapter.4}% 27
+\BOOKMARK [2][-]{subsection.4.4.1}{Maszyna stosowa a rejestrowa}{section.4.4}% 28
+\BOOKMARK [2][-]{subsection.4.4.2}{Model interpretera}{section.4.4}% 29
+\BOOKMARK [2][-]{subsection.4.4.3}{Spos\363b implementacji}{section.4.4}% 30
+\BOOKMARK [1][-]{section.4.5}{Procesy}{chapter.4}% 31
+\BOOKMARK [2][-]{subsection.4.5.1}{Tablica proces\363w}{section.4.5}% 32
+\BOOKMARK [2][-]{subsection.4.5.2}{Struktura procesu}{section.4.5}% 33
+\BOOKMARK [2][-]{subsection.4.5.3}{Komunikacja miedzyprocesowa}{section.4.5}% 34
+\BOOKMARK [2][-]{subsection.4.5.4}{Monitorowanie proces\363w}{section.4.5}% 35
+\BOOKMARK [1][-]{section.4.6}{Planista \(scheduler\)}{chapter.4}% 36
+\BOOKMARK [1][-]{section.4.7}{Funkcje wbudowane \(Built-In Functions\)}{chapter.4}% 37
+\BOOKMARK [2][-]{subsection.4.7.1}{Funkcje og\363lne \(modu\233 erlang\)}{section.4.7}% 38
+\BOOKMARK [2][-]{subsection.4.7.2}{Listy \(modu\233 lists\)}{section.4.7}% 39
+\BOOKMARK [2][-]{subsection.4.7.3}{GPIO i obs\233uga przerwan \(modu\233 lpc\137gpio\)}{section.4.7}% 40
+\BOOKMARK [2][-]{subsection.4.7.4}{SPI \(modu\233 lpc\137spi\)}{section.4.7}% 41
+\BOOKMARK [1][-]{section.4.8}{Garbage collector}{chapter.4}% 42
+\BOOKMARK [2][-]{subsection.4.8.1}{Pamiec zajmowana przez proces}{section.4.8}% 43
+\BOOKMARK [2][-]{subsection.4.8.2}{Algorytm Cheneya}{section.4.8}% 44
+\BOOKMARK [2][-]{subsection.4.8.3}{Podejscie generacyjne w maszynie BEAM}{section.4.8}% 45
+\BOOKMARK [1][-]{section.4.9}{Mechanizmy zarzadzania czasem}{chapter.4}% 46
+\BOOKMARK [1][-]{section.4.10}{Podsumowanie r\363znic z maszyna BEAM}{chapter.4}% 47
+\BOOKMARK [0][-]{chapter.5}{Przyk\233adowe aplikacje}{}% 48
+\BOOKMARK [1][-]{section.5.1}{Silnia}{chapter.5}% 49
+\BOOKMARK [2][-]{subsection.5.1.1}{Cel aplikacji}{section.5.1}% 50
+\BOOKMARK [2][-]{subsection.5.1.2}{Uzyskane wyniki}{section.5.1}% 51
+\BOOKMARK [2][-]{subsection.5.1.3}{Wnioski}{section.5.1}% 52
+\BOOKMARK [1][-]{section.5.2}{Kontrola diod LED przez procesy}{chapter.5}% 53
+\BOOKMARK [2][-]{subsection.5.2.1}{Cel aplikacji}{section.5.2}% 54
+\BOOKMARK [2][-]{subsection.5.2.2}{Uzyskane wyniki}{section.5.2}% 55
+\BOOKMARK [2][-]{subsection.5.2.3}{Wnioski}{section.5.2}% 56
+\BOOKMARK [1][-]{section.5.3}{Sterownik RFM73}{chapter.5}% 57
+\BOOKMARK [2][-]{subsection.5.3.1}{Cel aplikacji}{section.5.3}% 58
+\BOOKMARK [2][-]{subsection.5.3.2}{Uzyskane wyniki}{section.5.3}% 59
+\BOOKMARK [2][-]{subsection.5.3.3}{Wnioski}{section.5.3}% 60
+\BOOKMARK [0][-]{chapter.6}{Podsumowanie}{}% 61
+\BOOKMARK [1][-]{section.6.1}{Wnioski}{chapter.6}% 62
+\BOOKMARK [1][-]{section.6.2}{Dalszy rozw\363j projektu}{chapter.6}% 63
+\BOOKMARK [0][-]{appendix.A}{Zawartosc do\233aczonej p\233yty CD}{}% 64
+\BOOKMARK [0][-]{appendix.B}{Kompilator aplikacji}{}% 65
+\BOOKMARK [1][-]{section.B.1}{Opis aplikacji}{appendix.B}% 66
+\BOOKMARK [1][-]{section.B.2}{Kompilacja narzedzia}{appendix.B}% 67
+\BOOKMARK [1][-]{section.B.3}{Uzycie narzedzia}{appendix.B}% 68
+\BOOKMARK [0][-]{appendix.C}{Konfiguracja parametr\363w maszyny wirtualnej}{}% 69
+\BOOKMARK [0][-]{appendix.D}{Kompilacja kodu zr\363d\233owego}{}% 70
+\BOOKMARK [1][-]{section.D.1}{Wprowadzenie}{appendix.D}% 71
+\BOOKMARK [1][-]{section.D.2}{Kod zr\363d\233owy}{appendix.D}% 72
+\BOOKMARK [1][-]{section.D.3}{Preprocessing}{appendix.D}% 73
+\BOOKMARK [1][-]{section.D.4}{Drzewo sk\233adniowe}{appendix.D}% 74
+\BOOKMARK [1][-]{section.D.5}{Core Erlang}{appendix.D}% 75
+\BOOKMARK [1][-]{section.D.6}{Kod posredni - bajtkod}{appendix.D}% 76
+\BOOKMARK [1][-]{section.D.7}{Plik binarny BEAM}{appendix.D}% 77
+\BOOKMARK [2][-]{subsection.D.7.1}{Tablica atom\363w}{section.D.7}% 78
+\BOOKMARK [2][-]{subsection.D.7.2}{Kod posredni}{section.D.7}% 79
+\BOOKMARK [2][-]{subsection.D.7.3}{Tablica importowanych funkcji}{section.D.7}% 80
+\BOOKMARK [2][-]{subsection.D.7.4}{Tablica eksportowanych funkcji}{section.D.7}% 81
+\BOOKMARK [2][-]{subsection.D.7.5}{Tablica funkcji lokalnych}{section.D.7}% 82
+\BOOKMARK [2][-]{subsection.D.7.6}{Tablica lambd}{section.D.7}% 83
+\BOOKMARK [2][-]{subsection.D.7.7}{Tablica sta\233ych}{section.D.7}% 84
+\BOOKMARK [2][-]{subsection.D.7.8}{Lista atrybut\363w modu\233u}{section.D.7}% 85
+\BOOKMARK [2][-]{subsection.D.7.9}{Lista dodatkowych informacji o kompilacji modu\233u}{section.D.7}% 86
+\BOOKMARK [2][-]{subsection.D.7.10}{Tablica linii kodu zr\363d\233owego modu\233u}{section.D.7}% 87
+\BOOKMARK [2][-]{subsection.D.7.11}{Drzewo syntaktyczne modu\233u}{section.D.7}% 88
+\BOOKMARK [0][-]{appendix.E}{Lista instrukcji maszyny wirtualnej BEAM}{}% 89
+\BOOKMARK [1][-]{section.E.1}{Typy argument\363w}{appendix.E}% 90
+\BOOKMARK [1][-]{section.E.2}{Lista instrukcji}{appendix.E}% 91
+\BOOKMARK [0][-]{table.E.2}{Bibliografia}{}% 92

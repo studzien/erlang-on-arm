@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  12 JUL 2014 00:27
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  15 JUL 2014 00:04
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -686,9 +686,9 @@ Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \verbatim@out=\write3
-runsystem(touch /tmp/w18-test-201471227.tex)...executed.
+runsystem(touch /tmp/w18-test-20147154.tex)...executed.
 
-runsystem(rm -f /tmp/w18-test-201471227.tex)...executed.
+runsystem(rm -f /tmp/w18-test-20147154.tex)...executed.
 
 Package gnuplottex Info: Automatically converting gnuplot files. on input line 
 77.
@@ -1158,7 +1158,10 @@ File: lstlang3.sty 2004/09/05 1.3 listings language file
 LaTeX Warning: Unused global option(s):
     [pdflatex,11pt].
 
-(./praca.aux (./rozdzial4.aux) (./dodatek_beam.aux))
+(./praca.aux (./rozdzial1.aux) (./rozdzial2.aux) (./rozdzial3.aux)
+(./rozdzial4.aux) (./rozdzial5.aux) (./rozdzial6.aux) (./dodatek_cd.aux)
+(./dodatek_builder.aux) (./dodatek_config.aux) (./dodatek_kompilacja.aux)
+(./dodatek_beam.aux))
 \openout1 = `praca.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 106.
@@ -1271,7 +1274,7 @@ LaTeX Info: Redefining \nameref on input line 106.
 \c@lstlisting=\count155
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
- <agh.jpg, id=120, 146.4672pt x 284.7438pt>
+ <agh.jpg, id=373, 146.4672pt x 284.7438pt>
 File: agh.jpg Graphic file (type jpg)
 
 <use agh.jpg>
@@ -1323,64 +1326,116 @@ l.108 \titlepages
 ]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 110.
- (./praca.toc
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 20.
+ (./praca.toc [5
+
+]
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 39.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [5
+)
+Underfull \vbox (badness 1122) has occurred while \output is active []
 
-])
+ [6])
 \tf@toc=\write5
 \openout5 = `praca.toc'.
 
- [6]
-\openout2 = `rozdzial4.aux'.
+
+[7]
+\openout2 = `rozdzial1.aux'.
+
+ (./rozdzial1.tex [8
 
 
-(./rozdzial4.tex
+
+]
 Rozdzia\l  1.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 1.
+[9] [10] [11] [12] [13]) [14]
+\openout2 = `rozdzial2.aux'.
+
+ (./rozdzial2.tex
+Rozdzia\l  2.
 LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 23.
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 12.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./freertos_task_state.pdf): PDF incl
+usion: found PDF version <1.7>, but at most version <1.5> allowed
+<freertos_task_state.pdf, id=578, 614.295pt x 794.97pt>
+File: freertos_task_state.pdf Graphic file (type pdf)
+
+<use freertos_task_state.pdf>
+Package pdftex.def Info: freertos_task_state.pdf used on input line 23.
+(pdftex.def)             Requested size: 614.29349pt x 240.1407pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[15
+
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16 <./freertos_task_state.pdf>] [17] [18] <lpc176x.png, id=605, 1027.84pt x 2
+73.02pt>
+File: lpc176x.png Graphic file (type png)
+
+<use lpc176x.png>
+Package pdftex.def Info: lpc176x.png used on input line 118.
+(pdftex.def)             Requested size: 411.12872pt x 109.20605pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 119--119
+[]\T1/ptm/m/n/10.95 Rysunek 2.2: |Pªytka roz-wo-jowa z mi-kro-kon-tro-le-rem LP
+C176x. ™ró-dªo: []$\T1/pcr/m/n/10.95 http : / / www .
+ []
+
+[19 <./lpc176x.png>]) [20]
+\openout2 = `rozdzial3.aux'.
+
+ (./rozdzial3.tex
+Rozdzia\l  3.
+) [21
+
+
+
+]
+\openout2 = `rozdzial4.aux'.
+
+ (./rozdzial4.tex [22
+
+
+
+]
+Rozdzia\l  4.
 
 Underfull \hbox (badness 3250) in paragraph at lines 26--27
 []\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
 ple-men-to-wany w pliku ¹ró-dªo-wym
  []
 
-
-LaTeX Warning: Reference `cha:builder' on page 7 undefined on input line 29.
-
-[7
-
-
-
-]
-
-LaTeX Warning: Reference `cha:erlangKompilacja' on page 8 undefined on input li
-ne 31.
-
-[8]
+[23] [24]
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./atom_table.pdf): PDF inclusion: fo
 und PDF version <1.7>, but at most version <1.5> allowed
-<atom_table.pdf, id=200, 614.295pt x 794.97pt>
+<atom_table.pdf, id=648, 614.295pt x 794.97pt>
 File: atom_table.pdf Graphic file (type pdf)
  <use atom_table.pdf>
 Package pdftex.def Info: atom_table.pdf used on input line 60.
-(pdftex.def)             Requested size: 358.21933pt x 225.91434pt.
- [9 <./atom_table.pdf>]
+(pdftex.def)             Requested size: 329.76666pt x 197.46167pt.
+ [25 <./atom_table.pdf>]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 70.
- [10]
+ [26]
 Underfull \hbox (badness 4927) in paragraph at lines 89--90
 []\T1/ptm/m/n/10.95 Poniewa» rów-no±¢ in-dek-sów w ta-blicy eks-por-tów jest ró
 w-no-wa»na z rów-no-±ci¡ tró-jek
  []
 
-[11]
+[27]
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/pcr/b/n' tried instead on input line 116.
 
@@ -1411,7 +1466,7 @@ Underfull \vbox (badness 10000) detected at line 156
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
+ [28]
 Underfull \hbox (badness 10000) in paragraph at lines 170--170
 []|\T1/pcr/m/n/10.95 IIIIIIII IIIIIIII
  []
@@ -1440,49 +1495,50 @@ Underfull \hbox (badness 10000) in paragraph at lines 176--176
 Underfull \vbox (badness 10000) detected at line 180
  []
 
-[13]
+[29]
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./list_on_heap.pdf): PDF inclusion: 
 found PDF version <1.7>, but at most version <1.5> allowed
-<list_on_heap.pdf, id=245, 614.295pt x 794.97pt>
+<list_on_heap.pdf, id=693, 614.295pt x 794.97pt>
 File: list_on_heap.pdf Graphic file (type pdf)
  <use list_on_heap.pdf>
 Package pdftex.def Info: list_on_heap.pdf used on input line 202.
-(pdftex.def)             Requested size: 486.25641pt x 282.81972pt.
+(pdftex.def)             Requested size: 457.80374pt x 254.36705pt.
 
-[14 <./list_on_heap.pdf>]
+[30 <./list_on_heap.pdf>]
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./tuple_on_heap.pdf): PDF inclusion:
  found PDF version <1.7>, but at most version <1.5> allowed
-<tuple_on_heap.pdf, id=256, 614.295pt x 794.97pt>
+<tuple_on_heap.pdf, id=704, 614.295pt x 794.97pt>
 File: tuple_on_heap.pdf Graphic file (type pdf)
  <use tuple_on_heap.pdf>
 Package pdftex.def Info: tuple_on_heap.pdf used on input line 226.
-(pdftex.def)             Requested size: 486.25641pt x 197.46165pt.
+(pdftex.def)             Requested size: 457.80374pt x 169.00899pt.
 
-[15 <./tuple_on_heap.pdf>]
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./bignum_on_heap.pdf): PDF inclusion
 : found PDF version <1.7>, but at most version <1.5> allowed
-<bignum_on_heap.pdf, id=266, 614.295pt x 794.97pt>
+<bignum_on_heap.pdf, id=707, 614.295pt x 794.97pt>
 File: bignum_on_heap.pdf Graphic file (type pdf)
  <use bignum_on_heap.pdf>
 Package pdftex.def Info: bignum_on_heap.pdf used on input line 247.
-(pdftex.def)             Requested size: 486.25641pt x 160.47318pt.
+(pdftex.def)             Requested size: 457.80374pt x 132.02051pt.
 
-[16 <./bignum_on_heap.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[31 <./tuple_on_heap.pdf>] [32 <./bignum_on_heap.pdf>]
 Underfull \hbox (badness 3250) in paragraph at lines 268--269
 []\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
 ple-men-to-wany w pliku ¹ró-dªo-wym
  []
 
-
-Underfull \vbox (badness 7221) has occurred while \output is active []
-
- [17]
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <8> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 295.
 
+Underfull \vbox (badness 1748) has occurred while \output is active []
+
+ [33]
 (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
@@ -1491,113 +1547,675 @@ File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
 nput line 303.
- [18]
+ [34]
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_1.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_1.pdf, id=300, 614.295pt x 794.97pt>
+<interpreter_max_1.pdf, id=749, 614.295pt x 794.97pt>
 File: interpreter_max_1.pdf Graphic file (type pdf)
 
 <use interpreter_max_1.pdf>
 Package pdftex.def Info: interpreter_max_1.pdf used on input line 332.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_2.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_2.pdf, id=302, 614.295pt x 794.97pt>
+<interpreter_max_2.pdf, id=751, 614.295pt x 794.97pt>
 File: interpreter_max_2.pdf Graphic file (type pdf)
 
 <use interpreter_max_2.pdf>
 Package pdftex.def Info: interpreter_max_2.pdf used on input line 340.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_3.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_3.pdf, id=304, 614.295pt x 794.97pt>
+<interpreter_max_3.pdf, id=753, 614.295pt x 794.97pt>
 File: interpreter_max_3.pdf Graphic file (type pdf)
 
 <use interpreter_max_3.pdf>
 Package pdftex.def Info: interpreter_max_3.pdf used on input line 348.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_4.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_4.pdf, id=306, 614.295pt x 794.97pt>
+<interpreter_max_4.pdf, id=755, 614.295pt x 794.97pt>
 File: interpreter_max_4.pdf Graphic file (type pdf)
 
 <use interpreter_max_4.pdf>
 Package pdftex.def Info: interpreter_max_4.pdf used on input line 356.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_5.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_5.pdf, id=308, 614.295pt x 794.97pt>
+<interpreter_max_5.pdf, id=757, 614.295pt x 794.97pt>
 File: interpreter_max_5.pdf Graphic file (type pdf)
 
 <use interpreter_max_5.pdf>
 Package pdftex.def Info: interpreter_max_5.pdf used on input line 364.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_6.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_6.pdf, id=310, 614.295pt x 794.97pt>
+<interpreter_max_6.pdf, id=759, 614.295pt x 794.97pt>
 File: interpreter_max_6.pdf Graphic file (type pdf)
 
 <use interpreter_max_6.pdf>
 Package pdftex.def Info: interpreter_max_6.pdf used on input line 372.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_7.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_7.pdf, id=312, 614.295pt x 794.97pt>
+<interpreter_max_7.pdf, id=761, 614.295pt x 794.97pt>
 File: interpreter_max_7.pdf Graphic file (type pdf)
 
 <use interpreter_max_7.pdf>
 Package pdftex.def Info: interpreter_max_7.pdf used on input line 380.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_8.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_8.pdf, id=314, 614.295pt x 794.97pt>
+<interpreter_max_8.pdf, id=763, 614.295pt x 794.97pt>
 File: interpreter_max_8.pdf Graphic file (type pdf)
 
 <use interpreter_max_8.pdf>
 Package pdftex.def Info: interpreter_max_8.pdf used on input line 388.
-(pdftex.def)             Requested size: 195.85223pt x 119.10184pt.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <12> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 410.
- [19] [20 <./interpreter_max_1.pdf> <./interpreter_max_2.pdf> <./interpreter_ma
-x_3.pdf> <./interpreter_max_4.pdf> <./interpreter_max_5.pdf> <./interpreter_max
-_6.pdf> <./interpreter_max_7.pdf> <./interpreter_max_8.pdf>]
+(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
 
-pdfTeX warning: /usr/texbin/pdflatex (file ./erts_memory.pdf): PDF inclusion: f
-ound PDF version <1.7>, but at most version <1.5> allowed
-<erts_memory.pdf, id=342, 614.295pt x 794.97pt>
-File: erts_memory.pdf Graphic file (type pdf)
- <use erts_memory.pdf>
-Package pdftex.def Info: erts_memory.pdf used on input line 455.
-(pdftex.def)             Requested size: 457.80374pt x 339.7251pt.
+Underfull \vbox (badness 1048) has occurred while \output is active []
+
+ [35]
+[36 <./interpreter_max_1.pdf> <./interpreter_max_2.pdf> <./interpreter_max_3.pd
+f> <./interpreter_max_4.pdf> <./interpreter_max_5.pdf> <./interpreter_max_6.pdf
+> <./interpreter_max_7.pdf> <./interpreter_max_8.pdf>] [37] [38]
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./preemption.pdf): PDF inclusion: fo
+und PDF version <1.7>, but at most version <1.5> allowed
+<preemption.pdf, id=808, 614.295pt x 794.97pt>
+File: preemption.pdf Graphic file (type pdf)
+ <use preemption.pdf>
+Package pdftex.def Info: preemption.pdf used on input line 500.
+(pdftex.def)             Requested size: 400.38774pt x 283.16225pt.
+ [39 <./preemption.pdf>]
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <12> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 522.
+
+Underfull \hbox (badness 1859) in paragraph at lines 524--525
+[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
+m-ple-men-to-wane w pliku ¹ró-dªo-wym
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 540
+ []
+
+
+Underfull \hbox (badness 1859) in paragraph at lines 551--552
+[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
+m-ple-men-to-wane w pliku ¹ró-dªo-wym
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 567
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [40]
+Underfull \hbox (badness 3250) in paragraph at lines 580--581
+[]\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
+ple-men-to-wany w pliku ¹ró-dªo-wym
+ []
+
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./heap.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<heap.pdf, id=826, 614.295pt x 794.97pt>
+File: heap.pdf Graphic file (type pdf)
+ <use heap.pdf>
+Package pdftex.def Info: heap.pdf used on input line 606.
+(pdftex.def)             Requested size: 400.89839pt x 97.87727pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-) [21] [22 <./erts_memory.pdf>]
+[41] [42 <./heap.pdf>] [43]
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_0.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_0.pdf, id=860, 614.295pt x 794.97pt>
+File: gc_0.pdf Graphic file (type pdf)
+ <use gc_0.pdf>
+Package pdftex.def Info: gc_0.pdf used on input line 681.
+(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_1.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_1.pdf, id=862, 614.295pt x 794.97pt>
+File: gc_1.pdf Graphic file (type pdf)
+ <use gc_1.pdf>
+Package pdftex.def Info: gc_1.pdf used on input line 685.
+(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_2.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_2.pdf, id=864, 614.295pt x 794.97pt>
+File: gc_2.pdf Graphic file (type pdf)
+ <use gc_2.pdf>
+Package pdftex.def Info: gc_2.pdf used on input line 689.
+(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_3.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_3.pdf, id=866, 614.295pt x 794.97pt>
+File: gc_3.pdf Graphic file (type pdf)
+ <use gc_3.pdf>
+Package pdftex.def Info: gc_3.pdf used on input line 695.
+(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_4.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_4.pdf, id=868, 614.295pt x 794.97pt>
+File: gc_4.pdf Graphic file (type pdf)
+ <use gc_4.pdf>
+Package pdftex.def Info: gc_4.pdf used on input line 699.
+(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_5.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_5.pdf, id=870, 614.295pt x 794.97pt>
+File: gc_5.pdf Graphic file (type pdf)
+ <use gc_5.pdf>
+Package pdftex.def Info: gc_5.pdf used on input line 703.
+(pdftex.def)             Requested size: 343.3528pt x 190.77528pt.
+
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./gc_6.pdf): PDF inclusion: found PD
+F version <1.7>, but at most version <1.5> allowed
+<gc_6.pdf, id=872, 614.295pt x 794.97pt>
+File: gc_6.pdf Graphic file (type pdf)
+ <use gc_6.pdf>
+Package pdftex.def Info: gc_6.pdf used on input line 709.
+(pdftex.def)             Requested size: 343.3528pt x 190.77528pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[44] [45 <./gc_0.pdf> <./gc_1.pdf> <./gc_2.pdf>] [46 <./gc_3.pdf> <./gc_4.pdf> 
+<./gc_5.pdf>]
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./erts_memory.pdf): PDF inclusion: f
+ound PDF version <1.7>, but at most version <1.5> allowed
+<erts_memory.pdf, id=900, 614.295pt x 794.97pt>
+File: erts_memory.pdf Graphic file (type pdf)
+ <use erts_memory.pdf>
+Package pdftex.def Info: erts_memory.pdf used on input line 758.
+(pdftex.def)             Requested size: 429.35107pt x 297.0461pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) [47 <./gc_6.pdf>] [48 <./erts_memory.pdf>]
+\openout2 = `rozdzial5.aux'.
+
+ (./rozdzial5.tex
+Rozdzia\l  5.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 24.
+
+Underfull \vbox (badness 1147) has occurred while \output is active []
+
+ [49
+
+
+
+]
+Underfull \vbox (badness 2409) has occurred while \output is active []
+
+ [50]
+LaTeX Font Info:    Try loading font information for LGR+ptm on input line 83.
+LaTeX Font Info:    No file LGRptm.fd. on input line 83.
+
+
+LaTeX Font Warning: Font shape `LGR/ptm/m/n' undefined
+(Font)              using `LGR/cmr/m/n' instead on input line 83.
+
+\openout3 = `praca-gnuplottex-fig1.gnuplot'.
+
+Opening gnuplot stream praca-gnuplottex-fig1.gnuplot
+runsystem(gnuplot praca-gnuplottex-fig1.gnuplot)...executed.
+
+Package gnuplottex Info: praca-gnuplottex-fig1.gnuplot converted on input line 
+109.
+
+(./praca-gnuplottex-fig1.tex
+Package epstopdf Info: Source file: <praca-gnuplottex-fig1.eps>
+(epstopdf)                    date: 2014-07-15 00:04:34
+(epstopdf)                    size: 20313 bytes
+(epstopdf)             Output file: <praca-gnuplottex-fig1-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-14 23:40:02
+(epstopdf)                    size: 5107 bytes
+(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig1-eps-c
+onverted-to.pdf praca-gnuplottex-fig1.eps>
+(epstopdf)             \includegraphics on input line 122.
+runsystem(epstopdf --outfile=praca-gnuplottex-fig1-eps-converted-to.pdf praca-g
+nuplottex-fig1.eps)...executed.
+
+Package epstopdf Info: Result file: <praca-gnuplottex-fig1-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-15 00:04:34
+(epstopdf)                    size: 5107 bytes.
+
+<praca-gnuplottex-fig1-eps-converted-to.pdf, id=955, 361.35pt x 252.945pt>
+File: praca-gnuplottex-fig1-eps-converted-to.pdf Graphic file (type pdf)
+
+<use praca-gnuplottex-fig1-eps-converted-to.pdf>
+Package pdftex.def Info: praca-gnuplottex-fig1-eps-converted-to.pdf used on inp
+ut line 122.
+(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
+)
+Overfull \hbox (30.31506pt too wide) in paragraph at lines 109--110
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--110
+
+ []
+
+\openout3 = `praca-gnuplottex-fig2.gnuplot'.
+
+Opening gnuplot stream praca-gnuplottex-fig2.gnuplot
+runsystem(gnuplot praca-gnuplottex-fig2.gnuplot)...executed.
+
+Package gnuplottex Info: praca-gnuplottex-fig2.gnuplot converted on input line 
+122.
+
+(./praca-gnuplottex-fig2.tex
+Package epstopdf Info: Source file: <praca-gnuplottex-fig2.eps>
+(epstopdf)                    date: 2014-07-15 00:04:34
+(epstopdf)                    size: 20831 bytes
+(epstopdf)             Output file: <praca-gnuplottex-fig2-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-14 23:40:02
+(epstopdf)                    size: 5337 bytes
+(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig2-eps-c
+onverted-to.pdf praca-gnuplottex-fig2.eps>
+(epstopdf)             \includegraphics on input line 130.
+runsystem(epstopdf --outfile=praca-gnuplottex-fig2-eps-converted-to.pdf praca-g
+nuplottex-fig2.eps)...executed.
+
+Package epstopdf Info: Result file: <praca-gnuplottex-fig2-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 5337 bytes.
+
+<praca-gnuplottex-fig2-eps-converted-to.pdf, id=956, 361.35pt x 252.945pt>
+File: praca-gnuplottex-fig2-eps-converted-to.pdf Graphic file (type pdf)
+
+<use praca-gnuplottex-fig2-eps-converted-to.pdf>
+Package pdftex.def Info: praca-gnuplottex-fig2-eps-converted-to.pdf used on inp
+ut line 130.
+(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
+)
+Overfull \hbox (30.31506pt too wide) in paragraph at lines 122--123
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 122--123
+
+ []
+
+\openout3 = `praca-gnuplottex-fig3.gnuplot'.
+
+Opening gnuplot stream praca-gnuplottex-fig3.gnuplot
+runsystem(gnuplot praca-gnuplottex-fig3.gnuplot)...executed.
+
+Package gnuplottex Info: praca-gnuplottex-fig3.gnuplot converted on input line 
+134.
+
+(./praca-gnuplottex-fig3.tex
+Package epstopdf Info: Source file: <praca-gnuplottex-fig3.eps>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 21088 bytes
+(epstopdf)             Output file: <praca-gnuplottex-fig3-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-14 23:40:03
+(epstopdf)                    size: 5474 bytes
+(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig3-eps-c
+onverted-to.pdf praca-gnuplottex-fig3.eps>
+(epstopdf)             \includegraphics on input line 132.
+runsystem(epstopdf --outfile=praca-gnuplottex-fig3-eps-converted-to.pdf praca-g
+nuplottex-fig3.eps)...executed.
+
+Package epstopdf Info: Result file: <praca-gnuplottex-fig3-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 5474 bytes.
+
+<praca-gnuplottex-fig3-eps-converted-to.pdf, id=957, 361.35pt x 252.945pt>
+File: praca-gnuplottex-fig3-eps-converted-to.pdf Graphic file (type pdf)
+
+<use praca-gnuplottex-fig3-eps-converted-to.pdf>
+Package pdftex.def Info: praca-gnuplottex-fig3-eps-converted-to.pdf used on inp
+ut line 132.
+(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
+)
+Overfull \hbox (30.31506pt too wide) in paragraph at lines 134--135
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
+
+ []
+
+\openout3 = `praca-gnuplottex-fig4.gnuplot'.
+
+Opening gnuplot stream praca-gnuplottex-fig4.gnuplot
+runsystem(gnuplot praca-gnuplottex-fig4.gnuplot)...executed.
+
+Package gnuplottex Info: praca-gnuplottex-fig4.gnuplot converted on input line 
+147.
+
+(./praca-gnuplottex-fig4.tex
+Package epstopdf Info: Source file: <praca-gnuplottex-fig4.eps>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 20655 bytes
+(epstopdf)             Output file: <praca-gnuplottex-fig4-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-14 23:40:03
+(epstopdf)                    size: 5281 bytes
+(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig4-eps-c
+onverted-to.pdf praca-gnuplottex-fig4.eps>
+(epstopdf)             \includegraphics on input line 126.
+runsystem(epstopdf --outfile=praca-gnuplottex-fig4-eps-converted-to.pdf praca-g
+nuplottex-fig4.eps)...executed.
+
+Package epstopdf Info: Result file: <praca-gnuplottex-fig4-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 5281 bytes.
+
+<praca-gnuplottex-fig4-eps-converted-to.pdf, id=958, 361.35pt x 252.945pt>
+File: praca-gnuplottex-fig4-eps-converted-to.pdf Graphic file (type pdf)
+
+<use praca-gnuplottex-fig4-eps-converted-to.pdf>
+Package pdftex.def Info: praca-gnuplottex-fig4-eps-converted-to.pdf used on inp
+ut line 126.
+(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
+)
+Overfull \hbox (30.31506pt too wide) in paragraph at lines 147--148
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+
+ []
+
+\openout3 = `praca-gnuplottex-fig5.gnuplot'.
+
+Opening gnuplot stream praca-gnuplottex-fig5.gnuplot
+runsystem(gnuplot praca-gnuplottex-fig5.gnuplot)...executed.
+
+Package gnuplottex Info: praca-gnuplottex-fig5.gnuplot converted on input line 
+160.
+
+(./praca-gnuplottex-fig5.tex
+Package epstopdf Info: Source file: <praca-gnuplottex-fig5.eps>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 19294 bytes
+(epstopdf)             Output file: <praca-gnuplottex-fig5-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-14 23:40:03
+(epstopdf)                    size: 4341 bytes
+(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig5-eps-c
+onverted-to.pdf praca-gnuplottex-fig5.eps>
+(epstopdf)             \includegraphics on input line 126.
+runsystem(epstopdf --outfile=praca-gnuplottex-fig5-eps-converted-to.pdf praca-g
+nuplottex-fig5.eps)...executed.
+
+Package epstopdf Info: Result file: <praca-gnuplottex-fig5-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 4341 bytes.
+
+<praca-gnuplottex-fig5-eps-converted-to.pdf, id=959, 361.35pt x 252.945pt>
+File: praca-gnuplottex-fig5-eps-converted-to.pdf Graphic file (type pdf)
+
+<use praca-gnuplottex-fig5-eps-converted-to.pdf>
+Package pdftex.def Info: praca-gnuplottex-fig5-eps-converted-to.pdf used on inp
+ut line 126.
+(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
+)
+Overfull \hbox (30.31506pt too wide) in paragraph at lines 160--161
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--161
+
+ []
+
+\openout3 = `praca-gnuplottex-fig6.gnuplot'.
+
+Opening gnuplot stream praca-gnuplottex-fig6.gnuplot
+runsystem(gnuplot praca-gnuplottex-fig6.gnuplot)...executed.
+
+Package gnuplottex Info: praca-gnuplottex-fig6.gnuplot converted on input line 
+177.
+
+(./praca-gnuplottex-fig6.tex
+Package epstopdf Info: Source file: <praca-gnuplottex-fig6.eps>
+(epstopdf)                    date: 2014-07-15 00:04:35
+(epstopdf)                    size: 23012 bytes
+(epstopdf)             Output file: <praca-gnuplottex-fig6-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-14 23:40:03
+(epstopdf)                    size: 6436 bytes
+(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig6-eps-c
+onverted-to.pdf praca-gnuplottex-fig6.eps>
+(epstopdf)             \includegraphics on input line 132.
+runsystem(epstopdf --outfile=praca-gnuplottex-fig6-eps-converted-to.pdf praca-g
+nuplottex-fig6.eps)...executed.
+
+Package epstopdf Info: Result file: <praca-gnuplottex-fig6-eps-converted-to.pdf
+>
+(epstopdf)                    date: 2014-07-15 00:04:36
+(epstopdf)                    size: 6436 bytes.
+
+<praca-gnuplottex-fig6-eps-converted-to.pdf, id=960, 361.35pt x 252.945pt>
+File: praca-gnuplottex-fig6-eps-converted-to.pdf Graphic file (type pdf)
+
+<use praca-gnuplottex-fig6-eps-converted-to.pdf>
+Package pdftex.def Info: praca-gnuplottex-fig6-eps-converted-to.pdf used on inp
+ut line 132.
+(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
+)
+Overfull \hbox (30.31506pt too wide) in paragraph at lines 177--178
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 177--178
+
+ []
+
+[51] [52 <./praca-gnuplottex-fig1-eps-converted-to.pdf> <./praca-gnuplottex-fig
+2-eps-converted-to.pdf> <./praca-gnuplottex-fig3-eps-converted-to.pdf> <./praca
+-gnuplottex-fig4-eps-converted-to.pdf> <./praca-gnuplottex-fig5-eps-converted-t
+o.pdf> <./praca-gnuplottex-fig6-eps-converted-to.pdf>]
+
+pdfTeX warning: /usr/texbin/pdflatex (file ./example_led_processes.pdf): PDF in
+clusion: found PDF version <1.7>, but at most version <1.5> allowed
+<example_led_processes.pdf, id=984, 614.295pt x 794.97pt>
+File: example_led_processes.pdf Graphic file (type pdf)
+
+<use example_led_processes.pdf>
+Package pdftex.def Info: example_led_processes.pdf used on input line 216.
+(pdftex.def)             Requested size: 472.03006pt x 282.81972pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<example_led.pdf, id=986, 845.1575pt x 597.23125pt>
+File: example_led.pdf Graphic file (type pdf)
+ <use example_led.pdf>
+Package pdftex.def Info: example_led.pdf used on input line 222.
+(pdftex.def)             Requested size: 845.15544pt x 597.22978pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [53]
+[54 <./example_led_processes.pdf>]
+<example_rfm.pdf, id=1004, 845.1575pt x 597.23125pt>
+File: example_rfm.pdf Graphic file (type pdf)
+ <use example_rfm.pdf>
+Package pdftex.def Info: example_rfm.pdf used on input line 257.
+(pdftex.def)             Requested size: 845.15544pt x 426.51369pt.
+
+Underfull \hbox (badness 1067) in paragraph at lines 258--258
+[]\T1/ptm/m/n/10.95 Rysunek 5.4: |Sche-mat pod-ª¡-cze-nia mo-duªu RFM73 do pªyt
+ki pro-to-ty-po-wej z mi-kro-kon-tro-le-rem
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) [55] [56 <./example_led.pdf>] [57 <./example_rfm.pdf>]
+\openout2 = `rozdzial6.aux'.
+
+ (./rozdzial6.tex
+[58
+
+
+
+]
+Rozdzia\l  6.
+) [59]
+\openout2 = `dodatek_cd.aux'.
+
+ (./dodatek_cd.tex [60
+
+
+
+]
+Dodatek A.
+) [61]
+\openout2 = `dodatek_builder.aux'.
+
+ (./dodatek_builder.tex [62
+
+
+
+]
+Dodatek B.
+
+Underfull \vbox (badness 4391) has occurred while \output is active []
+
+ [63]
+Underfull \hbox (badness 8019) in paragraph at lines 37--38
+[]\T1/ptm/m/n/10.95 Istnieje rów-nie» mo»-li-wo±¢ wy-boru po-cz¡t-ko-wej funk-c
+ji pro-gramu (do-my±l-nie jest to
+ []
+
+) [64]
+\openout2 = `dodatek_config.aux'.
+
+ (./dodatek_config.tex
+Dodatek C.
+) [65
+
+
+
+]
+\openout2 = `dodatek_kompilacja.aux'.
+
+ (./dodatek_kompilacja.tex [66
+
+
+
+]
+Dodatek D.
+[67] [68] [69] [70] [71] [72]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [73]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [74]
+Underfull \vbox (badness 10000) detected at line 347
+ []
+
+[75]
+Underfull \vbox (badness 10000) detected at line 398
+ []
+
+
+Overfull \vbox (18.21588pt too high) has occurred while \output is active []
+
+
+[76]
+Underfull \vbox (badness 10000) detected at line 434
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 464
+ []
+
+[77]
+Underfull \vbox (badness 10000) detected at line 493
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [78]
+Underfull \vbox (badness 10000) detected at line 522
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 560
+ []
+
+[79]
+Underfull \vbox (badness 10000) detected at line 592
+ []
+
+[80]
+Underfull \vbox (badness 10000) detected at line 650
+ []
+
+[81]) [82]
 \openout2 = `dodatek_beam.aux'.
 
  (./dodatek_beam.tex
-Dodatek A.
-[23
+Dodatek E.
+[83
 
 
 
-] [24]
+] [84]
 Overfull \hbox (4.80426pt too wide) in paragraph at lines 103--103
 []|[]| 
  []
@@ -1708,7 +2326,7 @@ Overfull \hbox (11.48843pt too wide) in alignment at lines 148--188
  [] [] [] [] [] 
  []
 
-[25] [26]
+[85] [86]
 Underfull \hbox (badness 10000) in paragraph at lines 193--193
 []|\T1/pcr/m/n/10.95 is_nonempty_list Lbl
  []
@@ -1749,7 +2367,7 @@ Overfull \hbox (11.48843pt too wide) in alignment at lines 188--228
  [] [] [] [] [] 
  []
 
-[27] [28]
+[87] [88]
 Underfull \hbox (badness 10000) in paragraph at lines 233--233
 []|\T1/pcr/m/n/10.95 call_ext_only Arity
  []
@@ -1830,7 +2448,7 @@ Overfull \hbox (11.48843pt too wide) in alignment at lines 228--268
  [] [] [] [] [] 
  []
 
-[29]
+[89]
 Underfull \hbox (badness 10000) in paragraph at lines 271--271
 []|\T1/pcr/m/n/10.95 raise Stacktrace
  []
@@ -1931,7 +2549,7 @@ Overfull \hbox (11.48843pt too wide) in alignment at lines 268--308
  [] [] [] [] [] 
  []
 
-[30] [31]
+[90] [91]
 Underfull \hbox (badness 10000) in paragraph at lines 309--309
 []|\T1/pcr/m/n/10.95 bs_test_unit Fail Ms
  []
@@ -2073,7 +2691,7 @@ Overfull \hbox (11.48843pt too wide) in alignment at lines 308--348
  [] [] [] [] [] 
  []
 
-[32] [33] [34] [35]
+[92] [93] [94] [95]
 Underfull \hbox (badness 10000) in paragraph at lines 351--351
 []|\T1/pcr/m/n/10.95 gc_bif3 Lbl Live Bif
  []
@@ -2083,54 +2701,65 @@ Overfull \hbox (11.48843pt too wide) in alignment at lines 348--359
  [] [] [] [] [] 
  []
 
-[36] [37] [38] [39]) [40] (./praca.bbl [41
+[96] [97] [98] [99]) [100] (./praca.bbl
+Underfull \hbox (badness 4254) in paragraph at lines 47--52
+[]\T1/ptm/m/n/10.95 Anton Ertl.  Thre-aded Code.  []$\T1/pcr/m/n/10.95 http : /
+ / www . complang . tuwien . ac . at / forth /
+ []
+
+[101
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 149.
- [42]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 149.
- (./praca.aux (./rozdzial4.aux) (./dodatek_beam.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 149.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 149.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 150.
+ [102]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 150.
+ (./praca.aux (./rozdzial1.aux) (./rozdzial2.aux) (./rozdzial3.aux) (./rozdzial
+4.aux) (./rozdzial5.aux) (./rozdzial6.aux) (./dodatek_cd.aux)
+(./dodatek_builder.aux) (./dodatek_config.aux) (./dodatek_kompilacja.aux)
+(./dodatek_beam.aux))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 150.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 150.
 Package rerunfilecheck Info: File `praca.out' has not changed.
-(rerunfilecheck)             Checksum: 10B81371308ED7B944BDE4E91AA59614;2125.
+(rerunfilecheck)             Checksum: B11691D9DE4F2157A5AE9885A2B86A08;6530.
 
 
-LaTeX Warning: There were undefined references.
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 149.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 150.
  ) 
 Here is how much of TeX's memory you used:
- 12975 strings out of 493315
- 187086 string characters out of 6137905
- 349609 words of memory out of 5000000
- 16035 multiletter control sequences out of 15000+600000
- 88801 words of font info for 98 fonts, out of 8000000 for 9000
+ 13913 strings out of 493315
+ 200801 string characters out of 6137905
+ 420237 words of memory out of 5000000
+ 16426 multiletter control sequences out of 15000+600000
+ 91196 words of font info for 102 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,12n,60p,980b,1259s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,60p,937b,1951s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
-xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
-live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texli
-ve/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive
-/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/20
-13/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/201
-3/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/
-texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2013/texmf-di
-st/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts
-/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/
-urw/helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/hel
-vetic/uhvro8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utm
-b8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><
-/usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local
-/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2
-013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2013/texmf
--dist/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on praca.pdf (42 pages, 442490 bytes).
+xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
+live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
+ive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texliv
+e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
+2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/201
+3/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/t
+exmf-dist/fonts/type1/public/cbfonts/grmn1095.pfb></usr/local/texlive/2013/texm
+f-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2013/texmf-dist/f
+onts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/typ
+e1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/
+helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/helveti
+c/uhvro8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a.
+pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr
+/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/tex
+live/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/
+texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2013/texmf-dis
+t/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on praca.pdf (102 pages, 1497652 bytes).
 PDF statistics:
- 553 PDF objects out of 1000 (max. 8388607)
- 459 compressed objects within 5 object streams
- 101 named destinations out of 1000 (max. 500000)
- 381 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1722 PDF objects out of 1728 (max. 8388607)
+ 1516 compressed objects within 16 object streams
+ 536 named destinations out of 1000 (max. 500000)
+ 1063 words of extra memory for PDF output out of 10000 (max. 10000000)
 

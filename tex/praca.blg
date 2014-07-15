@@ -9,51 +9,52 @@ A level-1 auxiliary file: rozdzial5.aux
 A level-1 auxiliary file: rozdzial6.aux
 A level-1 auxiliary file: dodatek_cd.aux
 A level-1 auxiliary file: dodatek_builder.aux
+A level-1 auxiliary file: dodatek_config.aux
 A level-1 auxiliary file: dodatek_kompilacja.aux
 A level-1 auxiliary file: dodatek_beam.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
 Warning--entry type for "ErlangVxWorks" isn't style-file defined
---line 82 of file bibliografia.bib
-You've used 15 entries,
+--line 98 of file bibliografia.bib
+You've used 19 entries,
             2118 wiz_defined-function locations,
-            595 strings with 6141 characters,
-and the built_in function-call counts, 3551 in all, are:
-= -- 343
-> -- 127
+            625 strings with 6585 characters,
+and the built_in function-call counts, 4484 in all, are:
+= -- 441
+> -- 155
 < -- 1
-+ -- 54
-- -- 38
-* -- 152
-:= -- 620
-add.period$ -- 48
-call.type$ -- 15
-change.case$ -- 59
++ -- 67
+- -- 46
+* -- 196
+:= -- 784
+add.period$ -- 62
+call.type$ -- 19
+change.case$ -- 75
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 153
-empty$ -- 329
-format.name$ -- 38
-if$ -- 759
+cite$ -- 19
+duplicate$ -- 186
+empty$ -- 414
+format.name$ -- 46
+if$ -- 955
 int.to.chr$ -- 0
-int.to.str$ -- 15
-missing$ -- 12
-newline$ -- 80
-num.names$ -- 30
-pop$ -- 102
+int.to.str$ -- 19
+missing$ -- 13
+newline$ -- 102
+num.names$ -- 38
+pop$ -- 122
 preamble$ -- 1
-purify$ -- 49
+purify$ -- 61
 quote$ -- 0
-skip$ -- 109
+skip$ -- 134
 stack$ -- 0
-substring$ -- 111
-swap$ -- 24
+substring$ -- 157
+swap$ -- 27
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 52
+type$ -- 68
 warning$ -- 0
-while$ -- 34
-width$ -- 17
-write$ -- 163
+while$ -- 44
+width$ -- 21
+write$ -- 210
 (There was 1 warning)
