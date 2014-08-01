@@ -1,0 +1,32 @@
+sender:
+send/0
+1. allocate message buffer (size of the message attachment)
+2. copy message attachment to the buffer
+3. queue message
+3.1 allocate ErlMessage
+3.2 assign appropriate fields
+3.3 enqueue in process' ErlMessageQueue
+
+
+receiver:
+wait Label               V
+1. suspend the processes until message has arrived
+
+loop_rec Label Register
+1. peek message from the queue
+#define PEEK_MESSAGE(p)  (*(p)->msg.save)
+
+2. move message to the process heap
+2.1 if there is sufficient space on the heap just move it (and free heap frag)
+2.2 otherwise run gc that moves all messages to the process heap anyway
+
+remove_message/0
+
+1. peek message from the queue
+2. unlink it
+3. join (reset save pointer)
+4. free message
+
+loop_rec_end Label
+1. msg.save points to the following one
+2. jump to Label

@@ -1,0 +1,7 @@
+{allocate_zero,1,1}.
+{gc_bif,'-',{f,0},1,[{x,0},{integer,1}],{x,1}}.
+{move,{x,0},{y,0}}.
+{move,{x,1},{x,0}}.
+{call_ext,1,{extfunc,fac,fac,1}}.
+{gc_bif,'*',{f,0},1,[{y,0},{x,0}],{x,0}}.
+{deallocate,1}.

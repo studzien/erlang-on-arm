@@ -1,0 +1,5 @@
+{allocate,1,3}.
+{move,{x,2},{y,0}}.
+{call_ext,2,{extfunc,erlang,max,2}}.
+{move,{y,0},{x,1}}.
+{call_ext_last,2,{extfunc,erlang,max,2},1}.
