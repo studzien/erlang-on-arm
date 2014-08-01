@@ -79,6 +79,11 @@ typedef struct {
 } ExportEntry;
 
 typedef struct {
+	Eterm term;
+	Eterm *heap;
+} LiteralEntry;
+
+typedef struct {
 	uint32_t value;
 	uint16_t patches; //like in ImportEntry;
 } Label;
@@ -111,6 +116,10 @@ typedef struct LoaderState {
 	uint32_t num_exports;
 	ExportEntry* export;
 
+	// LITERAL TABLE RELATED FIELDS
+	uint32_t num_literals;
+	LiteralEntry* literal;
+
 	// LABELS
 	uint32_t num_labels;
 	Label* labels;
@@ -136,10 +145,11 @@ static int read_code_header(LoaderState* loader);
 static int load_code(LoaderState* loader);
 static int load_import_table(LoaderState* loader);
 static int load_export_table(LoaderState* loader);
+static int load_literal_table(LoaderState* laoder);
 
 static int finalize(LoaderState* loader);
 
-static int get_tag_and_value(LoaderState* loader, BeamInstr* result);
+static int get_tag_and_value(LoaderState* loader, BeamInstr** result);
 static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op);
 static void replace_local_call(LoaderState* loader, uint16_t offset, byte op);
 static void define_label(LoaderState* loader, uint16_t offset, byte op);

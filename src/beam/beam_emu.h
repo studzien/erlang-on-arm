@@ -9,12 +9,19 @@
 #define BEAM_EMU_H_
 
 #include "erl_process.h"
+#include "erl_time.h"
 #include "io.h"
 
 void process_main(void* p);
 BeamInstr* apply(ErlProcess* p, Eterm module, Eterm function, Eterm args);
 inline void restore_registers(ErlProcess* p);
+
+Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra, UInt live);
 static inline void allocate_heap(ErlProcess* p, UInt stack_need, UInt heap_need, UInt live);
+static inline void test_heap(ErlProcess* p, UInt need, UInt live);
+
+static inline void cancel_timer(ErlProcess *p);
+static inline void set_timer(ErlProcess* p, UInt timeout);
 
 #define OpCase(OpCode) lb_##OpCode
 #define OpCode(OpCode) (&&lb_##OpCode)
@@ -27,7 +34,9 @@ static inline void allocate_heap(ErlProcess* p, UInt stack_need, UInt heap_need,
 #define Arg(N) p->i[(N)+1]
 
 #define Resolve(Arg, Dest) do {     \
-	if(is_rreg(Arg))                \
+	if(is_literal(Arg))             \
+		Dest = *((Eterm*)Arg);		\
+	else if(is_rreg(Arg))           \
 		Dest = x0;                  \
 	else if(is_xreg(Arg))           \
 		Dest = x(x_reg_index(Arg)); \
@@ -213,7 +222,7 @@ static inline void allocate_heap(ErlProcess* p, UInt stack_need, UInt heap_need,
 
 //opcodes that have a local label as a first argument
 #define LABEL_OP_1(op) ((op)==IS_EQ_EXACT)
-#define LABEL_OP_2(op) ((op)==CALL_ONLY || (op)==CALL)
+#define LABEL_OP_2(op) ((op)==CALL_ONLY || (op)==CALL || (op)==CALL_LAST)
 
 #define JUMP_TABLE NULL,\
 		&&lb_LABEL,\

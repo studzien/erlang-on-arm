@@ -10,6 +10,7 @@
 #include "export.h"
 #include "beam_emu.h"
 #include "erl_arith.h"
+#include "erl_time.h"
 
 #include "modules.h"
 
@@ -38,24 +39,50 @@ void heap_test(void* p) {
 void erl_init() {
 	uint8_t i;
 
-	debug_32(xPortGetFreeHeapSize());
+	//debug("before init: ");
+	//debug_32(xPortGetFreeHeapSize());
+
+	//initialize timers
+	erts_init_time();
+
+	//debug("after initializing timers: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	//initialize atom table
 	init_atom_table();
+
+	//debug("after initializing the atom table: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	//initialize export table
 	init_export_table();
 
+	//debug("after loading the export table: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	//initialize BIFs
 	erts_init_bif();
+
+	//debug("after initializing bifs: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	//initialize process table
 	init_process_table();
 
+	//debug("after initializing the process table: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	//init jump table
 	process_main(NULL);
 
+	//debug("after initializing the jump table: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	//initialize garbage collector
 	erts_init_gc();
+
+	//debug("after initializing the gc: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	int modules = MODULES_N;
 
@@ -97,6 +124,7 @@ void erl_init() {
 
 void erl_exit(char* reason) {
 	vTaskSuspendAll();
-	char buf[1024];
-	vprintf("Erlang VM exited unexpectedly exited with reason: %s", reason);
+	char buf[100];
+	sprintf(buf, "Erlang VM exited unexpectedly exited with reason: %s", reason);
+	debug(buf);
 }

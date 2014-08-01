@@ -6,6 +6,7 @@
  */
 
 #include "index.h"
+#include "io.h"
 
 inline IndexSlot* erts_index_lookup(IndexTable* t, uint16_t ix) {
 	return t->seg_table[ix>>INDEX_PAGE_SHIFT][ix&INDEX_PAGE_MASK];

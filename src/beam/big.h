@@ -20,6 +20,8 @@ Eterm big_plus(Eterm, Eterm, Eterm*);
 Eterm big_minus(Eterm, Eterm, Eterm*);
 Eterm big_times(Eterm, Eterm, Eterm*);
 
+Eterm bytes_to_big(byte*, uint32_t, int, Eterm*);
+
 #define D_EXP (sizeof(Eterm)*8)
 
 /* macros for bignum objects */
@@ -42,6 +44,7 @@ Eterm big_times(Eterm, Eterm, Eterm*);
 
 /* The heap size needed for a bignum */
 #define BIG_NEED_SIZE(x)  ((x) + 1)
+#define BIG_UINT_HEAP_SIZE (1 + 1)
 
 
 /* ErtsDoubleDigit => ErtsDigit */

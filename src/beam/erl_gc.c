@@ -22,8 +22,8 @@ void erts_init_gc(void) {
 
 	int i;
 	for(i=2; i<MAX_HEAP_SIZES; i++) {
-		heap_sizes[i] = 1.2 * heap_sizes[i-1];
-		//heap_sizes[i] = heap_sizes[i-1] + heap_sizes[i-2] + 1;
+		//heap_sizes[i] = 1.2 * heap_sizes[i-1];
+		heap_sizes[i] = heap_sizes[i-1] + heap_sizes[i-2] + 1;
 	}
 }
 
@@ -36,20 +36,21 @@ void erts_init_gc(void) {
  * nobj: Number of objects in objv.
  */
 int erts_garbage_collect(ErlProcess* p, int need, Eterm* objv, int objc) {
-	debug("gc start\n");
-	UInt ticks1, ticks2;
-	ticks1 = LPC_TIM0->TC;
+	//#if (DEBUG_OP == 1)
+	char buf[30];
+	sprintf(buf, "pid %d, gc fired\n", pid2pix(p->id));
+	debug(buf);
+	//#endif
 
 	major_collection(p, need, objv, objc, &reclaimed);
 	garbage_cols++;
 
-	int cost = (HEAP_TOP(p) - HEAP_START(p))/10;
-	p->reductions += cost;
+	sprintf(buf, "new heap start is %d\n", HEAP_START(p));
+	debug(buf);
+	sprintf(buf, "heap size is %d\n", HEAP_SIZE(p));
+	debug(buf);
 
-	ticks2 = LPC_TIM0->TC;
-	p->gc_ticks += ticks2-ticks1;
-	debug("gc end\n");
-	return cost;
+	return (HEAP_TOP(p) - HEAP_START(p))/10;
 }
 
 static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt *recl) {
@@ -62,21 +63,12 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 	UInt new_sz = HEAP_SIZE(p);
 	new_sz = erts_next_heap_size(new_sz);
 
-	char buf[30];
-	sprintf(buf, "new size is %u\n", new_sz);
-	debug(buf);
-
 	UInt size_before = (HEAP_TOP(p) - HEAP_START(p));
 
-	debug_32(xPortGetFreeHeapSize());
 	n_heap = n_htop = (Eterm*)pvPortMalloc(new_sz * sizeof(Eterm));
-	debug_32(xPortGetFreeHeapSize());
 
-	debug("setting up rootset\n");
 	Rootset rootset;
 	UInt n = setup_rootset(p, objv, objc, &rootset);
-	sprintf(buf, "rootset size is %u\n", n);
-	debug(buf);
 	Roots* roots = rootset.roots;
 
 	while(n--) {
@@ -102,7 +94,19 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 				}
 				continue;
 
-				//@todo add list
+			case TAG_PRIMARY_LIST:
+				ptr = list_val(g_val);
+				val = *ptr;
+				if(IS_MOVED_CONS(val)) {
+					*g_ptr++ = ptr[1];
+				}
+				else if(in_area(ptr, src, src_size)) {
+					MOVE_CONS(ptr,val,n_htop,g_ptr++);
+				}
+				else {
+					g_ptr++;
+				}
+				continue;
 
 			default:
 				g_ptr++;
@@ -111,7 +115,11 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 		}
 	}
 
+
 	cleanup_rootset(&rootset);
+
+	// Evacuate data from the old heap until all is copied
+	n_htop = sweep_one_area(n_heap, n_htop, src, src_size);
 
 	// Move the stack to the end of the heap
 	n = HEAP_END(p) - STACK_TOP(p);
@@ -127,6 +135,8 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 	HEAP_SIZE(p) = new_sz;
 	HEAP_END(p) = n_heap + new_sz;
 
+	//dump_stack(p, STACK_TOP(p));
+
 	*recl += size_before - (HEAP_TOP(p)-HEAP_START(p));
 
 	UInt stack_size = HEAP_END(p) - STACK_TOP(p);
@@ -141,10 +151,61 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 	return 1;
 }
 
+static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_size) {
+	Eterm* ptr;
+	Eterm val;
+	Eterm gval;
+
+	while(n_hp != n_htop) {
+		gval = *n_hp;
+		switch(primary_tag(gval)) {
+		case TAG_PRIMARY_BOXED: {
+			ptr = boxed_val(gval);
+			val = *ptr;
+			if(IS_MOVED_BOXED(val)) {
+				*n_hp++ = val;
+			}
+			else if(in_area(ptr, src, src_size)) {
+				MOVE_BOXED(ptr, val, n_htop, n_hp++);
+			}
+			else {
+				n_hp++;
+			}
+			break;
+		}
+		case TAG_PRIMARY_LIST: {
+			ptr = list_val(gval);
+			val = *ptr;
+			if(IS_MOVED_CONS(val)) {
+				*n_hp++ = ptr[1];
+			}
+			else if(in_area(ptr, src, src_size)) {
+				MOVE_CONS(ptr, val, n_htop, n_hp++);
+			}
+			else {
+				n_hp++;
+			}
+			break;
+		}
+		case TAG_PRIMARY_HEADER: {
+			if(!header_is_thing(gval)) {
+				n_hp++;
+			}
+			else {
+				n_hp += (arityval(gval)+1);
+			}
+			break;
+		}
+		default:
+			n_hp++;
+			break;
+		}
+	}
+	return n_htop;
+}
+
 static void grow_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc) {
-	debug_32(xPortGetFreeHeapSize());
 	Eterm* new_heap = (Eterm*)pvPortMalloc(new_sz * sizeof(Eterm));
-	debug_32(xPortGetFreeHeapSize());
 	UInt heap_size = HEAP_TOP(p) - HEAP_START(p);
 	memcpy(new_heap, HEAP_START(p), heap_size*sizeof(Eterm));
 

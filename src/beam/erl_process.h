@@ -11,6 +11,8 @@
 #include "global.h"
 #include "basic_io.h"
 #include "atom.h"
+#include "erl_time.h"
+#include "erl_message.h"
 
 #define HEAP_START(p)    (p)->heap
 #define HEAP_TOP(p)      (p)->htop
@@ -31,14 +33,9 @@ typedef struct {
 
 } ErlSpawnOpts;
 
-typedef struct ErlHeapFragment ErlHeapFragment;
-
-struct ErlHeapFragment {
-	ErlHeapFragment* next;
-	unsigned alloc_size;
-	unsigned used_size;
-	Eterm mem[1];
-};
+// Process flags
+#define F_INSLPQUEUE         (1 <<  0) /* Set if in timer queue */
+#define F_TIMO               (1 <<  1) /* Set if timeout */
 
 struct ErlProcess {
 	Eterm id;
@@ -60,29 +57,24 @@ struct ErlProcess {
 	// Saved x registers
 	// number of live argument registers
 	uint8_t arity;
-	// argument register (when context switch happens during call to function of arity >= 7)
+	// argument register (when context switch happens during call to function of arity >= 4)
 	Eterm* arg_reg;
 	// maxmimum number of registers available
 	uint8_t max_arg_reg;
-	// default array of argument registers (used when arity <= 6)
-	Eterm def_arg_reg[6];
+	// default array of argument registers (used when arity <= 3)
+	Eterm def_arg_reg[3];
 
 	// Number of reductions left to execute
 	int16_t fcalls;
 
-	// Pointer to message buffer list and heap fragments
-	ErlHeapFragment *mbuf;
+	// Message queue
+	ErlMessageQueue msg;
 
-	// Total number of reductions
-	UInt reductions;
-	// Total number of context switches
-	UInt context_switches;
+	// Timer
+	ErlTimer timer;
 
-	// Number of ticks during start
-	UInt started_at;
-
-	// Number of GC ticks
-	UInt gc_ticks;
+	// Flags
+	uint8_t flags;
 };
 
 typedef struct ErlProcess ErlProcess;
@@ -91,8 +83,5 @@ void init_process_table(void);
 Eterm erl_create_process(ErlProcess*, Eterm, Eterm, Eterm, ErlSpawnOpts*);
 void erts_do_exit_process(ErlProcess*, Eterm);
 static void delete_process(ErlProcess*);
-
-Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra);
-inline void erts_heap_frag_shrink(ErlProcess* p, Eterm* hp);
 
 #endif /* ERL_PROCESS_H_ */

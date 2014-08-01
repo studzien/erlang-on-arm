@@ -391,3 +391,46 @@ Eterm big_times(Eterm x, Eterm y, Eterm *r)
 	}
 	return big_norm(r, rsz, sign);
 }
+
+/*
+** Load a bignum from bytes
+** xsz is the number of bytes in xp
+** *r is untouched if number fits in small
+*/
+Eterm bytes_to_big(byte *xp, uint32_t xsz, int xsgn, Eterm *r)
+{
+    ErtsDigit* rwp = BIG_V(r);
+    uint32_t rsz = 0;
+    ErtsDigit d;
+    int i;
+
+    while(xsz > sizeof(ErtsDigit)) {
+	d = 0;
+	for(i = sizeof(ErtsDigit); --i >= 0;)
+	    d = (d << 8) | xp[i];
+	*rwp = d;
+	rwp++;
+	xsz -= sizeof(ErtsDigit);
+	xp += sizeof(ErtsDigit);
+	rsz++;
+    }
+
+    if (xsz > 0) {
+	d = 0;
+	for(i = xsz; --i >= 0;)
+	    d = (d << 8) | xp[i];
+	if (++rsz == 1 && IS_USMALL(xsgn,d)) {
+	    if (xsgn) d = -d;
+	    return make_small(d);
+	}
+	*rwp = d;
+	rwp++;
+    }
+    if (xsgn) {
+      *r = make_neg_bignum_header(rsz);
+    }
+    else {
+      *r = make_pos_bignum_header(rsz);
+    }
+    return make_big(r);
+}

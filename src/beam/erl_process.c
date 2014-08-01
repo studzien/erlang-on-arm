@@ -17,32 +17,6 @@ extern void* jump_table[];
 //BeamInstr to beam_apply and normal_exit ops, needed for apply/3 when spawning
 extern BeamInstr beam_apply[];
 
-inline void erts_heap_frag_shrink(ErlProcess* p, Eterm* hp) {
-	ErlHeapFragment *hf = MBUF(p);
-	hf->used_size = hp - hf->mem;
-}
-
-Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra) {
-	ErlHeapFragment *bp = MBUF(p);
-	Eterm *htop;
-
-	//there is enough space on the current HeapFragment
-	if(bp != NULL && need <= (bp->alloc_size - bp->used_size)) {
-		Eterm *ret = bp->mem + bp->used_size;
-		bp->used_size += need;
-		return ret;
-	}
-
-	UInt n = need+xtra;
-	bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(n));
-	bp->next = MBUF(p);
-	MBUF(p) = bp;
-	bp->alloc_size = n;
-	bp->used_size = need;
-
-	return bp->mem;
-}
-
 void init_process_table(void) {
 	int i;
 	proc_tab = pvPortMalloc(MAX_PROCESSES * sizeof(ErlProcess));
@@ -65,13 +39,15 @@ void delete_process(ErlProcess* p) {
 	// free heap
 	vPortFree(HEAP_START(p));
 
-	// free heap fragments
-	ErlHeapFragment *mb,*next;
-	mb = MBUF(p);
-	while(mb != NULL) {
-		next = mb->next;
-		vPortFree(mb);
-		mb = next;
+	// free messages
+	ErlMessage *next, *msg = p->msg.first;
+	while(msg != NULL) {
+		if(msg->data) {
+			vPortFree(msg->data);
+		}
+		next = msg->next;
+		vPortFree(msg);
+		msg = next;
 	}
 
 	// clean argument registers
@@ -83,6 +59,8 @@ void delete_process(ErlProcess* p) {
 //mutexes are not needed here since we have one scheduler and there will be no context switch
 //until a process is created or deleted
 Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm args, ErlSpawnOpts* opts) {
+	char buf[40];
+
 	int i;
 	if(last_proc == MAX_PROCESSES) {
 		for(i=0; i<MAX_PROCESSES; i++) {
@@ -116,11 +94,13 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	p->fcalls = REDUCTIONS;
 	p->active = 1;
 
-	p->reductions = 0;
-	p->context_switches = 0;
+	p->flags = 0;
 
-	p->started_at = LPC_TIM0->TC;
-	p->gc_ticks = 0;
+	p->msg.len = 0;
+	p->msg.first = NULL;
+	p->msg.last = &p->msg.first;
+	p->msg.save = &p->msg.first;
+	p->msg.saved_last = NULL;
 
 	// initialize heap
 	unsigned int arg_size = size_object(args);
@@ -139,7 +119,7 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	p->arg_reg[2] = copy_struct(args, arg_size, &p->htop);
 
 	//start process inside the FreeRTOS scheduler
-	xTaskCreate(process_main, "erlang process",  550, (void*)p, 1, p->handle);
+	xTaskCreate(process_main, "erlang process", TASK_STACK_SIZE, (void*)p, 1, p->handle);
 	last_proc++;
 
 	return pid;

@@ -57,7 +57,7 @@
 #define configUSE_TICK_HOOK			0
 #define configCPU_CLOCK_HZ			( 100000000UL )
 #define configTICK_RATE_HZ			( ( portTickType ) 1000 )
-#define configMINIMAL_STACK_SIZE	( ( unsigned short ) 200 )
+#define configMINIMAL_STACK_SIZE	( ( unsigned short ) 100 )
 #define configTOTAL_HEAP_SIZE		( ( size_t ) ( 22 * 1024 ) )
 #define configMAX_TASK_NAME_LEN		( 12 )
 #define configUSE_TRACE_FACILITY	0

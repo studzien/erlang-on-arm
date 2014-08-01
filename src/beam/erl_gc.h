@@ -22,6 +22,7 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 static void grow_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc);
 static void offset_heap_ptr(Eterm* hp, UInt sz, SInt offset, char* area, UInt area_size);
 static void offset_rootset(ErlProcess *p, SInt offset, char* area, UInt area_size, Eterm* objv, int nobj);
+static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_size);
 
 typedef struct {
 	Eterm *v;
@@ -44,6 +45,18 @@ static void cleanup_rootset(Rootset *rootset);
 
 #define in_area(ptr, start, nbytes) \
 	((UInt)((char*)(ptr)-(char*)(start)) < (nbytes))
+
+#define MOVE_CONS(PTR,CAR,HTOP,ORIG)                    		\
+	do {                                  						\
+		Eterm gval;                             				\
+		HTOP[0] = CAR;      /* copy car */              		\
+		HTOP[1] = PTR[1];       /* copy cdr */              	\
+		gval = make_list(HTOP); /* new location */          	\
+		*ORIG = gval;       /* redirect original reference */   \
+		PTR[0] = THE_NON_VALUE; /* store forwarding indicator */\
+		PTR[1] = gval;      /* store forwarding address */      \
+		HTOP += 2;          /* update tospace htop */       	\
+		} while(0)
 
 #define MOVE_BOXED(PTR,HDR,HTOP,ORIG)               \
 		do {                                    	\

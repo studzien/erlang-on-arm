@@ -40,6 +40,8 @@ typedef uint32_t UInt;
 #define _TAG_IMMED2_NIL     ((0x3 << _TAG_IMMED1_SIZE) | _TAG_IMMED1_IMMED2)
 
 #define make_atom(x) ((Eterm)(((x) << _TAG_IMMED2_SIZE) + _TAG_IMMED2_ATOM))
+#define	atom_val(x)  ((x) >> _TAG_IMMED2_SIZE)
+#define is_atom(x)  (((x) & _TAG_IMMED2_MASK) == _TAG_IMMED2_ATOM)
 
 #define MAX_SMALL   (((1) << (SMALL_BITS-1))-1)
 #define make_small(x) ((Eterm)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_SMALL))
@@ -52,14 +54,16 @@ typedef uint32_t UInt;
 #define pix2pid(x) ((Eterm)(((x) << _TAG_IMMED1_SIZE) + _TAG_IMMED1_PID))
 #define pid2pix(x) ((x) >> _TAG_IMMED1_SIZE)
 
-#define X_REG_DEF 0
-#define Y_REG_DEF 1
-#define R_REG_DEF 2
+#define X_REG_DEF 1
+#define Y_REG_DEF 2
+#define R_REG_DEF 3
+#define LITERAL_DEF 0
 
 #define make_rreg() R_REG_DEF
 #define make_xreg(ix) (((ix) << 4) | X_REG_DEF)
 #define make_yreg(ix) (((ix) << 4) | Y_REG_DEF)
 
+#define is_literal(x) (((x) & 0x3) == LITERAL_DEF)
 #define is_rreg(x) (((x) & 0xf) == R_REG_DEF)
 #define is_yreg(x) (((x) & 0xf) == Y_REG_DEF)
 #define is_xreg(x) (((x) & 0xf) == X_REG_DEF)
@@ -72,17 +76,25 @@ typedef uint32_t UInt;
 #define CAR(x) ((x)[0])
 #define CDR(x) ((x)[1])
 
+/* List access methods */
 #define make_list(x) ((Eterm)(x) + TAG_PRIMARY_LIST)
 #define list_val(x) ((Eterm*)((x) - TAG_PRIMARY_LIST))
 #define is_list(x)      (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_LIST)
+#define is_not_list(x) ((x) & (_TAG_PRIMARY_MASK-TAG_PRIMARY_LIST))
 
+/* NIL access methods */
 #define NIL (((Eterm)(0) << _TAG_IMMED2_SIZE) | _TAG_IMMED2_NIL)
+#define is_nil(x)   ((x) == NIL)
+#define is_not_nil(x)   ((x) != NIL)
+
 #define make_blank(X)   ((X) = NIL)
 
 #define is_immed(x) (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_IMMED1)
 #define IS_CONST(x) is_immed((x))
 
 #define THE_NON_VALUE (Eterm)(0)
+#define is_non_value(x) ((x) == THE_NON_VALUE)
+#define is_value(x) ((x) != THE_NON_VALUE)
 
 #define ARITYVAL_SUBTAG     (0x0 << _TAG_PRIMARY_SIZE) /* TUPLE */
 #define BIN_MATCHSTATE_SUBTAG   (0x1 << _TAG_PRIMARY_SIZE)
@@ -126,6 +138,12 @@ typedef uint32_t UInt;
 #define make_boxed(x) ((UInt) (x) + TAG_PRIMARY_BOXED)
 #define boxed_val(x) ((Eterm*) ((x) - TAG_PRIMARY_BOXED))
 #define header_arity(x) ((x) >> _HEADER_ARITY_OFFS)
+#define arityval(x) (header_arity((x)))
+
+#define header_is_transparent(x) \
+ (((x) & (_HEADER_SUBTAG_MASK)) == ARITYVAL_SUBTAG)
+#define header_is_arityval(x)   (((x) & _HEADER_SUBTAG_MASK) == ARITYVAL_SUBTAG)
+#define header_is_thing(x)  (!header_is_transparent((x)))
 
 #define is_not_boxed(x)    ((x) & (_TAG_PRIMARY_MASK-TAG_PRIMARY_BOXED))
 #define is_boxed(x)  (!is_not_boxed((x)))
@@ -149,5 +167,14 @@ typedef uint32_t UInt;
 
 #define offset_ptr(x, offs) ((x)+((offs)*sizeof(Eterm)))
 #define ptr_val(x) ((Eterm*) ((x) & ~((UInt) 0x3)))
+
+/* tuple access methods */
+#define make_tuple(x)   make_boxed((x))
+#define make_arityval(sz)   _make_header((sz),_TAG_HEADER_ARITYVAL)
+#define is_arity_value(x)   (((x) & _TAG_HEADER_MASK) == _TAG_HEADER_ARITYVAL)
+#define tuple_val(x) (boxed_val(x))
+
+#define is_tuple(x) (is_boxed((x)) && is_arity_value(*boxed_val((x))))
+#define is_not_tuple(x) (!is_tuple((x)))
 
 #endif /* ERL_TERM_H_ */

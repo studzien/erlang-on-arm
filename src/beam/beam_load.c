@@ -9,6 +9,7 @@
 #include "beam_load.h"
 #include "beam_emu.h"
 #include "export.h"
+#include "io.h"
 
 void* jump_table[ALL_OPCODES];
 
@@ -17,13 +18,20 @@ void jump_table_add(int opcode, void* ptr) {
 }
 
 void erts_load(byte* code) {
+	//debug("before allocating loader: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	LoaderState *loader = pvPortMalloc(sizeof(LoaderState));
 	loader->code_file = code;
+
+	//debug("before loading the atom table: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	//Initialize binary file and verify if it's ok
 	if(init_iff_file(loader) || scan_iff_file(loader) || verify_chunks(loader)) {
 		goto load_error;
 	}
+
 
 	//Load atom table
 	loader->file_left = loader->chunks[ATOM_CHUNK].size;
@@ -32,12 +40,30 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
+	//debug("after loading the atom table: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	//Load import table
 	loader->file_left = loader->chunks[IMP_CHUNK].size;
 	loader->file_p = loader->chunks[IMP_CHUNK].start;
 	if(load_import_table(loader)) {
 		goto load_error;
 	}
+
+	//debug("after loading the import table: ");
+	//debug_32(xPortGetFreeHeapSize());
+
+	//Load literal table
+	if(loader->chunks[LITERAL_CHUNK].size > 0) {
+		loader->file_left = loader->chunks[LITERAL_CHUNK].size;
+		loader->file_p = loader->chunks[LITERAL_CHUNK].start;
+		if(load_literal_table(loader)) {
+			goto load_error;
+		}
+	}
+
+	//debug("after loading the literal table: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	//Read code chunk header
 	loader->file_left = loader->chunks[CODE_CHUNK].size;
@@ -53,12 +79,18 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
+	//debug("after loading the code: ");
+	//debug_32(xPortGetFreeHeapSize());
+
 	//Load export table
 	loader->file_left = loader->chunks[EXP_CHUNK].size;
 	loader->file_p = loader->chunks[EXP_CHUNK].start;
 	if(load_export_table(loader)) {
 		goto load_error;
 	}
+
+	//debug("after loading the export table: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	//Finalize (patch labels, export functions and stuff)
 	if(finalize(loader)) {
@@ -72,12 +104,19 @@ void erts_load(byte* code) {
 	vPrintString("error while loading module\n");
 
 	free_loader:
-	vPrintString("freeing loader\n");
+	//debug("before freeing loader: ");
+	//debug_32(xPortGetFreeHeapSize());
+
+	//vPrintString("freeing loader\n");
+	vPortFree(loader->literal);
 	vPortFree(loader->labels);
 	vPortFree(loader->import);
 	vPortFree(loader->export);
 	vPortFree(loader->atom);
 	vPortFree(loader);
+
+	//debug("after freeing loader: ");
+	//debug_32(xPortGetFreeHeapSize());
 }
 
 
@@ -167,14 +206,13 @@ static int load_code(LoaderState* loader) {
 		uint32_t p = loader->code_buffer_used;
 		loader->code[loader->code_buffer_used++] = (BeamInstr)jump_table[op];
 
-
 		for(i=0; i<arity; i++) {
-			get_tag_and_value(loader, loader->code + loader->code_buffer_used);
-			loader->code_buffer_used++;
+			BeamInstr* code = loader->code + loader->code_buffer_used;
+			loader->code_buffer_used += get_tag_and_value(loader, &code);
 		}
 		define_label(loader, p, op);
 		replace_ext_call(loader, p, op);
-		replace_local_call(loader, p, op);
+		//replace_local_call(loader, p, op);
 	}
 }
 
@@ -214,9 +252,12 @@ static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op) {
 	}
 }
 
-static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
+static int get_tag_and_value(LoaderState* loader, BeamInstr** result) {
 	uint8_t tag, start;
 	uint32_t value;
+
+	UInt used = 0;
+
 	//@todo handle bignums
 	GetByte(loader, start);
 
@@ -238,28 +279,57 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr* result) {
 
 
 	switch(tag) {
-	case TAG_u:
-	case TAG_i:
 	case TAG_f:
-		*result = make_small(value);
+		**result = (BeamInstr)loader->labels[value].patches;
+		loader->labels[value].patches = (uint16_t)(*result-loader->code);
+		break;
+	case TAG_u:
+		**result = make_small(value);
+		break;
+	case TAG_i:
+		**result = make_small(value);
 		break;
 	case TAG_a:
-		*result = loader->atom[value];
+		if(value == 0) {
+			**result = NIL;
+		}
+		else {
+			**result = loader->atom[value];
+		}
 		break;
 	case TAG_x:
 		if(value == 0) {
-			*result = make_rreg();
+			**result = make_rreg();
 		}
 		else {
-			*result = make_xreg(value);
+			**result = make_xreg(value);
 		}
 		break;
 	case TAG_y:
-		*result = make_yreg(value);
+		**result = make_yreg(value);
+		break;
+	case TAG_z:
+		//list
+		if(value == 1) {
+			get_tag_and_value(loader, result);
+			UInt arity = unsigned_val((Eterm)*(*result-1));
+			int i;
+			for(i=0; i<arity; i++) {
+				used += get_tag_and_value(loader, result);
+			}
+		}
+		//literal
+		else if(value == 4) {
+			BeamInstr tmp, *tmp1 = &tmp;
+			get_tag_and_value(loader, &tmp1);
+			**result = (BeamInstr)loader->literal[unsigned_val((Eterm)tmp)].term;
+		}
 		break;
 	}
 
-	return 0;
+	*result += 1;
+
+	return used+1;
 }
 
 static int finalize(LoaderState* loader) {
@@ -326,7 +396,6 @@ static int load_atom_table(LoaderState* loader) {
 	// @todo check whether the first atom in the table is also name of the module
 	uint8_t i;
 	GetInt(loader, loader->num_atoms);
-	char buf[256];
 
 	// Read all atoms (indexes are 1..num_atoms in order to pick labeled atom directly)
 	loader->num_atoms++;
@@ -341,6 +410,27 @@ static int load_atom_table(LoaderState* loader) {
 
 	// @todo check whether load->atom[1] is the module name, if so return an error
 	return 0;
+}
+
+static int load_literal_table(LoaderState* loader) {
+	GetInt(loader, loader->num_literals);
+
+	char buf[30];
+
+	loader->literal = (LiteralEntry*)pvPortMalloc(loader->num_literals * sizeof(LiteralEntry));
+	uint8_t i;
+	for(i=0; i<loader->num_literals; i++) {
+		loader->literal[i].heap = NULL;
+		uint32_t size;
+		GetInt(loader, size);
+
+		uint32_t heap_size = erts_decode_ext_size(loader->file_p, size);
+		loader->literal[i].heap = pvPortMalloc((heap_size+1) * sizeof(Eterm));
+		Eterm* hp = loader->literal[i].heap+1;
+		Eterm term = erts_decode_ext(&hp, &loader->file_p);
+		*(loader->literal[i].heap) = term;
+		loader->literal[i].term = (Eterm)(loader->literal[i].heap);
+	}
 }
 
 static int init_iff_file(LoaderState* loader) {
@@ -383,6 +473,7 @@ static int scan_iff_file(LoaderState* loader) {
 		uint32_t chunk_id, chunk_size;
 		GetInt(loader, chunk_id);
 		GetInt(loader, chunk_size);
+
 		// @todo verify whether chunk_id is 4 ascii characters
 		// @todo verify whether chunk_size is in bounds of what is left in the file
 
@@ -399,6 +490,7 @@ static int scan_iff_file(LoaderState* loader) {
 		// go to the next chunk (the chunk area is padded to 4 bytes)
 		uint8_t remainder = chunk_size % 4;
 		chunk_size += (remainder == 0 ? 0 : (4-remainder));
+
 		loader->file_p += chunk_size;
 		loader->file_left -= chunk_size;
 	}

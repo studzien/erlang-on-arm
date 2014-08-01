@@ -12,7 +12,7 @@
 
 #define INDEX_PAGE_SHIFT 4
 #define INDEX_PAGE_SIZE (1 << INDEX_PAGE_SHIFT)
-#define INDEX_PAGE_MASK ((1 << INDEX_PAGE_SIZE) - 1)
+#define INDEX_PAGE_MASK ((1 << INDEX_PAGE_SHIFT) - 1)
 
 typedef struct {
 	HashBucket bucket;

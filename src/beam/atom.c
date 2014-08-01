@@ -7,6 +7,8 @@
 
 #include "global.h"
 #include "atom.h"
+#include "io.h"
+#include "atom_initial_table.h"
 
 IndexTable erts_atom_table;
 
@@ -29,6 +31,7 @@ Eterm erts_atom_put(const byte* name, int len) {
 
 	a.len = (uint8_t)len;
 	a.name = pvPortMalloc(len);
+
 	memcpy(a.name, name, len);
 
 	aix = index_get(&erts_atom_table, (void*)&a);
@@ -36,7 +39,9 @@ Eterm erts_atom_put(const byte* name, int len) {
 		return make_atom(aix);
 	}
 
+
 	aix = index_put(&erts_atom_table, (void*)&a);
+
 	Eterm atom = make_atom(aix);
 
 	return atom;
