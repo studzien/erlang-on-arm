@@ -209,7 +209,7 @@ Informacja, która przy użyciu innych języków programowania może być zapisa
 Receptą na tego typu problem, wprowadzoną w maszynie wirtualnej BEAM, jest binarny typ danych. Napis \texttt{"hello"} przy jego użyciu zajmowałby w pamięci 3 słowa maszynowe (nagłówek i~2~słowa przeznaczone na dane).
 Typ ten jednak nie został zaimplementowany w obecnej wersji maszyny na system FreeRTOS.  
 
-Jak można zauważyć zarówno złożoność obliczeniowa (dostęp do danych na liście trwa czas liniowy) jak i pamięciowa przy wykorzystaniu tego typu danych jest dość znacząca.
+Jak można zauważyć zarówno złożoność obliczeniowa (czas dostępu do danych na liście jest liniowy) jak i pamięciowa przy wykorzystaniu tego typu danych jest dość znacząca.
 
 \subsection{Krotki}
 \label{sub:typyKrotki}
@@ -472,7 +472,7 @@ TODO
 
 W systemie współbieżnym procesy mogą działać na jeden z dwóch sposobów:
 \begin{itemize}
-\item we współbieżności konkurencyjnej (\emph{preemptive}), w której planista decyduje o tym kiedy przerwać wykonywanie pewnego procesu i wznowić inne;
+\item we współbieżności konkurencyjnej (\emph{pre-emptive}), w której planista decyduje o tym kiedy przerwać wykonywanie pewnego procesu i wznowić inne;
 \item we współbieżności współpracującej (\emph{cooperative}), w której proces decyduje kiedy przerwać swoje wykonywanie po to, aby \emph{scheduler} mógł wybrać inny proces do wykonania.
 \end{itemize}
 
@@ -509,6 +509,8 @@ Pomimo badań nad uruchomieniem \emph{schedulera} mikrojądra FreeRTOS na archit
 
 TODO: priorytety
 
+Przystosowanie planisty 
+
 %---------------------------------------------------------------------------
 \section{Funkcje wbudowane (\emph{Built-In Functions})}
 \label{sec:maszynaBIF}
@@ -534,6 +536,8 @@ Funkcja & Argumenty & Opis \\
 \texttt{sminus/2} & \texttt{Arg1 Arg2} & Zwraca \texttt{Arg1 - Arg2} \\
 \hline
 \texttt{stimes/2} & \texttt{Arg1 Arg2} & Zwraca \texttt{Arg1 * Arg2} \\
+\hline
+\texttt{setelement/3} & \texttt{Index Tuple Element} & Zwraca nową krotkę, taką jak \texttt{Tuple}, ale z elementem \texttt{Element} na pozycji \texttt{Index} \\
 \hline
 \caption{Zaimplementowane funkcje wbudowane w module \texttt{erlang}} 
 \label{table:bifErlang} \\

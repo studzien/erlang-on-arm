@@ -47,7 +47,7 @@ $\text{\textbf{TTT}}_{(2)}$ jest danym tagiem.
 \hline
 101 & 5 & etykieta, używana w funkcjach skoku \\
 \hline
-111 & 7 & złożone wyrażenie (np. lista, liczba zmiennoprzecinkowa) \\
+111 & 7 & złożone wyrażenie (np. lista, liczba zmiennoprzecinkowa). Obecna wersja kompilatora generuje tylko wartość 4 dla tego tagu, oznaczającą że złożone wyrażenie znajduje się w tablicy stałych. Indeks wyrażenia w tablicy stałych jest kolejnym argumentem zapisanym w postaci uniwersalnego indeksu. \\
 \hline
 
 \caption{Tagi typów danych w pliku ze skompilowanym modułem} 
@@ -108,19 +108,19 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 
 01 & 1 & \texttt{label Lbl} & Wprowadza lokalną dla danego modułu etykietę identyfikującą aktualne miejsce w kodzie. & \cmark\\
 \hline
-02 & 2 & \texttt{func\_info M F A} & Definiuje funkcję \texttt{F}, w module \texttt{M} o arności \texttt{A}. & \cmark\\
+02 & 2 & \texttt{func\_info M F A} & Definiuje funkcję \texttt{F}, w module \texttt{M} o arności \texttt{A} na jej początku. Instrukcja używana jest do generacji wyjątku \texttt{function\_clause} dla funkcji, którą definiuje.& \cmark\\
 \hline
 03 & 3 & \texttt{int\_code\_end} & Oznacza koniec kodu. & \cmark \\
 \hline
 04 & 4 & \texttt{call Arity Lbl} & Wywołuje funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \cmark \\
 \hline
-05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest} słów pamięci na stosie. & \xmark \\
+05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest}+1 słów pamięci na stosie. & \cmark \\
 \hline
 06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. & \cmark \\
 \hline
-07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \xmark \\
+07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \cmark \\
 \hline
-08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea}+1 słów pamięci na stosie. Przywraca wskaźnik \textbf{CP} ze stosu. & \xmark \\
+08 & 8 & \texttt{call\_ext\_last Arity Des Dea} & Wywołuje rekurencyjną ogonowo zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Des} w tablicy funkcji zewnętrznych. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dea}+1 słów pamięci na stosie. Przywraca wskaźnik \textbf{CP} ze stosu. & \cmark \\
 \hline
 09 & 9 & \texttt{bif0 Bif Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/0}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \xmark \\
 \hline
@@ -128,17 +128,17 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \xmark \\
 \hline
-0C & 12 & \texttt{allocate StackN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \xmark \\
+0C & 12 & \texttt{allocate StackN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \cmark \\
 \hline
-0D & 13 & \texttt{allocate\_heap StackN HeapN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Upewnia się że na stercie jest \texttt{HeapN} wolnych słów. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \xmark \\
+0D & 13 & \texttt{allocate\_heap StackN HeapN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Upewnia się że na stercie jest \texttt{HeapN} wolnych słów. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \cmark \\
 \hline
 0E & 14 & \texttt{allocate\_zero StackN Live} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. & \cmark \\
 \hline
 0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć jest wyzerowana. & \xmark \\
 \hline
-10 & 16 & \texttt{test\_heap HN L} & Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie konieczne było uruchomienie \emph{garbage collectora}. & \xmark\\
+10 & 16 & \texttt{test\_heap HN L} & Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie konieczne było uruchomienie \emph{garbage collectora}. & \cmark\\
 \hline
-11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie. & \xmark \\
+11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie. Instrukcja poprzednio nazywała się \texttt{kill} i jako taka może jeszcze występować w pewnych miejscach. & \cmark \\
 \hline
 12 & 18 & \texttt{deallocate N} & Przywraca \textbf{CP} ze stosu i dealokuje \texttt{N}+1 słów ze stosu. & \cmark \\
 \hline
@@ -148,7 +148,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 15 & 21 & \texttt{remove\_message} & Usuwa aktualną wiadomość z kolejki wiadomości. Zapisuje wskaźnik do niej w rejestrze \textbf{X0}. Usuwa aktywne przeterminowanie (\emph{timeout}). & \xmark \\
 \hline
-16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowania. & \xmark \\
+16 & 22 & \texttt{timeout} & Resetuje wskaźnik \textbf{SAVE}. Czyści flagę przeterminowania. & \cmark \\
 \hline
 17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \texttt{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \texttt{Lbl}. & \xmark  \\
 \hline
@@ -156,7 +156,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} w etykiecie \texttt{Lbl}. & \xmark \\
 \hline
-1A & 26 & \texttt{wait\_timeout Lbl T} & Zawiesza proces jak \texttt{wait}. Ustawia przeterminowanie \texttt{T} i zapisuje następną instrukcję, która zostanie wykonana jeśli przeterminowanie się zrealizuje. & \xmark \\
+1A & 26 & \texttt{wait\_timeout Lbl T} & Zawiesza proces jak \texttt{wait}. Ustawia przeterminowanie \texttt{T} i zapisuje następną instrukcję, która zostanie wykonana jeśli przeterminowanie się zrealizuje. & \cmark \\
 \hline
 27 & 39 & \texttt{is\_lt Lbl Arg1 Arg2} & Porównuje \texttt{Arg1} z \texttt{Arg2} i wykonuje skok do \texttt{Lbl} jeśli \texttt{Arg1} jest większe lub równe od \texttt{Arg2}. & \xmark \\
 \hline
@@ -184,17 +184,17 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 33 & 51 & \texttt{is\_port Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on portem. & \xmark \\
 \hline
-34 & 52 & \texttt{is\_nil Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zerem (\textbf{nil}). & \xmark \\
+34 & 52 & \texttt{is\_nil Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on znacznikiem końca listy (\textbf{NIL}). & \cmark \\
 \hline
 35 & 53 & \texttt{is\_binary Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on zmienną binarną. & \xmark \\
 \hline
-37 & 55 & \texttt{is\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani listą ani zerem. & \xmark \\
+37 & 55 & \texttt{is\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ani listą ani znacznikiem końca listy. & \xmark \\
 \hline
-38 & 56 & \texttt{is\_nonempty\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on niepustą listą. & \xmark \\
+38 & 56 & \texttt{is\_nonempty\_list Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on niepustą listą. & \cmark \\
 \hline
-39 & 57 & \texttt{is\_tuple Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on krotką. & \xmark \\
+39 & 57 & \texttt{is\_tuple Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on krotką. & \cmark \\
 \hline
-3A & 58 & \texttt{test\_arity Lbl Arg1 Arity} & Sprawdza arność krotki \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest ona równa \texttt{Arity}. & \xmark \\
+3A & 58 & \texttt{test\_arity Lbl Arg1 Arity} & Sprawdza arność krotki \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest ona równa \texttt{Arity}. & \cmark \\
 \hline
 3B & 59 & \texttt{select\_val Arg Lbl Dest} & Skacze do etykiety \texttt{Dest[Arg]}. Jeśli nie istnieje skacze do \texttt{Lbl}. & \xmark \\
 \hline
@@ -208,17 +208,17 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \texttt{Dest}. & \cmark \\
 \hline
-41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. & \xmark \\
+41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. & \cmark \\
 \hline
-42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieszcza element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}. & \xmark \\
+42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieszcza element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}. & \cmark \\
 \hline
-43 & 67 & \texttt{get\_tuple\_element Elem Tuple Pos} & Umieszcza element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}. & \xmark \\
+43 & 67 & \texttt{set\_tuple\_element Elem Tuple Pos} & Umieszcza element \texttt{Elem} w krotce \texttt{Tuple} na pozycji \texttt{Pos}. & \xmark \\
 \hline
-45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy komórkę listy \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}. & \xmark \\
+45 & 69 & \texttt{put\_list Hd Tail Dest} & Tworzy komórkę listy \texttt{[Hd|Tail]} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}. & \cmark \\
 \hline
-46 & 70 & \texttt{put\_tuple Dest Arity} & Tworzy krotkę o arności \texttt{Arity} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}. & \xmark \\
+46 & 70 & \texttt{put\_tuple Dest Arity} & Tworzy krotkę o arności \texttt{Arity} na szczycie sterty i umieszcza ją w rejestrze \texttt{Dest}. & \cmark \\
 \hline
-47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} na szczycie stosu. & \xmark \\
+47 & 71 & \texttt{put Arg} & Umieszcza \texttt{Arg} na szczycie sterty. & \cmark \\
 \hline
 48 & 72 & \texttt{badmatch Arg} & Rzuca wyjątek \texttt{badmatch} z argumentem \texttt{Arg}. & \xmark \\
 \hline
@@ -316,7 +316,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 87 & 135 & \texttt{bs\_private\_append Fail Size Unit Bin Flags Dst} & Operacja ma działanie podobne do operacji \texttt{bs\_append/8} jednak w przypadku zbyt małej ilości miejsca dokonuje realokacji aktualnej zmiennej. & \xmark \\
 \hline
-88 & 136 & \texttt{trim N Remaining} & Redukuje stos o \texttt{N} słów, zachowując \textbf{CP} na jego szczycie. & \xmark \\
+88 & 136 & \texttt{trim N Remaining} & Redukuje stos o \texttt{N} słów, zachowując \textbf{CP} na jego szczycie. & \cmark \\
 \hline
 89 & 137 & \texttt{bs\_init\_bits Fail Sz Words Regs Flags Dst} & Alokuje zmienną binarną na stercie o rozmiarze \texttt{Sz} bitów. Jeżeli rozmiar nie jest podzielny przez 8, tworzony jest wskaźnik na strukturę z zapisaną ilością zajmowanych bitów. Wynik operacji zapisany jest do \texttt{Dst}. Upewnia się że na stercie jest dodatkowo \texttt{Words} słów maszynowych możliwych do zaalokowania. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. W razie niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcei alokacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark \\
 \hline
