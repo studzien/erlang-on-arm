@@ -96,5 +96,5 @@ template() ->
       "#define ENTRYPOINT_F_LEN {{entrypoint_f_len}}\n\n"
       "{{modules_code}}\n"
       "const byte* code[] = { {{modules_list}} };\n\n"
-      "const byte* entrypoint_a[] = {};\n"
+      "const Eterm entrypoint_a[] = {};\n"
       "#endif">>.
