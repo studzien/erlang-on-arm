@@ -11,6 +11,7 @@
 #include "erl_process.h"
 #include "config.h"
 
+void print_stats();
 void debug_term(Eterm term);
 void debug_term_buf(Eterm term, char* buf);
 void dump_stack(ErlProcess* p, Eterm* stop);

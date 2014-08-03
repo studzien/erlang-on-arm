@@ -36,19 +36,14 @@ void erts_init_gc(void) {
  * nobj: Number of objects in objv.
  */
 int erts_garbage_collect(ErlProcess* p, int need, Eterm* objv, int objc) {
-	//#if (DEBUG_OP == 1)
-	char buf[30];
+	#if (DEBUG_OP == 1)
+	char buf[50];
 	sprintf(buf, "pid %d, gc fired\n", pid2pix(p->id));
 	debug(buf);
-	//#endif
+	#endif
 
 	major_collection(p, need, objv, objc, &reclaimed);
 	garbage_cols++;
-
-	sprintf(buf, "new heap start is %d\n", HEAP_START(p));
-	debug(buf);
-	sprintf(buf, "heap size is %d\n", HEAP_SIZE(p));
-	debug(buf);
 
 	return (HEAP_TOP(p) - HEAP_START(p))/10;
 }
@@ -59,8 +54,8 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 	char* src = (char*)HEAP_START(p);
 	UInt src_size = (char*)HEAP_TOP(p) - src;
 
-	//@todo do gc on heap fragments and old heap
-	UInt new_sz = HEAP_SIZE(p);
+	UInt new_sz = HEAP_SIZE(p) + combined_message_size(p);
+
 	new_sz = erts_next_heap_size(new_sz);
 
 	UInt size_before = (HEAP_TOP(p) - HEAP_START(p));
@@ -126,7 +121,16 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 	memcpy(n_heap + new_sz - n, STACK_TOP(p), n * sizeof(Eterm));
 	STACK_TOP(p) = n_heap + new_sz - n;
 
-	// Free old heap T
+	// Move messages to the heap
+	ErlMessage* msgp = p->msg.first;
+	while(msgp) {
+		if(msgp->data) {
+			move_message_to_heap(&n_htop, msgp);
+		}
+		msgp = msgp->next;
+	}
+
+	// Free old heap
 	vPortFree(HEAP_START(p));
 
 	// Rewrite new heap data
@@ -145,10 +149,37 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 
 	if(HEAP_SIZE(p) < need_after) {
 		UInt new_sz = erts_next_heap_size(need_after);
-		grow_new_heap(p, new_sz, objv, objc);
+		resize_new_heap(p, new_sz, objv, objc);
+	}
+	else if(4*need_after < HEAP_SIZE(p)) {
+		UInt wanted = 2*need_after;
+		UInt new_sz = erts_next_heap_size(wanted);
+		if(new_sz < HEAP_SIZE(p)) {
+			resize_new_heap(p, new_sz, objv, objc);
+		}
 	}
 
 	return 1;
+}
+
+static UInt combined_message_size(ErlProcess* p) {
+	UInt size = 0;
+	ErlMessage *msgp = p->msg.first;
+
+	while(msgp != NULL) {
+		if(msgp->data) {
+			size += msgp->data->used_size;
+		}
+		msgp = msgp->next;
+	}
+
+	return size;
+}
+
+static void move_message_to_heap(Eterm **hpp, ErlMessage* msg) {
+	msg->m = copy_struct(msg->m, msg->data->used_size, hpp);
+	vPortFree(msg->data);
+	msg->data = NULL;
 }
 
 static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_size) {
@@ -204,7 +235,7 @@ static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_siz
 	return n_htop;
 }
 
-static void grow_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc) {
+static void resize_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc) {
 	Eterm* new_heap = (Eterm*)pvPortMalloc(new_sz * sizeof(Eterm));
 	UInt heap_size = HEAP_TOP(p) - HEAP_START(p);
 	memcpy(new_heap, HEAP_START(p), heap_size*sizeof(Eterm));

@@ -25,7 +25,7 @@ static inline void set_timer(ErlProcess* p, UInt timeout);
 
 #define OpCase(OpCode) lb_##OpCode
 #define OpCode(OpCode) (&&lb_##OpCode)
-#define Goto(Rel) goto *(Rel)
+#define Goto(p) p->saved_i = p->i; goto *(*(p->i))
 
 #define x(N) reg[N]
 #define y(N) E[N]

@@ -58,7 +58,7 @@
 #define configCPU_CLOCK_HZ			( 100000000UL )
 #define configTICK_RATE_HZ			( ( portTickType ) 1000 )
 #define configMINIMAL_STACK_SIZE	( ( unsigned short ) 200 )
-#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 22 * 1024 ) )
+#define configTOTAL_HEAP_SIZE		( ( size_t ) ( 27 * 1024 ) )
 #define configMAX_TASK_NAME_LEN		( 12 )
 #define configUSE_TRACE_FACILITY	0
 #define configUSE_16_BIT_TICKS		0
@@ -87,6 +87,7 @@ to exclude the API function. */
 #define INCLUDE_vTaskDelayUntil				1
 #define INCLUDE_vTaskDelay					1
 #define INCLUDE_uxTaskGetStackHighWaterMark	0
+#define INCLUDE_eTaskGetState				1
 
 /* Use the system definition, if there is one */
 #ifdef __NVIC_PRIO_BITS

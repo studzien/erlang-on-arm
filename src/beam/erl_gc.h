@@ -19,10 +19,12 @@ int erts_garbage_collect(ErlProcess*, int, Eterm*, int);
 unsigned int erts_next_heap_size(unsigned int size);
 
 static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt *recl);
-static void grow_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc);
+static void resize_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc);
 static void offset_heap_ptr(Eterm* hp, UInt sz, SInt offset, char* area, UInt area_size);
 static void offset_rootset(ErlProcess *p, SInt offset, char* area, UInt area_size, Eterm* objv, int nobj);
 static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_size);
+static inline UInt combined_message_size(ErlProcess* p);
+static inline void move_message_to_heap(Eterm **hpp, ErlMessage* msg);
 
 typedef struct {
 	Eterm *v;

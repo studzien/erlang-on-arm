@@ -98,7 +98,6 @@ void erl_init() {
 	e.arity = ENTRYPOINT_ARITY;
 
 	Eterm args = NIL;
-
 	if(ENTRYPOINT_ARITY > 0) {
 		Eterm* hp = pvPortMalloc(ENTRYPOINT_ARITY * sizeof(Eterm));
 		for(i=0; i<ENTRYPOINT_ARITY; i++) {

@@ -7,6 +7,33 @@
 
 #include "io.h"
 
+extern ErlProcess* proc_tab;
+extern UInt reclaimed;
+extern UInt garbage_cols;
+
+void print_stats() {
+	Timeval t;
+	erts_get_now(&t);
+
+	UInt heap_total = 0;
+	UInt processes = 0;
+	int i;
+	for(i=0; i<MAX_PROCESSES; i++) {
+		if(proc_tab[i].active) {
+			processes++;
+			heap_total += HEAP_SIZE(&proc_tab[i]);
+		}
+	}
+
+	char buf[50];
+	sprintf(buf, "%d;", t.sec); debug(buf);
+	sprintf(buf, "%d;", processes); debug(buf);
+	sprintf(buf, "%d;", xPortGetFreeHeapSize()); debug(buf);
+	sprintf(buf, "%d;", heap_total); debug(buf);
+	sprintf(buf, "%d;", reclaimed); debug(buf);
+	sprintf(buf, "%d\n", garbage_cols); debug(buf);
+}
+
 void dump_stack(ErlProcess* p, Eterm* stop) {
 	Eterm* hp;
 	char buf[50];

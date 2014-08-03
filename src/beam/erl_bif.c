@@ -27,6 +27,7 @@ Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg) {
 	}
 
 	UInt msize = size_object(msg);
+
 	ErlHeapFragment* bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(msize));
 	Eterm* hp = bp->mem;
 	bp->alloc_size = msize;

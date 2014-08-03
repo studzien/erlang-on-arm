@@ -8,6 +8,8 @@
 #ifndef ERL_VM_H_
 #define ERL_VM_H_
 
+Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra, UInt live);
+
 #define HAllocX(p, sz, xtra,Live) (((HEAP_LIMIT(p) - HEAP_TOP(p)) < (sz))) \
 	? erts_heap_alloc((p),(sz),(xtra),(Live)) \
 	: (HEAP_TOP(p) = HEAP_TOP(p)+(sz), HEAP_TOP(p) - (sz))

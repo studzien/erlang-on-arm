@@ -28,6 +28,7 @@ void erts_init_bif(void);
 Eterm erts_send_message(ErlProcess*, Eterm, Eterm);
 static void queue_message(ErlProcess*, ErlProcess*, ErlHeapFragment*, Eterm);
 
+
 Eterm splus_2(ErlProcess*, Eterm*, UInt);
 Eterm sminus_2(ErlProcess*, Eterm*, UInt);
 Eterm stimes_2(ErlProcess*, Eterm*, UInt);

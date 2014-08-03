@@ -90,6 +90,8 @@ typedef uint32_t UInt;
 #define make_blank(X)   ((X) = NIL)
 
 #define is_immed(x) (((x) & _TAG_PRIMARY_MASK) == TAG_PRIMARY_IMMED1)
+#define is_both_immed(x,y)  (is_immed((x)) && is_immed((y)))
+#define is_not_both_immed(x,y)  (!is_both_immed((x),(y)))
 #define IS_CONST(x) is_immed((x))
 
 #define THE_NON_VALUE (Eterm)(0)

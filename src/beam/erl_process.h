@@ -48,6 +48,7 @@ struct ErlProcess {
 
 	struct ErlProcess* parent; //parent process
 	BeamInstr* i; // program counter
+	BeamInstr* saved_i; // saved program counter
 	BeamInstr* cp; // continuation pointer
 
 	xTaskHandle* handle;

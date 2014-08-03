@@ -12,6 +12,9 @@
 #include "erl_init.h"
 #include "erl_process.h"
 #include "erl_message.h"
+#include "erl_utils.h"
+#include "task.h"
+
 
 int init_done = 0;
 
@@ -22,13 +25,14 @@ Eterm tmp0, tmp1;
 Eterm* tmp_ptr, *ptr;
 Export *e;
 BeamInstr* next;
-UInt StackN, Live, live, HeapN, need;
+UInt StackN, Live, HeapN, need;
 ErlMessage *msgp;
 BeamInstr** saved_i;
 UInt arity;
 int i;
 Eterm tuple, term;
 Export tmp;
+BeamInstr* temp_i;
 
 char buf[50];
 int i;
@@ -38,21 +42,25 @@ extern void* jump_table[];
 extern UInt reclaimed;
 extern UInt garbage_cols;
 
+#define RESTORE_I(PROCESS, WHERE, MODIFIER) do { \
+	WHERE = (PROCESS)->saved_i + MODIFIER; \
+} while(0)
+
 #define SWAPIN             \
     HTOP = HEAP_TOP(p);  \
-    E = p->stop
+    E = p->stop;
 
 #define SWAPOUT            \
     HEAP_TOP(p) = HTOP;  \
-    p->stop = E
+    p->stop = E;
 
 static inline void yield_maybe(ErlProcess* p, uint8_t arity) {
 	p->arity = arity;
 	if(p->fcalls < 0) {
-		//#if (DEBUG_OP == 1)
+		#if (DEBUG_OP == 1)
 		sprintf(buf, "pid %d context switch\n", pid2pix(p->id));
 		debug(buf);
-		//#endif
+		#endif
 
 		if(p->arity > p->max_arg_reg) {
 			if(p->arg_reg != p->def_arg_reg) {
@@ -96,52 +104,52 @@ void process_main(void* arg) {
 
 	SWAPIN;
 	restore_registers(p);
-	Goto(*(p->i));
+	Goto(p);
 
 
 	OpCase(LABEL):
 		debug_op2(p,"label\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(FUNC_INFO):
 		debug("function_clause\n");
 		erts_do_exit_process(p, atom_normal);
 	OpCase(INT_CODE_END):
 		debug_op2(p,"int_code_end\n");
-		p->i +=1;
+		RESTORE_I(p, p->i, 1);
 	OpCase(CALL):
 		debug_op2(p,"call\n");
 		yield_maybe(p, (uint8_t)unsigned_val(Arg(0)));
-		p->cp = p->i+3;
+		RESTORE_I(p, p->cp, 3);
 		p->i = (BeamInstr*)(Arg(1));
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(CALL_LAST):
 		debug_op2(p,"call_last\n");
 		yield_maybe(p, (uint8_t)unsigned_val(Arg(0)));
 		p->cp = (BeamInstr*)E[0];
 		E += unsigned_val(Arg(2)) + 1;
 		p->i = (BeamInstr*)(Arg(1));
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(CALL_ONLY):
 		debug_op2(p,"call_only\n");
 		yield_maybe(p, (uint8_t)unsigned_val(Arg(0)));
 		p->i = (BeamInstr*)(Arg(1));
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(CALL_EXT):
 		debug_op2(p,"call_ext\n");
 		yield_maybe(p, unsigned_val(Arg(0)));
 		e = (Export*)(Arg(1));
-		p->cp = p->i+3;
+		RESTORE_I(p, p->cp, 3);
 		if(e->bif != NULL) {
 			SWAPOUT;
 			reg[0] = r(0);
 			r(0) = (e->bif)(p, reg, p->arity);
 			p->i = p->cp;
 			SWAPIN;
-			Goto(*(p->i));
+			Goto(p);
 		}
 		p->i = e->address;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(CALL_EXT_LAST):
 		debug_op2(p,"call_ext_last\n");
 		yield_maybe(p, (uint8_t)unsigned_val(Arg(0)));
@@ -154,37 +162,37 @@ void process_main(void* arg) {
 			r(0) = (e->bif)(p, reg, p->arity);
 			p->i = p->cp;
 			SWAPIN;
-			Goto(*(p->i));
+			Goto(p);
 		}
 		p->i = e->address;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(BIF0):
 		debug_op2(p,"bif0\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BIF1):
 		debug_op2(p,"bif1\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(BIF2):
 		debug_op2(p,"bif2\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(ALLOCATE):
 		debug_op2(p,"allocate\n");
 		StackN = unsigned_val(Arg(0));
 		Live = unsigned_val(Arg(1));
 		allocate_heap(p, StackN, 0, Live);
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(ALLOCATE_HEAP):
 		debug_op2(p,"allocate_heap\n");
 		StackN = unsigned_val(Arg(0));
 		HeapN = unsigned_val(Arg(1));
 		Live = unsigned_val(Arg(2));
 		allocate_heap(p, StackN, HeapN, Live);
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(ALLOCATE_ZERO):
 		debug_op2(p,"allocate_zero\n");
 		StackN = unsigned_val(Arg(0));
@@ -193,39 +201,39 @@ void process_main(void* arg) {
 		for(ptr = E+StackN; E > ptr; ptr--) {
 			make_blank(*ptr);
 		}
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(ALLOCATE_HEAP_ZERO):
 		debug_op2(p,"allocate_heap_zero\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(TEST_HEAP):
 		debug_op2(p,"test_heap\n");
 		Resolve(Arg(0), tmp0);
 		Resolve(Arg(1), tmp1);
 		test_heap(p, unsigned_val(tmp0), unsigned_val(tmp1));
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(INIT):
 		debug_op2(p,"init\n");
 		Move(NIL, Arg(0));
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(DEALLOCATE):
 		debug_op2(p,"deallocate\n");
 		p->cp = (BeamInstr*)E[0];
 		E += unsigned_val(Arg(0)) + 1;
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(RETURN):
 		debug_op2(p,"return\n");
 		p->i = p->cp;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(SEND):
 		debug_op2(p,"send\n");
 		erts_send_message(p, r(0), x(1));
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(REMOVE_MESSAGE):
 		debug_op2(p,"remove_message\n");
 		msgp = PEEK_MESSAGE(p);
@@ -236,13 +244,13 @@ void process_main(void* arg) {
 			vPortFree(msgp->data);
 		}
 		vPortFree(msgp);
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(TIMEOUT):
 		debug_op2(p,"timeout\n");
 		p->flags &= ~F_TIMO;
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(LOOP_REC):
 		debug_op2(p,"loop_rec\n");
 		msgp = PEEK_MESSAGE(p);
@@ -250,11 +258,11 @@ void process_main(void* arg) {
 			p->i = (BeamInstr*)Arg(0);
 		}
 		else {
-			p->i += 3;
+			RESTORE_I(p, p->i, 3);
 			if(msgp->data) {
 				need = msgp->data->used_size;
 				if(E - HTOP >= need) {
-					msgp->m = copy_struct(msgp->m, need, &HEAP_TOP(p));
+					msgp->m = copy_struct(msgp->m, need, &HTOP);
 					vPortFree(msgp->data);
 					msgp->data = NULL;
 				}
@@ -266,19 +274,19 @@ void process_main(void* arg) {
 			}
 			r(0) = msgp->m;
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(LOOP_REC_END):
 		debug_op2(p,"loop_rec_end\n");
 		SAVE_MESSAGE(p);
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(WAIT):
 		debug_op2(p,"wait\n");
 		SWAPOUT;
 		vTaskSuspend(*(p->handle));
 		SWAPIN;
 		p->i = (BeamInstr*)Arg(0);
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(WAIT_TIMEOUT):
 		debug_op2(p,"wait_timeout\n");
 		if ((p->flags & (F_INSLPQUEUE | F_TIMO)) == 0) {
@@ -290,105 +298,105 @@ void process_main(void* arg) {
 		SWAPOUT;
 		vTaskSuspend(*(p->handle));
 		SWAPIN;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(M_PLUS):
 		debug_op2(p,"m_plus\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(M_MINUS):
 		debug_op2(p,"m_minus\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(M_TIMES):
 		debug_op2(p,"m_times\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(M_DIV):
 		debug_op2(p,"m_div\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_DIV):
 		debug_op2(p,"int_div\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_REM):
 		debug_op2(p,"int_rem\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_BAND):
 		debug_op2(p,"int_band\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_BOR):
 		debug_op2(p,"int_bor\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_BXOR):
 		debug_op2(p,"int_bxor\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_BSL):
 		debug_op2(p,"int_bsl\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_BSR):
 		debug_op2(p,"int_bsr\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(INT_BNOT):
 		debug_op2(p,"int_bnot\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(IS_LT):
 		debug_op2(p,"is_lt\n");
 		Resolve(Arg(1), tmp0);
 		Resolve(Arg(2), tmp1);
 		if(tmp0 < tmp1) {
-			p->i += 4;
+			RESTORE_I(p, p->i, 4);
 		}
 		else {
 			p->i = (BeamInstr*)(Arg(0));
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(IS_GE):
 		debug_op2(p,"is_ge\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(IS_EQ):
 		debug_op2(p,"is_eq\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(IS_NE):
 		debug_op2(p,"is_ne\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(IS_EQ_EXACT):
 		debug_op2(p,"is_eq_exact\n");
 		Resolve(Arg(1), tmp0);
 		Resolve(Arg(2), tmp1);
-		if(tmp0 == tmp1) {
-			p->i +=4;
+		if(EQ(tmp0, tmp1)) {
+			RESTORE_I(p, p->i, 4);
 		}
 		else {
 			p->i = (BeamInstr*)(Arg(0));
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(IS_NE_EXACT):
 		debug_op2(p,"is_ne_exact\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(IS_INTEGER):
 		debug_op2(p,"is_integer\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_FLOAT):
 		debug_op2(p,"is_float\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_NUMBER):
 		debug_op2(p,"is_number\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_ATOM):
 		debug_op2(p,"is_atom\n");
 		Resolve(Arg(1), tmp1);
@@ -396,21 +404,21 @@ void process_main(void* arg) {
 			p->i = (BeamInstr*)Arg(0);
 		}
 		else {
-			p->i += 3;
+			RESTORE_I(p, p->i, 3);
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(IS_PID):
 		debug_op2(p,"is_pid\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_REFERENCE):
 		debug_op2(p,"is_reference\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_PORT):
 		debug_op2(p,"is_port\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_NIL):
 		debug_op2(p,"is_nil\n");
 		Resolve(Arg(1), tmp1);
@@ -418,21 +426,21 @@ void process_main(void* arg) {
 			p->i = (BeamInstr*)(Arg(0));
 		}
 		else {
-			p->i += 3;
+			RESTORE_I(p, p->i, 3);
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(IS_BINARY):
 		debug_op2(p,"is_binary\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_CONSTANT):
 		debug_op2(p,"is_constant\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_LIST):
 		debug_op2(p,"is_list\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_NONEMPTY_LIST):
 		debug_op2(p,"is_nonempty_list\n");
 		Resolve(Arg(1), tmp1);
@@ -440,9 +448,9 @@ void process_main(void* arg) {
 			p->i = (BeamInstr*)(Arg(0));
 		}
 		else {
-			p->i += 3;
+			RESTORE_I(p, p->i, 3);
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(IS_TUPLE):
 		debug_op2(p,"is_tuple\n");
 		Resolve(Arg(1), tmp1);
@@ -450,9 +458,9 @@ void process_main(void* arg) {
 			p->i = (BeamInstr*)(Arg(0));
 		}
 		else {
-			p->i += 3;
+			RESTORE_I(p, p->i, 3);
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(TEST_ARITY):
 		debug_op2(p,"test_arity\n");
 		Resolve(Arg(1), tmp0);
@@ -461,9 +469,9 @@ void process_main(void* arg) {
 			p->i = (BeamInstr*)(Arg(0));
 		}
 		else {
-			p->i += 4;
+			RESTORE_I(p, p->i, 4);
 		}
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(SELECT_VAL):
 		debug_op2(p,"select_val\n");
 		arity = unsigned_val(Arg(2));
@@ -471,102 +479,102 @@ void process_main(void* arg) {
 		for(i=0; i<arity; i+=2) {
 			if(Arg(3+i) == tmp1) {
 				p->i = (BeamInstr*)(Arg(4+i));
-				Goto(*(p->i));
+				Goto(p);
 			}
 		}
 		p->i = (BeamInstr*)Arg(1);
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(SELECT_TUPLE_ARITY):
 		debug_op2(p,"select_tuple_arity\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(JUMP):
 		debug_op2(p,"jump\n");
 		p->i = (BeamInstr*)(Arg(0));
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(CATCH):
 		debug_op2(p,"catch\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(CATCH_END):
 		debug_op2(p,"catch_end\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(MOVE):
 		debug_op2(p,"move\n");
 		Resolve(Arg(0), tmp1);
 		Move(tmp1, Arg(1));
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(GET_LIST):
 		debug_op2(p,"get_list\n");
 		Resolve(Arg(0), tmp0);
 		tmp_ptr = list_val(tmp0);
 		Move(CAR(tmp_ptr), Arg(1));
 		Move(CDR(tmp_ptr), Arg(2));
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(GET_TUPLE_ELEMENT):
 		debug_op2(p,"get_tuple_element\n");
 		Resolve(Arg(0), tmp0);
 		Resolve(Arg(1), tmp1);
 		tmp_ptr = tuple_val(tmp0) + unsigned_val(tmp1) + 1;
 		Move(*tmp_ptr, Arg(2));
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(SET_TUPLE_ELEMENT):
 		debug_op2(p,"set_tuple_element\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(PUT_STRING):
 		debug_op2(p,"put_string\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(PUT_LIST):
 		debug_op2(p,"put_list\n");
 		Resolve(Arg(0), HTOP[0]);
 		Resolve(Arg(1), HTOP[1]);
 		Move(make_list(HTOP), Arg(2));
 		HTOP += 2;
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(PUT_TUPLE):
 		debug_op2(p,"put_tuple\n");
 		tuple = make_tuple(HTOP);
 		Resolve(Arg(0), arity);
 		*HTOP++ = make_arityval(unsigned_val(arity));
 		Move(tuple, Arg(1));
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(PUT):
 		debug_op2(p,"put\n");
 		Resolve(Arg(0), term);
 		*HTOP++ = term;
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(BADMATCH):
 		debug("badmatch\n");
 		erts_do_exit_process(p, atom_normal);
 	OpCase(IF_END):
 		debug_op2(p,"if_end\n");
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(CASE_END):
 		debug_op2(p,"case_end\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(CALL_FUN):
 		debug_op2(p,"call_fun\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(MAKE_FUN):
 		debug_op2(p,"make_fun\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(IS_FUNCTION):
 		debug_op2(p,"is_function\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(CALL_EXT_ONLY):
 		debug_op2(p,"call_ext_only\n");
 		yield_maybe(p, (uint8_t)unsigned_val(Arg(0)));
@@ -577,142 +585,142 @@ void process_main(void* arg) {
 			r(0) = (e->bif)(p, reg, p->arity);
 			p->i = p->cp;
 			SWAPIN;
-			Goto(*(p->i));
+			Goto(p);
 		}
 		p->i = e->address;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(BS_START_MATCH):
 		debug_op2(p,"bs_start_match\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_GET_INTEGER):
 		debug_op2(p,"bs_get_integer\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_GET_FLOAT):
 		debug_op2(p,"bs_get_float\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_GET_BINARY):
 		debug_op2(p,"bs_get_binary\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_SKIP_BITS):
 		debug_op2(p,"bs_skip_bits\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(BS_TEST_TAIL):
 		debug_op2(p,"bs_test_tail\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_SAVE):
 		debug_op2(p,"bs_save\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(BS_RESTORE):
 		debug_op2(p,"bs_restore\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(BS_INIT):
 		debug_op2(p,"bs_init\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_FINAL):
 		debug_op2(p,"bs_final\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_PUT_INTEGER):
 		debug_op2(p,"bs_put_integer\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_PUT_BINARY):
 		debug_op2(p,"bs_put_binary\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_PUT_FLOAT):
 		debug_op2(p,"bs_put_float\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_PUT_STRING):
 		debug_op2(p,"bs_put_string\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_NEED_BUF):
 		debug_op2(p,"bs_need_buf\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(FCLEARERROR):
 		debug_op2(p,"fclearerror\n");
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(FCHECKERROR):
 		debug_op2(p,"fcheckerror\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(FMOVE):
 		debug_op2(p,"fmove\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(FCONV):
 		debug_op2(p,"fconv\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(FADD):
 		debug_op2(p,"fadd\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(FSUB):
 		debug_op2(p,"fsub\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(FMUL):
 		debug_op2(p,"fmul\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(FDIV):
 		debug_op2(p,"fdiv\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(FNEGATE):
 		debug_op2(p,"fnegate\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(MAKE_FUN2):
 		debug_op2(p,"make_fun2\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(TRY):
 		debug_op2(p,"try\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(TRY_END):
 		debug_op2(p,"try_end\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(TRY_CASE):
 		debug_op2(p,"try_case\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(TRY_CASE_END):
 		debug_op2(p,"try_case_end\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(RAISE):
 		debug_op2(p,"raise\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_INIT2):
 		debug_op2(p,"bs_init2\n");
-		p->i +=7;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 7);
+		Goto(p);
 	OpCase(BS_BITS_TO_BYTES):
 		debug_op2(p,"bs_bits_to_bytes\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_ADD):
 		debug_op2(p,"bs_add\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(APPLY):
 		debug_op2(p,"apply\n");
 		yield_maybe(p, unsigned_val(Arg(0))+2);
@@ -726,210 +734,210 @@ void process_main(void* arg) {
 		}
 		tmp.arity = p->arity-2;
 		e = erts_export_get(&tmp);
-		p->cp = p->i+2;
+		RESTORE_I(p, p->cp, 2);
 		if(e->bif != NULL) {
 			SWAPOUT;
 			reg[0] = r(0);
 			r(0) = (e->bif)(p, reg, p->arity);
 			p->i = p->cp;
 			SWAPIN;
-			Goto(*(p->i));
+			Goto(p);
 		}
 		p->i = e->address;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(APPLY_LAST):
 		debug_op2(p,"apply_last\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_BOOLEAN):
 		debug_op2(p,"is_boolean\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_FUNCTION2):
 		debug_op2(p,"is_function2\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_START_MATCH2):
 		debug_op2(p,"bs_start_match2\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_GET_INTEGER2):
 		debug_op2(p,"bs_get_integer2\n");
-		p->i +=8;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 8);
+		Goto(p);
 	OpCase(BS_GET_FLOAT2):
 		debug_op2(p,"bs_get_float2\n");
-		p->i +=8;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 8);
+		Goto(p);
 	OpCase(BS_GET_BINARY2):
 		debug_op2(p,"bs_get_binary2\n");
-		p->i +=8;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 8);
+		Goto(p);
 	OpCase(BS_SKIP_BITS2):
 		debug_op2(p,"bs_skip_bits2\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_TEST_TAIL2):
 		debug_op2(p,"bs_test_tail2\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_SAVE2):
 		debug_op2(p,"bs_save2\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_RESTORE2):
 		debug_op2(p,"bs_restore2\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(GC_BIF1):
 		debug_op2(p,"gc_bif1\n");
 		yield_maybe(p, unsigned_val(Arg(1)));
 		e = (Export*)Arg(2);
-		live = p->arity;
+		Live = p->arity;
 		reg[0] = r(0);
-		Resolve(Arg(3), reg[live]);
+		Resolve(Arg(3), reg[Live]);
 		SWAPOUT;
-		Eterm result = (e->bif)(p, reg, live);
+		Eterm result = (e->bif)(p, reg, Live);
 		SWAPIN;
 		r(0) = reg[0];
 		Move(result, Arg(4));
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(GC_BIF2):
 		debug_op2(p,"gc_bif2\n");
 		yield_maybe(p, unsigned_val(Arg(1)));
 		e = (Export*)Arg(2);
-		live = p->arity;
+		Live = p->arity;
 		reg[0] = r(0);
-		Resolve(Arg(3), reg[live]);
-		Resolve(Arg(4), reg[live+1]);
+		Resolve(Arg(3), reg[Live]);
+		Resolve(Arg(4), reg[Live+1]);
 		SWAPOUT;
-		result = (e->bif)(p, reg, live);
+		result = (e->bif)(p, reg, Live);
 		SWAPIN;
 		r(0) = reg[0];
 		Move(result, Arg(5));
-		p->i +=7;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 7);
+		Goto(p);
 	OpCase(BS_FINAL2):
 		debug_op2(p,"bs_final2\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_BITS_TO_BYTES2):
 		debug_op2(p,"bs_bits_to_bytes2\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(PUT_LITERAL):
 		debug_op2(p,"put_literal\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(IS_BITSTR):
 		debug_op2(p,"is_bitstr\n");
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_CONTEXT_TO_BINARY):
 		debug_op2(p,"bs_context_to_binary\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(BS_TEST_UNIT):
 		debug_op2(p,"bs_test_unit\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_MATCH_STRING):
 		debug_op2(p,"bs_match_string\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(BS_INIT_WRITABLE):
 		debug_op2(p,"bs_init_writable\n");
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(BS_APPEND):
 		debug_op2(p,"bs_append\n");
-		p->i +=9;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 9);
+		Goto(p);
 	OpCase(BS_PRIVATE_APPEND):
 		debug_op2(p,"bs_private_append\n");
-		p->i +=7;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 7);
+		Goto(p);
 	OpCase(TRIM):
 		debug_op2(p,"trim\n");
 		tmp0 = E[0];
 		E += unsigned_val(Arg(0));
 		E[0] = tmp0;
-		p->i +=3;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 3);
+		Goto(p);
 	OpCase(BS_INIT_BITS):
 		debug_op2(p,"bs_init_bits\n");
-		p->i +=7;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 7);
+		Goto(p);
 	OpCase(BS_GET_UTF8):
 		debug_op2(p,"bs_get_utf8\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_SKIP_UTF8):
 		debug_op2(p,"bs_skip_utf8\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(BS_GET_UTF16):
 		debug_op2(p,"bs_get_utf16\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_SKIP_UTF16):
 		debug_op2(p,"bs_skip_utf16\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(BS_GET_UTF32):
 		debug_op2(p,"bs_get_utf32\n");
-		p->i +=6;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 6);
+		Goto(p);
 	OpCase(BS_SKIP_UTF32):
 		debug_op2(p,"bs_skip_utf32\n");
-		p->i +=5;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 5);
+		Goto(p);
 	OpCase(BS_UTF8_SIZE):
 		debug_op2(p,"bs_utf8_size\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_PUT_UTF8):
 		debug_op2(p,"bs_put_utf8\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_UTF16_SIZE):
 		debug_op2(p,"bs_utf16_size\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_PUT_UTF16):
 		debug_op2(p,"bs_put_utf16\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(BS_PUT_UTF32):
 		debug_op2(p,"bs_put_utf32\n");
-		p->i +=4;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 4);
+		Goto(p);
 	OpCase(ON_LOAD):
 		debug_op2(p,"on_load\n");
-		p->i +=1;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 1);
+		Goto(p);
 	OpCase(RECV_MARK):
 		debug_op2(p,"recv_mark\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(RECV_SET):
 		debug_op2(p,"recv_set\n");
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	OpCase(GC_BIF3):
 		debug_op2(p,"gc_bif3\n");
-		p->i +=8;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 8);
+		Goto(p);
 	OpCase(LINE):
 		//ignore for now
-		p->i +=2;
-		Goto(*(p->i));
+		RESTORE_I(p, p->i, 2);
+		Goto(p);
 	//special vm ops
 	OpCase(BEAM_APPLY):
 		next = apply(p, r(0), x(1), x(2));
 		p->i = next;
-		Goto(*(p->i));
+		Goto(p);
 	OpCase(NORMAL_EXIT):
 		//@todo do a lot of stuff when exiting a process
 		sprintf(buf, "Pid %d exited, result: ", pid2pix(p->id));
@@ -1025,11 +1033,13 @@ Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra, UInt live) {
 }
 
 static void timeout_proc(ErlProcess *p) {
-	BeamInstr** pi = (BeamInstr**)p->def_arg_reg;
-	p->i = *pi;
-	p->flags |= F_TIMO;
-	p->flags &= ~F_INSLPQUEUE;
-	xTaskResumeFromISR(*(p->handle));
+	if(eTaskGetState(*(p->handle)) == eSuspended) {
+		BeamInstr** pi = (BeamInstr**)p->def_arg_reg;
+		p->i = *pi;
+		p->flags |= F_TIMO;
+		p->flags &= ~F_INSLPQUEUE;
+		xTaskResumeFromISR(*(p->handle));
+	}
 }
 
 static inline void cancel_timer(ErlProcess *p) {

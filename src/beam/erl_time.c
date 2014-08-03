@@ -79,6 +79,10 @@ void TIMER0_IRQHandler(void) {
 		now.sec = 0;
 		now.msec++;
 	}
+
+	if(now.sec % 60 == 1) {
+		print_stats();
+	}
 }
 
 // low resolution (ms) timer - hardware timer 1

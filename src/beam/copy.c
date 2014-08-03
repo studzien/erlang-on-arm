@@ -50,12 +50,14 @@ unsigned int size_object(Eterm obj) {
 						*sp++ = obj;
 					}
 				}
-				obj = *ptr++;
+				obj = *++ptr;
 				break;
 			default:
 				sum += arityval(hdr) + 1;
 				goto pop_next;
 			}
+			break;
+
 
 		case TAG_PRIMARY_IMMED1:
 		pop_next:
