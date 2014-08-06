@@ -36,7 +36,31 @@ Eterm print_info0(ErlProcess* p, Eterm* arg, UInt live) {
 	char buf[30];
 	sprintf(buf, "Process %d info\n", pid2pix(p->id)); debug(buf);
 	sprintf(buf, "Heap start:\t%d\n", p->heap);        debug(buf);
+	sprintf(buf, "Heap top:\t%d\n", p->htop);		   debug(buf);
+	sprintf(buf, "Stack top:\t%d\n", p->stop);		   debug(buf);
 	sprintf(buf, "Heap end:\t%d\n", p->hend);		   debug(buf);
+	return atom_ok;
+}
+
+Eterm dump_stack0(ErlProcess* p, Eterm* arg, UInt live) {
+	dump_stack(p, STACK_TOP(p));
+	return atom_ok;
+}
+
+Eterm dump_regs0(ErlProcess* p, Eterm *arg, UInt live) {
+	int i;
+	char buf[30];
+	for(i=0; i<5; i++) {
+		sprintf(buf, "%d\t%d:\n", i, arg[i]);
+		debug(buf);
+		debug_term(arg[i]);
+		debug("\n");
+	}
+	return atom_ok;
+}
+
+Eterm dump_heap0(ErlProcess* p, Eterm* arg, UInt live) {
+	dump_heap(p, HEAP_TOP(p));
 	return atom_ok;
 }
 

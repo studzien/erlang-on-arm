@@ -15,11 +15,15 @@ IndexTable erts_atom_table;
 void dump_atoms() {
 	int i = erts_atom_table.entries;
 
+	char buf[30], buf_atom[50];
 	debug("atom dump start\n");
 	while(--i >= 0) {
+		Atom* atom = (Atom*)erts_index_lookup(&erts_atom_table, i);
 		if(erts_index_lookup(&erts_atom_table, i)) {
-			debug("atom: ");
-			debug_32(i);
+			strncpy(buf_atom, atom->name, atom->len);
+			buf_atom[atom->len] = '\0';
+			sprintf(buf, "atom %d %s\n", i, buf_atom);
+			debug(buf);
 		}
 	}
 	debug("atom dump finished\n");

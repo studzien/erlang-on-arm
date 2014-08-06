@@ -10,12 +10,18 @@
 #include "beam_emu.h"
 #include "export.h"
 #include "io.h"
+#include "config.h"
 
+#if (THREADED_CODE == 1)
 void* jump_table[ALL_OPCODES];
 
-void jump_table_add(int opcode, void* ptr) {
-	jump_table[opcode] = ptr;
+void jump_table_add(int opcode, const void* ptr) {
+	//char buf[30];
+	//sprintf(buf, "op %d: %d\n", opcode, ptr);
+	//debug(buf);
+	jump_table[opcode] = (void*)ptr;
 }
+#endif
 
 void erts_load(byte* code) {
 	//debug("before allocating loader: ");
@@ -191,7 +197,6 @@ static int load_import_table(LoaderState* loader) {
 }
 
 static int load_code(LoaderState* loader) {
-	char buf[256];
 	byte op;
 	uint8_t arity, arg;
 	int i;
@@ -204,7 +209,12 @@ static int load_code(LoaderState* loader) {
 		arity = opcode_arities[op];
 
 		uint32_t p = loader->code_buffer_used;
+
+#if (THREADED_CODE == 1)
 		loader->code[loader->code_buffer_used++] = (BeamInstr)jump_table[op];
+#else
+		loader->code[loader->code_buffer_used++] = (BeamInstr)op;
+#endif
 
 		for(i=0; i<arity; i++) {
 			BeamInstr* code = loader->code + loader->code_buffer_used;
@@ -414,8 +424,6 @@ static int load_atom_table(LoaderState* loader) {
 
 static int load_literal_table(LoaderState* loader) {
 	GetInt(loader, loader->num_literals);
-
-	char buf[30];
 
 	loader->literal = (LiteralEntry*)pvPortMalloc(loader->num_literals * sizeof(LiteralEntry));
 	uint8_t i;

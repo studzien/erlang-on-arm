@@ -287,6 +287,13 @@ ResetISR(void) {
 // by a debugger.
 //
 //*****************************************************************************
+
+#include "beam/config.h"
+#include "beam/io.h"
+
+extern ErlProcess* proc_tab;
+extern Eterm* reg;
+
 void NMI_Handler(void)
 {
     while(1)
@@ -296,6 +303,28 @@ void NMI_Handler(void)
 
 void HardFault_Handler(void)
 {
+	int i;
+	char buf[30];
+
+	ErlProcess* p = &proc_tab[0];
+
+	sprintf(buf, "heap start: %d\n", HEAP_START(p)); debug(buf);
+	sprintf(buf, "heap top: %d\n", HEAP_TOP(p)); debug(buf);
+	sprintf(buf, "stack top: %d\n", STACK_TOP(p)); debug(buf);
+	sprintf(buf, "heap end: %d\n", HEAP_END(p)); debug(buf);
+	sprintf(buf, "current pc: %d\n", *(p->saved_i)); debug(buf);
+	sprintf(buf, "cp: %d\n", *(p->cp)); debug(buf);
+	dump_stack(p, STACK_TOP(p));
+	dump_heap(p, HEAP_TOP(p));
+	dump_registers(reg);
+
+	/*debug("running processes:\n");
+	for(i=0; i<MAX_PROCESSES; i++) {
+		if(proc_tab[i].active) {
+			sprintf(buf, "%d ", pid2pix(proc_tab[i].id));
+			debug(buf);
+		}
+	}*/
     while(1)
     {
     }

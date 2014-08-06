@@ -8,10 +8,13 @@
 #include "erl_time.h"
 #include "FreeRTOS.h"
 #include "LPC17xx.h"
+#include "erl_process.h"
+#include "io.h"
 
 static ErlTimer** tiw; // timer wheel
 static UInt tiw_pos;   // current position in wheel
-static UInt tiw_nto;   // number of timeouts in the wheel
+UInt tiw_nto;   // number of timeouts in the wheel
+extern ErlProcess* proc_tab;
 
 void erts_init_time(void) {
 	ticks = 0;
@@ -67,7 +70,7 @@ static void init_us_timer(void) {
 	LPC_TIM0->MCR |= ((1 << 0) | (1 << 1));
 
 	NVIC_EnableIRQ(TIMER0_IRQn);
-	NVIC_SetPriority(TIMER0_IRQn, 0);
+	NVIC_SetPriority(TIMER0_IRQn, 2);
 }
 
 void TIMER0_IRQHandler(void) {
@@ -80,8 +83,8 @@ void TIMER0_IRQHandler(void) {
 		now.msec++;
 	}
 
-	if(now.sec % 60 == 1) {
-		print_stats();
+	if(now.sec % 10 == 1) {
+		//print_stats();
 	}
 }
 
@@ -115,7 +118,7 @@ static void init_ms_timer(void) {
 	erts_get_now(&then);
 
 	NVIC_EnableIRQ(TIMER1_IRQn);
-	NVIC_SetPriority(TIMER1_IRQn, 1);
+	NVIC_SetPriority(TIMER1_IRQn, 3);
 }
 
 void TIMER1_IRQHandler(void) {

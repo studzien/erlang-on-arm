@@ -10,6 +10,7 @@
 
 #include "erl_term.h"
 
+int list_length(Eterm list);
 inline int eq(Eterm a, Eterm b);
 
 #define EQ(x,y) (((x) == (y)) || (is_not_both_immed((x),(y)) && eq((x),(y))))

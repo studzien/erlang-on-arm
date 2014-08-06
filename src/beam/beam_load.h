@@ -154,8 +154,9 @@ static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op);
 static void replace_local_call(LoaderState* loader, uint16_t offset, byte op);
 static void define_label(LoaderState* loader, uint16_t offset, byte op);
 
-void jump_table_add(int, void*);
-
+#if (THREADED_CODE == 1)
+void jump_table_add(int, const void*);
+#endif
 
 // argument types
 #define TAG_u 0

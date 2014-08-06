@@ -23,7 +23,7 @@ void dump_stack(ErlProcess* p, Eterm* stop);
 #endif
 
 #if (DEBUG_OP == 1)
-#define debug_op2(p, what) do { if(p->id == 19) { vPrintString(what); }} while(0)
+#define debug_op2(p, what) do { if(p->id == 3) { vPrintString(what); }} while(0)
 #else
 #define debug_op2(p, what) do {} while(0)
 #endif

@@ -42,16 +42,19 @@
 #include "beam/global.h"
 #include "beam/beam_load.h"
 #include "beam/erl_process.h"
+#include "beam/io.h"
 
 void vConfigureTimerForRunTimeStats( void );
 
 int main( void ) {
- 	erl_init();
+	erl_init();
 	return 0;
 }
 
 void vApplicationMallocFailedHook( void )
 {
+	debug("malloc failed\n");
+	debug_32(xPortGetFreeHeapSize());
 	/* This function will only be called if an API call to create a task, queue
 	or semaphore fails because there is too little heap RAM remaining. */
 	for( ;; );
@@ -60,6 +63,9 @@ void vApplicationMallocFailedHook( void )
 
 void vApplicationStackOverflowHook( xTaskHandle *pxTask, signed char *pcTaskName )
 {
+	char buf[30];
+	sprintf(buf, "stack overflow by %s\n", pcTaskName);
+	debug(buf);
 	/* This function will only be called if a task overflows its stack.  Note
 	that stack overflow checking does slow down the context switch
 	implementation. */

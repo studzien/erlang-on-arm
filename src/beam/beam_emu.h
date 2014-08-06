@@ -23,9 +23,19 @@ static inline void test_heap(ErlProcess* p, UInt need, UInt live);
 static inline void cancel_timer(ErlProcess *p);
 static inline void set_timer(ErlProcess* p, UInt timeout);
 
+#if (THREADED_CODE == 1)
 #define OpCase(OpCode) lb_##OpCode
 #define OpCode(OpCode) (&&lb_##OpCode)
 #define Goto(p) p->saved_i = p->i; goto *(*(p->i))
+#define LOOP_BEGIN
+#define LOOP_END
+#else
+#define OpCase(OpCode) case (OpCode)
+#define OpCode(OpCode) (OpCode)
+#define Goto(p) p->saved_i = p->i; goto switch_loop
+#define LOOP_BEGIN switch((*(p->i))) {
+#define LOOP_END }
+#endif
 
 #define x(N) reg[N]
 #define y(N) E[N]
@@ -214,9 +224,9 @@ static inline void set_timer(ErlProcess* p, UInt timeout);
 #define NORMAL_EXIT 155
 
 //opcodes that have an external label as a first argument
-#define EXTERNAL_OP_1(op) (((op)==BIF0)||((op)==BIF1)||((op)==BIF2))
+#define EXTERNAL_OP_1(op) (((op)==BIF0))
 //and as a second argument
-#define EXTERNAL_OP_2(op) (((op)==CALL_EXT)||((op)==CALL_EXT_LAST)||((op)==CALL_EXT_ONLY))
+#define EXTERNAL_OP_2(op) (((op)==CALL_EXT)||((op)==CALL_EXT_LAST)||((op)==CALL_EXT_ONLY)||((op)==BIF1)||((op)==BIF2))
 //and as a third argument
 #define EXTERNAL_OP_3(op) (((op)==GC_BIF1)||((op)==GC_BIF2)||((op)==GC_BIF3))
 

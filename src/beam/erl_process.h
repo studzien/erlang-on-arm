@@ -13,6 +13,8 @@
 #include "atom.h"
 #include "erl_time.h"
 #include "erl_message.h"
+#include "erl_monitors.h"
+#include "semphr.h"
 
 #define HEAP_START(p)    (p)->heap
 #define HEAP_TOP(p)      (p)->htop
@@ -29,13 +31,17 @@
 
 void ErlProcessTask(void* args);
 
-typedef struct {
+#define SPO_LINK 1
 
+typedef struct {
+	uint8_t flags;
 } ErlSpawnOpts;
 
 // Process flags
 #define F_INSLPQUEUE         (1 <<  0) /* Set if in timer queue */
 #define F_TIMO               (1 <<  1) /* Set if timeout */
+#define F_TRAP_EXIT			 (1 <<  2) /* Set if process is trapping exits */
+#define F_EXITING			 (1 <<  3) /* Process is exiting */
 
 struct ErlProcess {
 	Eterm id;
@@ -51,7 +57,9 @@ struct ErlProcess {
 	BeamInstr* saved_i; // saved program counter
 	BeamInstr* cp; // continuation pointer
 
+	//FreeRTOS task
 	xTaskHandle* handle;
+	char* name;
 
 	uint8_t active; //is taken from pool?
 
@@ -62,8 +70,8 @@ struct ErlProcess {
 	Eterm* arg_reg;
 	// maxmimum number of registers available
 	uint8_t max_arg_reg;
-	// default array of argument registers (used when arity <= 3)
-	Eterm def_arg_reg[3];
+	// default array of argument registers (used when arity <= 5)
+	Eterm def_arg_reg[5];
 
 	// Number of reductions left to execute
 	int16_t fcalls;
@@ -76,6 +84,9 @@ struct ErlProcess {
 
 	// Flags
 	uint8_t flags;
+
+	// List of links
+	ErtsLink *links;
 };
 
 typedef struct ErlProcess ErlProcess;

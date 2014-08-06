@@ -42,8 +42,22 @@ int erts_garbage_collect(ErlProcess* p, int need, Eterm* objv, int objc) {
 	debug(buf);
 	#endif
 
+
+	/*char buf[50];
+
+	if(p->id == 3) {
+
+	sprintf(buf, "old_s: %d, old_e: %d, live: %d\n", HEAP_START(p), HEAP_TOP(p), objc);
+	debug(buf);
+	}*/
+
 	major_collection(p, need, objv, objc, &reclaimed);
 	garbage_cols++;
+
+	/*if(p->id == 3) {
+	sprintf(buf, "new_s: %d, new_e: %d\n", HEAP_START(p), HEAP_TOP(p));
+	debug(buf);
+	}*/
 
 	return (HEAP_TOP(p) - HEAP_START(p))/10;
 }
@@ -125,7 +139,7 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 	ErlMessage* msgp = p->msg.first;
 	while(msgp) {
 		if(msgp->data) {
-			move_message_to_heap(&n_htop, msgp);
+			move_message_to_heap(n_heap, STACK_TOP(p), &n_htop, msgp);
 		}
 		msgp = msgp->next;
 	}
@@ -176,7 +190,8 @@ static UInt combined_message_size(ErlProcess* p) {
 	return size;
 }
 
-static void move_message_to_heap(Eterm **hpp, ErlMessage* msg) {
+static void move_message_to_heap(Eterm* start, Eterm *end, Eterm **hpp, ErlMessage* msg) {
+	Eterm *hp = *hpp;
 	msg->m = copy_struct(msg->m, msg->data->used_size, hpp);
 	vPortFree(msg->data);
 	msg->data = NULL;
@@ -236,6 +251,12 @@ static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_siz
 }
 
 static void resize_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc) {
+	/*if(p->id == 3) {
+	char buf[50];
+	sprintf(buf, "int_s: %d, int_e: %d\n", HEAP_START(p), HEAP_TOP(p));
+	debug(buf);
+	}*/
+
 	Eterm* new_heap = (Eterm*)pvPortMalloc(new_sz * sizeof(Eterm));
 	UInt heap_size = HEAP_TOP(p) - HEAP_START(p);
 	memcpy(new_heap, HEAP_START(p), heap_size*sizeof(Eterm));
@@ -264,6 +285,7 @@ static void resize_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc) {
 }
 
 static void offset_heap_ptr(Eterm* hp, UInt sz, SInt offset, char* area, UInt area_size) {
+	Eterm a = NIL;
 	while(sz--) {
 		Eterm val = *hp;
 		switch(primary_tag(val)) {
@@ -281,9 +303,27 @@ static void offset_heap_ptr(Eterm* hp, UInt sz, SInt offset, char* area, UInt ar
 }
 
 static void offset_rootset(ErlProcess *p, SInt offset, char* area, UInt area_size, Eterm* objv, int nobj) {
+	//offset stack
 	offset_heap_ptr(p->stop, (STACK_START(p) - p->stop), offset, area, area_size);
+
+	//offset registers
 	if (nobj > 0) {
 		offset_heap_ptr(objv, nobj, offset, area, area_size);
+	}
+
+	//offset the message queue
+	ErlMessage *mp = p->msg.first;
+	while(mp != NULL) {
+		Eterm term = mp->m;
+		switch(primary_tag(term)) {
+		case TAG_PRIMARY_LIST:
+		case TAG_PRIMARY_BOXED:
+			if(in_area(ptr_val(term), area, area_size)) {
+				mp->m = offset_ptr(term, offset);
+			}
+			break;
+		}
+		mp = mp->next;
 	}
 }
 
@@ -304,6 +344,34 @@ static UInt setup_rootset(ErlProcess* p, Eterm* objv, int nobj, Rootset *rootset
 		roots[n].v = objv;
 		roots[n].sz = nobj;
 		n++;
+	}
+
+	// add messages already moved to the heap
+	ErlMessage* mp = p->msg.first;
+	UInt avail = rootset->size - n;
+	while(mp != NULL) {
+		if(avail == 0) {
+			UInt new_size = 2*rootset->size;
+			if(roots = rootset->def) {
+				roots = (Roots*)pvPortMalloc(sizeof(Roots)*new_size);
+				memcpy(roots, rootset->def, sizeof(rootset->def));
+			}
+			else {
+				Roots* old_roots = roots;
+				roots = (Roots*)pvPortMalloc(sizeof(Roots)*new_size);
+				memcpy(roots, old_roots, rootset->size*sizeof(Roots));
+				vPortFree(old_roots);
+			}
+			rootset->size = new_size;
+			avail = new_size - n;
+		}
+		if(mp->data == NULL) {
+			roots[n].v = &mp->m;
+			roots[n].sz = 2;
+			n++;
+			avail--;
+		}
+		mp = mp->next;
 	}
 
 	rootset->roots = roots;

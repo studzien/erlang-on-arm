@@ -39,30 +39,40 @@ typedef struct {
 
 /* Unlink current message */
 #define UNLINK_MESSAGE(p,msgp) do { \
+	 portENTER_CRITICAL(); \
      ErlMessage* __mp = (msgp)->next; \
      *(p)->msg.save = __mp; \
      (p)->msg.len--; \
      if (__mp == NULL) \
          (p)->msg.last = (p)->msg.save; \
+     portEXIT_CRITICAL(); \
 } while(0)
 
 /* Reset message save point (after receive match) */
-#define JOIN_MESSAGE(p) \
-     (p)->msg.save = &(p)->msg.first
+#define JOIN_MESSAGE(p) do { \
+	 taskENTER_CRITICAL(); \
+     (p)->msg.save = &(p)->msg.first; \
+     taskEXIT_CRITICAL(); \
+} while(0)
 
 /* Save current message */
-#define SAVE_MESSAGE(p) \
-     (p)->msg.save = &(*(p)->msg.save)->next
+#define SAVE_MESSAGE(p) do {\
+     taskENTER_CRITICAL(); \
+     (p)->msg.save = &(*(p)->msg.save)->next; \
+     taskEXIT_CRITICAL(); \
+} while(0)
 
 /* Get "current" message */
-#define PEEK_MESSAGE(p)  (*(p)->msg.save)
+#define PEEK_MESSAGE(p) (*(p)->msg.save)
 
 
 /* Add message last in private message queue */
 #define LINK_MESSAGE(p, mp) do { \
+	taskENTER_CRITICAL(); \
     *(p)->msg.last = (mp); \
     (p)->msg.last = &(mp)->next; \
     (p)->msg.len++; \
+    taskEXIT_CRITICAL(); \
 } while(0)
 
 #endif /* ERL_MESSAGE_H_ */

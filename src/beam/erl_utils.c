@@ -8,6 +8,19 @@
 #include "erl_utils.h"
 #include "io.h"
 
+int list_length(Eterm list) {
+	int i = 0;
+
+	while(is_list(list)) {
+		i++;
+		list = CDR(list_val(list));
+	}
+	if (is_not_nil(list)) {
+		return -1;
+	}
+	return i;
+}
+
 int eq(Eterm a, Eterm b) {
 	switch(primary_tag(a)) {
 	case TAG_PRIMARY_LIST:

@@ -24,7 +24,7 @@ static void offset_heap_ptr(Eterm* hp, UInt sz, SInt offset, char* area, UInt ar
 static void offset_rootset(ErlProcess *p, SInt offset, char* area, UInt area_size, Eterm* objv, int nobj);
 static Eterm* sweep_one_area(Eterm* n_hp, Eterm* n_htop, char* src, UInt src_size);
 static inline UInt combined_message_size(ErlProcess* p);
-static inline void move_message_to_heap(Eterm **hpp, ErlMessage* msg);
+static inline void move_message_to_heap(Eterm* start, Eterm* end, Eterm **hpp, ErlMessage* msg);
 
 typedef struct {
 	Eterm *v;
@@ -45,8 +45,7 @@ static void cleanup_rootset(Rootset *rootset);
 #define IS_MOVED_BOXED(x)   (!is_header((x)))
 #define IS_MOVED_CONS(x)    (is_non_value((x)))
 
-#define in_area(ptr, start, nbytes) \
-	((UInt)((char*)(ptr)-(char*)(start)) < (nbytes))
+#define in_area(ptr, start, nbytes) ((UInt)((char*)(ptr)-(char*)(start)) < (nbytes))
 
 #define MOVE_CONS(PTR,CAR,HTOP,ORIG)                    		\
 	do {                                  						\

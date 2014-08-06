@@ -10,6 +10,7 @@
 extern ErlProcess* proc_tab;
 extern UInt reclaimed;
 extern UInt garbage_cols;
+extern UInt tiw_nto;
 
 void print_stats() {
 	Timeval t;
@@ -31,7 +32,8 @@ void print_stats() {
 	sprintf(buf, "%d;", xPortGetFreeHeapSize()); debug(buf);
 	sprintf(buf, "%d;", heap_total); debug(buf);
 	sprintf(buf, "%d;", reclaimed); debug(buf);
-	sprintf(buf, "%d\n", garbage_cols); debug(buf);
+	sprintf(buf, "%d;", garbage_cols); debug(buf);
+	sprintf(buf, "%d\n", tiw_nto); debug(buf);
 }
 
 void dump_stack(ErlProcess* p, Eterm* stop) {
@@ -42,10 +44,44 @@ void dump_stack(ErlProcess* p, Eterm* stop) {
 
 	for(hp = stop; hp < STACK_START(p); hp++) {
 		debug_term_buf(*hp, buf);
+		debug("\n");
 	}
 
 	debug("\n");
 }
+
+void dump_heap(ErlProcess* p, Eterm* htop) {
+	Eterm* hp;
+	char buf[50];
+	sprintf(buf, "process %u heap dump (starts at %u):\n", p->id, HEAP_START(p));
+	debug(buf);
+
+	for(hp = htop-1; hp >= HEAP_START(p); hp--) {
+		debug_32(hp);
+		debug_term_buf(*hp, buf);
+		debug("\n");
+	}
+
+	debug("\n");
+}
+
+void dump_registers(Eterm* reg) {
+	Eterm* hp;
+	char buf[50];
+	sprintf(buf, "registers dump:\n");
+	debug(buf);
+	int i;
+
+	for(i=0; i<3; i++) {
+		sprintf(buf, "%d: ", i);
+		debug(buf);
+		debug_term_buf(reg[i], buf);
+		debug("\n");
+	}
+
+	debug("\n");
+}
+
 
 void debug_term(Eterm term) {
 	char buf[50];
@@ -76,7 +112,7 @@ void debug_term_buf(Eterm term, char* buf) {
 				debug(buf);
 				break;
 			case _TAG_IMMED2_NIL:
-				sprintf(buf, "NIL");
+				sprintf(buf, "NIL ");
 				debug(buf);
 				break;
 			default:

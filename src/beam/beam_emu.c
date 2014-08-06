@@ -14,7 +14,7 @@
 #include "erl_message.h"
 #include "erl_utils.h"
 #include "task.h"
-
+#include "semphr.h"
 
 int init_done = 0;
 
@@ -28,11 +28,13 @@ BeamInstr* next;
 UInt StackN, Live, HeapN, need;
 ErlMessage *msgp;
 BeamInstr** saved_i;
-UInt arity;
+UInt arity, desired_arity;
 int i;
 Eterm tuple, term;
 Export tmp;
 BeamInstr* temp_i;
+Eterm result;
+Eterm bif_args[3];
 
 char buf[50];
 int i;
@@ -52,9 +54,9 @@ extern UInt garbage_cols;
 
 #define SWAPOUT            \
     HEAP_TOP(p) = HTOP;  \
-    p->stop = E;
+    p->stop = E; \
 
-static inline void yield_maybe(ErlProcess* p, uint8_t arity) {
+static void yield_maybe(ErlProcess* p, uint8_t arity) {
 	p->arity = arity;
 	if(p->fcalls < 0) {
 		#if (DEBUG_OP == 1)
@@ -90,13 +92,18 @@ void process_main(void* arg) {
 	//first time this function is called op labels from here are exported to the loader
 	if(!init_done) {
 		int i;
-		void* temp[] = { JUMP_TABLE };
+
+#if (THREADED_CODE == 1)
+		static const void* temp[] = { JUMP_TABLE };
 		for(i=0; i<ALL_OPCODES; i++) {
 				jump_table_add(i, temp[i]);
 		}
-
 		beam_apply[0] = (BeamInstr)jump_table[BEAM_APPLY];
 		beam_apply[1] = (BeamInstr)jump_table[NORMAL_EXIT];
+#else
+		beam_apply[0] = (BeamInstr)BEAM_APPLY;
+		beam_apply[1] = (BeamInstr)NORMAL_EXIT;
+#endif
 
 		init_done = 1;
 		return;
@@ -106,6 +113,9 @@ void process_main(void* arg) {
 	restore_registers(p);
 	Goto(p);
 
+	switch_loop:
+
+	LOOP_BEGIN
 
 	OpCase(LABEL):
 		debug_op2(p,"label\n");
@@ -113,6 +123,8 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(FUNC_INFO):
 		debug("function_clause\n");
+		sprintf(buf, "%d %d %d %d\n", Arg(0), Arg(1), Arg(2), p->id);
+		debug(buf);
 		erts_do_exit_process(p, atom_normal);
 	OpCase(INT_CODE_END):
 		debug_op2(p,"int_code_end\n");
@@ -168,14 +180,28 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(BIF0):
 		debug_op2(p,"bif0\n");
+		e = (Export*)Arg(0);
+		result = (e->bif)(p, NULL, 0);
+		Move(result, Arg(1));
 		RESTORE_I(p, p->i, 3);
 		Goto(p);
 	OpCase(BIF1):
 		debug_op2(p,"bif1\n");
+		yield_maybe(p, 0);
+		e = (Export*)Arg(1);
+		Resolve(Arg(2), bif_args[0]);
+		result = (e->bif)(p, bif_args, 0);
+		Move(result, Arg(3));
 		RESTORE_I(p, p->i, 5);
 		Goto(p);
 	OpCase(BIF2):
 		debug_op2(p,"bif2\n");
+		yield_maybe(p, 0);
+		e = (Export*)Arg(1);
+		Resolve(Arg(2), bif_args[0]);
+		Resolve(Arg(3), bif_args[1]);
+		result = (e->bif)(p, bif_args, 0);
+		Move(result, Arg(4));
 		RESTORE_I(p, p->i, 6);
 		Goto(p);
 	OpCase(ALLOCATE):
@@ -198,7 +224,7 @@ void process_main(void* arg) {
 		StackN = unsigned_val(Arg(0));
 		Live = unsigned_val(Arg(1));
 		allocate_heap(p, StackN, 0, Live);
-		for(ptr = E+StackN; E > ptr; ptr--) {
+		for(ptr = E+StackN; E < ptr; ptr--) {
 			make_blank(*ptr);
 		}
 		RESTORE_I(p, p->i, 3);
@@ -231,7 +257,7 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(SEND):
 		debug_op2(p,"send\n");
-		erts_send_message(p, r(0), x(1));
+		erts_send_message(p, r(0), x(1), 0);
 		RESTORE_I(p, p->i, 1);
 		Goto(p);
 	OpCase(REMOVE_MESSAGE):
@@ -253,7 +279,10 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(LOOP_REC):
 		debug_op2(p,"loop_rec\n");
+		taskENTER_CRITICAL();
 		msgp = PEEK_MESSAGE(p);
+		taskEXIT_CRITICAL();
+
 		if(!msgp) {
 			p->i = (BeamInstr*)Arg(0);
 		}
@@ -486,7 +515,16 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(SELECT_TUPLE_ARITY):
 		debug_op2(p,"select_tuple_arity\n");
-		RESTORE_I(p, p->i, 4);
+		arity = unsigned_val(Arg(2));
+		Resolve(Arg(0), tmp0);
+		desired_arity = arityval(*boxed_val(tmp0));
+		for(i=0; i<arity; i+=2) {
+			if(desired_arity == unsigned_val(Arg(3+i))) {
+				p->i = (BeamInstr*)(Arg(4+i));
+				Goto(p);
+			}
+		}
+		p->i = (BeamInstr*)Arg(1);
 		Goto(p);
 	OpCase(JUMP):
 		debug_op2(p,"jump\n");
@@ -544,7 +582,7 @@ void process_main(void* arg) {
 		Resolve(Arg(0), arity);
 		*HTOP++ = make_arityval(unsigned_val(arity));
 		Move(tuple, Arg(1));
-		RESTORE_I(p, p->i, 4);
+		RESTORE_I(p, p->i, 3);
 		Goto(p);
 	OpCase(PUT):
 		debug_op2(p,"put\n");
@@ -554,6 +592,8 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(BADMATCH):
 		debug("badmatch\n");
+		debug_term(r(0));
+		debug("\n");
 		erts_do_exit_process(p, atom_normal);
 	OpCase(IF_END):
 		debug_op2(p,"if_end\n");
@@ -797,7 +837,7 @@ void process_main(void* arg) {
 		reg[0] = r(0);
 		Resolve(Arg(3), reg[Live]);
 		SWAPOUT;
-		Eterm result = (e->bif)(p, reg, Live);
+		result = (e->bif)(p, reg, Live);
 		SWAPIN;
 		r(0) = reg[0];
 		Move(result, Arg(4));
@@ -953,6 +993,7 @@ void process_main(void* arg) {
 		sprintf(buf, "Heap size: %u words\n", p->heap_sz); debug_op(buf);
 		erts_do_exit_process(p, atom_normal);
 
+	LOOP_END
 }
 
 void restore_registers(ErlProcess* p) {
@@ -1033,13 +1074,11 @@ Eterm* erts_heap_alloc(ErlProcess* p, UInt need, UInt xtra, UInt live) {
 }
 
 static void timeout_proc(ErlProcess *p) {
-	if(eTaskGetState(*(p->handle)) == eSuspended) {
-		BeamInstr** pi = (BeamInstr**)p->def_arg_reg;
-		p->i = *pi;
-		p->flags |= F_TIMO;
-		p->flags &= ~F_INSLPQUEUE;
-		xTaskResumeFromISR(*(p->handle));
-	}
+	BeamInstr** pi = (BeamInstr**)p->def_arg_reg;
+	p->i = *pi;
+	p->flags |= F_TIMO;
+	p->flags &= ~F_INSLPQUEUE;
+	xTaskResumeFromISR(*(p->handle));
 }
 
 static inline void cancel_timer(ErlProcess *p) {

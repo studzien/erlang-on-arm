@@ -13,10 +13,12 @@
 #include "erl_gc.h"
 #include "erl_time.h"
 #include "erl_message.h"
+#include "erl_utils.h"
+#include "semphr.h"
 
 extern ErlProcess* proc_tab;
 
-Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg) {
+Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg, int from_isr) {
 	UInt to_ix = pid2pix(to);
 	if(to_ix >= MAX_PROCESSES) {
 		return atom_ok;
@@ -34,18 +36,25 @@ Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg) {
 	bp->used_size = msize;
 	msg = copy_struct(msg, msize, &hp);
 
-	queue_message(sender, receiver, bp, msg);
+	queue_message(sender, receiver, bp, msg, from_isr);
 
 	return atom_ok;
 }
 
-static void queue_message(ErlProcess* from, ErlProcess* to, ErlHeapFragment* bp, Eterm message) {
+static void queue_message(ErlProcess* from, ErlProcess* to, ErlHeapFragment* bp, Eterm message, int from_isr) {
 	ErlMessage* mp = (ErlMessage*)pvPortMalloc(sizeof(ErlMessage));
 	mp->next = NULL;
 	mp->data = bp;
 	mp->m = message;
 	LINK_MESSAGE(to, mp);
-	vTaskResume(*(to->handle));
+	xTaskHandle handle = *(to->handle);
+
+	if(from_isr) {
+		xTaskResumeFromISR(handle);
+	}
+	else {
+		vTaskResume(handle);
+	}
 }
 
 void erts_init_bif(void) {
@@ -78,12 +87,21 @@ Eterm spawn_3(ErlProcess* p, Eterm* reg, UInt live) {
 	return erl_create_process(p, reg[0], reg[1], reg[2], NULL);
 }
 
+Eterm spawn_link_3(ErlProcess* p, Eterm* reg, UInt live) {
+	ErlSpawnOpts opts;
+	opts.flags |= SPO_LINK;
+	return erl_create_process(p, reg[0], reg[1], reg[2], &opts);
+}
+
 Eterm setelement_3(ErlProcess* p, Eterm* reg, UInt live) {
+	Eterm old = reg[1];
 	Eterm* ptr = tuple_val(reg[1]);
 	UInt ix = unsigned_val(reg[0]);
 	UInt size = arityval(*ptr)+1;
+
 	Eterm* hp = HAlloc(p, size, 3);
 
+	ptr = tuple_val(reg[1]);
 	memcpy(hp, ptr, size*sizeof(Eterm));
 	hp[ix] = reg[2];
 
@@ -104,11 +122,128 @@ Eterm now_0(ErlProcess* p, Eterm* reg, UInt live) {
 
 Eterm length_1(ErlProcess* p, Eterm* reg, UInt live) {
 	UInt length = 0;
-	Eterm list = reg[0];
+	Eterm list = reg[live];
 	while(is_list(list)) {
 		length++;
 		list = CDR(list_val(list));
 	}
 
 	return make_small(length);
+}
+
+Eterm plusplus_2(ErlProcess* p, Eterm* reg, UInt live) {
+	int i = list_length(reg[0]);
+	if(i == 0) {
+		return reg[1];
+	}
+	else if(is_nil(reg[1])) {
+		return reg[0];
+	}
+
+	int need = i*2;
+	Eterm* hp = HAlloc(p, need, live);
+	Eterm list = reg[0];
+	Eterm copy, last;
+	copy = last = CONS(hp, CAR(list_val(list)), make_list(hp+2));
+	list = CDR(list_val(list));
+	hp += 2;
+	i--;
+	while(i--) {
+		Eterm* listp = list_val(list);
+		last = CONS(hp, CAR(listp), make_list(hp+2));
+		list = CDR(listp);
+		hp += 2;
+	}
+	CDR(list_val(last)) = reg[1];
+
+	return copy;
+}
+
+Eterm div_2(ErlProcess* p, Eterm* reg, UInt live) {
+	SInt a = signed_val(reg[live]);
+	SInt b = signed_val(reg[live+1]);
+	return make_small(a / b);
+}
+
+Eterm rem_2(ErlProcess* p, Eterm* reg, UInt live) {
+	//debug("rem_2 inside\n");
+	SInt a = signed_val(reg[live]);
+	SInt b = signed_val(reg[live+1]);
+	return make_small(a % b);
+}
+
+Eterm uniform_1(ErlProcess* p, Eterm* reg, UInt live) {
+	Timeval seed;
+	UInt n = unsigned_val(reg[0]);
+	erts_get_now(&seed);
+	return make_small((seed.usec % n)+1);
+}
+
+Eterm element_2(ErlProcess* p, Eterm* reg, UInt live) {
+	int n = signed_val(reg[live]);
+	Eterm tuple = reg[live+1];
+
+	Eterm element = *(tuple_val(tuple)+n);
+
+	/*debug("element/2:\n");
+	debug_term(tuple);
+	debug("\n");
+
+	char buf[30];
+	sprintf(buf, "s: %d e: %d\n", p->heap, p->htop);
+	debug(buf);*/
+
+	return element;
+}
+
+Eterm exit_1(ErlProcess* p, Eterm* reg, UInt live) {
+	Eterm reason = reg[0];
+	erts_do_exit_process(p, reason);
+	return atom_ok;
+}
+
+Eterm process_flag_2(ErlProcess* p, Eterm* reg, UInt live) {
+	Eterm flag = reg[0];
+	Eterm value = reg[1];
+	if(flag == atom_trap_exit) {
+		if(value == atom_true) {
+			p->flags |= F_TRAP_EXIT;
+		}
+	}
+	return atom_ok;
+}
+
+Eterm self_0(ErlProcess* p, Eterm* reg, UInt live) {
+	return p->id;
+}
+
+
+static void bif_timer_timeout(void* arg) {
+	ErlBifTimer *bt = (ErlBifTimer*)arg;
+	erts_send_message(bt->sender, bt->receiver, bt->message, 1);
+	vPortFree(bt->bp);
+	vPortFree(bt);
+}
+
+Eterm send_after_3(ErlProcess* p, Eterm* reg, UInt live) {
+	SInt time = signed_val(reg[0]);
+	Eterm pid = reg[1];
+	Eterm msg = reg[2];
+
+	ErlBifTimer* bt = (ErlBifTimer*)pvPortMalloc(sizeof(ErlBifTimer));
+	UInt sz = size_object(msg);
+	bt->bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(sz));
+	Eterm *hp = bt->bp->mem;
+
+	bt->message = copy_struct(msg, sz, &hp);
+	bt->bp->alloc_size = sz;
+	bt->bp->used_size = sz;
+	bt->sender = p;
+	bt->receiver = pid;
+	bt->timer.active = 0;
+	bt->timer.slot = 0;
+	bt->timer.count = 0;
+
+	erts_set_timer(&bt->timer, (ErlTimeoutProc)bif_timer_timeout, NULL, (void*)bt, time);
+	return atom_ok;
 }
