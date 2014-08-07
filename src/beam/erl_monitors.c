@@ -19,6 +19,10 @@ static void dump_links(ErtsLink *root, Eterm pid) {
 }
 
 int erts_add_link(ErtsLink **root, Eterm pid) {
+	if(sizeof(ErtsLink) > 1000) {
+		debug("erl_monitors.c:23\n");
+		debug_32(sizeof(ErtsLink));
+	}
 	ErtsLink* new = (ErtsLink*)pvPortMalloc(sizeof(ErtsLink));
 	new->next = *root;
 	new->pid = pid;

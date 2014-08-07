@@ -30,6 +30,10 @@ Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg, int from_isr) {
 
 	UInt msize = size_object(msg);
 
+	if(ERTS_HEAP_FRAG_SIZE(msize) > 1000) {
+		debug("erl_bif.c:33\n");
+		debug_32(ERTS_HEAP_FRAG_SIZE(msize));
+	}
 	ErlHeapFragment* bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(msize));
 	Eterm* hp = bp->mem;
 	bp->alloc_size = msize;
@@ -42,6 +46,10 @@ Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg, int from_isr) {
 }
 
 static void queue_message(ErlProcess* from, ErlProcess* to, ErlHeapFragment* bp, Eterm message, int from_isr) {
+	if(sizeof(ErlMessage) > 1000) {
+		debug("erl_bif.c:50\n");
+		debug_32(sizeof(ErlMessage));
+	}
 	ErlMessage* mp = (ErlMessage*)pvPortMalloc(sizeof(ErlMessage));
 	mp->next = NULL;
 	mp->data = bp;
@@ -185,14 +193,6 @@ Eterm element_2(ErlProcess* p, Eterm* reg, UInt live) {
 
 	Eterm element = *(tuple_val(tuple)+n);
 
-	/*debug("element/2:\n");
-	debug_term(tuple);
-	debug("\n");
-
-	char buf[30];
-	sprintf(buf, "s: %d e: %d\n", p->heap, p->htop);
-	debug(buf);*/
-
 	return element;
 }
 
@@ -230,8 +230,16 @@ Eterm send_after_3(ErlProcess* p, Eterm* reg, UInt live) {
 	Eterm pid = reg[1];
 	Eterm msg = reg[2];
 
-	ErlBifTimer* bt = (ErlBifTimer*)pvPortMalloc(sizeof(ErlBifTimer));
 	UInt sz = size_object(msg);
+	if(sizeof(ErlBifTimer) > 1000) {
+		debug("erl_bif.c:238\n");
+		debug_32(sizeof(ErlBifTimer));
+	}
+	ErlBifTimer* bt = (ErlBifTimer*)pvPortMalloc(sizeof(ErlBifTimer));
+	if(ERTS_HEAP_FRAG_SIZE(sz) > 1000) {
+		debug("erl_bif.c:240\n");
+		debug_32(ERTS_HEAP_FRAG_SIZE(sz));
+	}
 	bt->bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(sz));
 	Eterm *hp = bt->bp->mem;
 

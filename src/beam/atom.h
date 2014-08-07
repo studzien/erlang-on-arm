@@ -73,5 +73,10 @@ static void atom_free(Atom*);
 #define atom_send_after		 make_atom(37)
 #define atom_dump_regs		 make_atom(38)
 #define atom_dump_heap		 make_atom(39)
+#define atom_badarg			 make_atom(40)
+#define atom_badmatch		 make_atom(41)
+#define atom_case_clause	 make_atom(42)
+#define atom_if_clause	     make_atom(43)
+#define atom_undef		     make_atom(44)
 
 #endif /* ATOM_H_ */

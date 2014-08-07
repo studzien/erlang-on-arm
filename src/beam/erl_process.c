@@ -89,8 +89,6 @@ void delete_process(ErlProcess* p) {
 		msg = next;
 	}
 
-	vPortFree(p->name);
-
 	// free links
 	ErtsLink *link = p->links, *next_link;
 	while(link != NULL) {
@@ -132,6 +130,10 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 		//@todo return NIL;
 	}
 
+	if(sizeof(xTaskHandle) > 1000) {
+		debug("erl_process.c:134\n");
+		debug_32(sizeof(xTaskHandle));
+	}
 	xTaskHandle *handle = pvPortMalloc(sizeof(xTaskHandle));
 
 	ErlProcess* p = (ErlProcess*)&proc_tab[last_proc];
@@ -173,6 +175,10 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	unsigned int heap_need = arg_size;
 	unsigned int sz = erts_next_heap_size(heap_need);
 
+	if(sz > 1000) {
+		debug("erl_process.c:179\n");
+		debug_32(sz);
+	}
 	p->heap = (Eterm*)pvPortMalloc(sz * sizeof(Eterm));
 	p->stop = p->hend = p->heap + sz;
 	p->htop = p->heap;
@@ -185,11 +191,7 @@ Eterm erl_create_process(ErlProcess* parent, Eterm module, Eterm function, Eterm
 	p->arg_reg[2] = copy_struct(args, arg_size, &p->htop);
 
 	//start process inside the FreeRTOS scheduler
-	char buf[30];
-	sprintf(buf, "pid(%d)", pid2pix(p->id));
-	p->name = (char*)pvPortMalloc(strlen(buf)+1);
-	strcpy(p->name, buf);
-	xTaskCreate(process_main, p->name, TASK_STACK_SIZE, (void*)p, 1, p->handle);
+	xTaskCreate(process_main, "erl process", TASK_STACK_SIZE, (void*)p, 1, p->handle);
 	last_proc++;
 
 	return pid;

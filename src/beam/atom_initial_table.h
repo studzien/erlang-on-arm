@@ -49,7 +49,12 @@ static const char* erl_atom_names[] = {
 		"self",
 		"send_after",
 		"dump_regs",
-		"dump_heap"
+		"dump_heap",
+		"badarg",
+		"badmatch",
+		"case_clause",
+		"if_clause",
+		"undef"
 };
 
 #endif /* ATOM_INITIAL_TABLE_H_ */

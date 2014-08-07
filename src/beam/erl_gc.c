@@ -22,7 +22,7 @@ void erts_init_gc(void) {
 
 	int i;
 	for(i=2; i<MAX_HEAP_SIZES; i++) {
-		//heap_sizes[i] = 1.2 * heap_sizes[i-1];
+		//heap_sizes[i] = 2 * heap_sizes[i-1];
 		heap_sizes[i] = heap_sizes[i-1] + heap_sizes[i-2] + 1;
 	}
 }
@@ -74,7 +74,12 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 
 	UInt size_before = (HEAP_TOP(p) - HEAP_START(p));
 
+	if(new_sz*sizeof(Eterm) > 1000) {
+		debug("erl_gc.c:89\n");
+		debug_32(new_sz*sizeof(Eterm));
+	}
 	n_heap = n_htop = (Eterm*)pvPortMalloc(new_sz * sizeof(Eterm));
+
 
 	Rootset rootset;
 	UInt n = setup_rootset(p, objv, objc, &rootset);
@@ -165,7 +170,7 @@ static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt
 		UInt new_sz = erts_next_heap_size(need_after);
 		resize_new_heap(p, new_sz, objv, objc);
 	}
-	else if(4*need_after < HEAP_SIZE(p)) {
+	else if(2*need_after < HEAP_SIZE(p)) {
 		UInt wanted = 2*need_after;
 		UInt new_sz = erts_next_heap_size(wanted);
 		if(new_sz < HEAP_SIZE(p)) {
@@ -257,6 +262,10 @@ static void resize_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc) {
 	debug(buf);
 	}*/
 
+	if(new_sz * sizeof(Eterm) > 1000) {
+		debug("erl_gc.c:266\n");
+		debug_32(new_sz * sizeof(Eterm));
+	}
 	Eterm* new_heap = (Eterm*)pvPortMalloc(new_sz * sizeof(Eterm));
 	UInt heap_size = HEAP_TOP(p) - HEAP_START(p);
 	memcpy(new_heap, HEAP_START(p), heap_size*sizeof(Eterm));
@@ -353,12 +362,20 @@ static UInt setup_rootset(ErlProcess* p, Eterm* objv, int nobj, Rootset *rootset
 		if(avail == 0) {
 			UInt new_size = 2*rootset->size;
 			if(roots = rootset->def) {
-				roots = (Roots*)pvPortMalloc(sizeof(Roots)*new_size);
+				if(new_size*sizeof(Roots) > 1000) {
+					debug("erl_gc.c:366\n");
+					debug_32(new_size*sizeof(Roots));
+				}
+				roots = (Roots*)pvPortMalloc(new_size*sizeof(Roots));
 				memcpy(roots, rootset->def, sizeof(rootset->def));
 			}
 			else {
 				Roots* old_roots = roots;
-				roots = (Roots*)pvPortMalloc(sizeof(Roots)*new_size);
+				if(new_size*sizeof(Roots) > 1000) {
+					debug("erl_gc.c:375\n");
+					debug_32(new_size*sizeof(Roots));
+				}
+				roots = (Roots*)pvPortMalloc(new_size*sizeof(Roots));
 				memcpy(roots, old_roots, rootset->size*sizeof(Roots));
 				vPortFree(old_roots);
 			}
@@ -396,3 +413,14 @@ unsigned int erts_next_heap_size(unsigned int size) {
 	}
 	return -1;
 }
+
+unsigned int erts_next_heap_size_bytes(unsigned int size) {
+	int i;
+	for(i=0; i<MAX_HEAP_SIZES; i++) {
+		if(heap_sizes[i]*sizeof(Eterm) >= size) {
+			return heap_sizes[i]*sizeof(Eterm);
+		}
+	}
+	return -1;
+}
+

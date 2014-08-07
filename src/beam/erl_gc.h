@@ -17,6 +17,7 @@ void erts_init_gc(void);
 
 int erts_garbage_collect(ErlProcess*, int, Eterm*, int);
 unsigned int erts_next_heap_size(unsigned int size);
+unsigned int erts_next_heap_size_bytes(unsigned int size);
 
 static int major_collection(ErlProcess* p, int need, Eterm* objv, int objc, UInt *recl);
 static void resize_new_heap(ErlProcess* p, int new_sz, Eterm* objv, int objc);

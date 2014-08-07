@@ -15,6 +15,7 @@ static ErlTimer** tiw; // timer wheel
 static UInt tiw_pos;   // current position in wheel
 UInt tiw_nto;   // number of timeouts in the wheel
 extern ErlProcess* proc_tab;
+extern int timeout;
 
 void erts_init_time(void) {
 	ticks = 0;
@@ -83,8 +84,8 @@ void TIMER0_IRQHandler(void) {
 		now.msec++;
 	}
 
-	if(now.sec % 10 == 1) {
-		//print_stats();
+	if(now.sec % 60 == 1) {
+		print_stats();
 	}
 }
 
@@ -140,6 +141,7 @@ void TIMER1_IRQHandler(void) {
 }
 
 void erts_set_timer(ErlTimer* timer, ErlTimeoutProc timeout, ErlCancelProc cancel, void* arg, UInt t) {
+	taskENTER_CRITICAL();
 	if(timer->active) {
 		return;
 	}
@@ -148,9 +150,11 @@ void erts_set_timer(ErlTimer* timer, ErlTimeoutProc timeout, ErlCancelProc cance
 	timer->arg = arg;
 	timer->active = 1;
 	insert_timer(timer, t);
+	taskEXIT_CRITICAL();
 }
 
 void erts_cancel_timer(ErlTimer* timer) {
+	taskENTER_CRITICAL();
 	if(!timer->active) {
 		return;
 	}
@@ -161,6 +165,7 @@ void erts_cancel_timer(ErlTimer* timer) {
 	if(timer->cancel != NULL) {
 		(*timer->cancel)(timer->arg);
 	}
+	taskEXIT_CRITICAL();
 }
 
 static void insert_timer(ErlTimer* timer, UInt timeout) {
@@ -209,6 +214,7 @@ static void remove_timer(ErlTimer *p) {
 }
 
 void erts_bump_timer(UInt dt) {
+	taskENTER_CRITICAL();
 	UInt keep_pos, count;
 	ErlTimer *p, **prev, *timeout_head, **timeout_tail;
 
@@ -254,5 +260,6 @@ void erts_bump_timer(UInt dt) {
 		p->slot = 0;
 		(*p->timeout)(p->arg);
 	}
+	taskEXIT_CRITICAL();
 }
 

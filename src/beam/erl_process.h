@@ -59,7 +59,6 @@ struct ErlProcess {
 
 	//FreeRTOS task
 	xTaskHandle* handle;
-	char* name;
 
 	uint8_t active; //is taken from pool?
 

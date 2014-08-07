@@ -18,6 +18,8 @@
 
 int init_done = 0;
 
+volatile int timeout = 0;
+
 Eterm x0;
 Eterm reg[X_REGS_ALLOCATED];
 Eterm* E, *HTOP;
@@ -67,6 +69,10 @@ static void yield_maybe(ErlProcess* p, uint8_t arity) {
 		if(p->arity > p->max_arg_reg) {
 			if(p->arg_reg != p->def_arg_reg) {
 				vPortFree(p->arg_reg);
+			}
+			if(p->arity * sizeof(p->arg_reg[0]) > 1000) {
+				debug("beam_emu.c:73\n");
+				debug_32(p->arity * sizeof(p->arg_reg[0]));
 			}
 			p->arg_reg = (Eterm*)pvPortMalloc(p->arity * sizeof(p->arg_reg[0]));
 			p->max_arg_reg = p->arity;
@@ -187,7 +193,6 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(BIF1):
 		debug_op2(p,"bif1\n");
-		yield_maybe(p, 0);
 		e = (Export*)Arg(1);
 		Resolve(Arg(2), bif_args[0]);
 		result = (e->bif)(p, bif_args, 0);
@@ -196,7 +201,6 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(BIF2):
 		debug_op2(p,"bif2\n");
-		yield_maybe(p, 0);
 		e = (Export*)Arg(1);
 		Resolve(Arg(2), bif_args[0]);
 		Resolve(Arg(3), bif_args[1]);
