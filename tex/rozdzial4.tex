@@ -257,8 +257,9 @@ Typy danych dostępne w maszynie BEAM, które nie zostały zaimplementowane w pr
 \item \textbf{lambdy} (tag \textbf{FUN}) - ten typ danych używany jest w komunikacji między węzłami wewnątrz klastra Erlanga, co nie jest aktualnie obsługiwane przez maszynę wirtualną. Lambdy pojawiające się w kodzie źródłowym modułów reprezentowane są za pomocą funkcji lokalnych i nie potrzebują osobnego typu danych do poprawnego działania;
 \item \textbf{referencje} (tag \textbf{REF}) - referencje z~założenia używane są do oznaczania wiadomości wysyłanych do innych węzłów z uruchomioną maszyną wirtualną a klastrowanie nie jest wspierane przez implementowaną maszynę wirtualną;
 \item \textbf{porty} (tag \textbf{PORT}) - porty używane są do identyfikacji procesów uruchomionych w systemie operacyjnym poza maszyną wirtualną Erlanga, a do których delegowane są pewne operacje, wykonywane na poziomie systemu operacyjnego. Wykonanie tych operacji (jak np. operacje na plikach) z~założenia może zająć pewien dłuższy okres czasu, co mogłoby zakłócić harmonogramowanie procesów. Typ danych nie został zaimplementowany, gdyż w maszynie wirtualnej wszystkie operacje wykonywane na poziomie mikrojądra zostały zaimplementowane przy pomocy funkcji wbudowanych (por. \ref{sec:maszynaBIF});
-\item \textbf{liczby zmiennoprzecinkowe} (tag \textbf{FLONUM}) - ten typ danych nie został zaimplementowany w~wersji maszyny opisywanej w pracy. Liczby zmiennoprzecinkowe rzadko wykorzystywane są w programowaniu urządzeń wbudowanych ze względu na bardzo duży narzut czasowych w przypadku mikrokontrolerów nie mających koprocesora (np. procesor ARM Cortex-M3 nie posiada FPU). M.in. z tego powodu do maszyny BEAM arytmetyka zmiennoprzecinkowa została dodana dopiero w wersji R8;
-\item \textbf{binaria} (tagi \textbf{*\_BINARY}) - binarny typ danych włącznie ze wszystkimi operacjami dotyczącymi dopasowywania do nich zmiennych również nie został zaimplementowany w maszynie. Jest to funkcjonalność warta rozważenia w przypadku dalszej pracy nad maszyną ze względu na binarny charakter szeregowych interfejsów wejścia-wyjścia obsługiwanych przez mikrokontrolery. Podstawowe operacje na binariach do maszyny BEAM zostały dodane w wersji R7, bardziej zaawansowane były sukcesywnie dodawane od wersji R10.
+\item \textbf{liczby zmiennoprzecinkowe} (tag \textbf{FLONUM}) - ten typ danych również nie został zaimplementowany w~wersji maszyny opisywanej w pracy. Liczby zmiennoprzecinkowe rzadko wykorzystywane są w programowaniu urządzeń wbudowanych ze względu na bardzo duży narzut czasowych w przypadku mikrokontrolerów nie mających koprocesora (np. procesor ARM Cortex-M3 nie posiada FPU). M.in. z tego powodu do maszyny BEAM arytmetyka zmiennoprzecinkowa została dodana dopiero w wersji R8;
+\item \textbf{binaria} (tagi \textbf{*\_BINARY}) - binarny typ danych włącznie ze wszystkimi operacjami dotyczącymi dopasowywania do nich zmiennych również nie został zaimplementowany w maszynie. Jest to funkcjonalność warta rozważenia w przypadku dalszej pracy nad maszyną ze względu na binarny charakter szeregowych interfejsów wejścia-wyjścia obsługiwanych przez mikrokontrolery. Podstawowe operacje na binariach do maszyny BEAM zostały dodane w wersji R7, bardziej zaawansowane były sukcesywnie dodawane od wersji R10;
+\item \textbf{etykiety bloku \texttt{catch}} (tag \textbf{CATCH}) - typ danych służy do zapamiętywania na stosie procesu miejsc w kodzie, w których pojawiają się bloki \texttt{try} oraz \texttt{catch}. W przypadku błędu w programie, przed zakończeniem działania procesu, stos jest przeszukiwany w poszukiwaniu obecności ww. bloków. Instrukcje dotyczące łapania błędów nie zostały zaimplementowane w niniejszej maszynie wirtualnej.
 \end{itemize}
 
 %---------------------------------------------------------------------------
@@ -440,6 +441,8 @@ Spośród nich można wymienić:
 \item uchwyt do zadania w systemie FreeRTOS, w kontekście którego wykonywany jest kod procesu;
 \item pamięć do przechowania wartości rejestrów \textbf{X} w sytuacji gdy proces przestanie być wykonywany na rzecz innego procesu (por. \ref{sec:maszynaScheduler});
 \item kolejka wiadomości, które zostały wysłane do procesu;
+\item lista procesów połączonych z danym procesem poprzez \emph{link} (por. \ref{sec:maszynaBledy});
+\item flagi procesu, ustawiane przez funkcję \texttt{erlang:process\_flag/2};
 \item informacje statystyczne związane z cyklem życia procesu, takie jak liczba wykonanych redukcji czy liczba wykonanych odśmieceń na procesie w trakcie jego działania.
 \end{itemize}
 
@@ -454,17 +457,70 @@ Technika ta opisana została w podrozdziale \ref{sec:maszynaGC}.
 
 W maszynie rozważanej w pracy nie została także zaimplementowany słownik procesu.
 
-TODO: kolejka wiadomości, link
-
 \subsection{Komunikacja międzyprocesowa}
 \label{sub:procKolejka}
 
-TODO
+Komunikacja między procesami w maszynie wirtualnej jest zapewniona dzięki instrukcjom:
+\begin{itemize}
+\item \texttt{send}, służącej do wysłania wiadomości do innego procesu;
+\item \texttt{wait} i \texttt{wait\_timeout} zawieszających działanie procesu aż do momentu otrzymania wiadomości lub przeterminowania;
+\item \texttt{loop\_rec}, \texttt{remove\_message} i \texttt{loop\_rec\_end}, wykonujących operacje na kolejce wiadomości.
+\end{itemize}
 
-\subsection{Monitorowanie procesów}
-\label{sub:procMonitory}
+Mechanizm wysyłania wiadomości do procesu został zaprezentowany na rysunkach od \ref{fig:mp1} do \ref{fig:mp4}.
 
-TODO
+Na początku (rys. \ref{fig:mp1}) w kolejce wiadomości procesu odbierającego znajduje się jedna wiadomość (\textbf{M\textsubscript{0}}).
+Wskaźnik aktualnej wiadomości ustawiony jest na pierwszą wiadomość w kolejce, oznaczoną kolorem czerwonym.
+Zostanie on wykorzystany przez proces w momencie osiągnięcia przez kod procesu bloku \texttt{receive}.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 220mm 68mm 10mm]{mp1}}
+\caption{Kolejka wiadomości procesu z jedną, nieodczytaną wiadomością.}
+\label{fig:mp1}
+\end{figure}
+
+Wysłanie wiadomości do procesu polega na dołączeniu na koniec kolejki (która zaimplementowana jest jako lista jednokierunkowa) nowej wiadomości (rys. \ref{fig:mp2}).
+Jeżeli wysyłane wyrażenie nie jest bezpośredniego typu danych, całe wyrażenie jest kopiowane do obszaru pamięci poza pamięcią należącą do procesu-odbiorcy.
+Wiadomość nie jest kopiowana bezpośrednio na stertę procesu, gdyż w sytuacji w której na stercie nie byłoby wystarczającej ilości miejsca, konieczne byłoby uruchomienie \emph{garbage collectora}.
+Tutaj pamięć zajmowana przez treść wiadomości została oznaczona przez \textbf{A\textsubscript{0}} oraz \textbf{A\textsubscript{1}}.
+Jego uruchomienie powinno jednak zawsze mieć miejsce w bezpiecznym miejscu kodu, w którym znany jest cały źródłowy zbiór wyrażeń.
+
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 220mm 68mm 10mm]{mp2}}
+\caption{Kolejka wiadomości procesu z dodaną kolejną wiadomością.}
+\label{fig:mp2}
+\end{figure}
+
+W momencie, gdy proces-odbiorca w wykonywanym przez siebie kodzie dochodzi do instrukcji \texttt{loop\_rec} pobierana jest przez niego wiadomość oznaczona wskaźnikiem aktualnej wiadomości. W~sytuacji, gdy kolejka jest pusta proces zostaje zawieszany aż do momentu otrzymania kolejnej wiadomości lub zrealizowania się przeterminowania.
+W pierwszym przypadku proces ponownie próbuje pobrać wiadomość z kolejki, w drugim zaś wykonywany jest kod przewidziany po zajściu przeterminowania.
+
+Odebranie wiadomości przez proces polega na skopiowaniu jego zawartości na własną stertę (wyrażenie \textbf{H\textsubscript{1}} na rys. \ref{fig:mp3}), zwolnieniu pamięci zajmowanej przez jej oryginalną zawartość, usunięciu wiadomości z kolejki wiadomości oraz przepisaniu wskaźnika aktualnej wiadomości na następną w kolejce (rys. \ref{fig:mp4}).
+Cała procedura jest powtarzana w momencie ponownego dojścia do instrukcji \texttt{loop\_rec} w~kodzie maszynowym (bloku \texttt{receive}).
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 220mm 68mm 10mm]{mp3}}
+\caption{Kolejka wiadomości procesu z odczytaną pierwszą wiadomością.}
+\label{fig:mp3}
+\end{figure}
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 220mm 68mm 10mm]{mp4}}
+\caption{Kolejka wiadomości procesu po usunięciu pierwszej wiadomości.}
+\label{fig:mp4}
+\end{figure}
+
+\subsection{Obsługa błędów}
+\label{sub:procBledy}
+
+Maszyna wirtualna opisywana w niniejszej pracy posiada mechanizm dwukierunkowego połączenia procesów (\emph{link}), który zapewnia propagację błędu, w sytuacji gdy w trakcie wykonywania się jednego z~połączonych procesów wystąpi błąd, na skutek którego jego działanie zostanie zakończone.
+Domyślnym zachowaniem procesu otrzymującego informację o zakończeniu działania procesu jest w takiej sytuacji jego zakończenie z takim samym błędem.
+Możliwe jest jednak ustawienie w nim flagi \texttt{trap\_exit}, czego efektem jest zamiana ww. sygnału na wiadomość wysłaną do tego procesu.
+
+Maszyna wirtualna BEAM oprócz ww. mechanizmu zapewnia również mechanizm jednokierunkowej obserwacji procesów (\emph{monitor}), a także bloki przechwytywania błędów w kodzie (\texttt{try} i \texttt{catch}).
+Funkcjonalności te nie zostały jednak zapewnione w maszynie zaimplementowanej w ramach niniejszej pracy.
+
+Lista błędów, jakie mogą wystąpić w trakcie uruchomienia procesu, wraz z opisem sytuacji w jakiej mogą wystąpić została zawarta w dokumentacji języka \cite{ErlangErrors}.
 
 %---------------------------------------------------------------------------
 \section{Planista (\emph{scheduler})}
@@ -507,9 +563,22 @@ Synchronizację między planistami zapewniają w niej skomplikowane mechanizmy b
 Maszynę zaimplementowaną w pracy można uruchomić jednak tylko z~wykorzystaniem tylko jednego fizycznego wątku.
 Pomimo badań nad uruchomieniem \emph{schedulera} mikrojądra FreeRTOS na architekturze wielordzeniowej \cite{Mistry2011}, oficjalna dystrybucja wspiera obecnie tylko architekturę jednordzeniową.
 
-TODO: priorytety
+Maszyna wirtualna BEAM posiada zaimplementowane priorytety procesów: \textbf{max}, \textbf{high}, \textbf{normal} oraz \textbf{low}.
+Procesy domyślnie uruchomiane są z priorytetem \textbf{normal}. 
+Planista, w momencie gdy licznik redukcji aktualnie wykonywanego procesu osiągnie wartość 0 lub proces będzie oczekiwał na wiadomość w bloku \texttt{receive}, dokona wyboru kolejnego procesu do wykonania.
 
-Przystosowanie planisty 
+Proces może zostać wybrany spośród trzech dostępnych kolejek zawierających procesy o priorytecie:
+\begin{itemize}
+\item \textbf{max} --- jeżeli w kolejce jest zakolejkowany przynajmniej jeden proces to jest będzie on wybranym jako kolejny do wykonania;
+\item \textbf{high} --- jeżeli kolejka procesów o priorytecie \textbf{max} jest pusta a w tej kolejce znajduje się przynajmniej jeden proces to zostanie on wybrany do uruchomienia;
+\item \textbf{normal} i \textbf{low} --- kolejka zawiera procesy o dwóch priorytetach, jednak procesy o priorytecie \textbf{low} zawierają specjalny licznik, który wskazuje na to ile razy proces musi zostać pominięty przy wyborze do uruchomienia zanim faktycznie zostanie uruchomiony. Wartość licznika dla tego rodzaju procesów po zakolejkowaniu wynosi 8. Procesy z tej kolejki mogą zostać wybrane do wznowienia przez \emph{scheduler} tylko w sytuacji gdy kolejki z procesami o priorytetach \textbf{max} i \textbf{high} są puste.
+\end{itemize}
+
+Aktualny proces umieszczany jest na końcu kolejki odpowiadającej swojemu priorytetowi od razu (jeżeli zostaje zatrzymany z powodu wyczerpania się dostępnych redukcji) lub po otrzymaniu wiadomości lub przeterminowaniu (jeśli został zatrzymany na skutek wejścia w blok \texttt{receive}).
+
+Wersja maszyny wirtualnej zaimplementowanej w pracy nie implementuje możliwości zmiany priorytetu uruchomionego procesu.
+Wszystkie procesy uruchamiane są z takim samym priorytetem.
+Jest to jednak funkcjonalność, której implementacja jest godna rozważenia w trakcie dalszego rozwoju projektu, biorąc pod uwagę fakt, że mikrojądro FreeRTOS pozwala na wybór priorytetu zadania a działanie planisty systemu jest bardzo podobne do ww. mechanizmu działania \emph{schedulera} maszyny wirtualnej BEAM.
 
 %---------------------------------------------------------------------------
 \section{Funkcje wbudowane (\emph{Built-In Functions})}
@@ -525,7 +594,7 @@ Wpis ten zamiast wskaźnika do instrukcji kodu maszynowego do wykonania zawiera 
 \label{sub:bifErlang}
 Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{erl\_bif.c}.
 
-\begin{longtable}{|c|c|p{10cm}|}
+\begin{longtable}{|c|c|p{7.5cm}|}
 \hline
 
 Funkcja & Argumenty & Opis \\
@@ -537,22 +606,57 @@ Funkcja & Argumenty & Opis \\
 \hline
 \texttt{stimes/2} & \texttt{Arg1 Arg2} & Zwraca \texttt{Arg1 * Arg2} \\
 \hline
+\texttt{spawn/3} & \texttt{M F A} & Startuje nowy proces, wykonujący funkcję \texttt{F} w~module \texttt{M} z listą argumentów \texttt{A} \\
+\hline
+\texttt{spawn\_link/3} & \texttt{M F A} & Startuje nowy proces, wykonujący funkcję \texttt{F} w~module \texttt{M} z listą argumentów \texttt{A}. Łączy wystartowany proces z wywołującym \emph{linkiem}.\\
+\hline
 \texttt{setelement/3} & \texttt{Index Tuple Element} & Zwraca nową krotkę, taką jak \texttt{Tuple}, ale z elementem \texttt{Element} na pozycji \texttt{Index} \\
+\hline
+\texttt{now/0} & & Zwraca krotkę \texttt{\{M,S,U\}} zawierająca kolejną liczbę megasekund, sekund i mikrosekund jakie upłynęły od uruchomienia maszyny wirtualnej \\
+\hline
+\texttt{length/1} & \texttt{List} & Zwraca długość listy \texttt{List} \\
+\hline
+\texttt{plusplus/2} & \texttt{List1 List2} & Zwraca nową listę, stanowiącą złączenie list \texttt{List1} i \texttt{List2} \\
+\hline
+\texttt{div/2} & \texttt{Int1 Int2} & Zwraca wynik dzielenia całkowitoliczbowego argumentów \\
+\hline
+\texttt{rem/2} & \texttt{Int1 Int2} & Zwraca resztę z dzielenia argumentów \\
+\hline
+\texttt{element/2} & \texttt{N Tuple} & Zwraca \texttt{N}-ty element krotki \texttt{Tuple} \\
+\hline
+\texttt{exit/1} & \texttt{Reason} & Kończy działanie wywołującego procesu z powodem \texttt{Reason} \\
+\hline
+\texttt{process\_flag/2} & \texttt{trap\_exit true} & Wywołujący proces nie kończy działania gdy kończą działania procesy połączone, ale otrzymuje informacje o tym fakcie w postaci wiadomości \\
+\hline
+\texttt{self/0} & & Zwraca \textbf{PID} wywołującego procesu \\
+\hline
+\texttt{send\_after/3} & \texttt{Time Dest Mesg} & Ustawia przeterminowanie wysyłające wiadomość \texttt{Mesg} do procesu \texttt{Dest} za \texttt{Time} milisekund. \\
 \hline
 \caption{Zaimplementowane funkcje wbudowane w module \texttt{erlang}} 
 \label{table:bifErlang} \\
 \end{longtable}
 
-TODO
 
 \subsection{Listy (moduł \texttt{lists})}
 \label{sub:bifLists}
 
-TODO
+Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{erl\_bif\_lists.c}.
+
+\begin{longtable}{|c|c|p{8cm}|}
+\hline
+
+Funkcja & Argumenty & Opis \\
+\endfirsthead
+\hline
+\texttt{reverse/1} & \texttt{List} & Zwraca nową listę bedącą odwróconą listą \texttt{List} \\
+\hline
+\caption{Zaimplementowane funkcje wbudowane w module \texttt{lists}} 
+\label{table:bifErlang} \\
+\end{longtable}
 
 \subsection{GPIO i obsługa przerwań (moduł \texttt{lpc\_gpio})}
 \label{sub:bifGPIO}
-Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{lpc\_gpio\_bif.c}.
+Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{erl\_bif\_lpc.c}.
 
 \begin{longtable}{|c|c|p{10cm}|}
 \hline
@@ -570,12 +674,34 @@ Funkcja & Argumenty & Opis \\
 \label{table:bifGpio} \\
 \end{longtable}
 
-TODO
 
 \subsection{SPI (moduł \texttt{lpc\_spi})}
 \label{sub:bifSPI}
 
-TODO
+
+\subsection{Funkcje pomocnicze (moduł \texttt{lpc\_debug})}
+\label{sub:bifDebug}
+Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{erl\_bif\_lpc.c}.
+
+\begin{longtable}{|c|c|p{10cm}|}
+\hline
+
+Funkcja & Argumenty & Opis \\
+\endfirsthead
+\hline
+\texttt{dump\_regs/0} &  & Drukuje zawartość rejestrów X\\
+\hline
+\texttt{dump\_stack/0} &  & Drukuje zawartość stosu wywołującego procesu\\
+\hline
+\texttt{dump\_heap/0} &  & Drukuje zawartość sterty wywołującego procesu\\
+\hline
+\texttt{print\_info/0} &  & Drukuje informacje dotyczące wywołującego procesu\\
+\hline
+\texttt{print\_term/1} & \texttt{Term}  & Drukuje zawartość wyrażenia \texttt{Term} \\
+\hline
+\caption{Zaimplementowane funkcje wbudowane w module \texttt{lpc\_debug}} 
+\label{table:bifDebug} \\
+\end{longtable}
 
 %---------------------------------------------------------------------------
 \section{\emph{Garbage collector}}
@@ -608,7 +734,7 @@ Wskazywanie przez wskaźniki \textbf{HTOP} oraz \textbf{STOP} na to samo miejsce
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=1, clip, trim=10mm 235mm 65mm 10mm]{heap}}
-\caption{Struktura pamięci zajmowanej przez proces wraz ze wskaźnikami na poszczegóne struktury}
+\caption{Struktura pamięci zajmowanej przez proces wraz ze wskaźnikami na poszczególne struktury}
 \label{fig:heap}
 \end{figure}
 
@@ -654,6 +780,12 @@ Obiekty przekopiowane na nową stertę będą z kolei tylko szare lub czarne.
 Do początkowego zbioru wyrażeń, które odnosić będą się do używanej pamięci, w zaimplementowanej maszynie należą:
 stos procesu, używane rejestry \textbf{X} i kolejka wiadomości (rys. \ref{fig:gc0}). W maszynie wirtualnej BEAM do tego zbioru należy jeszcze kilka innych struktur, jak np. słownik procesu.
 
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_0}}
+\caption{Sterta poddawana odśmiecaniu. Szary zbiór stanowi stos procesu, rejestry \textbf{X} i kolejka wiadomości procesu.}
+\label{fig:gc0}
+\end{figure}
+
 Pierwszym krokiem działania algorytmu jest zaalokowanie sterty procesu o takiej samej długości jak dotychczasowa (rys. \ref{fig:gc1}).
 Następnie przetwarzane są kolejne elementy zbioru szarego, a wyrażenia do których zawierają referencję kopiowane są na nową stertę.
 Tak jest w przypadku wyrażenia \textbf{H\textsubscript{3}}, do którego odnosi się rejestr \textbf{X\textsubscript{0}}.
@@ -661,17 +793,55 @@ Wyrażenie to zostało przekopiowane na nową stertę i referencja do nowego wyr
 Obiekt \textbf{H\textsubscript{3}'} miał w tym momencie kolor szary.
 Dlatego, że on sam zawierał referencję do wyrażenia \textbf{H\textsubscript{0}}, to wyrażenie także musiało zostać przeniesione na nową stertę.
 Przeniesiony obiekt nie zawierał już referencji do żadnego innego obiektu, dlatego zaraz po oznaczeniu go kolorem szarym można było zmienić jego kolor na czarny.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_1}}
+\caption{Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.}
+\label{fig:gc1}
+\end{figure}
+
 Dopiero po podmianie referencji w~wyrażeniu \textbf{H\textsubscript{3}'} do obiektu \textbf{H\textsubscript{0}'} można było oznaczyć ten pierwszy kolorem czarnym (rys. \ref{fig:gc2}).
 Należy również zauważyć, że staremu obiektowi \textbf{H\textsubscript{3}} przypisano jego kopię na nowej stercie.
 Zabieg ten wykonany został po to, aby kolejne obiekty ze zbioru szarego odnoszące się do niego nie kopiowały go na nową stertę, ale zaktualizowały referencję do jego istniejącej już kopii.
 
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_2}}
+\caption{Przeniesienie wyrażeń mających źródło w rejestrach na nową stertę.}
+\label{fig:gc2}
+\end{figure}
+
 Analogicznie, na nową stertę przeniesione zostało wyrażenie \textbf{H\textsubscript{2}}, do którego odnosiła się wiadomość \textbf{M\textsubscript{0}} (rys. \ref{fig:gc3}).
-Ostatnim analizowanym zbiorem szarym był stos procesu, w którym wyrażenie \textbf{S\textsubscript{0}} odnosiło się do, przeniesionego już wcześniej, wyrażenia \textbf{H\textsubscript{0}}. Dlatego też w tym kroku wystarczające było przepisanie referencji do kopii tego obiektu do wyrażenia na stosie.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_3}}
+\caption{Przeniesienie wyrażeń mających źródło w kolejce wiadomości.}
+\label{fig:gc3}
+\end{figure}
+
+Ostatnim analizowanym zbiorem szarym był stos procesu, w którym wyrażenie \textbf{S\textsubscript{0}} odnosiło się do, przeniesionego już wcześniej, wyrażenia \textbf{H\textsubscript{0}}. Dlatego też w tym kroku wystarczające było przepisanie referencji do kopii tego obiektu do wyrażenia na stosie (rys. \ref{fig:gc4}).
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_4}}
+\caption{Podmiana wskaźnika do już przeniesionego wyrażenia.}
+\label{fig:gc4}
+\end{figure}
 
 Przedostatnim krokiem działania algorytmu było skopiowanie stosu procesu, gdyż znajduje się on zawsze w tym samym bloku pamięci co sterta, a więc również zostaje usunięty w trakcie działania \emph{garbage collectora}.
 Dokonano także przepisania odpowiednich wskaźników oznaczających początek sterty i stosu procesu (rys. \ref{fig:gc5}).
 
-Końcowym krokiem działania algorytmu było zwolnienie dotychczas używanego bloku pamięci. Jak można zauważyć, na nowej stercie nie ma wyrażenia \textbf{H\textsubscript{1}}, które nie było już wykorzystywane w momencie uruchomienia algorytmu.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 180mm 45mm 10mm]{gc_5}}
+\caption{Kopiowanie stosu na nową stertę i przepisanie odpowiednich wskaźników.}
+\label{fig:gc5}
+\end{figure}
+
+Końcowym krokiem działania algorytmu było zwolnienie dotychczas używanego bloku pamięci. Jak można zauważyć, na nowej stercie nie ma wyrażenia \textbf{H\textsubscript{1}}, które nie było już wykorzystywane w momencie uruchomienia algorytmu (rys. \ref{fig:gc6}).
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 180mm 45mm 10mm]{gc_6}}
+\caption{Zwolnienie pamięci zajmowanej przez starą stertę.}
+\label{fig:gc6}
+\end{figure}
 
 Jeżeli dojdzie do sytuacji, w której po uruchomieniu \emph{garbage collectora} na stercie nie będzie odpowiedniej ilości miejsca dla nowych obiektów, dokonane zostanie rozszerzenie sterty. Polega ono na zaalokowaniu nowego obszaru pamięci, o kolejnym możliwym rozmiarze niż obecny i przeniesieniu stosu oraz wszystkich wyrażeń ze sterty.
 W takiej sytuacji konieczne jest również przepisanie referencji obiektów do nowych miejsc w pamięci.
@@ -680,40 +850,6 @@ Po zakończeniu tego procesu źródłowa sterta jest zwalniania.
 Analogiczną operację wykonuje się w sytuacji, gdy pamięć zajmowana przez nowe obiekty zajmuje co najwyżej pewnien ustalony rozmiar.
 W maszynie wirtualnej został on ustalony na połowę rozmiaru starej sterty.
 W takiej sytuacji sterta procesu jest zmniejszana do najbliższego wymaganemu rozmiarowi i, podobnie jak w przypadku rozszerzania sterty, zawartość sterty i stos przenoszone są do nowego bloku pamięci.
-
-\begin{figure}[p]
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_0}}
-\caption{Sterta poddawana odśmiecaniu. Szary zbiór stanowi stos procesu, rejestry \textbf{X} i kolejka wiadomości procesu.}
-\label{fig:gc0}
-
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_1}}
-\caption{Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.}
-\label{fig:gc1}
-
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_2}}
-\caption{Przeniesienie wyrażeń mających źródło w rejestrach na nową stertę.}
-\label{fig:gc2}
-\end{figure}
-
-\begin{figure}[p]
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_3}}
-\caption{Przeniesienie wyrażeń mających źródło w kolejce wiadomości.}
-\label{fig:gc3}
-
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 185mm 45mm 10mm]{gc_4}}
-\caption{Podmiana wskaźnika do już przeniesionego wyrażenia.}
-\label{fig:gc4}
-
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 180mm 45mm 10mm]{gc_5}}
-\caption{Kopiowanie stosu na nową stertę i przepisanie odpowiednich wskaźników.}
-\label{fig:gc5}
-\end{figure}
-
-\begin{figure}[h]
-\centerline{\includegraphics[scale=0.75, clip, trim=10mm 180mm 45mm 10mm]{gc_6}}
-\caption{Zwolnienie pamięci zajmowanej przez starą stertę.}
-\label{fig:gc6}
-\end{figure}
 
 \subsection{Podejście generacyjne w maszynie BEAM}
 \label{sub:gcGeneracje}
@@ -734,7 +870,65 @@ W maszynie wirtualnej zaimplementowanej w pracy nie została zaimplementowana ta
 \section{Mechanizmy zarządzania czasem}
 \label{sec:maszynaTimer}
 
-TODO: bify/instrukcje zarządzające czasem, koło czasowe, powiązanie z fizycznymi zegarami mikrokontrolera 
+Moduł opisany w niniejszym podrozdziale został zaimplementowany w pliku źródłowym \texttt{erl\_time.c}.
+
+Język Erlang zapewnia dwie konstrukcje pozwalające na ustawienie przeterminowania po upływie zadanego czasu, po którym przez maszynę wirtualną zostanie wykonana pewna czynność:
+\begin{itemize}
+\item konstrukcja \texttt{receive ... after ... end} --- zawieszająca wykonywanie się procesu aż do momentu otrzymania wiadomości, kiedy to przeterminowanie zostaje usunięte z listy aktywnych lub do upłynięcia ustalonego czasu w milisekundach, kiedy proces wznawia działanie wykonując najpierw kod w bloku \texttt{after};
+\item wywołanie funkcji wbudowanej \texttt{erlang:send\_after/3} --- kolejkującej wysłanie wiadomości do wskazanego procesu po upłynięciu zadanego czasu. Usunięcia tak utworzonego przeterminowania można dokonać poprzez wywołanie innej funkcji wbudowanej \texttt{erlang:cancel\_timer/1}.
+\end{itemize}
+
+Wymienione funkcjonalności związane z zarządzeniem przeterminowaniami zostały zaimplementowane w maszynie wirtualnej opisywanej w pracy.
+
+Strukturą danych służącą do zapamiętania aktywnych przeterminowań jest koło czasowe, będące tablicą dwukierunkowych list przeterminowań, o określonej z góry długości. Sposób działania mechanizmu został zaprezentowany na rysunkach od \ref{fig:tiw1} do \ref{fig:tiw3}.
+
+Na rysunku \ref{fig:tiw1} zaprezentowano wygląd struktury w momencie uruchomienia maszyny wirtualnej.
+Koło czasowe ma tutaj 128 pól, a rozdzielczość każdego z nich to 1 milisekunda.
+Wskaźnik, oznaczony na rysunkach czerwoną strzałką, zapamiętuje aktualne pole koła czasowego.
+W momencie aktualizacji czasu wskaźnik ten jest przesuwany o odpowiednią liczbę pól, a w przypadku dojścia do końca tablicy ustawiany jest on ponownie na jej początku.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 245mm 80mm 10mm]{tiw1}}
+\caption{Stan koła czasowego w momencie uruchomienia systemu.}
+\label{fig:tiw1}
+\end{figure}
+
+Na rys. \ref{fig:tiw2} zaprezentowano wygląd koła czasowego po upływie 2 milisekund od uruchomienia systemu.
+W międzyczasie do koła czasowego dodano dwa przeterminowania:
+\begin{itemize}
+\item do zrealizowania za 1 milisekundę --- ponieważ aktualne pole w kole czasowym to 2, przeterminowanie zostało dodane na pozycji 3 i zostanie zrealizowane przy kolejnej aktualizacji czasu;
+\item do zrealizowania za 257 milisekund --- realizacja przeterminowania może nastąpić dopiero po dwukrotnym przejściu wskaźnika przez całe koło czasowe (256 ms) i dojścia do pozycji nr 3~w~tablicy, dlatego w przypadku tego przeterminowania wartość licznika ustawiona została na 2.
+\end{itemize}
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 195mm 80mm 10mm]{tiw2}}
+\caption{Koło czasowe z dodanymi dwoma przeterminowaniami.}
+\label{fig:tiw2}
+\end{figure}
+
+Rysunek \ref{fig:tiw3} przedstawia stan koła czasowego w 259. milisekundzie.
+Wskaźnik, oznaczony czerwoną strzałką, w porównaniu do stanu zaprezentowanego na poprzednim rysunku wykonał dwa pełne przejścia przez całą tablicę koła czasowego.
+Każda aktualizacja czasu (przesunięcie wskaźnika) pociąga za sobą aktualizację przeterminowań na pozycjach mijanych przez wskaźnik.
+Jeżeli licznik przeterminowania jest równy zeru oznacza to, że przeterminowanie powinno zostać zrealizowane i usunięte z listy na danej pozycji.
+W przeciwnym wypadku, przeterminowanie przeznaczone jest do zrealizowania w którymś z kolejnych przejść wskaźnika przez daną pozycję koła czasowego. Dlatego też licznik danego przeterminowania zostaje zmniejszony o 1.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.75, clip, trim=10mm 220mm 80mm 10mm]{tiw3}}
+\caption{Koło czasowe z jednym przeterminowaniem, które zostanie zrealizowane przy kolejnej aktualizacji czasu.}
+\label{fig:tiw3}
+\end{figure}
+
+Jedyną różnicą w budowie koła czasowa pomiędzy maszyną zaimplementowaną w pracy a maszyną BEAM jest jej rozmiar.
+W maszynie BEAM składa się ona aż z 65536 pozycji.
+Rozmiar ten, ze względu na ograniczony rozmiar dostępnej pamięci, w niniejszej maszynie został ograniczony do minimum.
+
+Aspektem różniącym obie maszyny w działaniu mechanizmów zarządzania czasem jest również sposób aktualizacji czasu, a co za tym idzie częstość aktualizacji wskaźnika koła czasowego.
+W maszynie wirtualnej BEAM wskaźnik aktualizowany jest na podstawie zegara systemowego pomiędzy wykonywaniem kolejnych procesów z kolejek, a także gdy nie ma w nich żadnych procesów do uruchomienia.
+Z~kolei w zaimplementowanej maszynie wirtualnej rola aktualizacji czasu przejęta została przez fizyczny zegar aktualizowany taktowaniem o częstotliwości 1 kHz.
+Zegar uruchamia przerwanie w mikrokontrolerze, a kod je obsługujący aktualizuje pozycję wskaźnika koła czasowego i aktualizuje jego stan wraz z~realizacją odpowiednich przeterminowań.
+W idealnym przypadku więc pozycja wskaźnika będzie aktualizowana z częstotliwością równą rozdzielczości koła czasowego (co 1 milisekundę), jednak opóźnienia w obsłudze przerwania mogą prowadzić do rzadszej jego aktualizacji.
+
+W niniejszej maszynie wirtualnej została zaimplementowana została także funkcja wbudowana \texttt{erlang:now/0}, różniąca się jednak działaniem od jej odpowiednika w maszynie BEAM tym, że zwraca czas jaki upłynął od momentu uruchomienia systemu, nie zaś od początku 1 stycznia 1970 r.
+Czas pozyskiwany jest z, innego niż w przypadku aktualizacji czasu w kole czasowym, fizycznego zegara mikrokontrolera LPC1769, aktualizowanego taktowaniem o częstotliwości 1 MHz.
 
 %---------------------------------------------------------------------------
 \section{Podsumowanie różnic z maszyną BEAM}

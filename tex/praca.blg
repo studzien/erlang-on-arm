@@ -15,46 +15,46 @@ A level-1 auxiliary file: dodatek_beam.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
 Warning--entry type for "ErlangVxWorks" isn't style-file defined
---line 98 of file bibliografia.bib
-You've used 19 entries,
+--line 106 of file bibliografia.bib
+You've used 20 entries,
             2118 wiz_defined-function locations,
-            625 strings with 6585 characters,
-and the built_in function-call counts, 4484 in all, are:
-= -- 441
-> -- 155
+            630 strings with 6719 characters,
+and the built_in function-call counts, 4701 in all, are:
+= -- 463
+> -- 162
 < -- 1
-+ -- 67
-- -- 46
-* -- 196
-:= -- 784
-add.period$ -- 62
-call.type$ -- 19
-change.case$ -- 75
++ -- 70
+- -- 48
+* -- 202
+:= -- 821
+add.period$ -- 66
+call.type$ -- 20
+change.case$ -- 79
 chr.to.int$ -- 0
-cite$ -- 19
-duplicate$ -- 186
-empty$ -- 414
-format.name$ -- 46
-if$ -- 955
+cite$ -- 20
+duplicate$ -- 193
+empty$ -- 436
+format.name$ -- 48
+if$ -- 1003
 int.to.chr$ -- 0
-int.to.str$ -- 19
+int.to.str$ -- 20
 missing$ -- 13
-newline$ -- 102
-num.names$ -- 38
-pop$ -- 122
+newline$ -- 108
+num.names$ -- 40
+pop$ -- 130
 preamble$ -- 1
-purify$ -- 61
+purify$ -- 64
 quote$ -- 0
-skip$ -- 134
+skip$ -- 140
 stack$ -- 0
-substring$ -- 157
-swap$ -- 27
+substring$ -- 162
+swap$ -- 28
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 68
+type$ -- 72
 warning$ -- 0
-while$ -- 44
-width$ -- 21
-write$ -- 210
+while$ -- 46
+width$ -- 22
+write$ -- 222
 (There was 1 warning)

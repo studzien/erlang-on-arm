@@ -51,15 +51,13 @@
 \newlabel{sec:maszynaInterpreter}{{4.4}{33}{Interpreter kodu maszynowego}{section.4.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Maszyna stosowa a rejestrowa}{33}{subsection.4.4.1}}
 \newlabel{sub:interpreterStosowa}{{4.4.1}{33}{Maszyna stosowa a rejestrowa}{subsection.4.4.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Model interpretera}{33}{subsection.4.4.2}}
-\newlabel{sub:interpreterModel}{{4.4.2}{33}{Model interpretera}{subsection.4.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Model interpretera}{34}{subsection.4.4.2}}
+\newlabel{sub:interpreterModel}{{4.4.2}{34}{Model interpretera}{subsection.4.4.2}{}}
 \newlabel{lis:maxS}{{4.1}{34}{Kod pośredni funkcji zwracającej maksimum z trzech argumentów}{lstlisting.4.1}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}Kod po\IeC {\'s}redni funkcji zwracaj\IeC {\k a}cej maksimum z trzech argument\IeC {\'o}w}{34}{lstlisting.4.1}}
 \citation{Ertl}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4.3}Spos\IeC {\'o}b implementacji}{35}{subsection.4.4.3}}
 \newlabel{sub:interpreterImplementacja}{{4.4.3}{35}{Sposób implementacji}{subsection.4.4.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Procesy}{35}{section.4.5}}
-\newlabel{sec:maszynaProcesy}{{4.5}{35}{Procesy}{section.4.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Rejestry przed wykonaniem instrukcji w linii 1\relax }}{36}{figure.caption.7}}
 \newlabel{fig:max1}{{4.5}{36}{Rejestry przed wykonaniem instrukcji w linii 1\relax }{figure.caption.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Rejestry przed wykonaniem instrukcji w linii 2\relax }}{36}{figure.caption.7}}
@@ -76,74 +74,105 @@
 \newlabel{fig:max7}{{4.11}{36}{Rejestry przed wywołaniem funkcji w linii 5\relax }{figure.caption.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4.12}{\ignorespaces Rejestry po wykonaniu instrukcji w~linii 5, a zarazem i ca\IeC {\l }ej funkcji\relax }}{36}{figure.caption.7}}
 \newlabel{fig:max8}{{4.12}{36}{Rejestry po wykonaniu instrukcji w~linii 5, a zarazem i całej funkcji\relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Procesy}{37}{section.4.5}}
+\newlabel{sec:maszynaProcesy}{{4.5}{37}{Procesy}{section.4.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Tablica proces\IeC {\'o}w}{37}{subsection.4.5.1}}
 \newlabel{sub:procTablica}{{4.5.1}{37}{Tablica procesów}{subsection.4.5.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Struktura procesu}{37}{subsection.4.5.2}}
 \newlabel{sub:procStruktura}{{4.5.2}{37}{Struktura procesu}{subsection.4.5.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Komunikacja mi\IeC {\k e}dzyprocesowa}{38}{subsection.4.5.3}}
 \newlabel{sub:procKolejka}{{4.5.3}{38}{Komunikacja międzyprocesowa}{subsection.4.5.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.4}Monitorowanie proces\IeC {\'o}w}{38}{subsection.4.5.4}}
-\newlabel{sub:procMonitory}{{4.5.4}{38}{Monitorowanie procesów}{subsection.4.5.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Planista (\emph  {scheduler})}{38}{section.4.6}}
-\newlabel{sec:maszynaScheduler}{{4.6}{38}{Planista (\emph {scheduler})}{section.4.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.13}{\ignorespaces Kolejka wiadomo\IeC {\'s}ci procesu z jedn\IeC {\k a}, nieodczytan\IeC {\k a} wiadomo\IeC {\'s}ci\IeC {\k a}.\relax }}{38}{figure.caption.8}}
+\newlabel{fig:mp1}{{4.13}{38}{Kolejka wiadomości procesu z jedną, nieodczytaną wiadomością.\relax }{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.14}{\ignorespaces Kolejka wiadomo\IeC {\'s}ci procesu z dodan\IeC {\k a} kolejn\IeC {\k a} wiadomo\IeC {\'s}ci\IeC {\k a}.\relax }}{39}{figure.caption.9}}
+\newlabel{fig:mp2}{{4.14}{39}{Kolejka wiadomości procesu z dodaną kolejną wiadomością.\relax }{figure.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.15}{\ignorespaces Kolejka wiadomo\IeC {\'s}ci procesu z odczytan\IeC {\k a} pierwsz\IeC {\k a} wiadomo\IeC {\'s}ci\IeC {\k a}.\relax }}{39}{figure.caption.10}}
+\newlabel{fig:mp3}{{4.15}{39}{Kolejka wiadomości procesu z odczytaną pierwszą wiadomością.\relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.4}Obs\IeC {\l }uga b\IeC {\l }\IeC {\k e}d\IeC {\'o}w}{39}{subsection.4.5.4}}
+\newlabel{sub:procBledy}{{4.5.4}{39}{Obsługa błędów}{subsection.4.5.4}{}}
+\citation{ErlangErrors}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.16}{\ignorespaces Kolejka wiadomo\IeC {\'s}ci procesu po usuni\IeC {\k e}ciu pierwszej wiadomo\IeC {\'s}ci.\relax }}{40}{figure.caption.11}}
+\newlabel{fig:mp4}{{4.16}{40}{Kolejka wiadomości procesu po usunięciu pierwszej wiadomości.\relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Planista (\emph  {scheduler})}{40}{section.4.6}}
+\newlabel{sec:maszynaScheduler}{{4.6}{40}{Planista (\emph {scheduler})}{section.4.6}{}}
 \citation{Mistry2011}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.13}{\ignorespaces Operacje wykonywane w trakcie zmiany wykonywanego procesu\relax }}{39}{figure.caption.8}}
-\newlabel{fig:preemption}{{4.13}{39}{Operacje wykonywane w trakcie zmiany wykonywanego procesu\relax }{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.17}{\ignorespaces Operacje wykonywane w trakcie zmiany wykonywanego procesu\relax }}{41}{figure.caption.12}}
+\newlabel{fig:preemption}{{4.17}{41}{Operacje wykonywane w trakcie zmiany wykonywanego procesu\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Funkcje wbudowane (\emph  {Built-In Functions})}{42}{section.4.7}}
+\newlabel{sec:maszynaBIF}{{4.7}{42}{Funkcje wbudowane (\emph {Built-In Functions})}{section.4.7}{}}
 \gdef \LT@iii {\LT@entry 
-    {2}{90.8399pt}\LT@entry 
+    {2}{103.97989pt}\LT@entry 
     {2}{136.82985pt}\LT@entry 
-    {1}{296.52756pt}}
+    {2}{225.39566pt}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Funkcje og\IeC {\'o}lne (modu\IeC {\l } \texttt  {erlang})}{43}{subsection.4.7.1}}
+\newlabel{sub:bifErlang}{{4.7.1}{43}{Funkcje ogólne (moduł \texttt {erlang})}{subsection.4.7.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Zaimplementowane funkcje wbudowane w module \texttt  {erlang}}}{43}{table.4.3}}
+\newlabel{table:bifErlang}{{4.3}{43}{Zaimplementowane funkcje wbudowane w module \texttt {erlang}}{table.4.3}{}}
 \gdef \LT@iv {\LT@entry 
+    {2}{71.12993pt}\LT@entry 
+    {1}{61.67978pt}\LT@entry 
+    {1}{239.62204pt}}
+\gdef \LT@v {\LT@entry 
     {2}{64.55994pt}\LT@entry 
     {2}{64.55994pt}\LT@entry 
     {1}{296.52756pt}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Funkcje wbudowane (\emph  {Built-In Functions})}{40}{section.4.7}}
-\newlabel{sec:maszynaBIF}{{4.7}{40}{Funkcje wbudowane (\emph {Built-In Functions})}{section.4.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Funkcje og\IeC {\'o}lne (modu\IeC {\l } \texttt  {erlang})}{40}{subsection.4.7.1}}
-\newlabel{sub:bifErlang}{{4.7.1}{40}{Funkcje ogólne (moduł \texttt {erlang})}{subsection.4.7.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Zaimplementowane funkcje wbudowane w module \texttt  {erlang}}}{40}{table.4.3}}
-\newlabel{table:bifErlang}{{4.3}{40}{Zaimplementowane funkcje wbudowane w module \texttt {erlang}}{table.4.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.2}Listy (modu\IeC {\l } \texttt  {lists})}{40}{subsection.4.7.2}}
-\newlabel{sub:bifLists}{{4.7.2}{40}{Listy (moduł \texttt {lists})}{subsection.4.7.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.3}GPIO i obs\IeC {\l }uga przerwa\IeC {\'n} (modu\IeC {\l } \texttt  {lpc\_gpio})}{40}{subsection.4.7.3}}
-\newlabel{sub:bifGPIO}{{4.7.3}{40}{GPIO i obsługa przerwań (moduł \texttt {lpc\_gpio})}{subsection.4.7.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.4}{\ignorespaces Zaimplementowane funkcje wbudowane w module \texttt  {lpc\_gpio}}}{41}{table.4.4}}
-\newlabel{table:bifGpio}{{4.4}{41}{Zaimplementowane funkcje wbudowane w module \texttt {lpc\_gpio}}{table.4.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.4}SPI (modu\IeC {\l } \texttt  {lpc\_spi})}{41}{subsection.4.7.4}}
-\newlabel{sub:bifSPI}{{4.7.4}{41}{SPI (moduł \texttt {lpc\_spi})}{subsection.4.7.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.8}\emph  {Garbage collector}}{41}{section.4.8}}
-\newlabel{sec:maszynaGC}{{4.8}{41}{\emph {Garbage collector}}{section.4.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.8.1}Pami\IeC {\k e}\IeC {\'c} zajmowana przez proces}{41}{subsection.4.8.1}}
-\newlabel{sub:gcHeap}{{4.8.1}{41}{Pamięć zajmowana przez proces}{subsection.4.8.1}{}}
+\gdef \LT@vi {\LT@entry 
+    {2}{90.8399pt}\LT@entry 
+    {1}{61.67978pt}\LT@entry 
+    {1}{296.52756pt}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.2}Listy (modu\IeC {\l } \texttt  {lists})}{44}{subsection.4.7.2}}
+\newlabel{sub:bifLists}{{4.7.2}{44}{Listy (moduł \texttt {lists})}{subsection.4.7.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.4}{\ignorespaces Zaimplementowane funkcje wbudowane w module \texttt  {lists}}}{44}{table.4.4}}
+\newlabel{table:bifErlang}{{4.4}{44}{Zaimplementowane funkcje wbudowane w module \texttt {lists}}{table.4.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.3}GPIO i obs\IeC {\l }uga przerwa\IeC {\'n} (modu\IeC {\l } \texttt  {lpc\_gpio})}{44}{subsection.4.7.3}}
+\newlabel{sub:bifGPIO}{{4.7.3}{44}{GPIO i obsługa przerwań (moduł \texttt {lpc\_gpio})}{subsection.4.7.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.5}{\ignorespaces Zaimplementowane funkcje wbudowane w module \texttt  {lpc\_gpio}}}{44}{table.4.5}}
+\newlabel{table:bifGpio}{{4.5}{44}{Zaimplementowane funkcje wbudowane w module \texttt {lpc\_gpio}}{table.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.4}SPI (modu\IeC {\l } \texttt  {lpc\_spi})}{44}{subsection.4.7.4}}
+\newlabel{sub:bifSPI}{{4.7.4}{44}{SPI (moduł \texttt {lpc\_spi})}{subsection.4.7.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.5}Funkcje pomocnicze (modu\IeC {\l } \texttt  {lpc\_debug})}{44}{subsection.4.7.5}}
+\newlabel{sub:bifDebug}{{4.7.5}{44}{Funkcje pomocnicze (moduł \texttt {lpc\_debug})}{subsection.4.7.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.6}{\ignorespaces Zaimplementowane funkcje wbudowane w module \texttt  {lpc\_debug}}}{44}{table.4.6}}
+\newlabel{table:bifDebug}{{4.6}{44}{Zaimplementowane funkcje wbudowane w module \texttt {lpc\_debug}}{table.4.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.8}\emph  {Garbage collector}}{44}{section.4.8}}
+\newlabel{sec:maszynaGC}{{4.8}{44}{\emph {Garbage collector}}{section.4.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8.1}Pami\IeC {\k e}\IeC {\'c} zajmowana przez proces}{45}{subsection.4.8.1}}
+\newlabel{sub:gcHeap}{{4.8.1}{45}{Pamięć zajmowana przez proces}{subsection.4.8.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.18}{\ignorespaces Struktura pami\IeC {\k e}ci zajmowanej przez proces wraz ze wska\IeC {\'z}nikami na poszczeg\IeC {\'o}lne struktury\relax }}{45}{figure.caption.13}}
+\newlabel{fig:heap}{{4.18}{45}{Struktura pamięci zajmowanej przez proces wraz ze wskaźnikami na poszczególne struktury\relax }{figure.caption.13}{}}
 \citation{Cheney1970}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.14}{\ignorespaces Struktura pami\IeC {\k e}ci zajmowanej przez proces wraz ze wska\IeC {\'z}nikami na poszczeg\IeC {\'o}ne struktury\relax }}{42}{figure.caption.9}}
-\newlabel{fig:heap}{{4.14}{42}{Struktura pamięci zajmowanej przez proces wraz ze wskaźnikami na poszczegóne struktury\relax }{figure.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.8.2}Algorytm Cheneya}{42}{subsection.4.8.2}}
-\newlabel{sub:gcCheney}{{4.8.2}{42}{Algorytm Cheneya}{subsection.4.8.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.8.3}Podej\IeC {\'s}cie generacyjne w maszynie BEAM}{44}{subsection.4.8.3}}
-\newlabel{sub:gcGeneracje}{{4.8.3}{44}{Podejście generacyjne w maszynie BEAM}{subsection.4.8.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.9}Mechanizmy zarz\IeC {\k a}dzania czasem}{44}{section.4.9}}
-\newlabel{sec:maszynaTimer}{{4.9}{44}{Mechanizmy zarządzania czasem}{section.4.9}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.10}Podsumowanie r\IeC {\'o}\IeC {\.z}nic z maszyn\IeC {\k a} BEAM}{44}{section.4.10}}
-\newlabel{sec:maszynaPodsumowanie}{{4.10}{44}{Podsumowanie różnic z maszyną BEAM}{section.4.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.15}{\ignorespaces Sterta poddawana od\IeC {\'s}miecaniu. Szary zbi\IeC {\'o}r stanowi stos procesu, rejestry \textbf  {X} i kolejka wiadomo\IeC {\'s}ci procesu.\relax }}{45}{figure.caption.10}}
-\newlabel{fig:gc0}{{4.15}{45}{Sterta poddawana odśmiecaniu. Szary zbiór stanowi stos procesu, rejestry \textbf {X} i kolejka wiadomości procesu.\relax }{figure.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.16}{\ignorespaces Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.\relax }}{45}{figure.caption.10}}
-\newlabel{fig:gc1}{{4.16}{45}{Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.\relax }{figure.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.17}{\ignorespaces Przeniesienie wyra\IeC {\.z}e\IeC {\'n} maj\IeC {\k a}cych \IeC {\'z}r\IeC {\'o}d\IeC {\l }o w rejestrach na now\IeC {\k a} stert\IeC {\k e}.\relax }}{45}{figure.caption.10}}
-\newlabel{fig:gc2}{{4.17}{45}{Przeniesienie wyrażeń mających źródło w rejestrach na nową stertę.\relax }{figure.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.18}{\ignorespaces Przeniesienie wyra\IeC {\.z}e\IeC {\'n} maj\IeC {\k a}cych \IeC {\'z}r\IeC {\'o}d\IeC {\l }o w kolejce wiadomo\IeC {\'s}ci.\relax }}{46}{figure.caption.11}}
-\newlabel{fig:gc3}{{4.18}{46}{Przeniesienie wyrażeń mających źródło w kolejce wiadomości.\relax }{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.19}{\ignorespaces Podmiana wska\IeC {\'z}nika do ju\IeC {\.z} przeniesionego wyra\IeC {\.z}enia.\relax }}{46}{figure.caption.11}}
-\newlabel{fig:gc4}{{4.19}{46}{Podmiana wskaźnika do już przeniesionego wyrażenia.\relax }{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.20}{\ignorespaces Kopiowanie stosu na now\IeC {\k a} stert\IeC {\k e} i przepisanie odpowiednich wska\IeC {\'z}nik\IeC {\'o}w.\relax }}{46}{figure.caption.11}}
-\newlabel{fig:gc5}{{4.20}{46}{Kopiowanie stosu na nową stertę i przepisanie odpowiednich wskaźników.\relax }{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.21}{\ignorespaces Zwolnienie pami\IeC {\k e}ci zajmowanej przez star\IeC {\k a} stert\IeC {\k e}.\relax }}{47}{figure.caption.12}}
-\newlabel{fig:gc6}{{4.21}{47}{Zwolnienie pamięci zajmowanej przez starą stertę.\relax }{figure.caption.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.22}{\ignorespaces Elementy maszyny wirtualnej Erlanga jako obszary pami\IeC {\k e}ci.\relax }}{48}{figure.caption.13}}
-\newlabel{fig:ertsmemory}{{4.22}{48}{Elementy maszyny wirtualnej Erlanga jako obszary pamięci.\relax }{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8.2}Algorytm Cheneya}{46}{subsection.4.8.2}}
+\newlabel{sub:gcCheney}{{4.8.2}{46}{Algorytm Cheneya}{subsection.4.8.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.19}{\ignorespaces Sterta poddawana od\IeC {\'s}miecaniu. Szary zbi\IeC {\'o}r stanowi stos procesu, rejestry \textbf  {X} i kolejka wiadomo\IeC {\'s}ci procesu.\relax }}{47}{figure.caption.14}}
+\newlabel{fig:gc0}{{4.19}{47}{Sterta poddawana odśmiecaniu. Szary zbiór stanowi stos procesu, rejestry \textbf {X} i kolejka wiadomości procesu.\relax }{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.20}{\ignorespaces Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.\relax }}{47}{figure.caption.15}}
+\newlabel{fig:gc1}{{4.20}{47}{Alokacja nowej sterty o takim samym rozmiarze jak dotychczasowa.\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.21}{\ignorespaces Przeniesienie wyra\IeC {\.z}e\IeC {\'n} maj\IeC {\k a}cych \IeC {\'z}r\IeC {\'o}d\IeC {\l }o w rejestrach na now\IeC {\k a} stert\IeC {\k e}.\relax }}{48}{figure.caption.16}}
+\newlabel{fig:gc2}{{4.21}{48}{Przeniesienie wyrażeń mających źródło w rejestrach na nową stertę.\relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.22}{\ignorespaces Przeniesienie wyra\IeC {\.z}e\IeC {\'n} maj\IeC {\k a}cych \IeC {\'z}r\IeC {\'o}d\IeC {\l }o w kolejce wiadomo\IeC {\'s}ci.\relax }}{48}{figure.caption.17}}
+\newlabel{fig:gc3}{{4.22}{48}{Przeniesienie wyrażeń mających źródło w kolejce wiadomości.\relax }{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.23}{\ignorespaces Podmiana wska\IeC {\'z}nika do ju\IeC {\.z} przeniesionego wyra\IeC {\.z}enia.\relax }}{49}{figure.caption.18}}
+\newlabel{fig:gc4}{{4.23}{49}{Podmiana wskaźnika do już przeniesionego wyrażenia.\relax }{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.24}{\ignorespaces Kopiowanie stosu na now\IeC {\k a} stert\IeC {\k e} i przepisanie odpowiednich wska\IeC {\'z}nik\IeC {\'o}w.\relax }}{49}{figure.caption.19}}
+\newlabel{fig:gc5}{{4.24}{49}{Kopiowanie stosu na nową stertę i przepisanie odpowiednich wskaźników.\relax }{figure.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.25}{\ignorespaces Zwolnienie pami\IeC {\k e}ci zajmowanej przez star\IeC {\k a} stert\IeC {\k e}.\relax }}{50}{figure.caption.20}}
+\newlabel{fig:gc6}{{4.25}{50}{Zwolnienie pamięci zajmowanej przez starą stertę.\relax }{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8.3}Podej\IeC {\'s}cie generacyjne w maszynie BEAM}{50}{subsection.4.8.3}}
+\newlabel{sub:gcGeneracje}{{4.8.3}{50}{Podejście generacyjne w maszynie BEAM}{subsection.4.8.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.9}Mechanizmy zarz\IeC {\k a}dzania czasem}{51}{section.4.9}}
+\newlabel{sec:maszynaTimer}{{4.9}{51}{Mechanizmy zarządzania czasem}{section.4.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.26}{\ignorespaces Stan ko\IeC {\l }a czasowego w momencie uruchomienia systemu.\relax }}{51}{figure.caption.21}}
+\newlabel{fig:tiw1}{{4.26}{51}{Stan koła czasowego w momencie uruchomienia systemu.\relax }{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.27}{\ignorespaces Ko\IeC {\l }o czasowe z dodanymi dwoma przeterminowaniami.\relax }}{52}{figure.caption.22}}
+\newlabel{fig:tiw2}{{4.27}{52}{Koło czasowe z dodanymi dwoma przeterminowaniami.\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.28}{\ignorespaces Ko\IeC {\l }o czasowe z jednym przeterminowaniem, kt\IeC {\'o}re zostanie zrealizowane przy kolejnej aktualizacji czasu.\relax }}{52}{figure.caption.23}}
+\newlabel{fig:tiw3}{{4.28}{52}{Koło czasowe z jednym przeterminowaniem, które zostanie zrealizowane przy kolejnej aktualizacji czasu.\relax }{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.10}Podsumowanie r\IeC {\'o}\IeC {\.z}nic z maszyn\IeC {\k a} BEAM}{53}{section.4.10}}
+\newlabel{sec:maszynaPodsumowanie}{{4.10}{53}{Podsumowanie różnic z maszyną BEAM}{section.4.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.29}{\ignorespaces Elementy maszyny wirtualnej Erlanga jako obszary pami\IeC {\k e}ci.\relax }}{54}{figure.caption.24}}
+\newlabel{fig:ertsmemory}{{4.29}{54}{Elementy maszyny wirtualnej Erlanga jako obszary pamięci.\relax }{figure.caption.24}{}}
 \@setckpt{rozdzial4}{
-\setcounter{page}{49}
+\setcounter{page}{55}
 \setcounter{equation}{1}
 \setcounter{enumi}{8}
 \setcounter{enumii}{0}
@@ -158,15 +187,15 @@
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{22}
-\setcounter{table}{4}
+\setcounter{figure}{29}
+\setcounter{table}{6}
 \setcounter{lofdepth}{1}
 \setcounter{lotdepth}{1}
-\setcounter{LT@tables}{4}
+\setcounter{LT@tables}{6}
 \setcounter{LT@chunks}{2}
 \setcounter{Item}{19}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{47}
+\setcounter{bookmark@seq@number}{48}
 \setcounter{lstnumber}{6}
 \setcounter{parentequation}{0}
 \setcounter{fignum}{0}

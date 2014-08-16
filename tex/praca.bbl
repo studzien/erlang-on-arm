@@ -17,6 +17,12 @@ Ericsson AB.
 \newblock \url{http://erlang.org/doc/apps/erts/erl_ext_dist.html}, 2014.
 \newblock [data dostępu: 21.03.2014].
 
+\bibitem{ErlangErrors}
+Ericsson AB.
+\newblock {Errors and Error Handling}.
+\newblock \url{http://erlang.org/doc/reference_manual/errors.html}, 2014.
+\newblock [data dostępu: 17.08.2014].
+
 \bibitem{Aho1986}
 Alfred~V. Aho, Ravi Sethi, and Jeffrey~D. Ullman.
 \newblock {\em Compilers: Principles, Techniques, and Tools}.
