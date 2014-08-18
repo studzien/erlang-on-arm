@@ -1,0 +1,19 @@
+before init: 27640
+after initializing timers: 27640
+after initializing the atom table: 23856
+after loading the export table: 23416
+after initializing bifs: 22376
+after initializing the jump table: 22376
+after initializing the gc: 22376
+after initializing module 0
+20216
+after initializing module 1
+14272
+after initializing module 2
+12616
+after initializing module 3
+12056
+after initializing module 4
+11376
+after initializing the process table: 4792
+4792

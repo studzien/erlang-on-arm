@@ -1,0 +1,4 @@
+gc_bif erlang:'div'/2,
+bif random:uniform/1 V
+bif lists:nth/2
+bif lists:delete/2

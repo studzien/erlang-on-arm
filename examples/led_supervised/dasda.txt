@@ -1,0 +1,124 @@
+11448
+call_ext_only
+call_only
+allocate
+call
+move
+return
+call
+is_nonempty_list
+allocate
+get_list
+call
+pid 0 context switch
+is_tuple
+test_arity
+get_tuple_element
+get_tuple_element
+get_tuple_element
+is_eq_exact
+is_tuple
+test_arity
+get_tuple_element
+get_tuple_element
+is_tuple
+test_arity
+allocate
+get_tuple_element
+get_tuple_element
+move
+move
+move
+move
+move
+move
+call_ext
+move
+move
+call_ext
+test_heap
+pid 0, gc fired
+put_list
+put_list
+put_list
+put_list
+move
+trim
+move
+call_ext
+move
+move
+move
+call_ext_last
+pid 0 context switch
+pid 1, gc fired
+move
+move
+move
+call
+is_nonempty_list
+is_nil
+return X
+test_heap
+put_list
+deallocate
+return 
+call_last
+allocate
+move
+move
+call
+move
+call_only
+pid 0 context switch
+is_eq_exact
+allocate_zero
+gc_bif1
+move
+move
+move
+move
+call_ext
+allocate
+move
+call_ext
+is_tuple
+test_arity
+get_tuple_element
+gc_bif2
+pid 0 context switch
+gc_bif2
+deallocate
+return
+move
+call_ext
+is_eq_exact
+is_nonempty_list
+get_list
+return
+move
+move
+call_ext
+move
+call_only
+pid 0 context switch
+is_nonempty_list
+get_list
+is_eq_exact
+allocate
+move
+move
+call_ext
+move
+call_ext_last
+gc_bif2
+test_heap
+put_list
+call_last
+pid 0 context switch
+is_eq_exact
+move
+return
+Reclaimed: 8 words
+Garbage cols: 2
+Heap size: 38 words
