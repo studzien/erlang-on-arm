@@ -11,6 +11,13 @@ extern ErlProcess* proc_tab;
 extern UInt reclaimed;
 extern UInt garbage_cols;
 extern UInt tiw_nto;
+extern int sent;
+extern int received;
+extern int suspended;
+extern int resumed;
+extern int continued;
+extern int spawns;
+extern int exits;
 
 void print_stats() {
 	Timeval t;
@@ -33,7 +40,10 @@ void print_stats() {
 	sprintf(buf, "%d;", heap_total); debug(buf);
 	sprintf(buf, "%d;", reclaimed); debug(buf);
 	sprintf(buf, "%d;", garbage_cols); debug(buf);
-	sprintf(buf, "%d\n", tiw_nto); debug(buf);
+	sprintf(buf, "%d;", tiw_nto); debug(buf);
+	sprintf(buf, "%d;", sent); debug(buf);
+	sprintf(buf, "%d;", received); debug(buf);
+	sprintf(buf, "%d\n", spawns); debug(buf);
 }
 
 void dump_stack(ErlProcess* p, Eterm* stop) {

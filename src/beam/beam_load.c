@@ -16,22 +16,13 @@
 void* jump_table[ALL_OPCODES];
 
 void jump_table_add(int opcode, const void* ptr) {
-	//char buf[30];
-	//sprintf(buf, "op %d: %d\n", opcode, ptr);
-	//debug(buf);
 	jump_table[opcode] = (void*)ptr;
 }
 #endif
 
 void erts_load(byte* code) {
-	//debug("before allocating loader: ");
-	//debug_32(xPortGetFreeHeapSize());
-
 	LoaderState *loader = pvPortMalloc(sizeof(LoaderState));
 	loader->code_file = code;
-
-	//debug("before loading the atom table: ");
-	//debug_32(xPortGetFreeHeapSize());
 
 	//Initialize binary file and verify if it's ok
 	if(init_iff_file(loader) || scan_iff_file(loader) || verify_chunks(loader)) {
@@ -46,18 +37,12 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
-	//debug("after loading the atom table: ");
-	//debug_32(xPortGetFreeHeapSize());
-
 	//Load import table
 	loader->file_left = loader->chunks[IMP_CHUNK].size;
 	loader->file_p = loader->chunks[IMP_CHUNK].start;
 	if(load_import_table(loader)) {
 		goto load_error;
 	}
-
-	//debug("after loading the import table: ");
-	//debug_32(xPortGetFreeHeapSize());
 
 	//Load literal table
 	if(loader->chunks[LITERAL_CHUNK].size > 0) {
@@ -68,8 +53,6 @@ void erts_load(byte* code) {
 		}
 	}
 
-	//debug("after loading the literal table: ");
-	//debug_32(xPortGetFreeHeapSize());
 
 	//Read code chunk header
 	loader->file_left = loader->chunks[CODE_CHUNK].size;
@@ -85,9 +68,6 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
-	//debug("after loading the code: ");
-	//debug_32(xPortGetFreeHeapSize());
-
 	//Load export table
 	loader->file_left = loader->chunks[EXP_CHUNK].size;
 	loader->file_p = loader->chunks[EXP_CHUNK].start;
@@ -95,8 +75,6 @@ void erts_load(byte* code) {
 		goto load_error;
 	}
 
-	//debug("after loading the export table: ");
-	//debug_32(xPortGetFreeHeapSize());
 
 	//Finalize (patch labels, export functions and stuff)
 	if(finalize(loader)) {
@@ -110,19 +88,12 @@ void erts_load(byte* code) {
 	vPrintString("error while loading module\n");
 
 	free_loader:
-	//debug("before freeing loader: ");
-	//debug_32(xPortGetFreeHeapSize());
-
-	//vPrintString("freeing loader\n");
 	vPortFree(loader->literal);
 	vPortFree(loader->labels);
 	vPortFree(loader->import);
 	vPortFree(loader->export);
 	vPortFree(loader->atom);
 	vPortFree(loader);
-
-	//debug("after freeing loader: ");
-	//debug_32(xPortGetFreeHeapSize());
 }
 
 
@@ -264,15 +235,25 @@ static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op) {
 
 static int get_tag_and_value(LoaderState* loader, BeamInstr** result) {
 	uint8_t tag, start;
-	uint32_t value;
+	uint32_t value = 0;
 
 	UInt used = 0;
 
 	//@todo handle bignums
 	GetByte(loader, start);
 
+	//up to 8 bytes
+	if((start & 0x18) == 0x18) {
+		tag = start & 0x07;
+		UInt bytes = ((start & 0xe0) >> 5) + 2;
+		uint8_t temp_value;
+		while(bytes--) {
+			GetByte(loader, temp_value);
+			value |= (temp_value << 8*bytes);
+		}
+	}
 	//1 byte
-	if((start & 0x08) == 0x00) {
+	else if((start & 0x08) == 0x00) {
 		tag = start & 0x0f;
 		value = start >> 4;
 	}
@@ -282,6 +263,7 @@ static int get_tag_and_value(LoaderState* loader, BeamInstr** result) {
 		GetByte(loader, value);
 		value |= (start & 0xe0) << 3;
 	}
+
 	else {
 		return 1;
 	}

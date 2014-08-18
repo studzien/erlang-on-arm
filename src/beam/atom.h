@@ -78,5 +78,14 @@ static void atom_free(Atom*);
 #define atom_case_clause	 make_atom(42)
 #define atom_if_clause	     make_atom(43)
 #define atom_undef		     make_atom(44)
+#define atom_interrupt	     make_atom(45)
+#define atom_falling	     make_atom(46)
+#define atom_input			 make_atom(47)
+#define atom_bsr			 make_atom(48)
+#define atom_bor			 make_atom(49)
+#define atom_lpc_spi		 make_atom(50)
+#define atom_init		     make_atom(51)
+#define atom_rw				 make_atom(52)
+#define atom_band			 make_atom(53)
 
 #endif /* ATOM_H_ */

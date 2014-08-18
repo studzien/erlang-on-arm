@@ -12,8 +12,10 @@
 #include "erl_term.h"
 
 Eterm output_2(ErlProcess*, Eterm*, UInt);
+Eterm input_2(ErlProcess*, Eterm*, UInt);
 Eterm high_2(ErlProcess*, Eterm*, UInt);
 Eterm low_2(ErlProcess*, Eterm*, UInt);
+Eterm interrupt_3(ErlProcess*, Eterm*, UInt);
 
 Eterm print_term1(ErlProcess*, Eterm*, UInt);
 Eterm print_info0(ErlProcess*, Eterm*, UInt);

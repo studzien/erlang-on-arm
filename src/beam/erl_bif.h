@@ -13,6 +13,7 @@
 
 #include "erl_bif_lpc.h"
 #include "erl_bif_lists.h"
+#include "erl_bif_spi.h"
 
 typedef Eterm (*BifFunction)(ErlProcess*, Eterm*, UInt);
 typedef struct {
@@ -45,6 +46,9 @@ Eterm exit_1(ErlProcess*, Eterm*, UInt);
 Eterm process_flag_2(ErlProcess*, Eterm*, UInt);
 Eterm self_0(ErlProcess*, Eterm*, UInt);
 Eterm send_after_3(ErlProcess*, Eterm*, UInt);
+Eterm bsr_2(ErlProcess*, Eterm*, UInt);
+Eterm bor_2(ErlProcess*, Eterm*, UInt);
+Eterm band_2(ErlProcess*, Eterm*, UInt);
 
 typedef struct {
 	ErlTimer timer;
@@ -71,10 +75,17 @@ static const BifEntry bif_table[] = {
 		{atom_erlang, atom_process_flag, 2, process_flag_2},
 		{atom_erlang, atom_self, 0, self_0},
 		{atom_erlang, atom_send_after, 3, send_after_3},
+		{atom_erlang, atom_bsr, 2, bsr_2},
+		{atom_erlang, atom_bor, 2, bor_2},
+		{atom_erlang, atom_band, 2, band_2},
 		{atom_lists, atom_reverse, 1, reverse_1},
 		{atom_lpc_gpio, atom_output, 2, output_2},
 		{atom_lpc_gpio, atom_high,   2, high_2},
 		{atom_lpc_gpio, atom_low,    2, low_2},
+		{atom_lpc_gpio, atom_interrupt, 3, interrupt_3},
+		{atom_lpc_gpio, atom_input, 2, input_2},
+		{atom_lpc_spi, atom_init, 1, init_1},
+		{atom_lpc_spi, atom_rw, 1, rw_1},
 		{atom_lpc_debug, atom_print_term, 1, print_term1},
 		{atom_lpc_debug, atom_print_info, 0, print_info0},
 		{atom_lpc_debug, atom_print_heap_size, 0, print_heap_size0},

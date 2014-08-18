@@ -7,6 +7,8 @@
 
 #include "erl_bif_lpc.h"
 #include "io.h"
+#include "erl_interrupt.h"
+#include "FreeRTOS.h"
 
 Eterm output_2(ErlProcess* p, Eterm* arg, UInt live) {
 	LPC_GPIO_TypeDef* port = gpio_port(unsigned_val(arg[0]));
@@ -20,9 +22,20 @@ Eterm high_2(ErlProcess* p, Eterm* arg, UInt live) {
 	return atom_ok;
 }
 
+Eterm input_2(ErlProcess* p, Eterm* arg, UInt live) {
+	LPC_GPIO_TypeDef* port = gpio_port(unsigned_val(arg[0]));
+	port->FIODIR &= ~(1 << unsigned_val(arg[1]));
+	return atom_ok;
+}
+
 Eterm low_2(ErlProcess* p, Eterm* arg, UInt live) {
 	LPC_GPIO_TypeDef* port = gpio_port(unsigned_val(arg[0]));
 	port->FIOCLR |= (1 << unsigned_val(arg[1]));
+	return atom_ok;
+}
+
+Eterm interrupt_3(ErlProcess* p, Eterm* arg, UInt live) {
+	add_interrupt(p->id, unsigned_val(arg[0]), unsigned_val(arg[1]), arg[2]);
 	return atom_ok;
 }
 

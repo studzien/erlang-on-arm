@@ -18,6 +18,9 @@
 
 extern ErlProcess* proc_tab;
 
+int spawns = 0;
+int exits = 0;
+
 Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg, int from_isr) {
 	UInt to_ix = pid2pix(to);
 	if(to_ix >= MAX_PROCESSES) {
@@ -30,10 +33,6 @@ Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg, int from_isr) {
 
 	UInt msize = size_object(msg);
 
-	if(ERTS_HEAP_FRAG_SIZE(msize) > 1000) {
-		debug("erl_bif.c:33\n");
-		debug_32(ERTS_HEAP_FRAG_SIZE(msize));
-	}
 	ErlHeapFragment* bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(msize));
 	Eterm* hp = bp->mem;
 	bp->alloc_size = msize;
@@ -45,11 +44,10 @@ Eterm erts_send_message(ErlProcess* sender, Eterm to, Eterm msg, int from_isr) {
 	return atom_ok;
 }
 
+extern int sent;
+extern int resumed;
 static void queue_message(ErlProcess* from, ErlProcess* to, ErlHeapFragment* bp, Eterm message, int from_isr) {
-	if(sizeof(ErlMessage) > 1000) {
-		debug("erl_bif.c:50\n");
-		debug_32(sizeof(ErlMessage));
-	}
+	sent++;
 	ErlMessage* mp = (ErlMessage*)pvPortMalloc(sizeof(ErlMessage));
 	mp->next = NULL;
 	mp->data = bp;
@@ -57,6 +55,7 @@ static void queue_message(ErlProcess* from, ErlProcess* to, ErlHeapFragment* bp,
 	LINK_MESSAGE(to, mp);
 	xTaskHandle handle = *(to->handle);
 
+	resumed++;
 	if(from_isr) {
 		xTaskResumeFromISR(handle);
 	}
@@ -98,6 +97,7 @@ Eterm spawn_3(ErlProcess* p, Eterm* reg, UInt live) {
 Eterm spawn_link_3(ErlProcess* p, Eterm* reg, UInt live) {
 	ErlSpawnOpts opts;
 	opts.flags |= SPO_LINK;
+	spawns++;
 	return erl_create_process(p, reg[0], reg[1], reg[2], &opts);
 }
 
@@ -198,6 +198,7 @@ Eterm element_2(ErlProcess* p, Eterm* reg, UInt live) {
 
 Eterm exit_1(ErlProcess* p, Eterm* reg, UInt live) {
 	Eterm reason = reg[0];
+	exits++;
 	erts_do_exit_process(p, reason);
 	return atom_ok;
 }
@@ -226,20 +227,12 @@ static void bif_timer_timeout(void* arg) {
 }
 
 Eterm send_after_3(ErlProcess* p, Eterm* reg, UInt live) {
-	SInt time = signed_val(reg[0]);
+	UInt time = unsigned_val(reg[0]);
 	Eterm pid = reg[1];
 	Eterm msg = reg[2];
 
 	UInt sz = size_object(msg);
-	if(sizeof(ErlBifTimer) > 1000) {
-		debug("erl_bif.c:238\n");
-		debug_32(sizeof(ErlBifTimer));
-	}
 	ErlBifTimer* bt = (ErlBifTimer*)pvPortMalloc(sizeof(ErlBifTimer));
-	if(ERTS_HEAP_FRAG_SIZE(sz) > 1000) {
-		debug("erl_bif.c:240\n");
-		debug_32(ERTS_HEAP_FRAG_SIZE(sz));
-	}
 	bt->bp = (ErlHeapFragment*)pvPortMalloc(ERTS_HEAP_FRAG_SIZE(sz));
 	Eterm *hp = bt->bp->mem;
 
@@ -248,10 +241,35 @@ Eterm send_after_3(ErlProcess* p, Eterm* reg, UInt live) {
 	bt->bp->used_size = sz;
 	bt->sender = p;
 	bt->receiver = pid;
+
 	bt->timer.active = 0;
-	bt->timer.slot = 0;
+	bt->timer.arg = NULL;
+	bt->timer.cancel = NULL;
 	bt->timer.count = 0;
+	bt->timer.next = NULL;
+	bt->timer.prev = NULL;
+	bt->timer.slot = 0;
+	bt->timer.timeout = NULL;
 
 	erts_set_timer(&bt->timer, (ErlTimeoutProc)bif_timer_timeout, NULL, (void*)bt, time);
 	return atom_ok;
 }
+
+Eterm bsr_2(ErlProcess* p, Eterm* reg, UInt live) {
+	UInt a = unsigned_val(reg[live]);
+	UInt b = unsigned_val(reg[live+1]);
+	return make_small(a >> b);
+}
+
+Eterm bor_2(ErlProcess* p, Eterm* reg, UInt live) {
+	UInt a = unsigned_val(reg[live]);
+	UInt b = unsigned_val(reg[live+1]);
+	return make_small(a | b);
+}
+
+Eterm band_2(ErlProcess* p, Eterm* reg, UInt live) {
+	UInt a = unsigned_val(reg[live]);
+	UInt b = unsigned_val(reg[live+1]);
+	return make_small(a & b);
+}
+

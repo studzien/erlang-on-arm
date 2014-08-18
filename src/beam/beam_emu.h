@@ -222,6 +222,7 @@ static inline void set_timer(ErlProcess* p, UInt timeout);
 #define LINE 153
 #define BEAM_APPLY 154
 #define NORMAL_EXIT 155
+#define NOP 156
 
 //opcodes that have an external label as a first argument
 #define EXTERNAL_OP_1(op) (((op)==BIF0))
@@ -389,7 +390,8 @@ static inline void set_timer(ErlProcess* p, UInt timeout);
 		&&lb_GC_BIF3,\
 		&&lb_LINE,\
 		&&lb_BEAM_APPLY,\
-		&&lb_NORMAL_EXIT
+		&&lb_NORMAL_EXIT,\
+	    &&lb_NOP
 
 static uint8_t opcode_arities[] = {0,1,3,0,2,3,2,2,3,2,4,5,2,3,2,3,2,1,1,0,0,0,0,2,1,1,2,4,4,4,
 		 4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,

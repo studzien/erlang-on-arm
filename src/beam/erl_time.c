@@ -10,18 +10,54 @@
 #include "LPC17xx.h"
 #include "erl_process.h"
 #include "io.h"
+#include "semphr.h"
 
-static ErlTimer** tiw; // timer wheel
-static UInt tiw_pos;   // current position in wheel
-UInt tiw_nto;   // number of timeouts in the wheel
+static ErlTimer* tiw[TIW_SIZE]; // timer wheel
+volatile UInt tiw_pos;   // current position in wheel
+volatile SInt tiw_nto;   // number of timeouts in the wheel
 extern ErlProcess* proc_tab;
-extern int timeout;
+
+void dump_timer_slots(ErlTimer* timer) {
+	int i;
+	char buf[35];
+	sprintf(buf, "timer %d slots:\n", timer);
+	debug(buf);
+
+
+	for(i=0; i<TIW_SIZE; i++) {
+		ErlTimer* t = tiw[i];
+		while(t!=NULL) {
+			if(t == timer) {
+				sprintf(buf, "%d\n", i);
+				debug(buf);
+			}
+			t = t->next;
+		}
+	}
+}
+
+void dump_timers(void) {
+	char buf[50];
+	sprintf(buf, "current position in the wheel is %d out of %d\n", tiw_pos, TIW_SIZE);
+	debug(buf);
+
+	int i;
+	for(i=0; i<TIW_SIZE; i++) {
+		sprintf(buf, "slot %d\n", i);
+		debug(buf);
+		ErlTimer* t = tiw[i];
+		while(t != NULL) {
+			sprintf(buf, "%d %d %d %d\n", t, t->active, t->count, t->slot);
+			debug(buf);
+			t = t->next;
+		}
+	}
+}
 
 void erts_init_time(void) {
 	ticks = 0;
 
 	// initialize the timer wheel
-	tiw = (ErlTimer**)pvPortMalloc(TIW_SIZE * sizeof(ErlTimer*));
 	UInt i;
 	for(i=0; i<TIW_SIZE; i++) {
 		tiw[i] = NULL;
@@ -71,13 +107,12 @@ static void init_us_timer(void) {
 	LPC_TIM0->MCR |= ((1 << 0) | (1 << 1));
 
 	NVIC_EnableIRQ(TIMER0_IRQn);
-	NVIC_SetPriority(TIMER0_IRQn, 2);
+	NVIC_SetPriority(TIMER0_IRQn, 5);
 }
 
 void TIMER0_IRQHandler(void) {
 	/* Clear TIM0 interrupt flag */
 	LPC_TIM0->IR = (1 << 0);
-
 	now.sec++;
 	if(now.sec == 1000000) {
 		now.sec = 0;
@@ -119,53 +154,51 @@ static void init_ms_timer(void) {
 	erts_get_now(&then);
 
 	NVIC_EnableIRQ(TIMER1_IRQn);
-	NVIC_SetPriority(TIMER1_IRQn, 3);
+	NVIC_SetPriority(TIMER1_IRQn, 6);
 }
 
 void TIMER1_IRQHandler(void) {
-	/* Clear TIM1 interrupt flag */
-	LPC_TIM1->IR = (1 << 0);
-
 	erts_get_now(&time);
+	LPC_TIM1->IR = (1 << 0);
 
 	SInt dt = ((SInt)(time.usec-then.usec) / 1000) + ((SInt)(time.sec-then.sec) * 1000);
 	if(dt > 0) {
+		portENTER_CRITICAL();
 		erts_bump_timer(dt);
+		portEXIT_CRITICAL();
 	}
 
 	then.msec = time.msec;
 	then.sec = time.sec;
 	then.usec = time.usec;
 
+	/* Clear TIM1 interrupt flag */
 	NVIC_ClearPendingIRQ(TIMER1_IRQn);
 }
 
 void erts_set_timer(ErlTimer* timer, ErlTimeoutProc timeout, ErlCancelProc cancel, void* arg, UInt t) {
-	taskENTER_CRITICAL();
-	if(timer->active) {
-		return;
+	portENTER_CRITICAL();
+	if(!timer->active) {
+		timer->timeout = timeout;
+		timer->cancel = cancel;
+		timer->arg = arg;
+		insert_timer(timer, t);
+		timer->active = 1;
 	}
-	timer->timeout = timeout;
-	timer->cancel = cancel;
-	timer->arg = arg;
-	timer->active = 1;
-	insert_timer(timer, t);
-	taskEXIT_CRITICAL();
+	portEXIT_CRITICAL();
 }
 
 void erts_cancel_timer(ErlTimer* timer) {
-	taskENTER_CRITICAL();
-	if(!timer->active) {
-		return;
-	}
+	portENTER_CRITICAL();
+	if(timer->active) {
+		remove_timer(timer);
+		timer->slot = timer->count = 0;
 
-	remove_timer(timer);
-	timer->slot = timer->count = 0;
-
-	if(timer->cancel != NULL) {
-		(*timer->cancel)(timer->arg);
+		if(timer->cancel != NULL) {
+			(*timer->cancel)(timer->arg);
+		}
 	}
-	taskEXIT_CRITICAL();
+	portEXIT_CRITICAL();
 }
 
 static void insert_timer(ErlTimer* timer, UInt timeout) {
@@ -185,24 +218,27 @@ static void insert_timer(ErlTimer* timer, UInt timeout) {
 	tiw[tm] = timer;
 
 	tiw_nto++;
-
 }
 
 static void remove_timer(ErlTimer *p) {
 	/* first */
 	if (!p->prev) {
 		tiw[p->slot] = p->next;
-		if(p->next)
+		if(p->next) {
 			p->next->prev = NULL;
-	} else {
+		}
+	}
+	else {
 		p->prev->next = p->next;
 	}
 
 	/* last */
 	if (!p->next) {
-		if (p->prev)
+		if (p->prev) {
 			p->prev->next = NULL;
-	} else {
+		}
+	}
+	else {
 		p->next->prev = p->prev;
 	}
 
@@ -211,12 +247,16 @@ static void remove_timer(ErlTimer *p) {
 	/* Make sure cancel callback isn't called */
 	p->active = 0;
 	tiw_nto--;
+
 }
 
 void erts_bump_timer(UInt dt) {
-	taskENTER_CRITICAL();
 	UInt keep_pos, count;
 	ErlTimer *p, **prev, *timeout_head, **timeout_tail;
+
+	if(tiw_nto == 0) {
+		return;
+	}
 
 	count = (UInt)(dt / TIW_SIZE) + 1;
 	keep_pos = (tiw_pos + dt) % TIW_SIZE;
@@ -260,6 +300,5 @@ void erts_bump_timer(UInt dt) {
 		p->slot = 0;
 		(*p->timeout)(p->arg);
 	}
-	taskEXIT_CRITICAL();
 }
 

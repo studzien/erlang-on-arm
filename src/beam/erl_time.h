@@ -22,10 +22,10 @@ typedef struct erl_timer {
 	UInt slot;
 	UInt count;
 	UInt active;
-
 	ErlTimeoutProc timeout;
 	ErlCancelProc cancel;
 	void* arg;
+
 } ErlTimer;
 
 
@@ -40,6 +40,8 @@ volatile Timeval then;
 volatile Timeval time;
 volatile UInt ticks;
 
+void timeout_task(void*);
+void dump_timer_slots(ErlTimer* timer);
 void erts_init_time(void);
 void erts_get_now(volatile Timeval* time);
 void erts_set_timer(ErlTimer*, ErlTimeoutProc, ErlCancelProc, void*, UInt);

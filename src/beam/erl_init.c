@@ -20,20 +20,6 @@ extern Eterm x0;
 
 extern ErlProcess* proc_tab;
 
-// heap test
-void heap_test(void* p) {
-	for(;;) {
-		if(uxTaskGetNumberOfTasks() < 3) {
-			debug("After processes exited: ");
-			debug_32(xPortGetFreeHeapSize());
-			break;
-		}
-		taskYIELD();
-	}
-
-	vTaskDelete(NULL);
-}
-
 
 //called when the vm is initialized;
 void erl_init() {
@@ -66,12 +52,6 @@ void erl_init() {
 	//debug("after initializing bifs: ");
 	//debug_32(xPortGetFreeHeapSize());
 
-	//initialize process table
-	init_process_table();
-
-	//debug("after initializing the process table: ");
-	//debug_32(xPortGetFreeHeapSize());
-
 	//init jump table
 	process_main(NULL);
 
@@ -85,10 +65,19 @@ void erl_init() {
 	//debug_32(xPortGetFreeHeapSize());
 
 	int modules = MODULES_N;
-
+char buf[50];
 	for(i=0; i<modules; i++) {
 		erts_load(code[i]);
+		/*sprintf(buf, "after initializing module %d\n", i);
+		debug(buf);
+		debug_32(xPortGetFreeHeapSize());*/
 	}
+
+	//initialize process table
+	init_process_table();
+
+	//debug("after initializing the process table: ");
+	//debug_32(xPortGetFreeHeapSize());
 
 	//create the root process
 	Export e;
@@ -109,11 +98,6 @@ void erl_init() {
 	debug_32(xPortGetFreeHeapSize());
 
 	erl_create_process(NULL, e.module, e.function, args, NULL);
-	//erl_create_process(NULL, e.module, e.function, args, NULL);
-	//erl_create_process(NULL, e.module, e.function, args, NULL);
-	//erl_create_process(NULL, e.module, e.function, args, NULL);
-
-	//xTaskCreate(heap_test, "heap test",  100, NULL, tskIDLE_PRIORITY, NULL);
 
 	// start the scheduler (cooperative)
 	vTaskStartScheduler();

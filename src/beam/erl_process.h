@@ -82,7 +82,7 @@ struct ErlProcess {
 	ErlTimer timer;
 
 	// Flags
-	uint8_t flags;
+	uint16_t flags;
 
 	// List of links
 	ErtsLink *links;
@@ -93,6 +93,6 @@ typedef struct ErlProcess ErlProcess;
 void init_process_table(void);
 Eterm erl_create_process(ErlProcess*, Eterm, Eterm, Eterm, ErlSpawnOpts*);
 void erts_do_exit_process(ErlProcess*, Eterm);
-static void delete_process(ErlProcess*);
+static void free_process(ErlProcess*);
 
 #endif /* ERL_PROCESS_H_ */

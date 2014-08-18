@@ -54,7 +54,16 @@ static const char* erl_atom_names[] = {
 		"badmatch",
 		"case_clause",
 		"if_clause",
-		"undef"
+		"undef",
+		"interrupt",
+		"falling",
+		"input",
+		"bsr",
+		"bor",
+		"lpc_spi",
+		"init",
+		"rw",
+		"band"
 };
 
 #endif /* ATOM_INITIAL_TABLE_H_ */

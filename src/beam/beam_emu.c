@@ -17,8 +17,11 @@
 #include "semphr.h"
 
 int init_done = 0;
-
-volatile int timeout = 0;
+int sent = 0;
+int received = 0;
+int suspended = 0;
+int resumed = 0;
+int continued = 0;
 
 Eterm x0;
 Eterm reg[X_REGS_ALLOCATED];
@@ -41,7 +44,7 @@ Eterm bif_args[3];
 char buf[50];
 int i;
 
-BeamInstr beam_apply[2];
+BeamInstr beam_apply[3];
 extern void* jump_table[];
 extern UInt reclaimed;
 extern UInt garbage_cols;
@@ -69,10 +72,6 @@ static void yield_maybe(ErlProcess* p, uint8_t arity) {
 		if(p->arity > p->max_arg_reg) {
 			if(p->arg_reg != p->def_arg_reg) {
 				vPortFree(p->arg_reg);
-			}
-			if(p->arity * sizeof(p->arg_reg[0]) > 1000) {
-				debug("beam_emu.c:73\n");
-				debug_32(p->arity * sizeof(p->arg_reg[0]));
 			}
 			p->arg_reg = (Eterm*)pvPortMalloc(p->arity * sizeof(p->arg_reg[0]));
 			p->max_arg_reg = p->arity;
@@ -106,9 +105,11 @@ void process_main(void* arg) {
 		}
 		beam_apply[0] = (BeamInstr)jump_table[BEAM_APPLY];
 		beam_apply[1] = (BeamInstr)jump_table[NORMAL_EXIT];
+		beam_apply[2] = (BeamInstr)jump_table[NOP];
 #else
 		beam_apply[0] = (BeamInstr)BEAM_APPLY;
 		beam_apply[1] = (BeamInstr)NORMAL_EXIT;
+		beam_apply[2] = (BeamInstr)NOP;
 #endif
 
 		init_done = 1;
@@ -116,7 +117,6 @@ void process_main(void* arg) {
 	}
 
 	SWAPIN;
-	restore_registers(p);
 	Goto(p);
 
 	switch_loop:
@@ -162,7 +162,9 @@ void process_main(void* arg) {
 			SWAPOUT;
 			reg[0] = r(0);
 			r(0) = (e->bif)(p, reg, p->arity);
-			p->i = p->cp;
+			if(p->saved_i != (BeamInstr*)(beam_apply+2)) {
+				p->i = p->cp;
+			}
 			SWAPIN;
 			Goto(p);
 		}
@@ -178,7 +180,9 @@ void process_main(void* arg) {
 			SWAPOUT;
 			reg[0] = r(0);
 			r(0) = (e->bif)(p, reg, p->arity);
-			p->i = p->cp;
+			if(p->saved_i != (BeamInstr*)(beam_apply+2)) {
+				p->i = p->cp;
+			}
 			SWAPIN;
 			Goto(p);
 		}
@@ -261,15 +265,18 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(SEND):
 		debug_op2(p,"send\n");
+		yield_maybe(p, 2);
 		erts_send_message(p, r(0), x(1), 0);
 		RESTORE_I(p, p->i, 1);
 		Goto(p);
 	OpCase(REMOVE_MESSAGE):
 		debug_op2(p,"remove_message\n");
+		taskENTER_CRITICAL();
 		msgp = PEEK_MESSAGE(p);
 		UNLINK_MESSAGE(p, msgp);
 		JOIN_MESSAGE(p);
 		cancel_timer(p);
+		taskEXIT_CRITICAL();
 		if(msgp->data) {
 			vPortFree(msgp->data);
 		}
@@ -279,6 +286,7 @@ void process_main(void* arg) {
 	OpCase(TIMEOUT):
 		debug_op2(p,"timeout\n");
 		p->flags &= ~F_TIMO;
+		JOIN_MESSAGE(p);
 		RESTORE_I(p, p->i, 1);
 		Goto(p);
 	OpCase(LOOP_REC):
@@ -286,11 +294,11 @@ void process_main(void* arg) {
 		taskENTER_CRITICAL();
 		msgp = PEEK_MESSAGE(p);
 		taskEXIT_CRITICAL();
-
 		if(!msgp) {
 			p->i = (BeamInstr*)Arg(0);
 		}
 		else {
+			received++;
 			RESTORE_I(p, p->i, 3);
 			if(msgp->data) {
 				need = msgp->data->used_size;
@@ -316,7 +324,9 @@ void process_main(void* arg) {
 	OpCase(WAIT):
 		debug_op2(p,"wait\n");
 		SWAPOUT;
+		suspended++;
 		vTaskSuspend(*(p->handle));
+		continued++;
 		SWAPIN;
 		p->i = (BeamInstr*)Arg(0);
 		Goto(p);
@@ -329,7 +339,9 @@ void process_main(void* arg) {
 		}
 		p->i = (BeamInstr*)Arg(0);
 		SWAPOUT;
+		suspended++;
 		vTaskSuspend(*(p->handle));
+		continued++;
 		SWAPIN;
 		Goto(p);
 	OpCase(M_PLUS):
@@ -416,6 +428,14 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(IS_NE_EXACT):
 		debug_op2(p,"is_ne_exact\n");
+		Resolve(Arg(1), tmp0);
+		Resolve(Arg(2), tmp1);
+		if(!EQ(tmp0, tmp1)) {
+			RESTORE_I(p, p->i, 4);
+		}
+		else {
+			p->i = (BeamInstr*)(Arg(0));
+		}
 		RESTORE_I(p, p->i, 4);
 		Goto(p);
 	OpCase(IS_INTEGER):
@@ -627,7 +647,9 @@ void process_main(void* arg) {
 			SWAPOUT;
 			reg[0] = r(0);
 			r(0) = (e->bif)(p, reg, p->arity);
-			p->i = p->cp;
+			if(p->saved_i != (BeamInstr*)(beam_apply+2)) {
+				p->i = p->cp;
+			}
 			SWAPIN;
 			Goto(p);
 		}
@@ -783,7 +805,9 @@ void process_main(void* arg) {
 			SWAPOUT;
 			reg[0] = r(0);
 			r(0) = (e->bif)(p, reg, p->arity);
-			p->i = p->cp;
+			if(p->saved_i != (BeamInstr*)(beam_apply+2)) {
+				p->i = p->cp;
+			}
 			SWAPIN;
 			Goto(p);
 		}
@@ -835,9 +859,8 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(GC_BIF1):
 		debug_op2(p,"gc_bif1\n");
-		yield_maybe(p, unsigned_val(Arg(1)));
 		e = (Export*)Arg(2);
-		Live = p->arity;
+		Live = unsigned_val(Arg(1));
 		reg[0] = r(0);
 		Resolve(Arg(3), reg[Live]);
 		SWAPOUT;
@@ -849,9 +872,8 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(GC_BIF2):
 		debug_op2(p,"gc_bif2\n");
-		yield_maybe(p, unsigned_val(Arg(1)));
 		e = (Export*)Arg(2);
-		Live = p->arity;
+		Live = unsigned_val(Arg(1));
 		reg[0] = r(0);
 		Resolve(Arg(3), reg[Live]);
 		Resolve(Arg(4), reg[Live+1]);
@@ -979,6 +1001,8 @@ void process_main(void* arg) {
 		Goto(p);
 	//special vm ops
 	OpCase(BEAM_APPLY):
+		debug_op2(p, "beam_apply\n");
+		restore_registers(p);
 		next = apply(p, r(0), x(1), x(2));
 		p->i = next;
 		Goto(p);
@@ -988,16 +1012,24 @@ void process_main(void* arg) {
 		//debug(buf);
 		//debug_term(x0);
 		//debug("\n");
-		sprintf(buf, "Reclaimed: %u words\n", reclaimed); debug_op(buf);
-		sprintf(buf, "Garbage cols: %u\n", garbage_cols); debug_op(buf);
+		sprintf(buf, "Reclaimed: %u words\n", reclaimed); debug(buf);
+		sprintf(buf, "Garbage cols: %u\n", garbage_cols); debug(buf);
 		//sprintf(buf, "Reductions: %u\n", p->reductions); debug_op(buf);
 		//sprintf(buf, "Context switches %u\n", p->context_switches); debug_op(buf);
 		//sprintf(buf, "Ticks: %u\n", ticks - p->started_at); debug_op(buf);
 		//sprintf(buf, "GC ticks: %u\n", p->gc_ticks); debug_op(buf);
-		sprintf(buf, "Heap size: %u words\n", p->heap_sz); debug_op(buf);
+		sprintf(buf, "Heap size: %u words\n", p->heap_sz); debug(buf);
 		erts_do_exit_process(p, atom_normal);
+	OpCase(NOP):
+		SWAPOUT;
+		taskYIELD();
+		SWAPIN;
+		Goto(p);
 
 	LOOP_END
+
+	p->i = (BeamInstr*)(beam_apply+2);
+	Goto(p);
 }
 
 void restore_registers(ErlProcess* p) {
@@ -1082,6 +1114,7 @@ static void timeout_proc(ErlProcess *p) {
 	p->i = *pi;
 	p->flags |= F_TIMO;
 	p->flags &= ~F_INSLPQUEUE;
+	resumed++;
 	xTaskResumeFromISR(*(p->handle));
 }
 
@@ -1093,6 +1126,7 @@ static inline void cancel_timer(ErlProcess *p) {
 	else {
 		p->flags &= ~F_TIMO;
 	}
+	resumed++;
 	vTaskResume(*(p->handle));
 }
 
