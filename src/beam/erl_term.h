@@ -179,4 +179,6 @@ typedef uint32_t UInt;
 #define is_tuple(x) (is_boxed((x)) && is_arity_value(*boxed_val((x))))
 #define is_not_tuple(x) (!is_tuple((x)))
 
+#define FUN_SUBTAG      (0x5 << _TAG_PRIMARY_SIZE)
+
 #endif /* ERL_TERM_H_ */

@@ -28,9 +28,6 @@ void erl_init() {
 	//debug("before init: ");
 	//debug_32(xPortGetFreeHeapSize());
 
-	//initialize timers
-	erts_init_time();
-
 	//debug("after initializing timers: ");
 	//debug_32(xPortGetFreeHeapSize());
 
@@ -65,7 +62,7 @@ void erl_init() {
 	//debug_32(xPortGetFreeHeapSize());
 
 	int modules = MODULES_N;
-char buf[50];
+	//char buf[50];
 	for(i=0; i<modules; i++) {
 		erts_load(code[i]);
 		/*sprintf(buf, "after initializing module %d\n", i);
@@ -75,6 +72,10 @@ char buf[50];
 
 	//initialize process table
 	init_process_table();
+
+
+	//initialize timers
+	erts_init_time();
 
 	//debug("after initializing the process table: ");
 	//debug_32(xPortGetFreeHeapSize());

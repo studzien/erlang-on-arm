@@ -88,6 +88,11 @@ typedef struct {
 	uint16_t patches; //like in ImportEntry;
 } Label;
 
+typedef struct {
+	uint32_t label;
+	uint32_t num_free;
+} Lambda;
+
 typedef struct LoaderState {
 	// Pointer to the actual code
 	byte* code_file;
@@ -127,6 +132,10 @@ typedef struct LoaderState {
 	// FUNCTIONS
 	uint32_t num_functions;
 
+	// LAMBDAS
+	uint32_t num_lambdas;
+	Lambda* lambdas;
+
 	// CODE CHUNK RELATED FIELDS
 	byte* code_start;
 	BeamInstr code[CODE_BUFFER_SIZE];
@@ -146,12 +155,14 @@ static int load_code(LoaderState* loader);
 static int load_import_table(LoaderState* loader);
 static int load_export_table(LoaderState* loader);
 static int load_literal_table(LoaderState* laoder);
+static int load_lambda_table(LoaderState* loader);
 
 static int finalize(LoaderState* loader);
 
 static int get_tag_and_value(LoaderState* loader, BeamInstr** result);
 static void replace_ext_call(LoaderState* loader, uint16_t offset, byte op);
 static void replace_local_call(LoaderState* loader, uint16_t offset, byte op);
+static void replace_make_fun(LoaderState* loader, uint16_t offset, byte op);
 static void define_label(LoaderState* loader, uint16_t offset, byte op);
 
 #if (THREADED_CODE == 1)

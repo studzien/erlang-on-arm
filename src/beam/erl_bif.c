@@ -75,6 +75,7 @@ void erts_init_bif(void) {
 		arity = bif_table[i].arity;
 		e = erts_export_put(module, function, arity);
 		e->bif = bif_table[i].f;
+		e->address = NULL;
 	}
 }
 

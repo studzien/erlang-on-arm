@@ -15,6 +15,7 @@
 #include "erl_utils.h"
 #include "task.h"
 #include "semphr.h"
+#include "erl_fun.h"
 
 int init_done = 0;
 int sent = 0;
@@ -40,11 +41,12 @@ Export tmp;
 BeamInstr* temp_i;
 Eterm result;
 Eterm bif_args[3];
+ErlFunEntry *fun;
 
 char buf[50];
 int i;
 
-BeamInstr beam_apply[3];
+BeamInstr beam_apply[4];
 extern void* jump_table[];
 extern UInt reclaimed;
 extern UInt garbage_cols;
@@ -106,10 +108,12 @@ void process_main(void* arg) {
 		beam_apply[0] = (BeamInstr)jump_table[BEAM_APPLY];
 		beam_apply[1] = (BeamInstr)jump_table[NORMAL_EXIT];
 		beam_apply[2] = (BeamInstr)jump_table[NOP];
+		beam_apply[3] = (BeamInstr)jump_table[UNDEF];
 #else
 		beam_apply[0] = (BeamInstr)BEAM_APPLY;
 		beam_apply[1] = (BeamInstr)NORMAL_EXIT;
 		beam_apply[2] = (BeamInstr)NOP;
+		beam_apply[3] = (BeamInstr)UNDEF;
 #endif
 
 		init_done = 1;
@@ -128,10 +132,7 @@ void process_main(void* arg) {
 		RESTORE_I(p, p->i, 2);
 		Goto(p);
 	OpCase(FUNC_INFO):
-		debug("function_clause\n");
-		sprintf(buf, "%d %d %d %d\n", Arg(0), Arg(1), Arg(2), p->id);
-		debug(buf);
-		erts_do_exit_process(p, atom_normal);
+		erts_do_exit_process(p, atom_function_clause);
 	OpCase(INT_CODE_END):
 		debug_op2(p,"int_code_end\n");
 		RESTORE_I(p, p->i, 1);
@@ -615,21 +616,19 @@ void process_main(void* arg) {
 		RESTORE_I(p, p->i, 2);
 		Goto(p);
 	OpCase(BADMATCH):
-		debug("badmatch\n");
-		debug_term(r(0));
-		debug("\n");
-		erts_do_exit_process(p, atom_normal);
+		erts_do_exit_process(p, atom_badmatch);
 	OpCase(IF_END):
-		debug_op2(p,"if_end\n");
-		RESTORE_I(p, p->i, 1);
-		Goto(p);
+		erts_do_exit_process(p, atom_if_clause);
 	OpCase(CASE_END):
-		debug_op2(p,"case_end\n");
-		RESTORE_I(p, p->i, 2);
-		Goto(p);
+		erts_do_exit_process(p, atom_case_clause);
 	OpCase(CALL_FUN):
 		debug_op2(p,"call_fun\n");
-		RESTORE_I(p, p->i, 2);
+		//@todo handle free variables
+		arity = unsigned_val(Arg(0));
+		yield_maybe(p, arity);
+		fun = (ErlFunEntry*)boxed_val(x(arity));
+		p->i = (BeamInstr*)(fun->addr);
+		RESTORE_I(p, p->cp, 2);
 		Goto(p);
 	OpCase(MAKE_FUN):
 		debug_op2(p,"make_fun\n");
@@ -753,6 +752,11 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(MAKE_FUN2):
 		debug_op2(p,"make_fun2\n");
+		//@todo handle free variables
+		fun = (ErlFunEntry*)pvPortMalloc(sizeof(ErlFunEntry));
+		fun->header = FUN_SUBTAG;
+		fun->addr = (BeamInstr*)Arg(0);
+		r(0) = make_boxed(fun);
 		RESTORE_I(p, p->i, 2);
 		Goto(p);
 	OpCase(TRY):
@@ -1025,6 +1029,9 @@ void process_main(void* arg) {
 		taskYIELD();
 		SWAPIN;
 		Goto(p);
+	OpCase(UNDEF):
+		debug("undef\n");
+		erts_do_exit_process(p, atom_undef);
 
 	LOOP_END
 

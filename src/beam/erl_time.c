@@ -120,7 +120,7 @@ void TIMER0_IRQHandler(void) {
 	}
 
 	if(now.sec % 60 == 1) {
-		print_stats();
+		//print_stats();
 	}
 }
 

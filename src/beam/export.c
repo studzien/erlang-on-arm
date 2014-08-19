@@ -6,6 +6,9 @@
  */
 
 #include "export.h"
+#include "io.h"
+
+extern BeamInstr beam_apply[];
 
 void init_export_table(void) {
 	HashFunctions f;
@@ -23,7 +26,7 @@ Export* erts_export_put(Eterm module, Eterm function, uint8_t arity) {
 	export.module = module;
 	export.function = function;
 	export.arity = arity;
-	export.address = NULL;
+	export.address = (BeamInstr*)(beam_apply+3);
 	export.bif = NULL;
 	return (Export*)index_put_entry(&export_table, &export);
 }

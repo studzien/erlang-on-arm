@@ -53,6 +53,14 @@ void erts_load(byte* code) {
 		}
 	}
 
+	//Load lambda table
+	if(loader->chunks[LAMBDA_CHUNK].size > 0) {
+		loader->file_left = loader->chunks[LAMBDA_CHUNK].size;
+		loader->file_p = loader->chunks[LAMBDA_CHUNK].start;
+		if(load_lambda_table(loader)) {
+			goto load_error;
+		}
+	}
 
 	//Read code chunk header
 	loader->file_left = loader->chunks[CODE_CHUNK].size;
@@ -74,6 +82,7 @@ void erts_load(byte* code) {
 	if(load_export_table(loader)) {
 		goto load_error;
 	}
+
 
 
 	//Finalize (patch labels, export functions and stuff)
@@ -167,6 +176,25 @@ static int load_import_table(LoaderState* loader) {
 	return 0;
 }
 
+static int load_lambda_table(LoaderState* loader) {
+	int i;
+	GetInt(loader, loader->num_lambdas);
+	loader->lambdas = pvPortMalloc(loader->num_lambdas * sizeof(Lambda));
+	for(i=0; i<loader->num_lambdas; i++) {
+		uint32_t temp;
+		GetInt(loader, temp); // atom idx
+		GetInt(loader, temp); // arity
+		GetInt(loader, temp); // label
+		loader->lambdas[i].label = temp;
+		GetInt(loader, temp); // idx
+		GetInt(loader, temp); // free vars
+		loader->lambdas[i].num_free = temp;
+		GetInt(loader, temp); // hash
+	}
+
+	return 0;
+}
+
 static int load_code(LoaderState* loader) {
 	byte op;
 	uint8_t arity, arg;
@@ -193,6 +221,7 @@ static int load_code(LoaderState* loader) {
 		}
 		define_label(loader, p, op);
 		replace_ext_call(loader, p, op);
+		replace_make_fun(loader, p, op);
 		//replace_local_call(loader, p, op);
 	}
 }
@@ -211,6 +240,15 @@ static void replace_local_call(LoaderState* loader, uint16_t offset, byte op) {
 		uint16_t label = unsigned_val(loader->code[offset+arg]);
 		loader->code[offset+arg] = (BeamInstr)loader->labels[label].patches;
 		loader->labels[label].patches = (uint16_t)(offset+arg);
+	}
+}
+
+static void replace_make_fun(LoaderState* loader, uint16_t offset, byte op) {
+	if(op == MAKE_FUN2) {
+		uint16_t lambda = unsigned_val(loader->code[offset+1]);
+		uint16_t label = loader->lambdas[lambda].label;
+		loader->code[offset+1] = (BeamInstr)loader->labels[label].patches;
+		loader->labels[label].patches = (uint16_t)(offset+1);
 	}
 }
 
