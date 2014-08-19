@@ -3,4 +3,8 @@
 -export([main/0]).
 
 main() ->
-    rfm70:start().
+    Callback = fun(M) ->
+            lpc_debug:print_term(erlang:now()),
+            lpc_debug:print_term(M)
+    end,
+    rfm70:start([Callback]).

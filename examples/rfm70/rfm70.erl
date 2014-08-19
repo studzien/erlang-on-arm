@@ -1,7 +1,7 @@
 -module(rfm70).
 
 %% API
--export([start/0]).
+-export([start/1]).
 
 -define(SPI_FREQ, 8000000).
 
@@ -10,7 +10,7 @@
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
-start() ->
+start(Callbacks) ->
     init_pins(),
     init_bank0(),
     init_bank1(),
@@ -18,41 +18,41 @@ start() ->
     bank(0),
     switch_rx(),
     self() ! ping,
-    loop().
+    loop(Callbacks).
 
-loop() ->
+loop(Callbacks) ->
     receive
         ping ->
-            handle_ping();
+            handle_ping(),
+            loop(Callbacks);
         interrupt ->
-            maybe_receive_frame();
+            maybe_receive_frame(Callbacks),
+            loop(Callbacks);
         _ ->
-            loop()
+            loop(Callbacks)
     end.
 
 handle_ping() ->
     Data = "ping",
     send_frame(Data),
-    erlang:send_after(1000, self(), ping),
-    loop().
+    erlang:send_after(1000, self(), ping).
 
-maybe_receive_frame() ->
+maybe_receive_frame(Callbacks) ->
     %% receive frame iff it's a rx interrupt
     [Status] = register_read(?RFM70_REG_STATUS),
     case Status band 64 of
         64 ->
-            receive_frame(Status);
+            receive_frame(Callbacks, Status);
         _ ->
             ok
-    end,
-    loop().
+    end.
 
-receive_frame(Status) ->
+receive_frame(Callbacks, Status) ->
     [Length] = register_read(?RFM70_CMD_R_RX_PL_WID),
     Payload = rw([?RFM70_CMD_R_RX_PAYLOAD], Length, 1),
     rw([?RFM70_CMD_FLUSH_RX, 0]),
-    register_write(?RFM70_REG_STATUS, [Status bor 64]).
-    %lpc_debug:print_term(Payload).
+    register_write(?RFM70_REG_STATUS, [Status bor 64]),
+    [Callback(Payload) || Callback <- Callbacks].
 
 send_frame(Data) ->
     switch_tx(),
