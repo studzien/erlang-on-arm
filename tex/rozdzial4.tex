@@ -17,7 +17,7 @@ W rozdziale wymieniono elementy maszyny wirtualnej Erlanga, które zaimplementow
 Opis poszczególnych elementów zawiera wyjaśnienie ich sposobu działania, ich roli w maszynie wirtualnej, a także porównania
 funkcjonalności do maszyny wirtualnej BEAM.
 
-Wszystkie opisywane funkcjonalności zostały zaimplementowane w języku C, podobnie jak jest to w przypadku maszyny wirtualnej BEAM.
+Wszystkie opisywane funkcjonalności zostały zaimplementowane w języku C, w oparciu o kod źródłowy maszyny wirtualnej BEAM, który opublikowany jest na licencji \emph{Erlang Public License}.
 
 %---------------------------------------------------------------------------
 \section{Moduł ładujący kod (\emph{loader})}
@@ -249,12 +249,24 @@ Na rysunku \ref{fig:bignumonheap} zaprezentowany został przykład przechowania 
 \label{fig:bignumonheap}
 \end{figure}
 
+\subsection{Lambdy}
+\label{sub:typyLambda}
+
+Typ danych wykorzystywany jest do identyfikacji obiektów funkcyjnych tworzonych dynamicznie w trakcie działania programu.
+W maszynie wirtualnej BEAM obiekt taki może powstać w dwojaki sposób: przez wywołanie instrukcji \texttt{make\_fun2} lub funkcji wbudowanej \texttt{erlang:make\_fun/3}.
+Bajty następujące po nagłówku typu danych zawierają informacje dotyczące miejsca początku kodu lambdy (każdemu obiektowi funkcyjnemu zdefiniowanemu w ramach danego modułu odpowiada osobna funkcja lokalna) a także wolnych zmiennych przez nią wykorzystywanych (czyli zmiennych, którym wartość przypisana została poza treścią lambdy, ale znajdujących się w jej kontekście).
+
+Ten typ danych został w niniejszej maszynie wirtualnej zaimplementowany w ograniczonym zakresie, pozwalającym na definicję i wywołanie obiektów funkcyjnych w podstawowym zakresie.
+Możliwe jest utworzenie lambdy poprzez jej zdefiniowanie, pod warunkiem że liczba jej wolnych zmiennych jest równa 0, lub na podstawie funkcji lokalnej (za pomocą konstrukcji \texttt{fun foo/2}).
+
+Nagłówek typu danych ma następującą postać:
+$$\texttt{00000000 00000000 00000000 00\textbf{000101}}$$
+
 \subsection{Niezaimplementowane typy danych}
 \label{sub:typyNiezaimplementowane}
 
 Typy danych dostępne w maszynie BEAM, które nie zostały zaimplementowane w pracy to:
 \begin{itemize}
-\item \textbf{lambdy} (tag \textbf{FUN}) - ten typ danych używany jest w komunikacji między węzłami wewnątrz klastra Erlanga, co nie jest aktualnie obsługiwane przez maszynę wirtualną. Lambdy pojawiające się w kodzie źródłowym modułów reprezentowane są za pomocą funkcji lokalnych i nie potrzebują osobnego typu danych do poprawnego działania;
 \item \textbf{referencje} (tag \textbf{REF}) - referencje z~założenia używane są do oznaczania wiadomości wysyłanych do innych węzłów z uruchomioną maszyną wirtualną a klastrowanie nie jest wspierane przez implementowaną maszynę wirtualną;
 \item \textbf{porty} (tag \textbf{PORT}) - porty używane są do identyfikacji procesów uruchomionych w systemie operacyjnym poza maszyną wirtualną Erlanga, a do których delegowane są pewne operacje, wykonywane na poziomie systemu operacyjnego. Wykonanie tych operacji (jak np. operacje na plikach) z~założenia może zająć pewien dłuższy okres czasu, co mogłoby zakłócić harmonogramowanie procesów. Typ danych nie został zaimplementowany, gdyż w maszynie wirtualnej wszystkie operacje wykonywane na poziomie mikrojądra zostały zaimplementowane przy pomocy funkcji wbudowanych (por. \ref{sec:maszynaBIF});
 \item \textbf{liczby zmiennoprzecinkowe} (tag \textbf{FLONUM}) - ten typ danych również nie został zaimplementowany w~wersji maszyny opisywanej w pracy. Liczby zmiennoprzecinkowe rzadko wykorzystywane są w programowaniu urządzeń wbudowanych ze względu na bardzo duży narzut czasowych w przypadku mikrokontrolerów nie mających koprocesora (np. procesor ARM Cortex-M3 nie posiada FPU). M.in. z tego powodu do maszyny BEAM arytmetyka zmiennoprzecinkowa została dodana dopiero w wersji R8;
@@ -622,6 +634,12 @@ Funkcja & Argumenty & Opis \\
 \hline
 \texttt{rem/2} & \texttt{Int1 Int2} & Zwraca resztę z dzielenia argumentów \\
 \hline
+\texttt{bsr/2} & \texttt{Int1 Int2} & Zwraca wynik przesunięcia bitowego w prawo argumentów \\
+\hline
+\texttt{band/2} & \texttt{Int1 Int2} & Zwraca iloczyn logiczny argumentów \\
+\hline
+\texttt{bor/2} & \texttt{Int1 Int2} & Zwraca alternatywę logiczną argumentów \\
+\hline
 \texttt{element/2} & \texttt{N Tuple} & Zwraca \texttt{N}-ty element krotki \texttt{Tuple} \\
 \hline
 \texttt{exit/1} & \texttt{Reason} & Kończy działanie wywołującego procesu z powodem \texttt{Reason} \\
@@ -651,7 +669,7 @@ Funkcja & Argumenty & Opis \\
 \texttt{reverse/1} & \texttt{List} & Zwraca nową listę bedącą odwróconą listą \texttt{List} \\
 \hline
 \caption{Zaimplementowane funkcje wbudowane w module \texttt{lists}} 
-\label{table:bifErlang} \\
+\label{table:bifLists} \\
 \end{longtable}
 
 \subsection{GPIO i obsługa przerwań (moduł \texttt{lpc\_gpio})}
@@ -670,6 +688,8 @@ Funkcja & Argumenty & Opis \\
 \hline
 \texttt{low/2} & \texttt{Port Pin} & Ustawia stan niski na pinie \texttt{Pin} na porcie \texttt{Port} \\
 \hline
+\texttt{interrupt/3} & \texttt{0 Pin falling} & Subskrybuje proces na opadające zbocze na pinie \texttt{Pin} na porcie \texttt{0}. Informacja  o przerwaniu dotrze do procesu w postaci wiadomości w postaci \texttt{interrupt}.\\
+\hline
 \caption{Zaimplementowane funkcje wbudowane w module \texttt{lpc\_gpio}} 
 \label{table:bifGpio} \\
 \end{longtable}
@@ -678,6 +698,21 @@ Funkcja & Argumenty & Opis \\
 \subsection{SPI (moduł \texttt{lpc\_spi})}
 \label{sub:bifSPI}
 
+Funkcje opisane w tej części podrozdziału zostały zaimplementowane w pliku źródłowym \texttt{erl\_bif\_spi.c}.
+
+\begin{longtable}{|c|c|p{10cm}|}
+\hline
+
+Funkcja & Argumenty & Opis \\
+\endfirsthead
+\hline
+\texttt{init/1} & \texttt{Frequency} & Inicjalizuje interfejs SPI mikrokontrolera w trybie \emph{master} z sygnałem zegarowym o częstotiwości \texttt{Frequency} \\
+\hline
+\texttt{rw/1} & \texttt{Byte} & Wysyła bajt \texttt{Byte} po interfejsie SPI. Wartością zwracaną jest bajt otrzymany z interfejsu w trakcie transmisji. \\
+\hline
+\caption{Zaimplementowane funkcje wbudowane w module \texttt{lpc\_spi}} 
+\label{table:bifSpi} \\
+\end{longtable}
 
 \subsection{Funkcje pomocnicze (moduł \texttt{lpc\_debug})}
 \label{sub:bifDebug}

@@ -112,11 +112,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 03 & 3 & \texttt{int\_code\_end} & Oznacza koniec kodu. & \cmark \\
 \hline
-04 & 4 & \texttt{call Arity Lbl} & Wywołuje funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \cmark \\
+04 & 4 & \texttt{call Arity Lbl} & Wywołuje funkcję lokalną o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \cmark \\
 \hline
-05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest}+1 słów pamięci na stosie. & \cmark \\
+05 & 5 & \texttt{call\_last Arity Lbl Dest} & Wywołuje rekurencyjną ogonowo funkcję lokalną o arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. Przed wywołaniem zwalnia \texttt{Dest}+1 słów pamięci na stosie. & \cmark \\
 \hline
-06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo funkcję o~arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. & \cmark \\
+06 & 6 & \texttt{call\_only Arity Lbl} & Wywołuje rekurencyjną ogonowo funkcję lokalną o~arności \texttt{Arity} znajdującą się pod etykietą \texttt{Lbl}. Nie zapisuje adresu powrotu. & \cmark \\
 \hline
 07 & 7 & \texttt{call\_ext Arity Dest} & Wywołuje zewnętrzną funkcję o arności \texttt{Arity} mającą indeks \texttt{Dest} w tablicy funkcji zewnętrznych. Zapisuje następną instrukcję jako adres powrotu (wskaźnik \textbf{CP}). & \cmark \\
 \hline
@@ -126,7 +126,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 0A & 10 & \texttt{bif1 Bif Arg Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/1} z argumentem \texttt{Arg}. Wynik zapisywany jest w~rejestrze \texttt{Reg}. & \cmark \\
 \hline
-0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \cmark \\
+0B & 11 & \texttt{bif2 Bif Arg1 Arg2 Reg} & Wywołuje wbudowaną funkcję \texttt{Bif/2} z argumentami \texttt{Arg1} i \texttt{Arg2}. Wynik zapisywany jest w rejestrze \texttt{Reg}. & \cmark \\
 \hline
 0C & 12 & \texttt{allocate StackN Live} & Alokuje miejsce dla \texttt{StackN} słów na stosie. Używanych jest \texttt{Live} rejestrów \textbf{X}, gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}. Zapisuje \textbf{CP} na stosie. & \cmark \\
 \hline
@@ -134,11 +134,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 0E & 14 & \texttt{allocate\_zero StackN Live} & Tak jak \texttt{allocate/2}, ale zaalokowana pamięć jest wyzerowana. & \cmark \\
 \hline
-0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć jest wyzerowana. & \xmark \\
+0F & 15 & \texttt{allocate\_heap\_zero SN HN L} & Tak jak \texttt{allocate\_heap/3}, ale zaalokowana pamięć na stosie jest wyzerowana. & \cmark \\
 \hline
 10 & 16 & \texttt{test\_heap HN L} & Upewnia się że na stercie jest \texttt{HN} wolnych słów. Używanych jest \texttt{L} rejestrów \textbf{X}, gdyby w trakcie konieczne było uruchomienie \emph{garbage collectora}. & \cmark\\
 \hline
-11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie. Instrukcja poprzednio nazywała się \texttt{kill} i jako taka może jeszcze występować w pewnych miejscach. & \cmark \\
+11 & 17 & \texttt{init N} & Zeruje \texttt{N}-te słowo na stosie. Instrukcja poprzednio nazywała się \texttt{kill} i pod taką nazwach może jeszcze występować w niektórych miejscach. & \cmark \\
 \hline
 12 & 18 & \texttt{deallocate N} & Przywraca \textbf{CP} ze stosu i dealokuje \texttt{N}+1 słów ze stosu. & \cmark \\
 \hline
@@ -150,11 +150,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 16 & 22 & \texttt{timeout} & Resetuje wskaźnik kolejnej wiadomości do odczytania na początek kolejki wiadomości. Czyści flagę przeterminowania. & \cmark \\
 \hline
-17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \texttt{Src} w rejestrze \textbf{R0}. Jeśli jest pusta wykonuje skok do etykiety \texttt{Lbl}. & \cmark  \\
+17 & 23 & \texttt{loop\_rec Lbl Src} & Zapisuje kolejną wiadomość w kolejce wiadomości \texttt{Src} w rejestrze \textbf{X0}. Jeśli jest pusta wykonuje skok do etykiety \texttt{Lbl}. & \cmark  \\
 \hline
 18 & 24 & \texttt{loop\_rec\_end Lbl} & Ustawia wskaźnik zapamiętujący kolejną wiadomość do odczytania na kolejną wiadomość w kolejce wiadomości i wykonuje skok do etykiety \texttt{Lbl}. & \cmark \\
 \hline
-19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} w etykiecie \texttt{Lbl}. & \cmark \\
+19 & 25 & \texttt{wait Lbl} & Zawiesza proces aż do otrzymania wiadomości, który zostanie wznowiony na początku bloku \texttt{receive} pod etykietą \texttt{Lbl}. & \cmark \\
 \hline
 1A & 26 & \texttt{wait\_timeout Lbl T} & Zawiesza proces jak \texttt{wait}. Ustawia przeterminowanie \texttt{T} i zapisuje następną instrukcję, która zostanie wykonana jeśli przeterminowanie się zrealizuje. & \cmark \\
 \hline
@@ -208,7 +208,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 40 & 64 & \texttt{move Src Dest} & Przenosi wartość z \texttt{Src} do rejestru \texttt{Dest}. & \cmark \\
 \hline
-41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza głowę listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. & \cmark \\
+41 & 65 & \texttt{get\_list Src Hd Tail} & Umieszcza pierwszy element listy \texttt{Src} w rejestrze \texttt{Hd} i jej ogon w rejestrze \texttt{Tail}. & \cmark \\
 \hline
 42 & 66 & \texttt{get\_tuple\_element Src Elem Dest} & Umieszcza element \texttt{Elem} krotki \texttt{Src} w rejestrze \texttt{Dest}. & \cmark \\
 \hline
@@ -226,7 +226,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 4A & 74 & \texttt{case\_end Arg} & Rzuca wyjątek \texttt{case\_clause} z argumentem \texttt{Arg}. & \cmark \\
 \hline
-4B & 75 & \texttt{call\_fun Arity} & Woła obiekt funkcyjny o arności \texttt{Arity}. Zakłada, że argumenty znajdują się w rejestrach \textbf{X0}...\textbf{X(\texttt{Arity-1})}, a lambda w rejestrze \textbf{X(\texttt{Arity})}. Zapisuje następną instrukcję we wskaźniku \textbf{CP}. & \xmark \\
+4B & 75 & \texttt{call\_fun Arity} & Woła obiekt funkcyjny o arności \texttt{Arity}. Zakłada, że argumenty znajdują się w rejestrach \textbf{X0}...\textbf{X(\texttt{Arity-1})}, a lambda w rejestrze \textbf{X(\texttt{Arity})}. Zapisuje następną instrukcję we wskaźniku \textbf{CP}. & \cmark \\
 \hline
 4D & 77 & \texttt{is\_function Lbl Arg1} & Sprawdza typ argumentu \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją. & \xmark \\
 \hline
@@ -258,11 +258,11 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 66 & 102 & \texttt{fnegate Arg0 Arg1 Arg2} & Zapisuje ujemną wartość z rejestru \texttt{Arg1} w rejestrze \texttt{Arg2}. Argument \texttt{Arg0} jest nieużywany. & \xmark \\
 \hline
-67 & 103 & \texttt{make\_fun2 N} & Odczytuje wpis o indeksie \texttt{N} w tablicy lambd modułu i umieszcza go w rejestrze \textbf{X0}. & \xmark  \\
+67 & 103 & \texttt{make\_fun2 N} & Odczytuje wpis o indeksie \texttt{N} w tablicy lambd modułu i umieszcza go w rejestrze \textbf{X0}. & \cmark  \\
 \hline
 68 & 104 & \texttt{try Dest Label} & Tak jak instrukcja \texttt{catch/2}.  & \xmark  \\
 \hline
-69 & 105 & \texttt{try\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. Jeśli nie ma zapisanej wartości w rejestrze \textbf{R0} oznacza to że w bloku \texttt{catch} złapano wyjątek. W takim przypadku dokonywane jest przepisanie wartości rejestrów: \textbf{R0} = \textbf{X1}, \textbf{X1} = \textbf{X2} i \textbf{X2} = \textbf{X3}. & \xmark \\
+69 & 105 & \texttt{try\_end Dest} & Kończy blok \texttt{catch}. Wymazuje etykietę na miejscu \texttt{Dest} na stosie. Jeśli nie ma zapisanej wartości w rejestrze \textbf{X0} oznacza to że w bloku \texttt{catch} złapano wyjątek. W takim przypadku dokonywane jest przepisanie wartości rejestrów: \textbf{X0} = \textbf{X1}, \textbf{X1} = \textbf{X2} i \textbf{X2} = \textbf{X3}. & \xmark \\
 \hline
 6A & 106 & \texttt{try\_case Dest} & Jak instrukcja \texttt{try\_end/1}. & \xmark  \\
 \hline
@@ -272,9 +272,9 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 6D & 109 & \texttt{bs\_init2 Fail Sz Words Regs Flags Dst} & Inicjalizuje miejsce dla zmiennej binarnej o rozmiarze \texttt{Sz}. Zapewnia, że oprócz tego rozmiaru po inicjalizacji dostępne będzie dodatkowo \texttt{Words} słów maszynowych. \texttt{Regs} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie inicjalizacji konieczne było uruchomienie \emph{garbage collectora}. Adres skoku \texttt{Fail} oraz opcje \texttt{Flags} są aktualnie nieużywane. & \xmark  \\
 \hline
-6F & 111 & \texttt{bs\_add Fail S1 S2 Unit Dst} & Oblicza sumę bitów w \texttt{S1} i liczby jednostek \texttt{Unit} w \texttt{S2}. Wynik przechowuje w \texttt{Dst}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
+6F & 111 & \texttt{bs\_add Fail S1 S2 Unit Dst} & Oblicza sumę bitów w \texttt{S1} i liczby jednostek \texttt{Unit} w \texttt{S2}. Wynik przechowuje w \texttt{Dst}. W~przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze\textbf{X(\texttt{N+1})}, w module zapisanym w rejestrze \textbf{X(\texttt{N})} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}. & \cmark \\
+70 & 112 & \texttt{apply N} & Znajduje adres początku funkcji zapisanej w rejestrze \textbf{X(\texttt{N+1})}, w module zapisanym w rejestrze \textbf{X(\texttt{N})} o arności \texttt{N} i skacze do tego adresu. Zapisuje następną instrukcję we wskaźniku \textbf{CP}. & \cmark \\
 \hline 
 71 & 113 & \texttt{apply\_last N Dea} & Skacze do zewnętrznej funkcji tak jak instrukcja \texttt{apply/1}. Ściąga wartość wskaźnika \textbf{CP} ze stosu. Zwalnia \texttt{Dea} miejsc na szczycie stosu. & \xmark \\
 \hline
@@ -282,7 +282,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 73 & 115 & \texttt{is\_function2 Lbl Arg1 Arity} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on funkcją o arności \texttt{Arity}. & \xmark \\
 \hline
-74 & 116 & \texttt{bs\_start\_match2 Fail Bin X Y Dst} & Sprawdza czy \texttt{Bin} jest kontekstem zmiennej binarnej z odpowiednią liczbą miejsc do zapisania tymczasowych przesunięć bitowych (\emph{offsetów}) określonych przez liczbę \texttt{Y}. Jeśli aktualna liczba miejsc jest za mała tworzony jest nowy kontekst porównywania zmiennej binarnej z odpowiednią liczbą miejsc, który zostanie zapisany w miejscu \texttt{Dst}. W przypadku niepowodzenia dokonany zostanie skok do etykiety \texttt{Fail}. \texttt{X} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark \\
+74 & 116 & \texttt{bs\_start\_match2 Fail Bin X Y Dst} & Sprawdza czy \texttt{Bin} jest kontekstem zmiennej binarnej z odpowiednią liczbą miejsc do zapisania tymczasowych przesunięć bitowych (\emph{offsetów}) określonych przez liczbę \texttt{Y}. Jeśli aktualna liczba miejsc jest za mała tworzony jest nowy kontekst porównywania zmiennej binarnej z odpowiednią liczbą miejsc, który zostanie zapisany w miejscu \texttt{Dst}. W przypadku niepowodzenia dokonany zostanie skok do etykiety \texttt{Fail}. \texttt{X}~oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark \\
 \hline
 75 & 117 & \texttt{bs\_get\_integer2 Fail Ms Live Sz Unit Flags Dst} & Pobiera liczbę całkowitą z kontekstu zmiennej binarnej \texttt{Ms} o rozmiarze \texttt{Sz} w jednostkach \texttt{Unit}. Wynik zapisywany jest do \texttt{Dst}. Opcje operacji zapisywane są w liczbie całkowitej \texttt{Flags}.  W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie operacji konieczne było uruchomienie \emph{garbage collectora}. & \xmark  \\
 \hline
@@ -300,7 +300,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 7C & 124 & \texttt{gc\_bif1 Lbl Live Bif Arg1 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/1} z argumentem \texttt{Arg1}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}. & \cmark \\
 \hline
-7D & 125 & \texttt{gc\_bif2 Lbl Live Bif Arg1 Arg2 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/2} z argumentami \texttt{Arg1}, \texttt{Arg2}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.  & \cmark  \\
+7D & 125 & \texttt{gc\_bif2 Lbl Live Bif Arg1 Arg2 Reg} & Wywołuje funkcję wbudowaną \texttt{Bif/2} z argumentami \texttt{Arg1} i \texttt{Arg2}. Wynik zapisuje w rejestrze \texttt{Reg}. W przypadku niepowodzenia skacze do etykiety \texttt{Lbl}. Uruchamia \emph{garbage collector} jeśli jest to konieczne, zachowując \texttt{Live} rejestrów \textbf{X}.  & \cmark  \\
 \hline
 81 & 129 & \texttt{is\_bitstr Lbl Arg1} & Sprawdza typ \texttt{Arg1} i skacze do \texttt{Lbl} jeśli nie jest on ciągiem bitów. & \xmark \\
 \hline
@@ -310,7 +310,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 84 & 132 & \texttt{bs\_match\_string Fail Ms Bits Val} & Dokonuje porównania \texttt{Bits} bitów, począwszy od miejsca wskazywanego przez wskaźnik \texttt{Val} z kontekstem zmiennej binarnej \texttt{Ms}. Jeżeli porównywane wartości nie są równe dokonywany jest skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
-85 & 133 & \texttt{bs\_init\_writable} & Alokuje miejsce o rozmiarze \textbf{R0} na stercie procesu. Tworzy w zaalokowanym miejscu strukturę zmiennej binarnej. Dodatkowo tworzy wskaźnik do utworzonej struktury, który umieszczony zostanie w rejestrze \textbf{R0}. & \xmark  \\
+85 & 133 & \texttt{bs\_init\_writable} & Alokuje miejsce o rozmiarze \textbf{X0} na stercie procesu. Tworzy w zaalokowanym miejscu strukturę zmiennej binarnej. Dodatkowo tworzy wskaźnik do utworzonej struktury, który umieszczony zostanie w rejestrze \textbf{X0}. & \xmark  \\
 \hline
 86 & 134 & \texttt{bs\_append Fail Size Extra Live Unit Bin Flags Dst} & Dopisuje \texttt{Size} jednostek \texttt{Unit} do zmiennej binarnej \texttt{Bin} i zapisuje wynik do \texttt{Dst}. Jeśli nie ma wystarczająco dużej ilości miejsca, tworzona jest nowa struktura na stercie z odpowiednią ilością miejsca, powiększona dodatkowo o \texttt{Extra} słów maszynowych. W przypadku niepowodzenia wykonywany jest skok do etykiety \texttt{Fail}. Opcje operacji zapisane są w liczbie całkowitej \texttt{Flags}. \texttt{Live} oznacza liczbę aktywnych rejestrów, w razie gdyby w trakcie alokacji konieczne było uruchomienie \emph{garbage collectora}.  & \xmark \\
 \hline
@@ -340,7 +340,7 @@ Instrukcje nieużywane przez kompilator Erlanga w wersji R16 zostały pominięte
 \hline
 93 & 147 & \texttt{bs\_put\_utf16 Fail Flags Literal} & Umieszcza znak zakodowany w UTF-16 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. Argument \texttt{Fail} jest aktualnie nieużywany. & \xmark  \\
 \hline
-94 & 148 & \texttt{bs\_put\_utf32 Fail Flags Literal} &  Umieszcza znak zakodowany w UTF-32 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. W przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
+94 & 148 & \texttt{bs\_put\_utf32 Fail Flags Literal} &  Umieszcza znak zakodowany w UTF-32 znajdujący się w \texttt{Src} w aktualnym kontekście zmiennej binarnej z użyciem opcji zapisanych w liczbie całkowitej \texttt{Flags}. W~przypadku niepowodzenia wykonuje skok do etykiety \texttt{Fail}. & \xmark  \\
 \hline
 95 & 149 & \texttt{on\_load} & Oznacza kod wykonywany przy ładowaniu modułu. & \xmark \\
 \hline

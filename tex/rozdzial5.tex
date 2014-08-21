@@ -200,23 +200,26 @@ Wydajność konkretnej aplikacji, poprzez zmniejszenie liczby uruchomień \emph{
 
 Celem aplikacji było uruchomienie przykładowego programu korzystającego ze współbieżnych cech języka Erlang.
 Aplikacja miała pozwolić na sprawdzenie działania takich funkcjonalności maszyny wirtualnej jak:
-przesyłania i odbierania wiadomości między procesami, propagacji zakończenia działania procesu (\emph{link}) czy mechanizmów zarządzania czasem (przeterminowania i wysyłania wiadomości do innych procesów z opóźnieniem).
+przesyłania i odbierania wiadomości między procesami, propagacji zakończenia działania procesu (\emph{link}), mechanizmów zarządzania czasem (przeterminowania i wysyłania wiadomości do innych procesów z opóźnieniem) czy stabilnościa działania autmatycznego zarządzania pamięcią.
 
 W tym celu zaimplementowano dwa moduły: \texttt{led\_sup} i \texttt{led\_drv}, których zadaniem była kontrola diod LED, przez zaimplementowane funkcje kontrolujące GPIO, w dwóch kolorach: czerwonym i~zielonym.
-W systemie uruchomiony był jeden proces implementujący logikę pierwszego z modułów oraz osiem procesów - drugiego z nich.
-Każdy z procesów \texttt{led\_drv} kontrolował stan jednej zielonej diody - zapalał lub gasił ją po otrzymaniu wiadomości z procesu \texttt{led\_sup}. Proces ten, w odstępie sekundowym, wysyłał do trzech losowych procesów wiadomość o zmianie stanu diody. Dodatkowo, w logice procesu ustawione zostało przeterminowanie, efektem którego było zakończenie się działania procesu w~sytuacji, gdy żadna wiadomość kontrolująca stan diody nie przyszła do skrzynki odbiorczej procesu w~odstępie 2 sekund.
-
-Stan systemu wizualizowało dodatkowo osiem czerwonych diod, które były zgaszone w momencie gdy procesy kontrolujące odpowiadający im diody zielony były uruchomione i zapalone w przeciwnym wypadku.
-Pojedynczy proces był procesem nadzorczym (\emph{supervisor}), którego zadaniem było ponowne uruchamianie kończących się procesów kontrolujących diody zielone. W tym celu, proces ten musiał działać jako proces przechwytujący wyjścia procesów z nim powiązanych jako wiadomości (co w języku Erlang realizowane jest poprzez ustawienie flagi procesu \texttt{trap\_exit} na \texttt{true}).
-Dla czytelniejszej prezentacji stanu systemu w przykładzie, proces kontrolujący diodę zieloną restartowany był dopiero po upływie przynajmniej dwóch sekund po otrzymaniu wiadomości o zakończeniu się jego poprzednika.
-
-Zależności między procesami uruchomionymi w ramach przykładowej aplikacji zostały zaprezentowane na rysunku \ref{fig:exampleledprocesses}. Fizyczna realizacja podłączeń diod, sterowanych stanem niskim, do mikrokontrolera wykorzystanego w przykładzie przedstawiona została na rysunku \ref{fig:exampleled}. Na obu rysunkach diody zostały oznaczone tymi samymi symbolami.
+W systemie uruchomiony był jeden proces implementujący logikę pierwszego z modułów oraz trzy procesy --- drugiego z nich.
+Każdy z procesów \texttt{led\_drv} kontrolował stan jednej zielonej diody - zapalał lub gasił ją po otrzymaniu wiadomości z procesu \texttt{led\_sup}. Proces ten, w odstępie półsekundowym, wysyłał do losowego procesu wiadomość o zmianie stanu diody. Dodatkowo, w logice procesu ustawione zostało przeterminowanie, efektem którego było zliczanie sytuacji, gdy żadna wiadomość kontrolująca stan diody nie przyszła do skrzynki odbiorczej procesu w~odstępie półtorej sekundy.
+Efektem wystąpienia takiego zdarzenia po raz piąty w czasie życia procesu skutkowało jego zakończeniem z błędem.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=1, clip, trim=10mm 175mm 135mm 10mm]{example_led_processes}}
 \caption{Struktura procesów w aplikacji i kontrolowanych przez nie diod}
 \label{fig:exampleledprocesses}
 \end{figure}
+
+Stan systemu wizualizowały dodatkowo trzy czerwone diody, które były zgaszone w momencie gdy procesy kontrolujące odpowiadające im diody zielony były uruchomione i zapalone w przeciwnym wypadku.
+Pojedynczy proces był procesem nadzorczym (\emph{supervisor}), którego zadaniem było ponowne uruchamianie kończących się procesów kontrolujących diody zielone. W tym celu, proces ten musiał działać jako proces przechwytujący wyjścia procesów z nim powiązanych jako wiadomości (co w języku Erlang realizowane jest poprzez ustawienie flagi procesu \texttt{trap\_exit} na \texttt{true}).
+Dla czytelniejszej prezentacji stanu systemu w przykładzie, proces kontrolujący diodę zieloną restartowany był dopiero po upływie przynajmniej sekundy po otrzymaniu wiadomości o zakończeniu się jego poprzednika.
+
+Zależności między procesami uruchomionymi w ramach przykładowej aplikacji zostały zaprezentowane na rysunku \ref{fig:exampleledprocesses}. Fizyczna realizacja podłączeń diod, sterowanych stanem niskim, do mikrokontrolera wykorzystanego w przykładzie przedstawiona została na rysunku \ref{fig:exampleled}. Na obu rysunkach diody zostały oznaczone tymi samymi symbolami.
+
+
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=1, clip, trim=0mm 40mm 0mm 35mm]{example_led}}
@@ -226,6 +229,135 @@ Zależności między procesami uruchomionymi w ramach przykładowej aplikacji zo
 
 
 \subsection{Uzyskane wyniki}
+
+Kod aplikacji, poza wspomnianymi modułami, składał się z częściowo zaimplementowanych modułów \texttt{lists} oraz \texttt{random} zawierających funkcje pomocnicze w realizacji implementacji aplikacji.
+Należały do nich takie funkcje jak np. \texttt{lists:keyfind/3} czy \texttt{lists:delete/2}.
+
+Tabela \ref{table:ledMemory} prezentuje poziom zajętości pamięci dostępnej w mikrokontrolerze przez poszczególne elementy uruchomionej maszyny wirtualnej oraz załadowanych pięciu modułów składających się na całą aplikację.
+
+W trakcie testowych uruchomień systemu problemem okazało się dynamiczne tworzenie i usuwanie zadań systemu FreeRTOS.
+Każda operacja tego typu wymagała alokacji nowego stosu dla zadania, który, jak udało się ustalić doświadczalnie, do prawidłowego działania powinien składać się przynajmniej z 350 słów maszynowych.
+Częste zwalnianie pamięci procesów, które kończą swoje działanie i alokacja pamięci dla nowotworzonych procesów prowadziły do fragmentacji pamięci. W efekcie, np. pomimo dostępnych ponad 5 kB pamięci RAM nie można było zaalokować obszaru pamięci dla stosu przeznaczonego dla nowego procesu.
+Rozwiązaniem tego problemu okazało się utworzenie, zaalokowanej na samym początku działania maszyny wirtualnej, puli zadań systemu FreeRTOS do których przypisywane będą procesy tworzone w trakcie działania systemu.
+Wobec powyższego, w trakcie uruchomienia aplikacji jedynymi dynamicznie zarządzanymi obszarami pamięci były sterty procesów i wiadomości przesyłane między procesami, będące na tyle niewielkie w stosunku do dostępnej pamięci, że nie powodowały fragmentacji pamięci.
+
+\begin{figure}[h]
+\begin{longtable}{|l|l|}
+\hline
+
+\textbf{Element systemu} & \textbf{Zajęta pamięć [B]} \\
+\endfirsthead
+\hline
+Tablica atomów (maks. 100 pozycji) & 3784 \\
+\hline
+Tablica eksportów (maks. 100 pozycji) & 440 \\
+\hline
+Funkcje wbudowane & 1040 \\
+\hline
+Moduły, w tym: & 11000 \\
+{\small \texttt{led\_drv}} & {\small 2160} \\
+{\small \texttt{led\_sup}} & {\small 5944} \\
+{\small \texttt{lists}} & {\small 1656} \\
+{\small \texttt{main}} & {\small 560} \\
+{\small \texttt{random}} & {\small 680} \\
+\hline
+Pula procesów (4 procesy) & 6584 \\
+\hline
+\textbf{Suma} & \textbf{22848} \\
+\hline
+
+\caption{Pamięć zajęta przez poszczególne uruchomione elementy maszyny wirtualnej} 
+\label{table:ledMemory} \\
+\end{longtable}
+\end{figure}
+
+W celu sprawdzenia stabilności działania maszyny wirtualnej pod kątem realizacji przeterminowań a także ewentualnych wycieków pamięci powodowanych przez \emph{garbage collector} przykładową aplikację pozostawiono na 12 godzin, a następnie zestawiono zestaw statystyk zbieranych przez uruchomioną maszynę wirtualną co minutę w czasie jej uruchomienia.
+Statystyki te zaprezentowano w formie wykresów na rysunku \ref{fig:ledGraphs}.
+
+\begin{figure}
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Liczba uruchomionych procesów'
+	set ylabel 'procesy'
+	set xlabel '$t$ [min]'
+	set yr [0:5]
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:2 w p pt 7 ps 1 notitle
+\end{gnuplot}
+
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Dostępna pamięć RAM'
+	set ylabel 'dostępna pamięć [B]'
+	set xlabel '$t$ [min]'
+	set yr [0:4000]
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:3 w p pt 7 ps 1 notitle
+\end{gnuplot}
+
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Łączny rozmiar sterty procesów'
+	set ylabel 'rozmiar sterty [B]'
+	set xlabel '$t$ [min]'
+	set yr [0:150]
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:4 w p pt 7 ps 1 notitle
+\end{gnuplot}
+
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Liczba uruchomień \emph{garbage collectora}'
+	set ylabel 'uruchomienia'
+	set xlabel '$t$ [min]'
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:6 w p pt 7 ps 1 notitle
+\end{gnuplot}
+\end{figure}
+
+\begin{figure}
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Pamięć zwolniona przez \emph{garbage collector}'
+	set ylabel 'zwolniona pamięć [słowa maszynowe]'
+	set xlabel '$t$ [min]'
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:5 w p pt 7 ps 1 notitle
+\end{gnuplot}
+
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Liczba wysłanych wiadomości'
+	set ylabel 'wiadomości'
+	set xlabel '$t$ [min]'
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:8 w p pt 7 ps 1 notitle
+\end{gnuplot}
+
+\begin{gnuplot}[terminal=epslatex,terminaloptions=color]
+	set grid
+	set title 'Liczba wystartowanych procesów'
+	set ylabel 'procesy'
+	set xlabel '$t$ [min]'
+	set xr [0:720]
+	set size 1.3,0.6
+	plot 'led_12h.csv' using 11:10 w p pt 7 ps 1 notitle
+\end{gnuplot}
+
+\caption{Wyniki uruchomienia aplikacji kontrolującej stan diod LED za pomocą dedykowanych procesów.}
+\label{fig:ledGraphs}
+
+\end{figure}
+
+Różna liczba uruchomionych procesów w czasie zależna jest od liczby oczekujących na ponowne uruchomienie procesów w momencie dokonania odczytu statystyki.
+Co za tym idzie, wahania widoczne są również na wykresie przedstawiającym rozmiar pamięci zajmowany przez sterty wszystkich uruchomionych procesów oraz wolnej pamięci RAM w systemie.
+Nie mniej, wskazania wszystkich wymienionych w czasie są stabilne (znajdują się w tym samym zakresie) co świadczy o poprawnym działaniu systemu automatycznego zarządzania pamięcią maszyny wirtualnej wraz z upływem czasu.
 
 \subsection{Wnioski}
 
@@ -263,6 +395,12 @@ Fizyczna realizacja podłączeń układu do płytki uruchomieniowej z mikrokontr
 \subsection{Uzyskane wyniki}
 
 Implementowany sterownik miał zapewnić abstrakcję modułu RFM73 z poziomu aplikacji napisanej w~języku Erlang z interfejsem pozwalającym na łatwe wysyłanie i odbieranie wiadomości drogą radiową. W celu przetestowania działania modułu, wysłano zestaw krótkich pakietów do innego urządzenia z podłączonym modułem tego samego typu. Program odbierający wiadomości po drugiej stronie odpowiadał wiadomościami o tej samej treści, dzięki czemu zweryfikowano poprawność danych przesyłanych w~dwie strony.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.7]{console_rfm}}
+\caption{Informacja w konsoli o wiadomościach postaci \texttt{"ping"} przez proces}
+\label{fig:consolerfm}
+\end{figure}
 
 
 \subsection{Wnioski}
