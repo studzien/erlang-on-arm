@@ -240,6 +240,13 @@ void process_main(void* arg) {
 		Goto(p);
 	OpCase(ALLOCATE_HEAP_ZERO):
 		debug_op2(p,"allocate_heap_zero\n");
+		StackN = unsigned_val(Arg(0));
+		HeapN = unsigned_val(Arg(1));
+		Live = unsigned_val(Arg(2));
+		allocate_heap(p, StackN, HeapN, Live);
+		for(ptr = E+StackN; E < ptr; ptr--) {
+			make_blank(*ptr);
+		}
 		RESTORE_I(p, p->i, 4);
 		Goto(p);
 	OpCase(TEST_HEAP):
