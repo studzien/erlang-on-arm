@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2013)
+This is BibTeX, Version 0.99d (TeX Live 2012)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: praca.aux
 A level-1 auxiliary file: rozdzial1.aux
@@ -15,46 +15,47 @@ A level-1 auxiliary file: dodatek_beam.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
 Warning--entry type for "ErlangVxWorks" isn't style-file defined
---line 106 of file bibliografia.bib
-You've used 20 entries,
+--line 112 of file bibliografia.bib
+Warning--to sort, need author or key in epl
+You've used 21 entries,
             2118 wiz_defined-function locations,
-            630 strings with 6719 characters,
-and the built_in function-call counts, 4701 in all, are:
-= -- 463
-> -- 162
+            634 strings with 6809 characters,
+and the built_in function-call counts, 4869 in all, are:
+= -- 480
+> -- 163
 < -- 1
-+ -- 70
++ -- 71
 - -- 48
-* -- 202
-:= -- 821
-add.period$ -- 66
-call.type$ -- 20
-change.case$ -- 79
+* -- 207
+:= -- 840
+add.period$ -- 69
+call.type$ -- 21
+change.case$ -- 82
 chr.to.int$ -- 0
-cite$ -- 20
-duplicate$ -- 193
-empty$ -- 436
+cite$ -- 22
+duplicate$ -- 200
+empty$ -- 459
 format.name$ -- 48
-if$ -- 1003
+if$ -- 1045
 int.to.chr$ -- 0
-int.to.str$ -- 20
+int.to.str$ -- 21
 missing$ -- 13
-newline$ -- 108
+newline$ -- 113
 num.names$ -- 40
-pop$ -- 130
+pop$ -- 140
 preamble$ -- 1
-purify$ -- 64
+purify$ -- 66
 quote$ -- 0
-skip$ -- 140
+skip$ -- 145
 stack$ -- 0
-substring$ -- 162
-swap$ -- 28
+substring$ -- 167
+swap$ -- 29
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 72
-warning$ -- 0
+type$ -- 76
+warning$ -- 1
 while$ -- 46
-width$ -- 22
-write$ -- 222
-(There was 1 warning)
+width$ -- 23
+write$ -- 231
+(There were 2 warnings)

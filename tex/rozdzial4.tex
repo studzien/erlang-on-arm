@@ -17,7 +17,7 @@ W rozdziale wymieniono elementy maszyny wirtualnej Erlanga, które zaimplementow
 Opis poszczególnych elementów zawiera wyjaśnienie ich sposobu działania, ich roli w maszynie wirtualnej, a także porównania
 funkcjonalności do maszyny wirtualnej BEAM.
 
-Wszystkie opisywane funkcjonalności zostały zaimplementowane w języku C, w oparciu o kod źródłowy maszyny wirtualnej BEAM, który opublikowany jest na licencji \emph{Erlang Public License}.
+Wszystkie opisywane funkcjonalności zostały zaimplementowane w języku C, w oparciu o kod źródłowy maszyny wirtualnej BEAM, który opublikowany jest na licencji \emph{Erlang Public License} \cite{epl}.
 
 %---------------------------------------------------------------------------
 \section{Moduł ładujący kod (\emph{loader})}
@@ -258,6 +258,7 @@ Bajty następujące po nagłówku typu danych zawierają informacje dotyczące m
 
 Ten typ danych został w niniejszej maszynie wirtualnej zaimplementowany w ograniczonym zakresie, pozwalającym na definicję i wywołanie obiektów funkcyjnych w podstawowym zakresie.
 Możliwe jest utworzenie lambdy poprzez jej zdefiniowanie, pod warunkiem że liczba jej wolnych zmiennych jest równa 0, lub na podstawie funkcji lokalnej (za pomocą konstrukcji \texttt{fun foo/2}).
+Dodatkowo, utworzone lambdy nie podlegają odśmiecaniu przez algorytm \emph{garbage collectora}, dlatego też ich dynamiczne tworzenie w trakcie działania programu będzie prowadzić do wycieków pamięci.
 
 Nagłówek typu danych ma następującą postać:
 $$\texttt{00000000 00000000 00000000 00\textbf{000101}}$$
@@ -413,7 +414,7 @@ Z implementacyjnego punktu widzenia kod interpretera kodu pośredniego w maszyni
 Maszyna wirtualna BEAM implementuje także sposób adresowania operacji przez ich opkod, na wypadek gdyby kompilator języka C użyty do jej kompilacji nie obsługiwał rozszerzenia standardu GNU C,~jakim są wskaźniki do etykiet.
 Metoda \emph{Switch Threading} nie wymaga podmiany w żaden sposób oryginalnych opkodów, jednak interpretacja kodu pośredniego z jej użyciem jest dużo wolniejsza.
 Powodem tego jest fakt, że kod każdej operacji przed jej wykonaniem należy sprawdzić z całym zestawem obsługiwanych opkodów w instrukcji \texttt{switch}, aż do napotkania właściwej.
-W maszynie na system FreeRTOS wykorzystano tylko adresowanie bezpośrednie, gdyż kompilator \textbf{gcc} wykorzystywany do jej kompilacji posiada ww. funkcjonalność.
+W maszynie na system FreeRTOS wykorzystano oba sposoby adresowania operacji, a używany może zostać wybrany na poziomie konfiguracji maszyny wirtualnej (por. \ref{cha:config}).
 
 Zestaw instrukcji zaimplementowanych w maszynie wirtualnej wraz z opisem ich działania został zaprezentowany w dodatku \ref{cha:operacjeBeam}.
 Dodatek ten wymienia operacje, jakie możliwe są do otrzymania w pliku z kodem pośrednim z kompilatora języka Erlang.

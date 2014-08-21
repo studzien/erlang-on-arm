@@ -1,3 +1,40 @@
 \chapter{Konfiguracja parametrów maszyny wirtualnej}
 \label{cha:config}
 %---------------------------------------------------------------------------
+
+Dodatek opisuje parametry konfiguracyjne maszyny wirtualnej Erlanga zaimplementowanej w ramach pracy.
+
+Konfiguracji dokonuje się w pliku źródłowym \texttt{config.h} przed kompilacją kodu maszyny wraz z~kodem pośrednim.
+
+Tabela \ref{table:config} przedstawia możliwe do skonfigurowania wartości razem z wartościami domyślnymi oraz opisem ich znaczenia.
+
+\begin{longtable}{|c|c|p{9cm}|}
+\hline
+
+Parameter & Wartość domyślna & Opis \\
+\endfirsthead
+\hline
+\texttt{THREADED\_CODE} & \texttt{1} & Jeżeli wartość parametru ustawiona jest na \texttt{0} to interpretacja kodu pośredniego odbywa się za pomocą \emph{Switch Threading}. Efektem każdego innego ustawienia jest użycie podejścia \emph{Direct Threading}. \\
+\hline
+\texttt{REDUCTIONS} & \texttt{300} & Liczba redukcji procesu, po wykonaniu których proces zostaje wywłaszczony przez planistę.\\
+\hline
+\texttt{MAX\_PROCESSES} & \texttt{4} & Liczba procesów, dla których zostanie zaalokowane miejsce w pamięci w momencie uruchomienia maszyny. Równoznaczne z maksymalną liczbą procesów, jakie mogą być uruchomione w systemie.\\ 
+\hline
+\texttt{ATOM\_TABLE\_SIZE} & \texttt{100} & Liczba atomów, dla których zostanie zaalokowane miejsce w pamięci w momencie uruchomienia maszyny. Równoznaczne z maksymalną liczbą atomów, jakie mogą zostać dodane do tablicy atomów (włącznie z atomami zdefiniowanymi przez samą maszynę wirtualną).\\
+\hline
+\texttt{EXPORT\_TABLE\_SIZE} & \texttt{100} & Liczba adresów do funkcji zewnętrzny, dla których zostanie zaalokowane miejsce w pamięci w momencie uruchomienia maszyny. Równoznaczne z maksymalną liczbą funkcji, które mogą zostać wyeksportowane z modułów (włącznie z funkcjami wbudowanymi zdefiniowanymi przez samą maszynę wirtualną).\\
+\hline
+\texttt{CODE\_BUFFER\_SIZE} & \texttt{1800} & Liczba bajtów, jakich tymczasowo używa moduł ładujący kod do załadowania pojedynczego modułu do pamięci. Próba załadowania modułu, którego kod przekracza ten rozmiar zakończy się niepowodzeniem.\\
+\hline
+\texttt{MAX\_REG} & \texttt{255} & Liczba rejestrów \textbf{X}, jakie zostają zaalokowane dla interpretera kodu pośredniego.\\
+\hline
+\texttt{DEBUG} & \texttt{1} & Każda wartość inna niż \texttt{0} uaktywnia tryp deweloperski, zawierający funkcje wypisujące w konsoli wyrażenia pomocnicze przy rozwoju aplikacji.\\
+\hline
+\texttt{DEBUG\_OP} & \texttt{0} & Każda wartość inna niż \texttt{0} uaktywania tryb deweloperski maszyny wirtualnej, wypisujący m.in. aktualnie wykonywane instrukcje. Użycie trybu drastycznie spowalnia działanie całego systemu.\\
+\hline
+\texttt{TASK\_STACK\_SIZE} & \texttt{350} & Określa rozmiar stosu alokowane dla zadania systemu FreeRTOS w słowach maszynowych. \\
+\hline
+
+\caption{Parametry konfiguracyjne maszyny wirtualnej} 
+\label{table:config} \\
+\end{longtable}

@@ -1,5 +1,10 @@
 \begin{thebibliography}{10}
 
+\bibitem{epl}
+{Erlang Public License}.
+\newblock \url{http://www.erlang.org/EPLICENSE}.
+\newblock [data dostępu: 21.08.2014].
+
 \bibitem{ErlangVxWorks}
 Ericsson AB.
 \newblock {Erlang Embedded Systems User's Guide}, 1997.
