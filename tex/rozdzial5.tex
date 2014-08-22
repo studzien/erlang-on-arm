@@ -208,7 +208,7 @@ Każdy z procesów \texttt{led\_drv} kontrolował stan jednej zielonej diody ---
 Efektem wystąpienia takiego zdarzenia piąty raz w czasie życia procesu skutkowało jego zakończeniem z błędem.
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=1, clip, trim=10mm 175mm 135mm 10mm]{example_led_processes}}
+\centerline{\includegraphics[scale=1, clip, trim=10mm 190mm 80mm 10mm]{example_led_processes}}
 \caption{Struktura procesów w aplikacji i kontrolowanych przez nie diod}
 \label{fig:exampleledprocesses}
 \end{figure}
@@ -216,6 +216,13 @@ Efektem wystąpienia takiego zdarzenia piąty raz w czasie życia procesu skutko
 Stan systemu wizualizowały dodatkowo trzy czerwone diody, które były zgaszone w momencie gdy procesy kontrolujące odpowiadające im diody zielony były uruchomione i zapalone w przeciwnym wypadku.
 Pojedynczy proces był procesem nadzorczym (\emph{supervisor}), którego zadaniem było ponowne uruchamianie kończących się procesów kontrolujących diody zielone. W tym celu, proces ten musiał działać jako proces przechwytujący wyjścia procesów z nim powiązanych jako wiadomości (co w języku Erlang realizowane jest poprzez ustawienie flagi procesu \texttt{trap\_exit} na \texttt{true}).
 Dla czytelniejszej prezentacji stanu systemu w przykładzie, proces kontrolujący diodę zieloną restartowany był dopiero po upływie przynajmniej sekundy po otrzymaniu wiadomości o zakończeniu się jego poprzednika.
+
+Kontrola przebiegu działania programu odbywała się zatem za pomocą trzech typów wiadomości przesyłanych między uruchomionymi procesami:
+\begin{itemize}
+\item \texttt{toggle} --- wysyłanej co pół sekundy przez proces nadzorczy do samego siebie, w efekcie czego wysyłał on taką samą wiadomość do jednego z procesów kontrolujących diody;
+\item \texttt{\{restart,Id}\} --- wysyłana przez proces nadzorczy do samego siebie, z sekundowym opóźnieniem, na której skutek odebrania restartowany był odpowiedni proces kontrolujący diodę;
+\item \texttt{\{'EXIT',Pid,timeout\}} --- wiadomość otrzymywana przez proces nadzorczy na skutek zakończenia działania procesu kontrolującego diodę na skutek osiągnięcia piątego przeterminowania.
+\end{itemize}
 
 Zależności między procesami uruchomionymi w ramach przykładowej aplikacji zostały zaprezentowane na rysunku \ref{fig:exampleledprocesses}. Fizyczna realizacja podłączeń diod, sterowanych stanem niskim, do mikrokontrolera wykorzystanego w przykładzie przedstawiona została na rysunku \ref{fig:exampleled}. Na obu rysunkach diody zostały oznaczone tymi samymi symbolami.
 
@@ -234,12 +241,6 @@ Kod aplikacji, poza wspomnianymi modułami, składał się z częściowo zaimple
 Należały do nich takie funkcje jak np. \texttt{lists:keyfind/3} czy \texttt{lists:delete/2}.
 
 Tabela \ref{table:ledMemory} prezentuje poziom zajętości pamięci dostępnej w mikrokontrolerze przez poszczególne elementy uruchomionej maszyny wirtualnej oraz załadowanych pięciu modułów składających się na całą aplikację.
-
-W trakcie testowych uruchomień systemu problemem okazało się dynamiczne tworzenie i usuwanie zadań systemu FreeRTOS.
-Każda operacja tego typu wymagała alokacji nowego stosu dla zadania, który, jak udało się ustalić doświadczalnie, do prawidłowego działania powinien składać się z przynajmniej 350 słów maszynowych.
-Częste zwalnianie pamięci procesów, które kończą swoje działanie i alokacja pamięci dla nowotworzonych procesów prowadziły do fragmentacji pamięci. W efekcie, np. pomimo dostępnych ponad 5 kB pamięci RAM nie można było zaalokować obszaru pamięci dla stosu przeznaczonego dla nowego procesu.
-Rozwiązaniem tego problemu okazało się utworzenie, zaalokowanej na samym początku działania maszyny wirtualnej, puli zadań systemu FreeRTOS do których przypisywane były procesy tworzone w trakcie działania systemu.
-Wobec powyższego, w trakcie uruchomienia aplikacji jedynymi dynamicznie zarządzanymi obszarami pamięci były sterty procesów i wiadomości przesyłane między procesami, będące na tyle niewielkie w stosunku do dostępnej pamięci, że nie powodowały fragmentacji pamięci.
 
 \begin{figure}[h]
 \begin{longtable}{|l|l|}
@@ -271,9 +272,15 @@ Pula procesów (4 procesy) & 6584 \\
 \end{longtable}
 \end{figure}
 
+W trakcie testowych uruchomień systemu problemem okazało się dynamiczne tworzenie i usuwanie zadań systemu FreeRTOS.
+Każda operacja tego typu wymagała alokacji nowego stosu dla zadania, który, jak udało się ustalić doświadczalnie, do prawidłowego działania powinien składać się z przynajmniej 350 słów maszynowych.
+Częste zwalnianie pamięci procesów, które kończą swoje działanie i alokacja pamięci dla nowotworzonych procesów prowadziły do fragmentacji pamięci. W efekcie, np. pomimo dostępnych ponad 5 kB pamięci RAM nie można było zaalokować obszaru pamięci dla stosu przeznaczonego dla nowego procesu.
+Rozwiązaniem tego problemu okazało się utworzenie, zaalokowanej na samym początku działania maszyny wirtualnej, puli zadań systemu FreeRTOS do których przypisywane były procesy tworzone w trakcie działania systemu.
+Wobec powyższego, w trakcie uruchomienia aplikacji jedynymi dynamicznie zarządzanymi obszarami pamięci były sterty procesów i wiadomości przesyłane między procesami, będące na tyle niewielkie w stosunku do dostępnej pamięci, że nie powodowały fragmentacji pamięci.
+
 W celu sprawdzenia stabilności działania maszyny wirtualnej pod kątem realizacji przeterminowań a~także ewentualnych wycieków pamięci powodowanych przez \emph{garbage collector} przykładową aplikację pozostawiono uruchomioną na 12 godzin.
-Następnie zestawiono zestaw statystyk zbieranych przez uruchomioną maszynę wirtualną co minutę w czasie jej uruchomienia.
-Statystyki te zaprezentowano w formie wykresów na rysunku \ref{fig:ledGraphs}.
+Następnie zestawiono zbiór statystyk zbieranych przez uruchomioną maszynę wirtualną co minutę w czasie jej uruchomienia.
+Statystyki te zaprezentowano w~formie wykresów na rysunku \ref{fig:ledGraphs}.
 
 \begin{figure}
 \begin{gnuplot}[terminal=epslatex,terminaloptions=color]
@@ -301,7 +308,7 @@ Statystyki te zaprezentowano w formie wykresów na rysunku \ref{fig:ledGraphs}.
 \begin{gnuplot}[terminal=epslatex,terminaloptions=color]
 	set grid
 	set title 'Łączny rozmiar sterty procesów'
-	set ylabel 'rozmiar sterty [B]'
+	set ylabel 'rozmiar sterty [słowa maszynowe]'
 	set xlabel '$t$ [min]'
 	set yr [0:150]
 	set xr [0:720]
@@ -358,18 +365,20 @@ Statystyki te zaprezentowano w formie wykresów na rysunku \ref{fig:ledGraphs}.
 
 Różna liczba uruchomionych procesów w czasie zależna jest od liczby procesów oczekujących na ponowne uruchomienie w momencie dokonania odczytu statystyki.
 Co za tym idzie, wahania widoczne są również na wykresie przedstawiającym rozmiar pamięci zajmowanej przez sterty wszystkich uruchomionych procesów oraz rozmiar wolnej pamięci RAM w systemie.
-Niemniej, wskazania wszystkich wymienionych w czasie są stabilne (znajdują się w tym samym zakresie przez cały czas działania aplikacji).
+Niemniej, wskazania wszystkich wymienionych w czasie znajdowały się w tym samym zakresie przez cały czas działania aplikacji.
 Z kolei takie wartości jak: liczba uruchomień \emph{garbage collectora}, rozmiar pamięci odzyskanej przez niego, sumaryczna liczba wysłanych wiadomości przez procesy czy sumaryczna liczba wystartowanych procesów w systemie przez cały czas działania aplikacji rosły liniowo.
-Świadczy to o stabilnej i poprawnej obsłudze aplikacji przez maszynę wirtualną wraz z upływem czasu.
+Świadczy to o stabilnej i~poprawnej obsłudze aplikacji przez maszynę wirtualną wraz z upływem czasu.
 
 \subsection{Wnioski}
 
 Szczególną uwagę należy zwrócić na rozmiar pamięci zajmowanej przez takie elementy maszyny wirtualnej jak tablica atomów czy załadowany kod modułów.
-Tablica atomów, łącznie z ok. 50 atomami załadowanymi do pamięci po starcie maszyny wirtualnej które potrzebne są do umieszczenia funkcji wbudowanych w tablicy eksportowanych funkcji, zajmuje prawie 4 kB pamięci RAM.  
+Tablica atomów, łącznie z ok. 50 atomami załadowanymi do pamięci po starcie maszyny wirtualnej, które potrzebne są do umieszczenia funkcji wbudowanych w tablicy eksportowanych funkcji, zajmuje prawie 4 kB pamięci RAM.  
 Kod modułów, a w szczególności modułu \texttt{led\_sup} zajął w pamięci prawie 6 kB pomimo niezbyt skomplikowanej logiki. Wprowadza on jednak do systemu pewne złożone wyrażenia (jak lista diod) oraz znaczącą liczbę nowych atomów.
 
 Do wystartowania całej maszyny wirtualnej z przykładową aplikacją potrzebne było ponad 22 kB pamięci z dostępnych 28 kB.
-Należy więc wysunąć wniosek, że tak ograniczony rozmiar pamięci RAM jak w przypadku mikrokontrolera LPC1769 będzie przeszkodą w implementacji kolejnych funkcji wbudowanych oraz programów o bardziej skomplikowanej logice, a co za tym idzie dłuższym kodzie pośrednim i z większą ilością uruchomionych procesów, aniżeli w przypadku opisanych w niniejszym rozdziale przykładowych aplikacji.
+Należy więc wysunąć wniosek, że tak ograniczony rozmiar pamięci RAM, jak w przypadku mikrokontrolera LPC1769, będzie przeszkodą w implementacji kolejnych funkcji wbudowanych oraz programów o bardziej skomplikowanej logice, a co za tym idzie dłuższym kodzie pośrednim i z większą ilością uruchomionych procesów aniżeli w przypadku opisanych w niniejszym rozdziale przykładowych aplikacji.
+
+Z kolei uzyskane wyniki długoterminowego testu, jakim było uruchomienie przykładowego programu przez czas dwunastu godzin świadczą o stabilnym działaniu: mechanizmów zarządzania czasem, algorytmu odśmiecania pamięci, zarządzania współbieżnym wykonywaniem logiki procesów oraz mechanizmu komunikacji pomiędzy procesami zaimplementowanych w ramach maszyny wirtualnej Erlanga dla systemu FreeRTOS.
 
 \section{Sterownik RFM73}
 \label{sec:przykladyRfm}
@@ -390,7 +399,7 @@ Typowymi zastosowaniami modułu mogą być takie urządzenia jak np:
 \end{itemize}
 
 Implementowana aplikacja miała pozwolić na przykładowe obsłużenie urządzenia peryferyjnego w~języku Erlang, w tym wypadku za pomocą zaimplementowanych funkcji wbudowanych obsługujących interfejs SPI.
-Udostępnione funkcje wyprowadzeń z modułu RFM73 pozwoliły również na zaimplementowanie biblioteki w ten sposób, by możliwe było przetestowanie tłumaczenia przerwań zewnętrznych zgłaszanych do mikrokontrolera na wiadomości wysyłane do procesów.
+Funkcjonalność wyprowadzeń z modułu RFM73 pozwoliły również na zaimplementowanie biblioteki w ten sposób, by możliwe było przetestowanie tłumaczenia przerwań zewnętrznych zgłaszanych do mikrokontrolera na wiadomości wysyłane do procesów.
 
 Fizyczna realizacja podłączeń układu do płytki uruchomieniowej z mikrokontrolerem LPC1769, na którym uruchamiany był niniejszy przykład została zaprezentowana na rysunku \ref{fig:examplerfm}.
 
@@ -403,7 +412,17 @@ Fizyczna realizacja podłączeń układu do płytki uruchomieniowej z mikrokontr
 
 \subsection{Uzyskane wyniki}
 
-Implementowany sterownik miał zapewnić abstrakcję modułu RFM73 z poziomu aplikacji napisanej w~języku Erlang z interfejsem pozwalającym na łatwe wysyłanie i odbieranie wiadomości drogą radiową. W celu przetestowania działania modułu, wysłano zestaw krótkich pakietów do innego urządzenia z podłączonym modułem tego samego typu. Program odbierający wiadomości po drugiej stronie odpowiadał wiadomościami o tej samej treści, dzięki czemu zweryfikowano poprawność danych przesyłanych w~dwie strony.
+Implementowany sterownik miał zapewnić abstrakcję modułu RFM73 z poziomu aplikacji napisanej w~języku Erlang z interfejsem pozwalającym na łatwe wysyłanie i odbieranie wiadomości drogą radiową.
+W celu przetestowania działania modułu, wysłano zestaw krótkich pakietów do innego urządzenia z podłączonym modułem tego samego typu.
+Z punktu widzenia zaimplementowanej aplikacji, pakiety te miały postać listy \texttt{"ping"}. Zostały one jednak przetworzone w taki sposób, że do bufora wiadomości modułu zapisany został ciąg bajtów odpowiadający kodom ASCII kolejnych znaków napisu.
+Urządzenie odbiorze kontrolowane było przez innego rodzaju mikrokontroler --- ATmega8A, dla którego sterownik modułu RFM73 został zaimplementowany w języku C.
+Program odbierający wiadomości po drugiej stronie na wiadomości o treści \texttt{"ping"} odpowiadał pakietem o treści \texttt{"pong"}.
+Odebranie wiadomości przez moduł sygnalizowane było przerwaniem na wyprowadzeniu \textbf{IRQ}, podłączonym do pinu \textbf{P0.1} mikrokontrolera LPC1769.
+Przerwanie było tłumaczone na wiadomość o treści \texttt{interrupt}, wysyłaną do uruchomionego procesu sterownika, co stanowiło sygnał że proces może wykonać odczyt wiadomości z kolejki modułu RFM73.
+Odebrana wiadomość, przekształcona tym razem z ciągu bajtów w listę, była argumentem obiektu funkcyjnego, który został przekazany do procesu sterownika w momencie jego startu.
+W niniejszym przykładzie lambda ta wypisywała w konsoli aktualny czas (wynik wywołania funkcji \texttt{erlang:now/0}) oraz listę będącą otrzymaną wiadomością.
+Wynik jej działania możliwy jest do zaobserwowania na rysunku \ref{fig:consolerfm}.
+Należy zauważyć, że odstęp między otrzymanymi wiadomościami jest większy niż jedna sekunda ze względu na opóźnienie, jakie wprowadziło samo wypisywanie wyjścia.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.7]{console_rfm}}
@@ -413,5 +432,8 @@ Implementowany sterownik miał zapewnić abstrakcję modułu RFM73 z poziomu apl
 
 
 \subsection{Wnioski}
+Aplikacja jest przykładem implementacji obsługi urządzenia peryferyjnego, z wykorzystaniem szeregowego interfejsu SPI, przez maszynę wirtualną Erlanga dla systemu FreeRTOS.
+Analogicznie, obsłużone mogą zostać inne interfejsy obsługiwane przez dany mikrokontroler, jak np. UART. 
 
+Sama implementacja sterownika z kolei może służyć do tworzenia aplikacji wykorzystujących komunikację bezprzewodową, opartą o wysokie częstotliwości, w praktyce.
 Zaimplementowana biblioteka może być również podstawą do implementacji protokołu \emph{Distributed Erlang}, dzięki któremu możliwy byłby do uruchomienia klaster urządzeń komunikujących się za pomocą modułu RFM73.

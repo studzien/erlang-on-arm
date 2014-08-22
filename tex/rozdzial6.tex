@@ -1,11 +1,15 @@
 \chapter{Podsumowanie}
 \label{cha:podsumowanie}
 
-\section{Wnioski}
-\label{sec:podsumowanieWnioski}
+W ramach niniejszej pracy dyplomowej dokonano implementacji maszyny wirtualnej języka programowania Erlang dla mikrojądra FreeRTOS, przeznaczonego do uruchamiania na urządzeniach wbudowanych, w podstawowym zakresie, pozwalającym na uruchamianie prostych aplikacji napisanych w tym języku.
 
-\section{Dalszy rozwój projektu}
-\label{sec:podsumowanieDalszy}
+Z wykorzystaniem zaimplementowanej maszyny napisano i uruchomiono na mikrokontrolerze LPC1769 trzy przykładowe aplikacje.
+Ich działanie potwierdziło właściwe funkcjonowanie m.in. sekwencyjnych i współbieżnych cech języka, stabilności działania w czasie czy możliwość praktycznego wykorzystania do implementacji sterownika urządzenia peryferyjnego.
+
+Ponadto, praca stanowi dokumentację sposobu działania poszczególnych elementów maszyny wirtualnej Erlanga, razem z zestawieniem z maszyną wirtualną BEAM, która jest najpopularniejszym środowiskiem uruchomieniowym dla języka, na której implementacja maszyny została oparta.
+
+Udokumentowano również pośrednie postacie kodu źródłowego programu w języku Erlang jakie wykorzystuje kompilator tego języka, strukturę skompilowanego pliku z kodem pośrednim oraz znaczenie instrukcji, jakie można znaleźć w plikach tego typu.
+Tematyka ta nie jest objęta przez oficjalną dokumentację języka, pewna jej postać jednak była niezbędna do wykonania implementacji maszyny. 
 
 W ramach przyszłych prac warto dokonać próby rozwoju projektu w następujących aspektach:
 

@@ -1,15 +1,93 @@
 \select@language {polish}
-\contentsline {chapter}{\numberline {1}Przyk\IeC {\l }adowe aplikacje}{7}{chapter.1}
-\contentsline {section}{\numberline {1.1}Silnia}{7}{section.1.1}
-\contentsline {subsection}{\numberline {1.1.1}Cel aplikacji}{7}{subsection.1.1.1}
-\contentsline {subsection}{\numberline {1.1.2}Uzyskane wyniki}{8}{subsection.1.1.2}
-\contentsline {subsection}{\numberline {1.1.3}Wnioski}{9}{subsection.1.1.3}
-\contentsline {section}{\numberline {1.2}Kontrola diod LED przez procesy}{11}{section.1.2}
-\contentsline {subsection}{\numberline {1.2.1}Cel aplikacji}{11}{subsection.1.2.1}
-\contentsline {subsection}{\numberline {1.2.2}Uzyskane wyniki}{13}{subsection.1.2.2}
-\contentsline {subsection}{\numberline {1.2.3}Wnioski}{14}{subsection.1.2.3}
-\contentsline {section}{\numberline {1.3}Sterownik RFM73}{14}{section.1.3}
-\contentsline {subsection}{\numberline {1.3.1}Cel aplikacji}{14}{subsection.1.3.1}
-\contentsline {subsection}{\numberline {1.3.2}Uzyskane wyniki}{17}{subsection.1.3.2}
-\contentsline {subsection}{\numberline {1.3.3}Wnioski}{17}{subsection.1.3.3}
-\contentsline {chapter}{Bibliografia}{20}{subsection.1.3.3}
+\contentsline {chapter}{\numberline {1}Wprowadzenie}{9}{chapter.1}
+\contentsline {section}{\numberline {1.1}Programowanie i zastosowanie system\IeC {\'o}w wbudowanych}{9}{section.1.1}
+\contentsline {section}{\numberline {1.2}Wykorzystanie Erlanga w programowaniu system\IeC {\'o}w wbudowanych}{11}{section.1.2}
+\contentsline {section}{\numberline {1.3}Cele pracy}{13}{section.1.3}
+\contentsline {section}{\numberline {1.4}Zawarto\IeC {\'s}\IeC {\'c} pracy}{14}{section.1.4}
+\contentsline {chapter}{\numberline {2}System operacyjny FreeRTOS}{15}{chapter.2}
+\contentsline {section}{\numberline {2.1}Zadania i planista (\emph {scheduler})}{15}{section.2.1}
+\contentsline {section}{\numberline {2.2}Kolejki}{16}{section.2.2}
+\contentsline {section}{\numberline {2.3}Przerwania}{17}{section.2.3}
+\contentsline {section}{\numberline {2.4}Zarz\IeC {\k a}dzanie zasobami}{17}{section.2.4}
+\contentsline {section}{\numberline {2.5}Zarz\IeC {\k a}dzanie pami\IeC {\k e}ci\IeC {\k a}}{18}{section.2.5}
+\contentsline {section}{\numberline {2.6}FreeRTOS i LPC176x}{18}{section.2.6}
+\contentsline {section}{\numberline {2.7}Podsumowanie}{20}{section.2.7}
+\contentsline {chapter}{\numberline {3}J\IeC {\k e}zyk programowania Erlang}{21}{chapter.3}
+\contentsline {chapter}{\numberline {4}Zaimplementowane elementy maszyny wirtualnej}{23}{chapter.4}
+\contentsline {section}{\numberline {4.1}Modu\IeC {\l } \IeC {\l }aduj\IeC {\k a}cy kod (\emph {loader})}{23}{section.4.1}
+\contentsline {section}{\numberline {4.2}Tablice}{24}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Tablica atom\IeC {\'o}w}{26}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Tablica eksportowanych funkcji}{26}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}Typy danych}{27}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Warto\IeC {\'s}ci bezpo\IeC {\'s}rednie a po\IeC {\'s}rednie}{27}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Warto\IeC {\'s}ci bezpo\IeC {\'s}rednie}{29}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Listy}{29}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Krotki}{30}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Du\IeC {\.z}e liczby}{31}{subsection.4.3.5}
+\contentsline {subsection}{\numberline {4.3.6}Lambdy}{32}{subsection.4.3.6}
+\contentsline {subsection}{\numberline {4.3.7}Niezaimplementowane typy danych}{32}{subsection.4.3.7}
+\contentsline {section}{\numberline {4.4}Interpreter kodu maszynowego}{33}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Maszyna stosowa a rejestrowa}{33}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Model interpretera}{34}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.3}Spos\IeC {\'o}b implementacji}{35}{subsection.4.4.3}
+\contentsline {section}{\numberline {4.5}Procesy}{37}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Tablica proces\IeC {\'o}w}{37}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Struktura procesu}{37}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.3}Komunikacja mi\IeC {\k e}dzyprocesowa}{38}{subsection.4.5.3}
+\contentsline {subsection}{\numberline {4.5.4}Obs\IeC {\l }uga b\IeC {\l }\IeC {\k e}d\IeC {\'o}w}{40}{subsection.4.5.4}
+\contentsline {section}{\numberline {4.6}Planista (\emph {scheduler})}{40}{section.4.6}
+\contentsline {section}{\numberline {4.7}Funkcje wbudowane (\emph {Built-In Functions})}{43}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Funkcje og\IeC {\'o}lne (modu\IeC {\l } \texttt {erlang})}{43}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}Listy (modu\IeC {\l } \texttt {lists})}{44}{subsection.4.7.2}
+\contentsline {subsection}{\numberline {4.7.3}GPIO i obs\IeC {\l }uga przerwa\IeC {\'n} (modu\IeC {\l } \texttt {lpc\_gpio})}{44}{subsection.4.7.3}
+\contentsline {subsection}{\numberline {4.7.4}SPI (modu\IeC {\l } \texttt {lpc\_spi})}{45}{subsection.4.7.4}
+\contentsline {subsection}{\numberline {4.7.5}Funkcje pomocnicze (modu\IeC {\l } \texttt {lpc\_debug})}{45}{subsection.4.7.5}
+\contentsline {section}{\numberline {4.8}\emph {Garbage collector}}{45}{section.4.8}
+\contentsline {subsection}{\numberline {4.8.1}Pami\IeC {\k e}\IeC {\'c} zajmowana przez proces}{46}{subsection.4.8.1}
+\contentsline {subsection}{\numberline {4.8.2}Algorytm Cheneya}{47}{subsection.4.8.2}
+\contentsline {subsection}{\numberline {4.8.3}Podej\IeC {\'s}cie generacyjne w maszynie BEAM}{51}{subsection.4.8.3}
+\contentsline {section}{\numberline {4.9}Mechanizmy zarz\IeC {\k a}dzania czasem}{52}{section.4.9}
+\contentsline {section}{\numberline {4.10}Podsumowanie r\IeC {\'o}\IeC {\.z}nic z maszyn\IeC {\k a} BEAM}{54}{section.4.10}
+\contentsline {chapter}{\numberline {5}Przyk\IeC {\l }adowe aplikacje}{57}{chapter.5}
+\contentsline {section}{\numberline {5.1}Silnia}{57}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Cel aplikacji}{57}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Uzyskane wyniki}{58}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Wnioski}{59}{subsection.5.1.3}
+\contentsline {section}{\numberline {5.2}Kontrola diod LED przez procesy}{61}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Cel aplikacji}{61}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Uzyskane wyniki}{62}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Wnioski}{64}{subsection.5.2.3}
+\contentsline {section}{\numberline {5.3}Sterownik RFM73}{67}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Cel aplikacji}{67}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Uzyskane wyniki}{67}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Wnioski}{69}{subsection.5.3.3}
+\contentsline {chapter}{\numberline {6}Podsumowanie}{71}{chapter.6}
+\contentsline {chapter}{\numberline {A}Zawarto\IeC {\'s}\IeC {\'c} do\IeC {\l }\IeC {\k a}czonej p\IeC {\l }yty CD}{73}{appendix.A}
+\contentsline {chapter}{\numberline {B}Kompilator aplikacji}{75}{appendix.B}
+\contentsline {section}{\numberline {B.1}Opis aplikacji}{75}{section.B.1}
+\contentsline {section}{\numberline {B.2}Kompilacja narz\IeC {\k e}dzia}{75}{section.B.2}
+\contentsline {section}{\numberline {B.3}U\IeC {\.z}ycie narz\IeC {\k e}dzia}{76}{section.B.3}
+\contentsline {chapter}{\numberline {C}Konfiguracja parametr\IeC {\'o}w maszyny wirtualnej}{77}{appendix.C}
+\contentsline {chapter}{\numberline {D}Kompilacja kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego}{79}{appendix.D}
+\contentsline {section}{\numberline {D.1}Wprowadzenie}{79}{section.D.1}
+\contentsline {section}{\numberline {D.2}Kod \IeC {\'z}r\IeC {\'o}d\IeC {\l }owy}{79}{section.D.2}
+\contentsline {section}{\numberline {D.3}Preprocessing}{80}{section.D.3}
+\contentsline {section}{\numberline {D.4}Drzewo sk\IeC {\l }adniowe}{81}{section.D.4}
+\contentsline {section}{\numberline {D.5}Core Erlang}{83}{section.D.5}
+\contentsline {section}{\numberline {D.6}Kod po\IeC {\'s}redni - bajtkod}{84}{section.D.6}
+\contentsline {section}{\numberline {D.7}Plik binarny BEAM}{87}{section.D.7}
+\contentsline {subsection}{\numberline {D.7.1}Tablica atom\IeC {\'o}w}{88}{subsection.D.7.1}
+\contentsline {subsection}{\numberline {D.7.2}Kod po\IeC {\'s}redni}{89}{subsection.D.7.2}
+\contentsline {subsection}{\numberline {D.7.3}Tablica importowanych funkcji}{89}{subsection.D.7.3}
+\contentsline {subsection}{\numberline {D.7.4}Tablica eksportowanych funkcji}{90}{subsection.D.7.4}
+\contentsline {subsection}{\numberline {D.7.5}Tablica funkcji lokalnych}{90}{subsection.D.7.5}
+\contentsline {subsection}{\numberline {D.7.6}Tablica lambd}{91}{subsection.D.7.6}
+\contentsline {subsection}{\numberline {D.7.7}Tablica sta\IeC {\l }ych}{92}{subsection.D.7.7}
+\contentsline {subsection}{\numberline {D.7.8}Lista atrybut\IeC {\'o}w modu\IeC {\l }u}{93}{subsection.D.7.8}
+\contentsline {subsection}{\numberline {D.7.9}Lista dodatkowych informacji o kompilacji modu\IeC {\l }u}{93}{subsection.D.7.9}
+\contentsline {subsection}{\numberline {D.7.10}Tablica linii kodu \IeC {\'z}r\IeC {\'o}d\IeC {\l }owego modu\IeC {\l }u}{93}{subsection.D.7.10}
+\contentsline {subsection}{\numberline {D.7.11}Drzewo syntaktyczne modu\IeC {\l }u}{94}{subsection.D.7.11}
+\contentsline {chapter}{\numberline {E}Lista instrukcji maszyny wirtualnej BEAM}{95}{appendix.E}
+\contentsline {section}{\numberline {E.1}Typy argument\IeC {\'o}w}{95}{section.E.1}
+\contentsline {section}{\numberline {E.2}Lista instrukcji}{97}{section.E.2}
+\contentsline {chapter}{Bibliografia}{113}{table.E.2}
