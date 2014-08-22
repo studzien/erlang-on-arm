@@ -1,47 +1,61 @@
-This is BibTeX, Version 0.99d (TeX Live 2012)
+This is BibTeX, Version 0.99d (TeX Live 2013)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: praca.aux
+A level-1 auxiliary file: rozdzial1.aux
+A level-1 auxiliary file: rozdzial2.aux
 A level-1 auxiliary file: rozdzial3.aux
+A level-1 auxiliary file: rozdzial4.aux
+A level-1 auxiliary file: rozdzial5.aux
+A level-1 auxiliary file: rozdzial6.aux
+A level-1 auxiliary file: dodatek_cd.aux
+A level-1 auxiliary file: dodatek_builder.aux
+A level-1 auxiliary file: dodatek_config.aux
+A level-1 auxiliary file: dodatek_kompilacja.aux
+A level-1 auxiliary file: dodatek_beam.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
-You've used 2 entries,
+Warning--entry type for "ErlangVxWorks" isn't style-file defined
+--line 126 of file bibliografia.bib
+Warning--to sort, need author or key in epl
+You've used 23 entries,
             2118 wiz_defined-function locations,
-            509 strings with 4232 characters,
-and the built_in function-call counts, 450 in all, are:
-= -- 38
-> -- 14
-< -- 0
-+ -- 6
-- -- 4
-* -- 18
-:= -- 85
-add.period$ -- 6
-call.type$ -- 2
-change.case$ -- 6
+            644 strings with 7029 characters,
+and the built_in function-call counts, 5299 in all, are:
+= -- 518
+> -- 177
+< -- 1
++ -- 77
+- -- 52
+* -- 223
+:= -- 916
+add.period$ -- 75
+call.type$ -- 23
+change.case$ -- 88
 chr.to.int$ -- 0
-cite$ -- 2
-duplicate$ -- 24
-empty$ -- 45
-format.name$ -- 4
-if$ -- 93
+cite$ -- 24
+duplicate$ -- 224
+empty$ -- 503
+format.name$ -- 52
+if$ -- 1137
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 4
-newline$ -- 13
-num.names$ -- 4
-pop$ -- 16
+int.to.str$ -- 23
+missing$ -- 17
+newline$ -- 123
+num.names$ -- 44
+pop$ -- 156
 preamble$ -- 1
-purify$ -- 6
+purify$ -- 72
 quote$ -- 0
-skip$ -- 12
+skip$ -- 157
 stack$ -- 0
-substring$ -- 10
-swap$ -- 2
-text.length$ -- 0
+substring$ -- 177
+swap$ -- 31
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 4
-warning$ -- 0
-while$ -- 4
-width$ -- 3
-write$ -- 22
+type$ -- 80
+warning$ -- 1
+while$ -- 50
+width$ -- 25
+write$ -- 251
+(There were 2 warnings)

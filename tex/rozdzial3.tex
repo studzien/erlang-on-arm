@@ -7,7 +7,8 @@ Szczegółowy opis języka został zawarty np. w pozycjach \cite{Armstrong2013} 
 
 
 Erlang jest wieloparadygmatowym --- funkcyjnym i współbieżnym językiem programowania ogólnego przeznaczenia o dynamicznym, lecz silnym typowaniu i automatycznym systemie zarządzania pamięcią.
-Motywacje, które przyczyniły się do zaprojektowania i implementacji języka oraz jego podstawowe założenia zostały przedstawione w podrozdziale \ref{sec:jezykiFunkcyjne}.
+Kod źródłowy w Erlangu kompilowany jest do kodu pośredniego, który następnie interperetowany jest przez dedykowaną maszynę wirtualną.
+Motywacje, które przyczyniły się do zaprojektowania i~implementacji języka oraz jego podstawowe założenia zostały przedstawione w podrozdziale \ref{sec:jezykiFunkcyjne}.
 
 %---------------------------------------------------------------------------
 \section{Typy danych}
@@ -61,17 +62,102 @@ W momencie, gdy tej wersji modułu nie będzie wykorzystywał już żaden proces
 \section{Kontrola przebiegu programu}
 \label{sec:erlangFlow}
 
+Ponieważ Erlang jest funkcyjnym językiem programowania, podstawą sterowania programem jest wywoływanie funkcji lokalnych, zdefiniowanych w tym samym module, z którego następuje wywołanie lub zewnętrznych, zdefiniowanych w innych modułach lub funkcji wbudowanych, zaimplementowanych bezpośrednio w kodzie maszyny wirtualnej.
 
+W treści funkcji wykorzystywać można zmienne.
+Zmienne w języku Erlang reprezentuje się za pomocą napisów rozpoczynających się od wielkiej litery.
+Zmienna może znajdować się w dwóch stanach: związaną z pewnością wartością lub niezwiązaną.
+Jeżeli pewnej zmiennej przypisano już jakąś wartość nie można jej już zmienić w tej samej funkcji.
+Próba przypisania zmiennej nowej wartości zakończy się błędem \texttt{badmatch}, natomiast próba ponownego powiązania zmiennej z już przypisaną wcześniej wartością jest dozwolona i stanowi naturalny sposób implementacji asercji w kodzie.
+Początkowym zbiorem zmiennych z przypisaną wartością dla funkcji są jej argumenty.
 
+Wybór odpowiedniego fragmentu kodu do wykonania w zależności od wartości zmiennych możliwy jest dzięki mechanizmowi \emph{pattern matchingu}.
+Polega on na wyborze pierwszej gałęzi funkcji (w przypadku zastosowaniu w nagłówkach funkcji) lub instrukcji warunkowej (w przypadku instrukcji \texttt{case} i~\texttt{if}), która jest zgodna z przekazanymi wartości zmiennych.
+Nagłówek funkcji lub gałąź instrukcji warunkowej może definiować dokładną wartość jaką powinny mieć zmienne (w tym wartości związanych już zmiennych) lub cześciową (wiążąc nieznane wartości z nowymi zmiennymi).
+Oprócz tego możliwe jest wykonywanie dodatkowych sprawdzeń spełnienia dodatkowych warunków przy pomocy zestawu strażników (\emph{guards}).
+
+Przykład \emph{pattern matchingu} został zaprezentowany na listingu \ref{lis:patternmatching}.
+Jednoargumentowa funkcja \texttt{foo} zwróci atom \texttt{a} jeżeli jej argumentem będzie liczba całkowita.
+Atom \texttt{b} zostanie zwrócony w przypadu, gdy przekazanym argumentem będzie krotka o arności 2, której pierwszym elementem będzie atom \texttt{arg}. Drugi element krotki zostanie wtedy powiązany ze zmienną \texttt{Arg}. W sytuacji, gdy będzie to każda inna dwójka, z funkcji zostanie zwrócona wartość \texttt{c}. Pierwszy element krotki zostanie powiązany ze zmienną \texttt{Arg1}, zaś drugi ze zmienną \texttt{Arg2}.
+Dla każdego innego przekazanego argumentu funkcja zwróci atom \texttt{d}.
+
+\begin{lstlisting}[style=erlang, caption=Przykład \emph{pattern matchingu}, label=lis:patternmatching]
+foo(Arg) when is_integer(Arg) ->
+    a;
+foo({arg, Arg}) ->
+    b;
+foo({Arg1, Arg2}) ->
+    c;
+foo(Arg) ->
+    d.
+\end{lstlisting}
+
+Ze względu na to, że języki funkcyjne nie mają konstrukcji pętli znanych z języków imperatywnych, wszelkie powtarzalne operacje powinny być zaimplementowane przy użyciu funkcji rekurencyjnych.
+Kompilator języka Erlang identyfikuje funkcje ogonowo-rekurencyjne, których zwracana wartość zależy tylko i wyłącznie od rekurencyjnego wywołania funkcji. Dzięki temu możliwa jest optymalizacja kodu pośredniego tak, aby do rekurencyjnych wywołań funkcji nie wykorzystywać stosu.
 
 %---------------------------------------------------------------------------
 \section{Programowanie współbieżne i rozproszone}
 \label{sec:erlangConcurrent}
 
+Erlang jest implementacją modelu aktorów \cite{Hewitt73}.
+Pojedynczy proces wykonujący kod jest całkowicie odizolowany od innych procesów w systemie.
+Jedynym sposobem komunikacji pomiędzy procesami jest wysłanie asynchronicznej wiadomości do innego procesu, która kopiowana jest do kolejki wiadomości w jego przestrzeni adresowej.
+Brak pamięci współdzielonej pomiędzy procesami pozwala na całkowite wyeliminowanie z implementacji programu mechanizmów zarządzania zasobami, takich jak semafory. 
+
+Wiadomości wysyłane są do innych procesów za pomocą operatora \texttt{!}.
+Odbierane z kolei są w bloku \texttt{receive}, który na podstawie dopasowania zawartości wiadomości za pomocą \texttt{pattern matchingu} wykonuje odpowiednią gałąź kodu.
+
+Maszyna wirtualna Erlanga została zaprojektowana w ten sposób, aby na pojedynczej fizycznej maszynie możliwe było uruchomienie bardzo dużej (rzędu setek tysięcy) procesów. Było to możliwe dzięki własnej implementacji logiki procesów, nie zaś korzystanie z wymagających wątków systemu operacyjnego. Za kolejność wykonywania procesów odpowiada wewnętrzny planista (\emph{scheduler}).
+Gdy na docelowej maszynie procesor może obsłużyć więcej fizycznych wątków, maszyna wirtualna uruchamia więcej instancji planisty, co prowadzi do automatycznego zrównoleglenia uruchamianej aplikacji.
+
+Proces tworzony jest przez wywołanie funkcji wbudowanej z rodziny \texttt{spawn}, ze wskazaniem na to jaka funkcja lub obiekt funkcyjny jest początkowym punktem wykonywanego kodu procesu.
+Wartością zwracaną przez tę funkcję jest identyfikator procesu, którego można użyć do wysłania wiadomości do wystartowanego procesu.
+Możliwe jest także zarejestrowanie procesu w maszynie wirtualnej pod daną nazwą (atomem) za pomocą funkcji wbudowanej \texttt{register/2}, dzięki czemu procesy wysyłające wiadomość do procesu nie potrzebują znać jego identyfikatora.
+
+Proces uruchomiony jest tak długo, jak wykonuje się uruchomiona funkcja. Dlatego powszechną praktyką jest wykonywanie w ramach procesu nieskończonej pętli, która odbiera wiadomości kierowane do procesu, na podstawie ich treści wykonuje odpowiednią akcję po czym wykonuje się od początku.
+
+Programy napisane w Erlangu mogą być w łatwy sposób przeniesione do środowiska rozproszonego.
+Z punktu widzenia programisty, wysłanie wiadomości do procesu uruchomionego na innym węźle w~tym samym klastrze, niczym się nie różni.
+Możliwe jest również uruchomienie procesu na zdalnym węźle oraz monitorowanie jego stanu.
+Klaster tworzony jest za pomocą połączeń TCP nawiązanych przez maszyny wirtualne uruchomione na fizycznych maszynach połączonych w sieć.
+
 %---------------------------------------------------------------------------
 \section{Obsługa błędów}
 \label{sec:erlangBledy}
 
+System obsługi błędów występujących w trakcie działania programu jest jedną z bardzo ważnych cech języka. 
+
+Proces może przerwać swoje działanie i wygenerować wyjątek w następujących sytuacjach:
+\begin{itemize}
+\item do funkcji wbudowanej przekazana zostanie zmienna właściwego typu, ale o złej wartości (np. dzielenie przez zero);
+\item do funkcji wbudowanej zostanie przekazana zmienna niewłaściwego typu;
+\item próbie dopasowania w konstrukcji \emph{pattern matchingu} zostanie poddane nieprzewidziane wyrażenie;
+\item z błędem zakończony zostanie proces połączony z danym;
+\item wygenerowany zostanie wyjątek z poziomu systemu operacyjnego (np. brak wolnej pamięci);
+\item wyjątek zostanie wygenerowany jawnie przez wywołanie w kodzie przez programistę jednej z~funkcji \texttt{exit/1}, \texttt{error/1} lub \texttt{throw/1}.
+\end{itemize}
+
+Występujące błędy mogą być obsługiwane na dwóch poziomach: wewnątrz procesów i pomiędzy procesami.
+
+Międzyprocesowa obsługa błędów może wykorzystywać dwa mechanizmy: dwukierunkowych linków oraz jednokierunkowych monitorów.
+Pierwszy z nich służy do propagacji informacji o błędzie wśród wszystkich połączonych ze sobą procesów.
+Jeżeli jeden z połączonych procesów kończy swoje działanie na skutek błędu, każdy z połączonych z nim procesów również zakończy swoje działanie na skutek tego samego błędu itd.
+Istnieje jednak możliwość przechwycenia informacji o błędzie w innym procesie zamiast zakończenia swojego działnia i na tej podstawie dokonania pewnej operacji.
+
+Monitory z kolei zapewniają, że w sytuacji zakończenia działania procesu, proces monitorujący go otrzyma o tym fakcie informację w postaci odpowiedniej wiadomości.
+
+Obsługa błędów wewnątrz procesu skutkuje brakiem jego zakończenia, wykonywany jest zaś odpowiedni fragment kodu w zależności od rodzaju błędu. Służą do tego dwie konstrukcje języka: \texttt{catch} oraz \texttt{try}.
+
+Pierwsza z nich stara się znaleźć wartość wyrażenia w tradycyjny sposób, która przybiera postać krotki \texttt{\{'EXIT', ...\}} w przypadku błędu.
+Druga z konstrukcji pozwala na przeprowadzenie \emph{pattern matchingu} w zależności od rodzaju błędu, a także na wykonanie kodu który zostanie wykonany po wykonaniu całego kodu, niezależnie od tego czy w trakcie wystąpił błąd czy nie.
+
 %---------------------------------------------------------------------------
 \section{Podsumowanie}
 \label{sec:erlangPodsumowanie}
+
+Erlang jest funkcyjnym językiem programowania, który został zaprojektowany w celu łatwej implementacji współbieżnych aplikacji.
+Kod źródłowy aplikacji podzielony jest na moduły, który może być ładowany w trakcie uruchomienia systemu.
+Ponadto, wbudowane mechanizmy obsługi błędów pozwalają na łatwą implementację aplikacji odpornych na błędy.
+
+Podstawowymi jednostkami programu uruchomionego wewnątrz maszyny wirtualnej są odizolowane od siebie procesy, które mogą się między sobą komunikować tylko i wyłącznie za pomocą wysyłanych do siebie, asynchronicznych wiadomości.
+Język ułatwia tworzenie aplikacji rozproszonych wprowadzając przezroczystość lokalizacji procesów dla programisty, dla którego różnicy nie stanowi czy proces uruchomiony jest na lokalnym czy zdalnym węźle.

@@ -1,4 +1,43 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{epl}
+{Erlang Public License}.
+\newblock \url{http://www.erlang.org/EPLICENSE}.
+\newblock [data dostępu: 21.08.2014].
+
+\bibitem{ErlangVxWorks}
+Ericsson AB.
+\newblock {Erlang Embedded Systems User's Guide}, 1997.
+
+\bibitem{DistributedErlang}
+Ericsson AB.
+\newblock {Distributed Erlang}.
+\newblock \url{http://www.erlang.org/doc/reference_manual/distributed.html},
+  2014.
+\newblock [data dostępu: 21.03.2014].
+
+\bibitem{ExternalTermFormat}
+Ericsson AB.
+\newblock {Erlang External Term Format}.
+\newblock \url{http://erlang.org/doc/apps/erts/erl_ext_dist.html}, 2014.
+\newblock [data dostępu: 21.03.2014].
+
+\bibitem{ErlangErrors}
+Ericsson AB.
+\newblock {Errors and Error Handling}.
+\newblock \url{http://erlang.org/doc/reference_manual/errors.html}, 2014.
+\newblock [data dostępu: 17.08.2014].
+
+\bibitem{Aho1986}
+Alfred~V. Aho, Ravi Sethi, and Jeffrey~D. Ullman.
+\newblock {\em Compilers: Principles, Techniques, and Tools}.
+\newblock Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA, 1986.
+
+\bibitem{armstrong2003making}
+Joe Armstrong.
+\newblock {\em {Making reliable distributed systems in the presence of software
+  errors}}.
+\newblock PhD thesis, KTH, 2003.
 
 \bibitem{Armstrong2013}
 Joe Armstrong.
@@ -6,9 +45,86 @@ Joe Armstrong.
   Edition}}.
 \newblock {The Pragmatic Bookshelf}, 2013.
 
+\bibitem{Barry2011}
+Richard Barry.
+\newblock {\em {Using the FreeRTOS Real Time Kernel}}.
+\newblock {Real Time Engineers Ltd.}, 2011.
+
+\bibitem{Cheney1970}
+C.~J. Cheney.
+\newblock A nonrecursive list compacting algorithm.
+\newblock {\em Commun. ACM}, 13(11):677--678, November 1970.
+
+\bibitem{RFM73}
+HopeRF Electronic.
+\newblock {\em {RFM73 Datasheet}}.
+\newblock {Hope Microelectronics Co. Ltd.}, 2006.
+
+\bibitem{Ertl}
+Anton Ertl.
+\newblock {Threaded Code}.
+\newblock \url{http://www.complang.tuwien.ac.at/forth/threaded-code.html},
+  2004.
+\newblock [data dostępu: 12.07.2014].
+
+\bibitem{Gray85whydo}
+Jim Gray.
+\newblock {Why Do Computers Stop And What Can Be Done About It?}, 1985.
+
 \bibitem{Hebert2013}
 Fred Hebert.
 \newblock {\em {Learn You Some Erlang for Great Good!}}
 \newblock {No Starch Press}, 2013.
+
+\bibitem{Hewitt73}
+Carl Hewitt, Peter Bishop, and Richard Steiger.
+\newblock A universal modular actor formalism for artificial intelligence.
+\newblock In {\em Proceedings of the 3rd International Joint Conference on
+  Artificial Intelligence}, IJCAI'73, pages 235--245, San Francisco, CA, USA,
+  1973. Morgan Kaufmann Publishers Inc.
+
+\bibitem{Kharchenko2012}
+Maxim Kharchenko.
+\newblock {Erlang on Xen, A quest to lower startup latency}.
+\newblock {\em Erlang Factory SF Bay Area 2012, San Francisco}, 2012.
+
+\bibitem{ErlangEmbedded}
+Erlang~Solutions Ltd.
+\newblock {Erlang Embedded}.
+\newblock \url{http://www.erlang-embedded.com}, 2013.
+\newblock [data dostępu: 17.03.2014].
+
+\bibitem{Mistry2011}
+James Mistry.
+\newblock {FreeRTOS and Multicore}.
+\newblock Master's thesis, University of York, United Kingdom, 2011.
+
+\bibitem{morrison1985ea}
+J.~Morrison.
+\newblock {EA IFF 85: Standard for interchange format files}.
+\newblock {\em Amiga ROM Kernel Reference Manual: Devices (3rd edition),
+  Addison-Wesley}, 1(99):1, 1985.
+
+\bibitem{elixir}
+Plataformatec.
+\newblock {Elixir Language}.
+\newblock \url{http://elixir-lang.org/}, 2014.
+\newblock [data dostępu: 7.07.2014].
+
+\bibitem{NXP2014}
+NXP Semiconductors.
+\newblock {\em {LPC1769/68/67/66/65/64/63. Product data sheet.}}
+\newblock {NXP Semiconductors, N.V.}, 2014.
+
+\bibitem{LPCXpresso}
+NXP Semiconductors.
+\newblock {LPCXpresso IDE}.
+\newblock \url{http://www.lpcware.com/lpcxpresso/home}, 2014.
+\newblock [data dostępu: 3.07.2014].
+
+\bibitem{Stritzinger2013}
+Peer Stritzinger.
+\newblock {Full Metal Erlang}.
+\newblock {\em Erlang User Conference 2013, Stockholm}, 2013.
 
 \end{thebibliography}
