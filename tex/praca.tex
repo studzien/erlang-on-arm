@@ -102,27 +102,27 @@
 \setlength{\cftsecnumwidth}{10mm}
 
 %---------------------------------------------------------------------------
-
+\setcounter{secnumdepth}{4}
 \begin{document}
 
 \titlepages
-
+\setcounter{tocdepth}{3}
 \tableofcontents
 \clearpage
 
-\include{rozdzial1}
-\include{rozdzial2}
+%\include{rozdzial1}
+%\include{rozdzial2}
 \include{rozdzial3}
-\include{rozdzial4}
-\include{rozdzial5}
-\include{rozdzial6}
+%\include{rozdzial4}
+%\include{rozdzial5}
+%\include{rozdzial6}
 
 \appendix
-\include{dodatek_cd}
-\include{dodatek_builder}
-\include{dodatek_config}
-\include{dodatek_kompilacja}
-\include{dodatek_beam}
+%\include{dodatek_cd}
+%\include{dodatek_builder}
+%\include{dodatek_config}
+%\include{dodatek_kompilacja}
+%\include{dodatek_beam}
 
 \bibliographystyle{plain}
 \addcontentsline{toc}{chapter}{Bibliografia}

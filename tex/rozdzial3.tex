@@ -1,2 +1,77 @@
 \chapter{Język programowania Erlang}
 \label{cha:erlang}
+
+Niniejszy rozdział przybliża podstawy języka programowania Erlang.
+Zaprezentowany podzbiór języka został zaprezentowany w takim zakresie, aby możliwe było zrozumienie zadań, jakie do zrealizowania mają poszczególne elementy maszyny wirtualnej, zaimplementowane w niniejszej pracy.
+Szczegółowy opis języka został zawarty np. w pozycjach \cite{Armstrong2013} i \cite{Hebert2013}.
+
+
+Erlang jest wieloparadygmatowym --- funkcyjnym i współbieżnym językiem programowania ogólnego przeznaczenia o dynamicznym, lecz silnym typowaniu i automatycznym systemie zarządzania pamięcią.
+Motywacje, które przyczyniły się do zaprojektowania i implementacji języka oraz jego podstawowe założenia zostały przedstawione w podrozdziale \ref{sec:jezykiFunkcyjne}.
+
+%---------------------------------------------------------------------------
+\section{Typy danych}
+\label{sec:erlangTypy}
+
+Język definiuje osiem podstawowych typów danych:
+\begin{itemize}
+\item liczby całkowite --- operacje arytmetyczne na danych tego typu zapewnione są z nieograniczoną precyzją (ograniczoną tylko przez dostępną pamięć), dzięki wprowadzeniu do maszyny wirtualnej własnej arytmetyki stałoprzecinkowej. Przykładowymi wyrażeniami tego typu są \texttt{10} i \texttt{-25};
+\item atomy --- wyrażenia identyfikowane przez ciągi znaków zaczynające się małą literą lub zawarte w~pojedynczych cudzysłowach, w maszynie wirtualnej są jednak zamieniane na liczbę całkowitą w~celu szybszego porównywania ich. Przykładowymi atomami są \texttt{erlang} i \texttt{'EXIT'};
+\item liczby zmiennoprzecinkowe --- typ danych reprezentuje liczby rzeczywiste z 64-bitową precyzją, np. \texttt{3.14} czy \texttt{-2.718};
+\item referencje --- typ danych reprezentujący unikalne wyrażenie w zakresie klastra, służące do identyfikacji innych wyrazeń. Zmienna tego typu może zostać utworzona wyłącznie przez wywołanie funkcji \texttt{make\_ref/0} wbudowanej w maszynę wirtualną;
+\item binaria --- to ciągi bajtów zajmujących ciągły obszar pamięci, np. \texttt{<<255,255,255,0>>} czy \texttt{<<"abcd">>}); 
+\item identyfikatory procesów --- pozwalające na odniesienie się do wystartowanego procesu w maszynie wirtualnej poprzez wysłanie wiadomości lub zamknięcie go;
+\item porty --- typ danych używany do komunikacji z systemem operacyjnym, np. systemem plików czy stosem sieciowym;
+\item lambdy --- obiekty funkcyjne, które mogą zostać przekazane jako argument do funkcji wyższego rzędu i w niej wywołane.
+\end{itemize}
+
+Dodatkowo, zdefiniowane zostały dwa typy złożone:
+\begin{itemize}
+\item krotki --- przechowujące określoną z góry liczbę innych wyrażeń (prostych lub złożonych). Dostęp do dowolnego obiektu w krotce możliwy jest w czasie stałym. Przykładem krotki jest \texttt{\{salary, 100, 4.50}\});
+\item listy --- przechowujące inne wyrażenia (proste lub złożone) na liście jednokierunkowej. Dostęp do dowolnego obiektu na liście możliwy jest w czasie liniowym. Przykładem listy jest \texttt{[salary, 100, 4.50]}.
+\end{itemize}
+
+Oprócz tego, język zapewnia dla ,,lukry składniowe'', które na etapie kompilacji kodu źródłowego zamieniane są na wymienione wcześniej typy danych:
+\begin{itemize}
+\item napisy --- zapisywane jako ciąg znaków zawartych w podwójnych cudzysłowach, które zamieniane są na listę kodów ASCII poszczególnych znaków. Np. napis \texttt{"hello"} jest tak naprawdę listą postaci \texttt{[104,101,108,108,111]};
+\item rekordy --- pozwalające na odnoszenie się do poszczególnych pól krotki z użyciem nazwy (atomu), co upraszcza posługiwanie się tym typem danych.
+\end{itemize}
+
+%---------------------------------------------------------------------------
+\section{Moduły i dynamiczna podmiana kodu}
+\label{sec:erlangModuly}
+
+Jednostką kompilacji kodu źródłowego w języku Erlang jest pojedynczy moduł (plik z rozszerzeniem \textbf{*.erl}), którego proces kompilacji opisany został w dodatku \ref{cha:dodatek_kompilacja}).
+Wszystkie skompilowane moduły nie są zależne od żadnych innych, dlatego procesowi kompilacji nie towarzyszy linkowanie modułów.
+Zależności pomiędzy modułami rozwiązywane są już w trakcie uruchomienia systemu, przez maszynę wirtualną. 
+
+Pojedynczy moduł składa się z zestawu funkcji: lokalnych i zewnętrznych.
+Funkcje lokalne możliwe są do użycia tylko i wyłącznie przez kod w danym module, natomiast funkcje zewnętrzne mogą być używane przez dowolny inny moduł.
+Dana funkcja jest funkcją zewnętrzną jeżeli została jawnie wyeksportowana z danego modułu poprzez użycie dyrektywy kompilatora \texttt{-export}.
+
+Poszczególne funkcje rozróżniane są na podstawie: modułu w którym zostały zdefiniowane, nazwy oraz arności (liczby przyjmowanych argumentów).
+Na przykład, funkcja \texttt{bar} zdefiniowana w module \texttt{foo}, przyjmująca dwa argumenty oznaczana jest symbolem \texttt{foo:bar/2}.
+
+Modularność implementowanych aplikacji pozwoliła na wprowadzenie do maszyny wirtualnej języka kolejnej ważnej cechy --- możliwości dynamicznej podmiany kodu.
+Załadowanie nowej wersji danego modułu możliwe jest w każdej chwili uruchomienia maszyny wirtualnej.
+Nie ma to jednak wpływu na wykonanie procesów korzystających ze starej wersji kodu, gdyż maszyna może przechowywać dwie różne.
+W momencie, gdy tej wersji modułu nie będzie wykorzystywał już żaden proces zostanie on usunięty z pamięci.
+
+%---------------------------------------------------------------------------
+\section{Kontrola przebiegu programu}
+\label{sec:erlangFlow}
+
+
+
+
+%---------------------------------------------------------------------------
+\section{Programowanie współbieżne i rozproszone}
+\label{sec:erlangConcurrent}
+
+%---------------------------------------------------------------------------
+\section{Obsługa błędów}
+\label{sec:erlangBledy}
+
+%---------------------------------------------------------------------------
+\section{Podsumowanie}
+\label{sec:erlangPodsumowanie}

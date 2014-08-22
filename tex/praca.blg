@@ -1,61 +1,47 @@
 This is BibTeX, Version 0.99d (TeX Live 2012)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: praca.aux
-A level-1 auxiliary file: rozdzial1.aux
-A level-1 auxiliary file: rozdzial2.aux
 A level-1 auxiliary file: rozdzial3.aux
-A level-1 auxiliary file: rozdzial4.aux
-A level-1 auxiliary file: rozdzial5.aux
-A level-1 auxiliary file: rozdzial6.aux
-A level-1 auxiliary file: dodatek_cd.aux
-A level-1 auxiliary file: dodatek_builder.aux
-A level-1 auxiliary file: dodatek_config.aux
-A level-1 auxiliary file: dodatek_kompilacja.aux
-A level-1 auxiliary file: dodatek_beam.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
-Warning--entry type for "ErlangVxWorks" isn't style-file defined
---line 112 of file bibliografia.bib
-Warning--to sort, need author or key in epl
-You've used 21 entries,
+You've used 2 entries,
             2118 wiz_defined-function locations,
-            634 strings with 6809 characters,
-and the built_in function-call counts, 4869 in all, are:
-= -- 480
-> -- 163
-< -- 1
-+ -- 71
-- -- 48
-* -- 207
-:= -- 840
-add.period$ -- 69
-call.type$ -- 21
-change.case$ -- 82
+            509 strings with 4232 characters,
+and the built_in function-call counts, 450 in all, are:
+= -- 38
+> -- 14
+< -- 0
++ -- 6
+- -- 4
+* -- 18
+:= -- 85
+add.period$ -- 6
+call.type$ -- 2
+change.case$ -- 6
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 200
-empty$ -- 459
-format.name$ -- 48
-if$ -- 1045
+cite$ -- 2
+duplicate$ -- 24
+empty$ -- 45
+format.name$ -- 4
+if$ -- 93
 int.to.chr$ -- 0
-int.to.str$ -- 21
-missing$ -- 13
-newline$ -- 113
-num.names$ -- 40
-pop$ -- 140
+int.to.str$ -- 2
+missing$ -- 4
+newline$ -- 13
+num.names$ -- 4
+pop$ -- 16
 preamble$ -- 1
-purify$ -- 66
+purify$ -- 6
 quote$ -- 0
-skip$ -- 145
+skip$ -- 12
 stack$ -- 0
-substring$ -- 167
-swap$ -- 29
-text.length$ -- 1
+substring$ -- 10
+swap$ -- 2
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 76
-warning$ -- 1
-while$ -- 46
-width$ -- 23
-write$ -- 231
-(There were 2 warnings)
+type$ -- 4
+warning$ -- 0
+while$ -- 4
+width$ -- 3
+write$ -- 22

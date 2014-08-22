@@ -8,7 +8,7 @@
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\message{*** [aghdpl.cls] ---  (MSz, GJN)  v2.0 <19.11.2013>  ***}       
+\message{*** [aghdpl.cls] ---  (MSz, GJN)  v2.0.1 <24.06.2014>  ***}       
 
 \newif\ifpdflatex\pdflatexfalse
 \NeedsTeXFormat{LaTeX2e} % 
@@ -106,7 +106,7 @@ Supervisor: & {\itshape \@supervisor}\\
 \vspace*{1mm}
 
 {\sffamily\Large\itshape \@titleEN}
-\vspace*{38mm}
+\vspace*{35mm}
 \end{center}
 
 \noindent
@@ -118,7 +118,8 @@ Supervisor: & {\itshape \@supervisor}\\
 
 \centerline{\small\sffamily Krak\'{o}w, \@date}
 
-\clearpage \titlepage 
+\clearpage 
+\thispagestyle{empty} 
 
 {~~}\vspace{20mm}
 
@@ -134,6 +135,9 @@ Supervisor: & {\itshape \@supervisor}\\
 \end{minipage}
 \end{flushright}
 
+\clearpage
+\thispagestyle{empty}
+\vspace*{15cm} \vfill
 \clearpage
 
 \setcounter{page}{5}

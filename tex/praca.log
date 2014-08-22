@@ -1,16 +1,26 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  22 AUG 2014 01:35
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  22 AUG 2014 16:49
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **praca.tex
 (./praca.tex
 LaTeX2e <2011/06/27>
-Babel <3.9f> and hyphenation patterns for 78 languages loaded.
-(./aghdpl.cls *** [aghdpl.cls] --- (MSz, GJN) v2.0 <19.11.2013> ***
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, friulan, galician, german, ngerman, swissgerman, monogreek, greek, h
+ungarian, icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, ma
+rathi, oriya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, 
+kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk,
+ polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, s
+lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, 
+welsh, loaded.
+(./aghdpl.cls *** [aghdpl.cls] --- (MSz, GJN) v2.0.1 <24.06.2014> ***
 Document Class: aghdpl 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/report.cls
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/size11.clo
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/size11.clo
 File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -26,41 +36,41 @@ File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/times.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/fontenc.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/t1enc.def
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/t1enc.def
 File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/graphics.cfg
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/pdftex-def/pdftex.def
+(/usr/local/texlive/2012/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 )
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count88
@@ -68,18 +78,18 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count89
@@ -95,15 +105,15 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layoutvoffset=\dimen112
 \Gm@dimlist=\toks15
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/color.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 \fancy@headwidth=\skip43
 \f@ncyO@elh=\skip44
 \f@ncyO@erh=\skip45
@@ -114,11 +124,11 @@ Package color Info: Driver file: pdftex.def on input line 130.
 \f@ncyO@olf=\skip50
 \f@ncyO@orf=\skip51
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/url/url.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/titlesec/titlesec.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \ttl@box=\box26
 \beforetitleunit=\skip52
@@ -130,9 +140,9 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \titlewidthlast=\dimen116
 \titlewidthfirst=\dimen117
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/tocloft/tocloft.sty
-Package: tocloft 2013/05/02 v2.3f parameterised ToC, etc., typesetting
-Package tocloft Info: The document has chapter divisions on input line 44.
+(/usr/local/texlive/2012/texmf-dist/tex/latex/tocloft/tocloft.sty
+Package: tocloft 2010/10/13 v2.3e parameterised ToC, etc., typesetting
+Package tocloft Info: The document has chapter divisions on input line 43.
 \cftparskip=\skip54
 \cftbeforetoctitleskip=\skip55
 \cftaftertoctitleskip=\skip56
@@ -170,17 +180,17 @@ Package tocloft Info: The document has chapter divisions on input line 44.
 \cfttabindent=\skip86
 \cfttabnumwidth=\skip87
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/titlesec/block.tss
+(/usr/local/texlive/2012/texmf-dist/tex/latex/titlesec/block.tss
 File: block.tss 2011/12/15
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2013/05/16 v3.9f The Babel package
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2008/07/08 v3.8m The Babel package
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/babel-polish/polish.ldf
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/polish.ldf
 Language: polish 2005/03/31 v1.2l Polish support from the babel system
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2013/05/16 v3.9f Babel common definitions
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2008/07/08 v3.8m Babel common definitions
 \babel@savecnt=\count94
 \U@D=\dimen118
 )
@@ -190,19 +200,19 @@ Package babel Info: Making " an active character on input line 83.
 \pl@right=\dimen121
 \pl@temp=\dimen122
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/inputenc.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks17
 \inpenc@posthook=\toks18
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/utf8.def
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/utf8.def
 File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OML ...
 ... no UTF-8 mapping file for font encoding OML
 Now handling font encoding T1 ...
 ... processing UTF-8 mapping file for font encoding T1
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/t1enc.dfu
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/t1enc.dfu
 File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -352,7 +362,7 @@ File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OT1 ...
 ... processing UTF-8 mapping file for font encoding OT1
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/ot1enc.dfu
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/ot1enc.dfu
 File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -383,7 +393,7 @@ File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
 Now handling font encoding OMS ...
 ... processing UTF-8 mapping file for font encoding OMS
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/omsenc.dfu
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/omsenc.dfu
 File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
    defining Unicode char U+00A7 (decimal 167)
    defining Unicode char U+00B6 (decimal 182)
@@ -407,7 +417,7 @@ Now handling font encoding U ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/longtable.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \LTleft=\skip88
 \LTright=\skip89
@@ -425,17 +435,17 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count99
 \LT@p@ftn=\toks19
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/multirow/multirow.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen124
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
+(/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2012/05/13 v6.82q Hypertext links for LaTeX
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
 
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
 Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
 Package hobsub Info: Skipping package `infwarerr' (already loaded).
@@ -474,48 +484,44 @@ Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
 Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/auxhook.sty
-Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
-)
-(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
 \@linkdim=\dimen125
 \Hy@linkcounter=\count100
 \Hy@pagecounter=\count101
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2012/05/13 v6.82q Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
 \Hy@SavedSpaceFactor=\count102
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
-Package hyperref Info: Hyper figures OFF on input line 4443.
-Package hyperref Info: Link nesting OFF on input line 4448.
-Package hyperref Info: Hyper index ON on input line 4451.
-Package hyperref Info: Plain pages OFF on input line 4458.
-Package hyperref Info: Backreferencing OFF on input line 4463.
+Package hyperref Info: Hyper figures OFF on input line 4062.
+Package hyperref Info: Link nesting OFF on input line 4067.
+Package hyperref Info: Hyper index ON on input line 4070.
+Package hyperref Info: Plain pages OFF on input line 4077.
+Package hyperref Info: Backreferencing OFF on input line 4082.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4688.
+Package hyperref Info: Bookmarks ON on input line 4300.
 \c@Hy@tempcnt=\count103
-LaTeX Info: Redefining \url on input line 5041.
-\XeTeXLinkMargin=\dimen126
+LaTeX Info: Redefining \url on input line 4653.
 \Fld@menulength=\count104
-\Field@Width=\dimen127
-\Fld@charsize=\dimen128
-Package hyperref Info: Hyper figures OFF on input line 6295.
-Package hyperref Info: Link nesting OFF on input line 6300.
-Package hyperref Info: Hyper index ON on input line 6303.
-Package hyperref Info: backreferencing OFF on input line 6310.
-Package hyperref Info: Link coloring OFF on input line 6315.
-Package hyperref Info: Link coloring with OCG OFF on input line 6320.
-Package hyperref Info: PDF/A mode OFF on input line 6325.
-LaTeX Info: Redefining \ref on input line 6365.
-LaTeX Info: Redefining \pageref on input line 6369.
+\Field@Width=\dimen126
+\Fld@charsize=\dimen127
+Package hyperref Info: Hyper figures OFF on input line 5773.
+Package hyperref Info: Link nesting OFF on input line 5778.
+Package hyperref Info: Hyper index ON on input line 5781.
+Package hyperref Info: backreferencing OFF on input line 5788.
+Package hyperref Info: Link coloring OFF on input line 5793.
+Package hyperref Info: Link coloring with OCG OFF on input line 5798.
+Package hyperref Info: PDF/A mode OFF on input line 5803.
+LaTeX Info: Redefining \ref on input line 5843.
+LaTeX Info: Redefining \pageref on input line 5847.
 \Hy@abspage=\count105
 \c@Item=\count106
 \c@Hfootnote=\count107
@@ -523,51 +529,51 @@ LaTeX Info: Redefining \pageref on input line 6369.
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+(/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/05/13 v6.82q Hyperref driver for pdfTeX
 \Fld@listcount=\count108
 \c@bookmark@seq@number=\count109
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
 \Hy@SectionHShift=\skip92
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/enumerate.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/tools/enumerate.sty
 Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
 \@enLab=\toks20
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count110
 \lst@gtempboxa=\box31
 \lst@token=\toks21
 \lst@length=\count111
-\lst@currlwidth=\dimen129
+\lst@currlwidth=\dimen128
 \lst@column=\count112
 \lst@pos=\count113
-\lst@lostspace=\dimen130
-\lst@width=\dimen131
+\lst@lostspace=\dimen129
+\lst@width=\dimen130
 \lst@newlines=\count114
 \lst@lineno=\count115
-\lst@maxwidth=\dimen132
+\lst@maxwidth=\dimen131
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 \c@lstnumber=\count116
 \lst@skipnumbers=\count117
 \lst@framebox=\box32
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.cfg
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2007/02/22 1.4 listings configuration
 ))
 Package: listings 2007/02/22 1.4 (Carsten Heinz)
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package xcolor Info: Driver file: pdftex.def on input line 225.
@@ -582,61 +588,61 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/booktabs/booktabs.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2005/04/14 v1.61803 publication quality tables
-\heavyrulewidth=\dimen133
-\lightrulewidth=\dimen134
-\cmidrulewidth=\dimen135
-\belowrulesep=\dimen136
-\belowbottomsep=\dimen137
-\aboverulesep=\dimen138
-\abovetopsep=\dimen139
-\cmidrulesep=\dimen140
-\cmidrulekern=\dimen141
-\defaultaddspace=\dimen142
+\heavyrulewidth=\dimen132
+\lightrulewidth=\dimen133
+\cmidrulewidth=\dimen134
+\belowrulesep=\dimen135
+\belowbottomsep=\dimen136
+\aboverulesep=\dimen137
+\abovetopsep=\dimen138
+\cmidrulesep=\dimen139
+\cmidrulekern=\dimen140
+\defaultaddspace=\dimen141
 \@cmidla=\count118
 \@cmidlb=\count119
-\@aboverulesep=\dimen143
-\@belowrulesep=\dimen144
+\@aboverulesep=\dimen142
+\@belowrulesep=\dimen143
 \@thisruleclass=\count120
 \@lastruleclass=\count121
-\@thisrulewidth=\dimen145
+\@thisrulewidth=\dimen144
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2013/01/14 v2.14 AMS math features
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip93
 
 For additional information on amsmath, use the `?' option.
-(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2000/06/29 v2.01
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsgen.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks22
-\ex@=\dimen146
+\ex@=\dimen145
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsbsy.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
-\pmbraise@=\dimen147
+\pmbraise@=\dimen146
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsopn.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count122
-LaTeX Info: Redefining \frac on input line 210.
+LaTeX Info: Redefining \frac on input line 211.
 \uproot@=\count123
 \leftroot@=\count124
-LaTeX Info: Redefining \overline on input line 306.
+LaTeX Info: Redefining \overline on input line 307.
 \classnum@=\count125
 \DOTSCASE@=\count126
-LaTeX Info: Redefining \ldots on input line 378.
-LaTeX Info: Redefining \dots on input line 381.
-LaTeX Info: Redefining \cdots on input line 466.
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
 \Mathstrutbox@=\box33
 \strutbox@=\box34
-\big@size=\dimen148
-LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\big@size=\dimen147
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \macc@depth=\count127
 \c@MaxMatrixCols=\count128
 \dotsspace@=\muskip11
@@ -647,32 +653,32 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 \column@=\count132
 \maxfields@=\count133
 \andhelp@=\toks24
-\eqnshift@=\dimen149
-\alignsep@=\dimen150
-\tagshift@=\dimen151
-\tagwidth@=\dimen152
-\totwidth@=\dimen153
-\lineht@=\dimen154
+\eqnshift@=\dimen148
+\alignsep@=\dimen149
+\tagshift@=\dimen150
+\tagwidth@=\dimen151
+\totwidth@=\dimen152
+\lineht@=\dimen153
 \@envbody=\toks25
 \multlinegap=\skip94
 \multlinetaggap=\skip95
 \mathdisplay@stack=\toks26
-LaTeX Info: Redefining \[ on input line 2665.
-LaTeX Info: Redefining \] on input line 2666.
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/gnuplottex/gnuplottex.sty
-Package: gnuplottex 2013/04/14 v0.4.6 gnuplot graphs in LaTeX
+(/usr/local/texlive/2012/texmf-dist/tex/latex/gnuplottex/gnuplottex.sty
+Package: gnuplottex 2011/09/12 v0.4.4 gnuplot graphs in LaTeX
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/latexsym.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/latexsym.sty
 Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
 \symlasy=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
 (Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/moreverb/moreverb.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/moreverb/moreverb.sty
 Package: moreverb 2008/06/03 v2.3a `more' verbatim facilities
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/verbatim.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/tools/verbatim.sty
 Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
 \every@verbatim=\toks27
 \verbatim@line=\toks28
@@ -682,32 +688,34 @@ Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
 \tab@size=\count135
 \listing@line=\count136
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/ifthen.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \verbatim@out=\write3
-runsystem(touch /tmp/w18-test-201482295.tex)...executed.
+runsystem(touch /tmp/w18-test-20148221009)...disabled (restricted).
 
-runsystem(rm -f /tmp/w18-test-201482295.tex)...executed.
+runsystem(rm -f /tmp/w18-test-20148221009)...disabled (restricted).
 
-Package gnuplottex Info: Automatically converting gnuplot files. on input line 
-77.
+
+
+Package gnuplottex Warning: Shell escape not enabled.
+(gnuplottex)                You'll need to convert the graphs yourself..
+
 \c@fignum=\count137
-)
-(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/multicol.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
 \c@tracingmulticols=\count138
 \mult@box=\box35
-\multicol@leftmargin=\dimen155
+\multicol@leftmargin=\dimen154
 \c@unbalance=\count139
 \c@collectmore=\count140
 \doublecol@number=\count141
 \multicoltolerance=\count142
 \multicolpretolerance=\count143
-\full@width=\dimen156
-\page@free=\dimen157
-\premulticols=\dimen158
-\postmulticols=\dimen159
+\full@width=\dimen155
+\page@free=\dimen156
+\premulticols=\dimen157
+\postmulticols=\dimen158
 \multicolsep=\skip96
 \multicolbaselineskip=\skip97
 \partial@page=\box36
@@ -735,25 +743,25 @@ Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
 \@tempa=\box58
 \c@columnbadness=\count144
 \c@finalcolumnbadness=\count145
-\last@try=\dimen160
-\multicolovershoot=\dimen161
-\multicolundershoot=\dimen162
+\last@try=\dimen159
+\multicolovershoot=\dimen160
+\multicolundershoot=\dimen161
 \mult@nat@firstbox=\box59
 \colbreak@box=\box60
 \multicol@sort@counter=\count146
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/textgreek/textgreek.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/textgreek/textgreek.sty
 Package: textgreek 2011/10/09 v0.7 Greek symbols in text
 Package textgreek Info: Loading the definitions for the Greek fontencoding. on 
 input line 39.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/greek-fontenc/lgrenc.def
-File: lgrenc.def 2013/05/24 v0.8.2 LGR Greek font encoding definitions
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/lgrenc.def
+File: lgrenc.def 2008/06/17 v2.3 Greek Encoding
 Now handling font encoding LGR ...
 ... processing UTF-8 mapping file for font encoding LGR
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/greek-inputenc/lgrenc.dfu
-File: lgrenc.dfu 2013/05/24 0.4 UTF-8 support for Greek
+(/usr/local/texlive/2012/texmf-dist/tex/latex/lgrx/lgrenc.dfu
+File: lgrenc.dfu 2010/06/15 0.1 UTF-8 support for Greek
    defining Unicode char U+00A8 (decimal 168)
    defining Unicode char U+00AB (decimal 171)
    defining Unicode char U+00AF (decimal 175)
@@ -1096,7 +1104,6 @@ File: lgrenc.dfu 2013/05/24 0.4 UTF-8 support for Greek
    defining Unicode char U+2019 (decimal 8217)
    defining Unicode char U+2030 (decimal 8240)
    defining Unicode char U+20AC (decimal 8364)
-   defining Unicode char U+2126 (decimal 8486)
    defining Unicode char U+10144 (decimal 65860)
    defining Unicode char U+10145 (decimal 65861)
    defining Unicode char U+10146 (decimal 65862)
@@ -1105,63 +1112,58 @@ File: lgrenc.dfu 2013/05/24 0.4 UTF-8 support for Greek
 Package textgreek Info: Loaded fontmap: {eur/*/*}{U/eur/*/*} {phv/*/*}{U/psy/*/
 *}. on input line 69.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/pifont.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/pifont.sty
 Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
 LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/upzd.fd
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/upzd.fd
 File: upzd.fd 2001/06/04 font definitions for U/pzd.
 )
 LaTeX Font Info:    Try loading font information for U+psy on input line 64.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/upsy.fd
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2012/02/19 v3.2f Customizing captions (AR)
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 57.
-\captionmargin=\dimen163
-\captionmargin@=\dimen164
-\captionwidth=\dimen165
-\caption@tempdima=\dimen166
-\caption@indent=\dimen167
-\caption@parindent=\dimen168
-\caption@hangindent=\dimen169
+(/usr/local/texlive/2012/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2012/01/12 v1.4b caption3 kernel (AR)
+\captionmargin=\dimen162
+\captionmargin@=\dimen163
+\captionwidth=\dimen164
+\caption@indent=\dimen165
+\caption@parindent=\dimen166
+\caption@hangindent=\dimen167
 )
 \c@ContinuedFloat=\count147
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/ltcaption.sty
-Package: ltcaption 2013/02/03 v1.3-62 longtable captions (AR)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
 ))
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/fixltx2e.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/fixltx2e.sty
 Package: fixltx2e 2006/09/13 v1.1m fixes to LaTeX
 LaTeX Info: Redefining \em on input line 420.
 LaTeX Info: The control sequence `\[' is already robust on input line 471.
 LaTeX Info: The control sequence `\]' is already robust on input line 472.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang2.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstlang2.sty
 File: lstlang2.sty 2004/09/05 1.3 listings language file
 )
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang3.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstlang3.sty
 File: lstlang3.sty 2004/09/05 1.3 listings language file
 )
 
 LaTeX Warning: Unused global option(s):
     [pdflatex,11pt].
 
-(./praca.aux (./rozdzial1.aux) (./rozdzial2.aux) (./rozdzial3.aux)
-(./rozdzial4.aux) (./rozdzial5.aux) (./rozdzial6.aux) (./dodatek_cd.aux)
-(./dodatek_builder.aux) (./dodatek_config.aux) (./dodatek_kompilacja.aux)
-(./dodatek_beam.aux))
+(./praca.aux (./rozdzial3.aux))
 \openout1 = `praca.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 106.
@@ -1182,32 +1184,32 @@ LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 106.
 LaTeX Font Info:    Try loading font information for LGR+cmr on input line 106.
 
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/babel-greek/lgrcmr.fd
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/lgrcmr.fd
 File: lgrcmr.fd 2008/06/17 v2.3 Greek Computer Modern
 )
 LaTeX Font Info:    ... okay on input line 106.
 LaTeX Font Info:    Try loading font information for T1+ptm on input line 106.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1ptm.fd
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
-(/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
+(/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count148
-\scratchdimen=\dimen170
+\scratchdimen=\dimen168
 \scratchbox=\box61
 \nofMPsegments=\count149
 \nofMParguments=\count150
 \everyMPshowfont=\toks29
 \MPscratchCnt=\count151
-\MPscratchDim=\dimen171
+\MPscratchDim=\dimen169
 \MPnumerator=\count152
 \makeMPintoPDFobject=\count153
 \everyMPtoPDFconversion=\toks30
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/grfext.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
 )
 Package grfext Info: Graphics extension search list:
@@ -1215,7 +1217,7 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 452.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
@@ -1255,10 +1257,10 @@ e
 
 \AtBeginShipoutBox=\box62
 Package hyperref Info: Link coloring OFF on input line 106.
-(/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+(/usr/local/texlive/2012/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 
-(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count154
@@ -1274,14 +1276,14 @@ LaTeX Info: Redefining \nameref on input line 106.
 \c@lstlisting=\count155
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
- <agh.jpg, id=373, 146.4672pt x 284.7438pt>
+ <agh.jpg, id=35, 146.4672pt x 284.7438pt>
 File: agh.jpg Graphic file (type jpg)
 
 <use agh.jpg>
 Package pdftex.def Info: agh.jpg used on input line 108.
 (pdftex.def)             Requested size: 87.88098pt x 170.8476pt.
 LaTeX Font Info:    Try loading font information for T1+phv on input line 108.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1phv.fd
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
@@ -1294,27 +1296,15 @@ LaTeX Font Info:    Font shape `T1/phv/m/it' in size <14.4> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 108.
 LaTeX Font Info:    Try loading font information for U+lasy on input line 108.
 
-(/usr/local/texlive/2013/texmf-dist/tex/latex/base/ulasy.fd
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
 (Font)              Font shape `T1/phv/m/sl' tried instead on input line 108.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [1
 
-{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./agh.j
-pg>]
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 108.
-
-[2]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) h
-as been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.108 \titlepages
-                  [1
+{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./agh.j
+pg>] [2
 
 ]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
  been already used, duplicate ignored
@@ -1323,28 +1313,28 @@ l.108 \titlepages
 l.108 \titlepages
                   [1
 
+]pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.108 \titlepages
+                  [2
+
 ]
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 110.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 110.
- (./praca.toc [5
-
-]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 40.
-
-(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)
-Underfull \vbox (badness 1019) has occurred while \output is active []
-
- [6])
+ (./praca.toc)
 \tf@toc=\write5
 \openout5 = `praca.toc'.
 
+ [5
 
-[7]
-\openout2 = `rozdzial1.aux'.
+]
+\openout2 = `rozdzial3.aux'.
 
- (./rozdzial1.tex [8
+ (./rozdzial3.tex [6
 
 
 
@@ -1352,1923 +1342,30 @@ Underfull \vbox (badness 1019) has occurred while \output is active []
 Rozdzia\l  1.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 1.
-[9] [10] [11] [12] [13]) [14]
-\openout2 = `rozdzial2.aux'.
 
- (./rozdzial2.tex
-Rozdzia\l  2.
-LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 12.
+LaTeX Warning: Reference `sec:jezykiFunkcyjne' on page 7 undefined on input lin
+e 10.
 
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 18.
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+) [7]
 
-pdfTeX warning: /usr/texbin/pdflatex (file ./freertos_task_state.pdf): PDF incl
-usion: found PDF version <1.7>, but at most version <1.5> allowed
-<freertos_task_state.pdf, id=579, 614.295pt x 794.97pt>
-File: freertos_task_state.pdf Graphic file (type pdf)
+LaTeX Warning: Reference `cha:dodatek_kompilacja' on page 8 undefined on input 
+line 44.
 
-<use freertos_task_state.pdf>
-Package pdftex.def Info: freertos_task_state.pdf used on input line 23.
-(pdftex.def)             Requested size: 614.29349pt x 240.1407pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[15
-
-
-
-]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [16 <./freertos_task_state.pdf>] [17] [18] <lpc176x.png, id=606, 1027.84pt x 2
-73.02pt>
-File: lpc176x.png Graphic file (type png)
-
-<use lpc176x.png>
-Package pdftex.def Info: lpc176x.png used on input line 118.
-(pdftex.def)             Requested size: 411.12872pt x 109.20605pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 119--119
-[]\T1/ptm/m/n/10.95 Rysunek 2.2: |Pªytka roz-wo-jowa z mi-kro-kon-tro-le-rem LP
-C176x. ™ró-dªo: []$\T1/pcr/m/n/10.95 http : / / www .
- []
-
-[19 <./lpc176x.png>]) [20]
-\openout2 = `rozdzial3.aux'.
-
- (./rozdzial3.tex
-Rozdzia\l  3.
-) [21
-
-
-
-]
-\openout2 = `rozdzial4.aux'.
-
- (./rozdzial4.tex [22
-
-
-
-]
-Rozdzia\l  4.
-
-Underfull \hbox (badness 3250) in paragraph at lines 26--27
-[]\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
-ple-men-to-wany w pliku ¹ró-dªo-wym
- []
-
-[23] [24]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./atom_table.pdf): PDF inclusion: fo
-und PDF version <1.7>, but at most version <1.5> allowed
-<atom_table.pdf, id=651, 614.295pt x 794.97pt>
-File: atom_table.pdf Graphic file (type pdf)
- <use atom_table.pdf>
-Package pdftex.def Info: atom_table.pdf used on input line 60.
-(pdftex.def)             Requested size: 329.76666pt x 197.46167pt.
- [25 <./atom_table.pdf>]
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 70.
- [26]
-Underfull \hbox (badness 4927) in paragraph at lines 89--90
-[]\T1/ptm/m/n/10.95 Poniewa» rów-no±¢ in-dek-sów w ta-blicy eks-por-tów jest ró
-w-no-wa»na z rów-no-±ci¡ tró-jek
- []
-
-[27]
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 116.
-
-Underfull \hbox (badness 10000) in paragraph at lines 128--128
-[]|\T1/pcr/m/n/10.95 IIIIIIII IIIIIIII
- []
-
-
-Underfull \hbox (badness 1990) in paragraph at lines 132--133
-[]\T1/ptm/m/n/10.95 bity \T1/pcr/m/n/10.95 I \T1/ptm/m/n/10.95 ozna-czaj¡ war-t
-o±¢ prze-cho-wy-wan¡
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 138--138
-[]|\T1/pcr/m/n/10.95 PPPPPPPP PPPPPPPP
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 146--146
-[]|\T1/pcr/m/n/10.95 PPPPPPPP PPPPPPPP
- []
-
-
-Underfull \vbox (badness 10000) detected at line 156
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [28]
-Underfull \hbox (badness 10000) in paragraph at lines 170--170
-[]|\T1/pcr/m/n/10.95 IIIIIIII IIIIIIII
- []
-
-
-Underfull \hbox (badness 1189) in paragraph at lines 170--171
-[]|\T1/ptm/m/n/10.95 Warto±ci¡ prze-cho-wy-wan¡ przez wy-ra-»e-nie tego
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 172--172
-[]|\T1/pcr/m/n/10.95 IIIIIIII IIIIIIII
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 174--174
-[]|\T1/pcr/m/n/10.95 IIIIIIII IIIIIIII
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 176--176
-[]|\T1/pcr/m/n/10.95 00000000 00000000
- []
-
-
-Underfull \vbox (badness 10000) detected at line 180
- []
-
-[29]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./list_on_heap.pdf): PDF inclusion: 
-found PDF version <1.7>, but at most version <1.5> allowed
-<list_on_heap.pdf, id=696, 614.295pt x 794.97pt>
-File: list_on_heap.pdf Graphic file (type pdf)
- <use list_on_heap.pdf>
-Package pdftex.def Info: list_on_heap.pdf used on input line 202.
-(pdftex.def)             Requested size: 457.80374pt x 254.36705pt.
-
-[30 <./list_on_heap.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./tuple_on_heap.pdf): PDF inclusion:
- found PDF version <1.7>, but at most version <1.5> allowed
-<tuple_on_heap.pdf, id=707, 614.295pt x 794.97pt>
-File: tuple_on_heap.pdf Graphic file (type pdf)
- <use tuple_on_heap.pdf>
-Package pdftex.def Info: tuple_on_heap.pdf used on input line 226.
-(pdftex.def)             Requested size: 457.80374pt x 169.00899pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./bignum_on_heap.pdf): PDF inclusion
-: found PDF version <1.7>, but at most version <1.5> allowed
-<bignum_on_heap.pdf, id=710, 614.295pt x 794.97pt>
-File: bignum_on_heap.pdf Graphic file (type pdf)
- <use bignum_on_heap.pdf>
-Package pdftex.def Info: bignum_on_heap.pdf used on input line 247.
-(pdftex.def)             Requested size: 457.80374pt x 132.02051pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[31 <./tuple_on_heap.pdf>] [32 <./bignum_on_heap.pdf>]
-Underfull \hbox (badness 3250) in paragraph at lines 282--283
-[]\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
-ple-men-to-wany w pliku ¹ró-dªo-wym
- []
-
-[33]
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 309.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2004/09/05 1.3 listings language file
-)
-(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-)
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 317.
- [34]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_1.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_1.pdf, id=751, 614.295pt x 794.97pt>
-File: interpreter_max_1.pdf Graphic file (type pdf)
-
-<use interpreter_max_1.pdf>
-Package pdftex.def Info: interpreter_max_1.pdf used on input line 346.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_2.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_2.pdf, id=753, 614.295pt x 794.97pt>
-File: interpreter_max_2.pdf Graphic file (type pdf)
-
-<use interpreter_max_2.pdf>
-Package pdftex.def Info: interpreter_max_2.pdf used on input line 354.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_3.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_3.pdf, id=755, 614.295pt x 794.97pt>
-File: interpreter_max_3.pdf Graphic file (type pdf)
-
-<use interpreter_max_3.pdf>
-Package pdftex.def Info: interpreter_max_3.pdf used on input line 362.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_4.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_4.pdf, id=757, 614.295pt x 794.97pt>
-File: interpreter_max_4.pdf Graphic file (type pdf)
-
-<use interpreter_max_4.pdf>
-Package pdftex.def Info: interpreter_max_4.pdf used on input line 370.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_5.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_5.pdf, id=759, 614.295pt x 794.97pt>
-File: interpreter_max_5.pdf Graphic file (type pdf)
-
-<use interpreter_max_5.pdf>
-Package pdftex.def Info: interpreter_max_5.pdf used on input line 378.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_6.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_6.pdf, id=761, 614.295pt x 794.97pt>
-File: interpreter_max_6.pdf Graphic file (type pdf)
-
-<use interpreter_max_6.pdf>
-Package pdftex.def Info: interpreter_max_6.pdf used on input line 386.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_7.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_7.pdf, id=763, 614.295pt x 794.97pt>
-File: interpreter_max_7.pdf Graphic file (type pdf)
-
-<use interpreter_max_7.pdf>
-Package pdftex.def Info: interpreter_max_7.pdf used on input line 394.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_8.pdf): PDF inclus
-ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_8.pdf, id=765, 614.295pt x 794.97pt>
-File: interpreter_max_8.pdf Graphic file (type pdf)
-
-<use interpreter_max_8.pdf>
-Package pdftex.def Info: interpreter_max_8.pdf used on input line 402.
-(pdftex.def)             Requested size: 177.35817pt x 100.60777pt.
- [35] [36 <./interpreter_max_1.pdf> <./interpreter_max_2.pdf> <./interpreter_ma
-x_3.pdf> <./interpreter_max_4.pdf> <./interpreter_max_5.pdf> <./interpreter_max
-_6.pdf> <./interpreter_max_7.pdf> <./interpreter_max_8.pdf>] [37]
-
-LaTeX Warning: Reference `sec:maszynaBledy' on page 38 undefined on input line 
-457.
-
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./mp1.pdf): PDF inclusion: found PDF
- version <1.7>, but at most version <1.5> allowed
-<mp1.pdf, id=810, 614.295pt x 794.97pt>
-File: mp1.pdf Graphic file (type pdf)
- <use mp1.pdf>
-Package pdftex.def Info: mp1.pdf used on input line 490.
-(pdftex.def)             Requested size: 294.27193pt x 105.41724pt.
- [38]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./mp2.pdf): PDF inclusion: found PDF
- version <1.7>, but at most version <1.5> allowed
-<mp2.pdf, id=819, 614.295pt x 794.97pt>
-File: mp2.pdf Graphic file (type pdf)
- <use mp2.pdf>
-Package pdftex.def Info: mp2.pdf used on input line 503.
-(pdftex.def)             Requested size: 294.27193pt x 105.41724pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./mp3.pdf): PDF inclusion: found PDF
- version <1.7>, but at most version <1.5> allowed
-<mp3.pdf, id=823, 614.295pt x 794.97pt>
-File: mp3.pdf Graphic file (type pdf)
- <use mp3.pdf>
-Package pdftex.def Info: mp3.pdf used on input line 515.
-(pdftex.def)             Requested size: 294.27193pt x 105.41724pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./mp4.pdf): PDF inclusion: found PDF
- version <1.7>, but at most version <1.5> allowed
-<mp4.pdf, id=825, 614.295pt x 794.97pt>
-File: mp4.pdf Graphic file (type pdf)
- <use mp4.pdf>
-Package pdftex.def Info: mp4.pdf used on input line 521.
-(pdftex.def)             Requested size: 294.27193pt x 105.41724pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[39 <./mp1.pdf> <./mp2.pdf>] [40 <./mp3.pdf> <./mp4.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./preemption.pdf): PDF inclusion: fo
-und PDF version <1.7>, but at most version <1.5> allowed
-<preemption.pdf, id=895, 614.295pt x 794.97pt>
-File: preemption.pdf Graphic file (type pdf)
- <use preemption.pdf>
-Package pdftex.def Info: preemption.pdf used on input line 569.
-(pdftex.def)             Requested size: 400.38774pt x 283.16225pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 1107) has occurred while \output is active []
-
- [41]
-[42 <./preemption.pdf>]
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <12> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 606.
-
-Underfull \hbox (badness 1859) in paragraph at lines 608--609
-[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
-m-ple-men-to-wane w pliku ¹ró-dªo-wym
- []
-
-
-Overfull \hbox (10.96129pt too wide) in alignment at lines 610--614
- [] [] [] 
- []
-
-
-Underfull \hbox (badness 1454) in paragraph at lines 632--633
-[]|\T1/ptm/m/n/10.95 Zwraca now¡ li-st¦, sta-no-wi¡c¡ zª¡-cze-nie list
- []
-
-
-Underfull \hbox (badness 1348) in paragraph at lines 652--653
-[]|\T1/ptm/m/n/10.95 Ustawia prze-ter-mi-no-wa-nie wy-sy-ªa-j¡ce wia-do-
- []
-
-
-Overfull \hbox (10.96129pt too wide) in alignment at lines 614--656
- [] [] [] 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 656
- []
-
-
-Overfull \hbox (10.96129pt too wide) in alignment at lines 656--656
- [] [] [] 
- []
-
-[43]
-Underfull \hbox (badness 1859) in paragraph at lines 662--663
-[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
-m-ple-men-to-wane w pliku ¹ró-dªo-wym
- []
-
-
-Underfull \vbox (badness 10000) detected at line 674
- []
-
-
-Underfull \hbox (badness 1859) in paragraph at lines 678--679
-[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
-m-ple-men-to-wane w pliku ¹ró-dªo-wym
- []
-
-
-Overfull \hbox (22.96326pt too wide) in alignment at lines 680--684
- [] [] [] 
- []
-
-
-Overfull \hbox (22.96326pt too wide) in alignment at lines 684--696
- [] [] [] 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 696
- []
-
-[44]
-Underfull \hbox (badness 1859) in paragraph at lines 702--703
-[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
-m-ple-men-to-wane w pliku ¹ró-dªo-wym
- []
-
-
-Underfull \vbox (badness 10000) detected at line 716
- []
-
-
-Underfull \hbox (badness 1859) in paragraph at lines 720--721
-[]\T1/ptm/m/n/10.95 Funkcje opi-sane w tej cz¦-±ci pod-roz-dziaªu zo-staªy za-i
-m-ple-men-to-wane w pliku ¹ró-dªo-wym
- []
-
-
-Underfull \vbox (badness 10000) detected at line 740
- []
-
-
-Underfull \hbox (badness 3250) in paragraph at lines 746--747
-[]\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
-ple-men-to-wany w pliku ¹ró-dªo-wym
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [45]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./heap.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<heap.pdf, id=929, 614.295pt x 794.97pt>
-File: heap.pdf Graphic file (type pdf)
- <use heap.pdf>
-Package pdftex.def Info: heap.pdf used on input line 772.
-(pdftex.def)             Requested size: 400.89839pt x 97.87727pt.
- [46 <./heap.pdf>]
-[47]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_0.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_0.pdf, id=953, 614.295pt x 794.97pt>
-File: gc_0.pdf Graphic file (type pdf)
- <use gc_0.pdf>
-Package pdftex.def Info: gc_0.pdf used on input line 820.
-(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_1.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_1.pdf, id=956, 614.295pt x 794.97pt>
-File: gc_1.pdf Graphic file (type pdf)
- <use gc_1.pdf>
-Package pdftex.def Info: gc_1.pdf used on input line 834.
-(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
-
-Underfull \vbox (badness 1527) has occurred while \output is active []
-
- [48 <./gc_0.pdf> <./gc_1.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_2.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_2.pdf, id=968, 614.295pt x 794.97pt>
-File: gc_2.pdf Graphic file (type pdf)
- <use gc_2.pdf>
-Package pdftex.def Info: gc_2.pdf used on input line 844.
-(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_3.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_3.pdf, id=971, 614.295pt x 794.97pt>
-File: gc_3.pdf Graphic file (type pdf)
- <use gc_3.pdf>
-Package pdftex.def Info: gc_3.pdf used on input line 852.
-(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_4.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_4.pdf, id=974, 614.295pt x 794.97pt>
-File: gc_4.pdf Graphic file (type pdf)
- <use gc_4.pdf>
-Package pdftex.def Info: gc_4.pdf used on input line 860.
-(pdftex.def)             Requested size: 343.3528pt x 180.10553pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_5.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_5.pdf, id=977, 614.295pt x 794.97pt>
-File: gc_5.pdf Graphic file (type pdf)
- <use gc_5.pdf>
-Package pdftex.def Info: gc_5.pdf used on input line 869.
-(pdftex.def)             Requested size: 343.3528pt x 190.77528pt.
-
-Underfull \vbox (badness 1655) has occurred while \output is active []
-
- [49 <./gc_2.pdf> <./gc_3.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./gc_6.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<gc_6.pdf, id=992, 614.295pt x 794.97pt>
-File: gc_6.pdf Graphic file (type pdf)
- <use gc_6.pdf>
-Package pdftex.def Info: gc_6.pdf used on input line 877.
-(pdftex.def)             Requested size: 343.3528pt x 190.77528pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[50 <./gc_4.pdf> <./gc_5.pdf>]
-Underfull \hbox (badness 3250) in paragraph at lines 909--910
-[]\T1/ptm/m/n/10.95 Moduª opi-sany w ni-niej-szym pod-roz-dziale zo-staª za-im-
-ple-men-to-wany w pliku ¹ró-dªo-wym
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [51 <./gc_6.pdf>]
-Underfull \hbox (badness 1264) in paragraph at lines 914--915
-[]\T1/ptm/m/n/10.95 wywoªanie funk-cji wbu-do-wa-nej \T1/pcr/m/n/10.95 erlang:s
-end_after/3 \T1/ptm/m/n/10.95 --- ko-lej-ku-j¡-cej wy-sªa-nie wia-
- []
-
-
-Underfull \hbox (badness 4168) in paragraph at lines 914--915
-\T1/ptm/m/n/10.95 do-mo-±ci do wska-za-nego pro-cesu po upªy-ni¦-ciu za-da-nego
- czasu. Usu-ni¦-cia tak utwo-
- []
-
-
-Underfull \hbox (badness 1910) in paragraph at lines 914--915
-\T1/ptm/m/n/10.95 rzo-nego prze-ter-mi-no-wa-nia mo»na do-ko-na¢ po-przez wy-wo
--ªa-nie in-nej funk-cji wbu-do-wa-nej
- []
-
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./tiw1.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<tiw1.pdf, id=1013, 614.295pt x 794.97pt>
-File: tiw1.pdf Graphic file (type pdf)
- <use tiw1.pdf>
-Package pdftex.def Info: tiw1.pdf used on input line 926.
-(pdftex.def)             Requested size: 268.6645pt x 52.06842pt.
-
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./tiw2.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<tiw2.pdf, id=1016, 614.295pt x 794.97pt>
-File: tiw2.pdf Graphic file (type pdf)
- <use tiw2.pdf>
-Package pdftex.def Info: tiw2.pdf used on input line 939.
-(pdftex.def)             Requested size: 268.6645pt x 158.76602pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[52 <./tiw1.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./tiw3.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<tiw3.pdf, id=1028, 614.295pt x 794.97pt>
-File: tiw3.pdf Graphic file (type pdf)
- <use tiw3.pdf>
-Package pdftex.def Info: tiw3.pdf used on input line 951.
-(pdftex.def)             Requested size: 268.6645pt x 105.41724pt.
- [53 <./tiw2.pdf> <./tiw3.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./erts_memory.pdf): PDF inclusion: f
-ound PDF version <1.7>, but at most version <1.5> allowed
-<erts_memory.pdf, id=1039, 614.295pt x 794.97pt>
-File: erts_memory.pdf Graphic file (type pdf)
- <use erts_memory.pdf>
-Package pdftex.def Info: erts_memory.pdf used on input line 992.
-(pdftex.def)             Requested size: 429.35107pt x 297.0461pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-) [54] [55 <./erts_memory.pdf>]
-\openout2 = `rozdzial5.aux'.
-
- (./rozdzial5.tex [56
-
-
-
-]
-Rozdzia\l  5.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 24.
-
-Underfull \vbox (badness 1147) has occurred while \output is active []
-
- [57]
-Underfull \vbox (badness 2409) has occurred while \output is active []
-
- [58]
-LaTeX Font Info:    Try loading font information for LGR+ptm on input line 83.
-LaTeX Font Info:    No file LGRptm.fd. on input line 83.
-
-
-LaTeX Font Warning: Font shape `LGR/ptm/m/n' undefined
-(Font)              using `LGR/cmr/m/n' instead on input line 83.
-
-\openout3 = `praca-gnuplottex-fig1.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig1.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig1.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig1.gnuplot converted on input line 
-109.
-
-(./praca-gnuplottex-fig1.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig1.eps>
-(epstopdf)                    date: 2014-08-22 01:35:14
-(epstopdf)                    size: 20313 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig1-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:39
-(epstopdf)                    size: 5107 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig1-eps-c
-onverted-to.pdf praca-gnuplottex-fig1.eps>
-(epstopdf)             \includegraphics on input line 122.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig1-eps-converted-to.pdf praca-g
-nuplottex-fig1.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig1-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:14
-(epstopdf)                    size: 5107 bytes.
-
-<praca-gnuplottex-fig1-eps-converted-to.pdf, id=1096, 361.35pt x 252.945pt>
-File: praca-gnuplottex-fig1-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig1-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig1-eps-converted-to.pdf used on inp
-ut line 122.
-(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
-)
-Overfull \hbox (30.31506pt too wide) in paragraph at lines 109--110
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 109--110
-
- []
-
-\openout3 = `praca-gnuplottex-fig2.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig2.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig2.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig2.gnuplot converted on input line 
-122.
-
-(./praca-gnuplottex-fig2.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig2.eps>
-(epstopdf)                    date: 2014-08-22 01:35:14
-(epstopdf)                    size: 20831 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig2-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:39
-(epstopdf)                    size: 5337 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig2-eps-c
-onverted-to.pdf praca-gnuplottex-fig2.eps>
-(epstopdf)             \includegraphics on input line 130.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig2-eps-converted-to.pdf praca-g
-nuplottex-fig2.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig2-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:15
-(epstopdf)                    size: 5337 bytes.
-
-<praca-gnuplottex-fig2-eps-converted-to.pdf, id=1097, 361.35pt x 252.945pt>
-File: praca-gnuplottex-fig2-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig2-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig2-eps-converted-to.pdf used on inp
-ut line 130.
-(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
-)
-Overfull \hbox (30.31506pt too wide) in paragraph at lines 122--123
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 122--123
-
- []
-
-\openout3 = `praca-gnuplottex-fig3.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig3.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig3.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig3.gnuplot converted on input line 
-134.
-
-(./praca-gnuplottex-fig3.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig3.eps>
-(epstopdf)                    date: 2014-08-22 01:35:15
-(epstopdf)                    size: 21088 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig3-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:40
-(epstopdf)                    size: 5474 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig3-eps-c
-onverted-to.pdf praca-gnuplottex-fig3.eps>
-(epstopdf)             \includegraphics on input line 132.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig3-eps-converted-to.pdf praca-g
-nuplottex-fig3.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig3-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:15
-(epstopdf)                    size: 5474 bytes.
-
-<praca-gnuplottex-fig3-eps-converted-to.pdf, id=1098, 361.35pt x 252.945pt>
-File: praca-gnuplottex-fig3-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig3-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig3-eps-converted-to.pdf used on inp
-ut line 132.
-(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
-)
-Overfull \hbox (30.31506pt too wide) in paragraph at lines 134--135
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 134--135
-
- []
-
-\openout3 = `praca-gnuplottex-fig4.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig4.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig4.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig4.gnuplot converted on input line 
-147.
-
-(./praca-gnuplottex-fig4.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig4.eps>
-(epstopdf)                    date: 2014-08-22 01:35:15
-(epstopdf)                    size: 20655 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig4-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:40
-(epstopdf)                    size: 5281 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig4-eps-c
-onverted-to.pdf praca-gnuplottex-fig4.eps>
-(epstopdf)             \includegraphics on input line 126.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig4-eps-converted-to.pdf praca-g
-nuplottex-fig4.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig4-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:15
-(epstopdf)                    size: 5281 bytes.
-
-<praca-gnuplottex-fig4-eps-converted-to.pdf, id=1099, 361.35pt x 252.945pt>
-File: praca-gnuplottex-fig4-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig4-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig4-eps-converted-to.pdf used on inp
-ut line 126.
-(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
-)
-Overfull \hbox (30.31506pt too wide) in paragraph at lines 147--148
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 147--148
-
- []
-
-\openout3 = `praca-gnuplottex-fig5.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig5.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig5.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig5.gnuplot converted on input line 
-160.
-
-(./praca-gnuplottex-fig5.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig5.eps>
-(epstopdf)                    date: 2014-08-22 01:35:15
-(epstopdf)                    size: 19294 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig5-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:40
-(epstopdf)                    size: 4341 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig5-eps-c
-onverted-to.pdf praca-gnuplottex-fig5.eps>
-(epstopdf)             \includegraphics on input line 126.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig5-eps-converted-to.pdf praca-g
-nuplottex-fig5.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig5-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:16
-(epstopdf)                    size: 4341 bytes.
-
-<praca-gnuplottex-fig5-eps-converted-to.pdf, id=1100, 361.35pt x 252.945pt>
-File: praca-gnuplottex-fig5-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig5-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig5-eps-converted-to.pdf used on inp
-ut line 126.
-(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
-)
-Overfull \hbox (30.31506pt too wide) in paragraph at lines 160--161
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 160--161
-
- []
-
-\openout3 = `praca-gnuplottex-fig6.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig6.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig6.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig6.gnuplot converted on input line 
-177.
-
-(./praca-gnuplottex-fig6.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig6.eps>
-(epstopdf)                    date: 2014-08-22 01:35:16
-(epstopdf)                    size: 23012 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig6-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:40
-(epstopdf)                    size: 6436 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig6-eps-c
-onverted-to.pdf praca-gnuplottex-fig6.eps>
-(epstopdf)             \includegraphics on input line 132.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig6-eps-converted-to.pdf praca-g
-nuplottex-fig6.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig6-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:16
-(epstopdf)                    size: 6436 bytes.
-
-<praca-gnuplottex-fig6-eps-converted-to.pdf, id=1101, 361.35pt x 252.945pt>
-File: praca-gnuplottex-fig6-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig6-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig6-eps-converted-to.pdf used on inp
-ut line 132.
-(pdftex.def)             Requested size: 361.34912pt x 252.94438pt.
-)
-Overfull \hbox (30.31506pt too wide) in paragraph at lines 177--178
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 177--178
-
- []
-
-[59] [60 <./praca-gnuplottex-fig1-eps-converted-to.pdf> <./praca-gnuplottex-fig
-2-eps-converted-to.pdf> <./praca-gnuplottex-fig3-eps-converted-to.pdf> <./praca
--gnuplottex-fig4-eps-converted-to.pdf> <./praca-gnuplottex-fig5-eps-converted-t
-o.pdf> <./praca-gnuplottex-fig6-eps-converted-to.pdf>]
-
-pdfTeX warning: /usr/texbin/pdflatex (file ./example_led_processes.pdf): PDF in
-clusion: found PDF version <1.7>, but at most version <1.5> allowed
-<example_led_processes.pdf, id=1124, 614.295pt x 794.97pt>
-File: example_led_processes.pdf Graphic file (type pdf)
-
-<use example_led_processes.pdf>
-Package pdftex.def Info: example_led_processes.pdf used on input line 211.
-(pdftex.def)             Requested size: 358.21935pt x 225.91437pt.
- [61 <./example_led_processes.pdf>]
-<example_led.pdf, id=1136, 845.1575pt x 597.23125pt>
-File: example_led.pdf Graphic file (type pdf)
- <use example_led.pdf>
-Package pdftex.def Info: example_led.pdf used on input line 232.
-(pdftex.def)             Requested size: 845.15544pt x 383.83467pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 10000) detected at line 272
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[62]
-\openout3 = `praca-gnuplottex-fig7.gnuplot'.
-
- Opening gnuplot stream praca-gnuplottex-fig7.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig7.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig7.gnuplot converted on input line 
-295.
-
-(./praca-gnuplottex-fig7.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig7.eps>
-(epstopdf)                    date: 2014-08-22 01:35:16
-(epstopdf)                    size: 30640 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig7-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:41
-(epstopdf)                    size: 32128 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig7-eps-c
-onverted-to.pdf praca-gnuplottex-fig7.eps>
-(epstopdf)             \includegraphics on input line 112.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig7-eps-converted-to.pdf praca-g
-nuplottex-fig7.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig7-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:16
-(epstopdf)                    size: 32128 bytes.
-
-<praca-gnuplottex-fig7-eps-converted-to.pdf, id=1146, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig7-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig7-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig7-eps-converted-to.pdf used on inp
-ut line 112.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 295--296
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 295--296
-
- []
-
-\openout3 = `praca-gnuplottex-fig8.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig8.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig8.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig8.gnuplot converted on input line 
-306.
-
-(./praca-gnuplottex-fig8.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig8.eps>
-(epstopdf)                    date: 2014-08-22 01:35:16
-(epstopdf)                    size: 31043 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig8-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:41
-(epstopdf)                    size: 38017 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig8-eps-c
-onverted-to.pdf praca-gnuplottex-fig8.eps>
-(epstopdf)             \includegraphics on input line 118.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig8-eps-converted-to.pdf praca-g
-nuplottex-fig8.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig8-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:17
-(epstopdf)                    size: 38013 bytes.
-
-<praca-gnuplottex-fig8-eps-converted-to.pdf, id=1147, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig8-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig8-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig8-eps-converted-to.pdf used on inp
-ut line 118.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 306--307
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 306--307
-
- []
-
-\openout3 = `praca-gnuplottex-fig9.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig9.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig9.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig9.gnuplot converted on input line 
-317.
-
-(./praca-gnuplottex-fig9.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig9.eps>
-(epstopdf)                    date: 2014-08-22 01:35:17
-(epstopdf)                    size: 30919 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig9-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:32:41
-(epstopdf)                    size: 33825 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig9-eps-c
-onverted-to.pdf praca-gnuplottex-fig9.eps>
-(epstopdf)             \includegraphics on input line 116.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig9-eps-converted-to.pdf praca-g
-nuplottex-fig9.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig9-eps-converted-to.pdf
->
-(epstopdf)                    date: 2014-08-22 01:35:17
-(epstopdf)                    size: 33825 bytes.
-
-<praca-gnuplottex-fig9-eps-converted-to.pdf, id=1148, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig9-eps-converted-to.pdf Graphic file (type pdf)
-
-<use praca-gnuplottex-fig9-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig9-eps-converted-to.pdf used on inp
-ut line 116.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 317--318
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 317--318
-
- []
-
-\openout3 = `praca-gnuplottex-fig10.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig10.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig10.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig10.gnuplot converted on input line
- 327.
-
-(./praca-gnuplottex-fig10.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig10.eps>
-(epstopdf)                    date: 2014-08-22 01:35:17
-(epstopdf)                    size: 30893 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig10-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:32:42
-(epstopdf)                    size: 41609 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig10-eps-
-converted-to.pdf praca-gnuplottex-fig10.eps>
-(epstopdf)             \includegraphics on input line 118.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig10-eps-converted-to.pdf praca-
-gnuplottex-fig10.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig10-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:35:17
-(epstopdf)                    size: 41609 bytes.
-
-<praca-gnuplottex-fig10-eps-converted-to.pdf, id=1149, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig10-eps-converted-to.pdf Graphic file (type pdf)
-<use praca-gnuplottex-fig10-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig10-eps-converted-to.pdf used on in
-put line 118.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 327--328
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 327--328
-
- []
-
-
-LaTeX Warning: Float too large for page by 6.44159pt on input line 328.
-
-\openout3 = `praca-gnuplottex-fig11.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig11.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig11.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig11.gnuplot converted on input line
- 339.
-
-(./praca-gnuplottex-fig11.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig11.eps>
-(epstopdf)                    date: 2014-08-22 01:35:17
-(epstopdf)                    size: 30665 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig11-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:32:42
-(epstopdf)                    size: 39819 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig11-eps-
-converted-to.pdf praca-gnuplottex-fig11.eps>
-(epstopdf)             \includegraphics on input line 114.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig11-eps-converted-to.pdf praca-
-gnuplottex-fig11.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig11-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:35:18
-(epstopdf)                    size: 39819 bytes.
-
-<praca-gnuplottex-fig11-eps-converted-to.pdf, id=1150, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig11-eps-converted-to.pdf Graphic file (type pdf)
-<use praca-gnuplottex-fig11-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig11-eps-converted-to.pdf used on in
-put line 114.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 339--340
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 339--340
-
- []
-
-\openout3 = `praca-gnuplottex-fig12.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig12.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig12.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig12.gnuplot converted on input line
- 349.
-
-(./praca-gnuplottex-fig12.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig12.eps>
-(epstopdf)                    date: 2014-08-22 01:35:18
-(epstopdf)                    size: 31151 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig12-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:32:42
-(epstopdf)                    size: 41592 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig12-eps-
-converted-to.pdf praca-gnuplottex-fig12.eps>
-(epstopdf)             \includegraphics on input line 122.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig12-eps-converted-to.pdf praca-
-gnuplottex-fig12.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig12-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:35:18
-(epstopdf)                    size: 41592 bytes.
-
-<praca-gnuplottex-fig12-eps-converted-to.pdf, id=1151, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig12-eps-converted-to.pdf Graphic file (type pdf)
-<use praca-gnuplottex-fig12-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig12-eps-converted-to.pdf used on in
-put line 122.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 349--350
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 349--350
-
- []
-
-\openout3 = `praca-gnuplottex-fig13.gnuplot'.
-
-Opening gnuplot stream praca-gnuplottex-fig13.gnuplot
-runsystem(gnuplot praca-gnuplottex-fig13.gnuplot)...executed.
-
-Package gnuplottex Info: praca-gnuplottex-fig13.gnuplot converted on input line
- 359.
-
-(./praca-gnuplottex-fig13.tex
-Package epstopdf Info: Source file: <praca-gnuplottex-fig13.eps>
-(epstopdf)                    date: 2014-08-22 01:35:18
-(epstopdf)                    size: 31162 bytes
-(epstopdf)             Output file: <praca-gnuplottex-fig13-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:32:42
-(epstopdf)                    size: 41318 bytes
-(epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig13-eps-
-converted-to.pdf praca-gnuplottex-fig13.eps>
-(epstopdf)             \includegraphics on input line 122.
-runsystem(epstopdf --outfile=praca-gnuplottex-fig13-eps-converted-to.pdf praca-
-gnuplottex-fig13.eps)...executed.
-
-Package epstopdf Info: Result file: <praca-gnuplottex-fig13-eps-converted-to.pd
-f>
-(epstopdf)                    date: 2014-08-22 01:35:18
-(epstopdf)                    size: 41318 bytes.
-
-<praca-gnuplottex-fig13-eps-converted-to.pdf, id=1152, 469.755pt x 151.56625pt>
-File: praca-gnuplottex-fig13-eps-converted-to.pdf Graphic file (type pdf)
-<use praca-gnuplottex-fig13-eps-converted-to.pdf>
-Package pdftex.def Info: praca-gnuplottex-fig13-eps-converted-to.pdf used on in
-put line 122.
-(pdftex.def)             Requested size: 469.75386pt x 151.56587pt.
-)
-Overfull \hbox (14.49832pt too wide) in paragraph at lines 359--360
-[][]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 359--360
-
- []
-
-[63 <./example_led.pdf>] [64] [65 <./praca-gnuplottex-fig7-eps-converted-to.pdf
-> <./praca-gnuplottex-fig8-eps-converted-to.pdf> <./praca-gnuplottex-fig9-eps-c
-onverted-to.pdf> <./praca-gnuplottex-fig10-eps-converted-to.pdf>] [66 <./praca-
-gnuplottex-fig11-eps-converted-to.pdf> <./praca-gnuplottex-fig12-eps-converted-
-to.pdf> <./praca-gnuplottex-fig13-eps-converted-to.pdf>]
-<example_rfm.pdf, id=1200, 845.1575pt x 597.23125pt>
-File: example_rfm.pdf Graphic file (type pdf)
- <use example_rfm.pdf>
-Package pdftex.def Info: example_rfm.pdf used on input line 407.
-(pdftex.def)             Requested size: 845.15544pt x 369.60832pt.
-
-Underfull \hbox (badness 1067) in paragraph at lines 408--408
-[]\T1/ptm/m/n/10.95 Rysunek 5.5: |Sche-mat pod-ª¡-cze-nia mo-duªu RFM73 do pªyt
-ki pro-to-ty-po-wej z mi-kro-kon-tro-le-rem
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[67] <console_rfm.png, id=1210, 560.0925pt x 530.98375pt>
-File: console_rfm.png Graphic file (type png)
-
-<use console_rfm.png>
-Package pdftex.def Info: console_rfm.png used on input line 428.
-(pdftex.def)             Requested size: 392.06207pt x 371.68608pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [68 <./example_rfm.pdf>]) [69 <./console_rfm.png>]
-\openout2 = `rozdzial6.aux'.
-
- (./rozdzial6.tex [70
-
-
-
-]
-Rozdzia\l  6.
-) [71]
-\openout2 = `dodatek_cd.aux'.
-
- (./dodatek_cd.tex [72
-
-
-
-]
-Dodatek A.
-) [73]
-\openout2 = `dodatek_builder.aux'.
-
- (./dodatek_builder.tex [74
-
-
-
-]
-Dodatek B.
-
-Underfull \vbox (badness 4391) has occurred while \output is active []
-
- [75]
-Underfull \hbox (badness 8019) in paragraph at lines 37--38
-[]\T1/ptm/m/n/10.95 Istnieje rów-nie» mo»-li-wo±¢ wy-boru po-cz¡t-ko-wej funk-c
-ji pro-gramu (do-my±l-nie jest to
- []
-
-) [76]
-\openout2 = `dodatek_config.aux'.
-
- (./dodatek_config.tex
-Dodatek C.
-
-Overfull \hbox (29.4511pt too wide) in alignment at lines 11--15
- [] [] [] 
- []
-
-
-Underfull \hbox (badness 1527) in paragraph at lines 25--26
-\T1/ptm/m/n/10.95 funk-cji, które mog¡ zo-sta¢ wy-eks-por-to-wane z mo-du-
- []
-
-
-Overfull \hbox (29.4511pt too wide) in alignment at lines 15--40
- [] [] [] 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 40
- []
-
-[77
-
-
-
-]) [78]
-\openout2 = `dodatek_kompilacja.aux'.
-
- (./dodatek_kompilacja.tex
-Dodatek D.
-[79
-
-
-
-] [80] [81] [82] [83] [84]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [85]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [86]
-Underfull \vbox (badness 10000) detected at line 347
- []
-
-[87]
-Underfull \vbox (badness 10000) detected at line 398
- []
-
-
-Overfull \vbox (18.21588pt too high) has occurred while \output is active []
-
-
-[88]
-Underfull \vbox (badness 10000) detected at line 434
- []
-
-
-Underfull \vbox (badness 10000) detected at line 464
- []
-
-[89]
-Underfull \vbox (badness 10000) detected at line 493
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [90]
-Underfull \vbox (badness 10000) detected at line 522
- []
-
-
-Underfull \vbox (badness 10000) detected at line 560
- []
-
-[91]
-Underfull \vbox (badness 10000) detected at line 592
- []
-
-[92]
-Underfull \vbox (badness 10000) detected at line 650
- []
-
-[93]) [94]
-\openout2 = `dodatek_beam.aux'.
-
- (./dodatek_beam.tex
-Dodatek E.
-[95
-
-
-
-] [96]
-Overfull \hbox (4.80426pt too wide) in paragraph at lines 103--103
-[]|[]| 
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 100--107
- [] [] [] [] [] 
- []
-
-
-Underfull \hbox (badness 1953) in paragraph at lines 115--115
-\T1/ptm/m/n/10.95 znaj-du-j¡c¡ si¦ pod ety-kiet¡ \T1/pcr/m/n/10.95 Lbl\T1/ptm/m
-/n/10.95 . Za-pi-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 117--117
-[]|\T1/pcr/m/n/10.95 call_last Arity Lbl
- []
-
-
-Underfull \hbox (badness 1694) in paragraph at lines 121--121
-[]|\T1/ptm/m/n/10.95 Wywoªuje ze-wn¦trzn¡ funk-cj¦ o ar-no-±ci
- []
-
-
-Underfull \hbox (badness 1939) in paragraph at lines 121--121
-\T1/pcr/m/n/10.95 Arity \T1/ptm/m/n/10.95 ma-j¡c¡ in-deks \T1/pcr/m/n/10.95 Des
-t \T1/ptm/m/n/10.95 w ta-blicy
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 123--123
-[]|\T1/pcr/m/n/10.95 call_ext_last Arity
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 123--123
-[]|\T1/ptm/m/n/10.95 Wywoªuje re-ku-ren-cyjn¡ ogo-nowo ze-
- []
-
-
-Underfull \hbox (badness 1163) in paragraph at lines 123--123
-\T1/ptm/m/n/10.95 in-deks \T1/pcr/m/n/10.95 Des \T1/ptm/m/n/10.95 w ta-blicy fu
-nk-cji ze-wn¦trz-
- []
-
-
-Underfull \hbox (badness 5203) in paragraph at lines 125--125
-[]|\T1/ptm/m/n/10.95 Wywoªuje wbu-do-wan¡ funk-cj¦ \T1/pcr/m/n/10.95 Bif/0\T1/p
-tm/m/n/10.95 .
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 129--129
-[]|\T1/pcr/m/n/10.95 bif2 Bif Arg1 Arg2
- []
-
-
-Underfull \hbox (badness 1152) in paragraph at lines 131--131
-\T1/ptm/m/n/10.95 sie. U»y-wa-nych jest \T1/pcr/m/n/10.95 Live \T1/ptm/m/n/10.9
-5 re-je-strów \T1/ptm/b/n/10.95 X\T1/ptm/m/n/10.95 ,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 133--133
-[]|\T1/pcr/m/n/10.95 allocate_heap StackN
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 135--135
-[]|\T1/pcr/m/n/10.95 allocate_zero StackN
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 137--137
-[]|\T1/pcr/m/n/10.95 allocate_heap_zero SN
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 107--148
- [] [] [] [] [] 
- []
-
-
-Underfull \hbox (badness 1286) in paragraph at lines 155--155
-[]|\T1/ptm/m/n/10.95 Ustawia wska¹-nik za-pa-mi¦-tu-j¡cy ko-lejn¡
- []
-
-
-Underfull \hbox (badness 3138) in paragraph at lines 167--167
-\T1/ptm/m/n/10.95 do \T1/pcr/m/n/10.95 Lbl \T1/ptm/m/n/10.95 je-±li \T1/pcr/m/n
-/10.95 Arg1 \T1/ptm/m/n/10.95 jest aryt-me-tycz-nie
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 169--169
-[]|\T1/pcr/m/n/10.95 is_eq_exact Lbl Arg1
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 171--171
-[]|\T1/pcr/m/n/10.95 is_ne_exact Lbl Arg1
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 148--188
- [] [] [] [] [] 
- []
-
-[97] [98]
-Underfull \hbox (badness 10000) in paragraph at lines 193--193
-[]|\T1/pcr/m/n/10.95 is_nonempty_list Lbl
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 197--197
-[]|\T1/pcr/m/n/10.95 test_arity Lbl Arg1
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 199--199
-[]|\T1/pcr/m/n/10.95 select_val Arg Lbl
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--201
-[]|\T1/pcr/m/n/10.95 select_tuple_arity
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 213--213
-[]|\T1/pcr/m/n/10.95 get_tuple_element Src
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 215--215
-[]|\T1/pcr/m/n/10.95 set_tuple_element
- []
-
-
-Underfull \hbox (badness 3260) in paragraph at lines 217--217
-[]|\T1/ptm/m/n/10.95 Tworzy ko-mórk¦ li-sty \T1/pcr/m/n/10.95 [Hd|Tail] \T1/ptm
-/m/n/10.95 na
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 188--228
- [] [] [] [] [] 
- []
-
-[99] [100]
-Underfull \hbox (badness 10000) in paragraph at lines 233--233
-[]|\T1/pcr/m/n/10.95 call_ext_only Arity
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 233--233
-[]|\T1/ptm/m/n/10.95 Wywoªuje re-ku-ren-cyjn¡ ogo-nowo ze-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 235--235
-[]|\T1/pcr/m/n/10.95 bs_put_integer Fail
- []
-
-
-Underfull \hbox (badness 1852) in paragraph at lines 235--235
-[]|\T1/ptm/m/n/10.95 Umieszcza liczb¦ caª-ko-wit¡ w utwo-rzo-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 237--237
-[]|\T1/pcr/m/n/10.95 bs_put_binary Fail
- []
-
-
-Underfull \hbox (badness 1389) in paragraph at lines 237--237
-[]|\T1/ptm/m/n/10.95 Umieszcza zmienn¡ bi-narn¡ w utwo-rzo-
- []
-
-
-Underfull \hbox (badness 2205) in paragraph at lines 237--237
-\T1/ptm/m/n/10.95 spo-sobu umiesz-cze-nia zmien-nej w kon-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 239--239
-[]|\T1/pcr/m/n/10.95 bs_put_float Fail
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 241--241
-[]|\T1/pcr/m/n/10.95 bs_put_string Size
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 251--251
-[]|\T1/pcr/m/n/10.95 fadd Arg0 Arg1 Arg2
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 253--253
-[]|\T1/pcr/m/n/10.95 fsub Arg0 Arg1 Arg2
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 255--255
-[]|\T1/pcr/m/n/10.95 fmul Arg0 Arg1 Arg2
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 257--257
-[]|\T1/pcr/m/n/10.95 fdiv Arg0 Arg1 Arg2
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 259--259
-[]|\T1/pcr/m/n/10.95 fnegate Arg0 Arg1
- []
-
-
-Underfull \hbox (badness 1418) in paragraph at lines 261--261
-[]|\T1/ptm/m/n/10.95 Odczytuje wpis o in-dek-sie \T1/pcr/m/n/10.95 N \T1/ptm/m/
-n/10.95 w ta-blicy
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 228--268
- [] [] [] [] [] 
- []
-
-[101]
-Underfull \hbox (badness 10000) in paragraph at lines 271--271
-[]|\T1/pcr/m/n/10.95 raise Stacktrace
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 273--273
-[]|\T1/pcr/m/n/10.95 bs_init2 Fail Sz
- []
-
-
-Underfull \hbox (badness 2393) in paragraph at lines 273--273
-[]|\T1/ptm/m/n/10.95 Inicjalizuje miej-sce dla zmien-nej bi-nar-
- []
-
-
-Underfull \hbox (badness 2261) in paragraph at lines 273--273
-\T1/ptm/m/n/10.95 dzie do-dat-kowo \T1/pcr/m/n/10.95 Words \T1/ptm/m/n/10.95 sª
-ów ma-szy-no-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 275--275
-[]|\T1/pcr/m/n/10.95 bs_add Fail S1 S2
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 283--283
-[]|\T1/pcr/m/n/10.95 is_function2 Lbl Arg1
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 285--285
-[]|\T1/pcr/m/n/10.95 bs_start_match2 Fail
- []
-
-
-Underfull \hbox (badness 1210) in paragraph at lines 285--285
-\T1/ptm/m/n/10.95 miejsc, który zo-sta-nie za-pi-sany w miej-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 287--287
-[]|\T1/pcr/m/n/10.95 bs_get_integer2 Fail
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 287--287
-\T1/pcr/m/n/10.95 Ms Live Sz Unit Flags
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 289--289
-[]|\T1/pcr/m/n/10.95 bs_get_float2 Fail
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 289--289
-\T1/pcr/m/n/10.95 Ms Live Sz Unit Flags
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 291--291
-[]|\T1/pcr/m/n/10.95 bs_get_binary2 Fail
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 291--291
-\T1/pcr/m/n/10.95 Ms Live Sz Unit Flags
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 293--293
-[]|\T1/pcr/m/n/10.95 bs_skip_bits2 Fail Ms
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 295--295
-[]|\T1/pcr/m/n/10.95 bs_test_tail2 Fail Ms
- []
-
-
-Underfull \hbox (badness 1478) in paragraph at lines 299--299
-[]|\T1/ptm/m/n/10.95 Odczytuje prze-su-ni¦-cie bi-towe kon-tek-stu
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 301--301
-[]|\T1/pcr/m/n/10.95 gc_bif1 Lbl Live Bif
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 303--303
-[]|\T1/pcr/m/n/10.95 gc_bif2 Lbl Live Bif
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 307--307
-[]|\T1/pcr/m/n/10.95 bs_context_to_binary
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 268--308
- [] [] [] [] [] 
- []
-
-[102] [103]
-Underfull \hbox (badness 10000) in paragraph at lines 309--309
-[]|\T1/pcr/m/n/10.95 bs_test_unit Fail Ms
- []
-
-
-Underfull \hbox (badness 2134) in paragraph at lines 309--309
-[]|\T1/ptm/m/n/10.95 Sprawdza czy roz-miar nie-do-pa-so-wa-nego
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 311--311
-[]|\T1/pcr/m/n/10.95 bs_match_string Fail
- []
-
-
-Underfull \hbox (badness 2221) in paragraph at lines 311--311
-[]|\T1/ptm/m/n/10.95 Dokonuje po-rów-na-nia \T1/pcr/m/n/10.95 Bits \T1/ptm/m/n/
-10.95 bi-tów, po-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 315--315
-[]|\T1/pcr/m/n/10.95 bs_append Fail Size
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 315--315
-\T1/pcr/m/n/10.95 Extra Live Unit Bin
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 317--317
-[]|\T1/pcr/m/n/10.95 bs_private_append
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 317--317
-\T1/pcr/m/n/10.95 Fail Size Unit Bin
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 321--321
-[]|\T1/pcr/m/n/10.95 bs_init_bits Fail Sz
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 323--323
-[]|\T1/pcr/m/n/10.95 bs_get_utf8 Fail Ms
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 325--325
-[]|\T1/pcr/m/n/10.95 bs_skip_utf8 Fail Ms
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 327--327
-[]|\T1/pcr/m/n/10.95 bs_get_utf16 Fail Ms
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 329--329
-[]|\T1/pcr/m/n/10.95 bs_skip_utf16 Fail Ms
- []
-
-
-Underfull \hbox (badness 1642) in paragraph at lines 329--329
-[]|\T1/ptm/m/n/10.95 Pomija znak za-ko-do-wany w UTF-16 w
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 331--331
-[]|\T1/pcr/m/n/10.95 bs_get_utf32 Fail Ms
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 333--333
-[]|\T1/pcr/m/n/10.95 bs_skip_utf32 Fail Ms
- []
-
-
-Underfull \hbox (badness 1642) in paragraph at lines 333--333
-[]|\T1/ptm/m/n/10.95 Pomija znak za-ko-do-wany w UTF-32 w
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 335--335
-[]|\T1/pcr/m/n/10.95 bs_utf8_size Fail
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 337--337
-[]|\T1/pcr/m/n/10.95 bs_put_utf8 Fail
- []
-
-
-Underfull \hbox (badness 2818) in paragraph at lines 337--337
-[]|\T1/ptm/m/n/10.95 Umieszcza znak za-ko-do-wany w UTF-8
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 339--339
-[]|\T1/pcr/m/n/10.95 bs_utf16_size Fail
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 341--341
-[]|\T1/pcr/m/n/10.95 bs_put_utf16 Fail
- []
-
-
-Underfull \hbox (badness 1077) in paragraph at lines 341--341
-[]|\T1/ptm/m/n/10.95 Umieszcza znak za-ko-do-wany w UTF-16
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 343--343
-[]|\T1/pcr/m/n/10.95 bs_put_utf32 Fail
- []
-
-
-Underfull \hbox (badness 1077) in paragraph at lines 343--343
-[]|\T1/ptm/m/n/10.95 Umieszcza znak za-ko-do-wany w UTF-32
- []
-
-
-Underfull \hbox (badness 1117) in paragraph at lines 343--343
-\T1/ptm/m/n/10.95 za-pi-sa-nych w licz-bie caª-ko-wi-tej \T1/pcr/m/n/10.95 Flag
-s\T1/ptm/m/n/10.95 .
- []
-
-
-Underfull \hbox (badness 5119) in paragraph at lines 343--343
-\T1/ptm/m/n/10.95 W przy-padku nie-po-wo-dze-nia wy-ko-nuje
- []
-
-
-Underfull \hbox (badness 2837) in paragraph at lines 347--347
-[]|\T1/ptm/m/n/10.95 Zapami¦tuje ak-tu-aln¡ wia-do-mo±¢ z ko-
- []
-
-
-Underfull \hbox (badness 1490) in paragraph at lines 347--347
-\T1/ptm/m/n/10.95 lejki oraz ety-kiet¦ \T1/pcr/m/n/10.95 Label \T1/ptm/m/n/10.9
-5 do in-struk-cji
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 308--348
- [] [] [] [] [] 
- []
-
-[104] [105] [106] [107]
-Underfull \hbox (badness 10000) in paragraph at lines 351--351
-[]|\T1/pcr/m/n/10.95 gc_bif3 Lbl Live Bif
- []
-
-
-Overfull \hbox (11.48843pt too wide) in alignment at lines 348--359
- [] [] [] [] [] 
- []
-
-[108] [109] [110] [111]) [112] (./praca.bbl
-Underfull \hbox (badness 1014) in paragraph at lines 26--30
-[]\T1/ptm/m/n/10.95 Ericsson AB.  Er-rors and Er-ror Han-dling.  []$\T1/pcr/m/n
-/10.95 http : / / erlang . org / doc / reference _
- []
-
-
-Underfull \hbox (badness 4254) in paragraph at lines 58--63
-[]\T1/ptm/m/n/10.95 Anton Ertl.  Thre-aded Code.  []$\T1/pcr/m/n/10.95 http : /
- / www . complang . tuwien . ac . at / forth /
- []
-
-[113
+[8]) [9] (./praca.bbl [10
 
 
 ])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 150.
- [114]
+ [11]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 150.
- (./praca.aux (./rozdzial1.aux) (./rozdzial2.aux) (./rozdzial3.aux) (./rozdzial
-4.aux) (./rozdzial5.aux) (./rozdzial6.aux) (./dodatek_cd.aux)
-(./dodatek_builder.aux) (./dodatek_config.aux) (./dodatek_kompilacja.aux)
-(./dodatek_beam.aux))
+ (./praca.aux (./rozdzial3.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 150.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 150.
 Package rerunfilecheck Info: File `praca.out' has not changed.
-(rerunfilecheck)             Checksum: 77203C6AF8B50AE49C5B7CE777402BFB;6560.
-
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+(rerunfilecheck)             Checksum: E86E1146CA3C31936BF791BAA4780D3E;540.
 
 
 LaTeX Warning: There were undefined references.
@@ -3276,37 +1373,25 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 150.
  ) 
 Here is how much of TeX's memory you used:
- 14061 strings out of 493315
- 203860 string characters out of 6137905
- 423369 words of memory out of 5000000
- 16510 multiletter control sequences out of 15000+600000
- 91817 words of font info for 104 fonts, out of 8000000 for 9000
+ 11537 strings out of 493488
+ 164420 string characters out of 3141326
+ 293351 words of memory out of 3000000
+ 14576 multiletter control sequences out of 15000+200000
+ 68281 words of font info for 73 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,12n,60p,937b,1951s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
-xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
-live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
-ive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texliv
-e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
-2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/201
-3/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/t
-exmf-dist/fonts/type1/public/cbfonts/grmn1095.pfb></usr/local/texlive/2013/texm
-f-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2013/texmf-dist/f
-onts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/typ
-e1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/
-helvetic/uhvr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/helveti
-c/uhvro8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a.
-pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr
-/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/tex
-live/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/
-texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2013/texmf-dis
-t/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on praca.pdf (114 pages, 1812912 bytes).
+ 36i,11n,45p,419b,403s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2012/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2012/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2
+012/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2012/tex
+mf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2012/texmf-dist
+/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2012/texmf-dist/fonts
+/type1/urw/times/utmb8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw
+/times/utmr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utm
+r8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on praca.pdf (11 pages, 182813 bytes).
 PDF statistics:
- 1920 PDF objects out of 2073 (max. 8388607)
- 1679 compressed objects within 17 object streams
- 570 named destinations out of 1000 (max. 500000)
- 1180 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 137 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 20 named destinations out of 1000 (max. 500000)
+ 70 words of extra memory for PDF output out of 10000 (max. 10000000)
 

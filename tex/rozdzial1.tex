@@ -53,18 +53,18 @@ W niniejszej pracy rozważane będą sposoby implementacji oprogramowania na sys
 \section{Wykorzystanie Erlanga w programowaniu systemów wbudowanych}
 \label{sec:jezykiFunkcyjne}
 
-Jim Gray w pracy \emph{Why Do Computers Stop And What Can Be Done About It?} \cite{Gray85whydo} na podstawie obserwacji procesu projektowania i budowy sprzętu wchodzącego w skład systemów komputerowych sformułował pewne postulaty dotyczące implementacji oprogramowania odpornego na błędy.
+Jim Gray w pracy \cite{Gray85whydo} na podstawie obserwacji procesu projektowania i budowy sprzętu wchodzącego w skład systemów komputerowych sformułował pewne postulaty dotyczące implementacji oprogramowania odpornego na błędy.
 Były one następujące:
 \begin{enumerate}
-\item oprogramowanie powinno być modularne, co powinno zostać zapewnione przez wyabstrahowanie logiki w procesach. Jedynymi sposobem komunikacji pomiędzy procesami powinien byćy mechanizm przesyłania wiadomości;
+\item oprogramowanie powinno być modularne, co powinno zostać zapewnione przez wyabstrahowanie logiki w procesach. Jedynymi sposobem komunikacji pomiędzy procesami powinien być mechanizm przesyłania wiadomości;
 \item propagacja błędów powinna być powstrzymywana tak szybko jak to tylko możliwe (\emph{fail-fast});
 \item logika wykonywana przez procesy powinna być zduplikowana w całym systemie tak, aby możliwe było jej wykonanie pomimo błędu sprzętowego lub tymczasowego błędu innego modułu;
 \item powinien zostać zapewniony mechanizm transakcyjny pozwalający na zachowanie spójności danych;
 \item powinien zostać zapewniony mechanizm transakcyjny, który w połączeniu z duplikacją procesów ułatwi obsługę wyjątków i tolerowanie błędów oprogramowania.
 \end{enumerate}
 
-Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB - Bjarne Dackera, Joe Armstrona, Mike'a Williamsa i Roberta Virdinga do stworzenia nowej platformy umożliwiającej rozwój oprogramowania, spełniającego powyższe wymagania.
-Jak się później okazało, do zaspokojenia wszystkich wymienionych wyżej potrzeb konieczne było stworzenie nowego, dedykowanego, funkcyjnego języka programowania - Erlang, wraz z zestawem bibliotek - OTP (Open Telecom Platform).
+Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB - Bjarne Dackera, Joe Armstronga, Mike'a Williamsa i Roberta Virdinga do stworzenia nowej platformy umożliwiającej rozwój oprogramowania, spełniającego powyższe wymagania.
+Jak się później okazało, do zaspokojenia wszystkich wymienionych wyżej potrzeb konieczne było stworzenie nowego, dedykowanego, funkcyjnego języka programowania --- Erlang, wraz z zestawem bibliotek --- OTP (Open Telecom Platform).
 
 Rozwiązanie to zapewniało realizację powyższych postulatów poprzez następujące cechy:
 \begin{enumerate}
@@ -78,7 +78,7 @@ Rozwiązanie to zapewniało realizację powyższych postulatów poprzez następu
 \item niezawodna baza danych (\emph{Mnesia}, wchodząca w skład OTP).
 \end{enumerate}
 
-Należy zaznaczyć, że celem przyświecającym twórcom języka od samego początku było zastosowanie go w urządzeniach w budowanych, jak np. w centrali telekomunikacyjnej Ericsson AXD301, która po dzień dzisiejszy pozostaje tego typu urządzeniem o największej liczbie sprzedanych egzemplarzy \cite{armstrong2003making}.
+Należy zaznaczyć, że celem przyświecającym twórcom języka od samego początku było zastosowanie go w urządzeniach wbudowanych, jak np. w centrali telekomunikacyjnej Ericsson AXD301, która po dzień dzisiejszy pozostaje tego typu urządzeniem o największej liczbie sprzedanych egzemplarzy \cite{armstrong2003making}.
 
 Nie można jednak zapomnieć o tym, że język ten został zaprojektowany dla systemów o miękkich wymaganiach czasu rzeczywistego. Systemy tego typu charakteryzują się tym, że oczekiwane czasy reakcji na zdarzenie są rzędu milisekund, a odstępstwa od oczekiwanego czasu odpowiedzi powodują tylko spadek jakości usług danego systemu. W przeciwieństwie do tego, systemy o twardych wymaganiach czasu rzeczywistego uznaje się w takich sytuacjach za niefunkcjonalne.
 
