@@ -40,13 +40,13 @@ System FreeRTOS zapewnia mechanizm kolejki wiadomości między procesami, na wz�
 
 Kolejki w systemie FreeRTOS bardzo dobrze oddają semantykę kolejki wiadomości (\emph{mailbox}) w~procesie erlangowym. Jednakże, aby oprzeć na nich implementację tej funkcjonalności, istniałaby konieczność utworzenia osobnej kolejki dla każdego z uruchomionych w systemie procesów, do czego konieczne jest z góry zaalokowanie pamięci dla kolejki wiadomości o maksymalnej długości.
 
-W związku z tym, w maszynie wirtualnej opisanej w niniejszej pracy kolejki wiadomości zostały zaimplementowane wewnątrz zadań implementujących logikę procesów. Pozwoliło to na uproszczenie procedury wysłania wiadomości do procedury przez umieszczenie wiadomości na stercie procesu będącego jej adresatem, z której proces będzie mógł korzystać aż do momentu odśmiecenia pamięci procesu. 
+W związku z tym, w maszynie wirtualnej opisanej w niniejszej pracy kolejki wiadomości zostały zaimplementowane wewnątrz zadań implementujących logikę procesów. Pozwoliło to na uproszczenie procedury wysłania wiadomości do umieszczenia wiadomości na stercie procesu będącego jej adresatem, z której proces będzie mógł korzystać aż do momentu odśmiecenia pamięci procesu. 
 
 %---------------------------------------------------------------------------
 \section{Przerwania}
 \label{sec:rtosPrzerwania}
 
-FreeRTOS zapewnia obsługę zarówno programowych jak i sprzętowych przerwań. Podejściem do implementacji obsługi przerwań, który zalecany jest przez autorów systemu jest ich odroczenie i delegacja obsługi do innego zadania, niż to obsługujące przerwanie (\emph{Interrupt Service Routine} - ISR) \cite{Barry2011}. Motywacją do tego, aby kod ISR był możliwie jak najkrótszy jest fakt, że w momencie jego wykonywania nowe przerwania nie są wykrywane.
+FreeRTOS zapewnia obsługę zarówno programowych jak i sprzętowych przerwań. Podejściem do implementacji obsługi przerwań, który zalecany jest przez autorów systemu jest ich odroczenie i delegacja obsługi do innego zadania, niż to obsługujące przerwanie (\emph{Interrupt Service Routine}, ISR) \cite{Barry2011}. Motywacją do tego, aby kod ISR był możliwie jak najkrótszy jest fakt, że w momencie jego wykonywania nowe przerwania nie są wykrywane.
 
 W implementacji maszyny wirtualnej Erlanga dla FreeRTOS podążono za tą koncepcją i informacja o przerwaniu jest przesyłana jako wiadomość do procesów, które wywołały wcześniej odpowiednią wbudowaną funkcję subskrybującą. Efektem takiego wywołania jest zgłoszenie maszynie wirtualnej, że dany proces jest ,,zainteresowany'' otrzymywaniem wiadomości dotyczących przerwań danego rodzaju. 
 
@@ -60,9 +60,9 @@ zadanie implementujące logikę procesu) będą modyfikować pewien obszar pami�
 
 FreeRTOS zapewnia następujące mechanizmy do synchronizacji zadań:
 \begin{itemize}
-\item \textbf{sekcja krytyczna} - powoduje zablokowanie dostępu do czasu procesora dla wszystkich pozostałych zadań, możliwe jest także zablokowanie obsługi pewnego rodzaju przerwań;
-\item \textbf{mutex} - pozwalający na synchronizację dostępu do dzielonego zasobu przez ,,zainteresowane'' zadania, które muszą uzyskać dostęp do mutexu. Ma do tego prawo tylko jedno zadanie w jednym czasie, przed wykonaniem operacji na dzielonym zasobie;
-\item \textbf{semafor} - działający jak mutex, pozwalający na dostęp większej liczby zadań do zasobu, jest zablokowany gdy jego wartość jest równa 0. Mutex jest szczególnym przypadkiem semafora, mogącym przyjąć tylko wartość 0 lub 1. W systemie FreeRTOS zarówno mutex jak i semafor zaimplementowane są przy użyciu tych samych struktur danych.
+\item sekcja krytyczna --- powoduje zablokowanie dostępu do czasu procesora dla wszystkich pozostałych zadań, możliwe jest także zablokowanie obsługi pewnego rodzaju przerwań;
+\item mutex --- pozwalający na synchronizację dostępu do dzielonego zasobu przez ,,zainteresowane'' zadania, które muszą uzyskać dostęp do mutexu. Ma do tego prawo tylko jedno zadanie w jednym czasie, przed wykonaniem operacji na dzielonym zasobie;
+\item semafor --- działający jak mutex, pozwalający na dostęp większej liczby zadań do zasobu, jest zablokowany gdy jego wartość jest równa 0. Mutex jest szczególnym przypadkiem semafora, mogącym przyjąć tylko wartość 0 lub 1. W systemie FreeRTOS zarówno mutex jak i semafor zaimplementowane są przy użyciu tych samych struktur danych.
 \end{itemize}
 
 Wymienione mechanizmy synchronizacji zostały wykorzystane w elementach maszyny wirtualnej, w których było to konieczne, głównie w przypadku operacji wejścia-wyjścia.
@@ -76,10 +76,10 @@ FreeRTOS udostępnia, spójny dla wszystkich swoich portów, interfejs do zarzą
 
 Programista implementujący aplikację z użyciem mikrojądra FreeRTOS może wybrać jedną z czterech implementacji powyższych funkcji:
 \begin{itemize}
-\item \textbf{heap\_1} - która nie pozwala na zwolnienie raz zaalakowanej pamięci, przeznaczona do bardzo prostych aplikacji wbudowanych, w których liczba i rozmiar struktura jest z góry znana;
-\item \textbf{heap\_2} - używająca algorytmu najlepszego dopasowania (\emph{best-fit}) do alokacji bloku pamięci, nie pozwala jednak na ponowne użycie dwóch sąsiednich, zwolnionych wcześniej bloków do zaalokowania nowego, większego bloku;
-\item \textbf{heap\_3} - opakowująca wewnątrz sekcji krytycznej funkcje \texttt{malloc} i \texttt{free} udostępnianie przez kompilator, wadą tego rozwiązania jest duży rozmiar pliku wynikowego;
-\item \textbf{heap\_4} - działająca jak \textbf{heap\_2}, rozwiązująca jednak problem alokacji pamięci w sąsiednich blokach.
+\item \textbf{heap\_1} --- która nie pozwala na zwolnienie raz zaalakowanej pamięci, przeznaczona do bardzo prostych aplikacji wbudowanych, w których liczba i rozmiar struktura jest z góry znana;
+\item \textbf{heap\_2} --- używająca algorytmu najlepszego dopasowania (\emph{best-fit}) do alokacji bloku pamięci, nie pozwala jednak na ponowne użycie dwóch sąsiednich, zwolnionych wcześniej bloków do zaalokowania nowego, większego bloku;
+\item \textbf{heap\_3} --- opakowująca wewnątrz sekcji krytycznej funkcje \texttt{malloc} i \texttt{free} udostępnianie przez kompilator, wadą tego rozwiązania jest duży rozmiar pliku wynikowego;
+\item \textbf{heap\_4} --- działająca jak \textbf{heap\_2}, rozwiązująca jednak problem alokacji pamięci w sąsiednich blokach.
 \end{itemize}
 
 Mając na uwadze fakt, że implementowane środowisko uruchomieniowe przeznaczone będzie dla języka z automatycznym zarządzaniem pamięcią, wraz ze wzrostem rozmiaru pamięci procesu algorytm \emph{garbage collectora} będzie potrzebował alokować coraz to większe bloki pamięci. Z tego powodu należało zwrócić szczególną uwagę na wybór strategii zapewniającą dobrą fragmentację dostępnej pamięci RAM, wybraną strategią zarządzania pamięcią do użycia w implementowanej maszynie wirtualnej została zatem implementacja \textbf{heap\_4}.

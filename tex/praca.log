@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  22 AUG 2014 21:18
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.9.7)  23 AUG 2014 15:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -686,9 +686,9 @@ Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
 \verbatim@out=\write3
-runsystem(touch /tmp/w18-test-20148221278.tex)...executed.
+runsystem(touch /tmp/w18-test-2014823950.tex)...executed.
 
-runsystem(rm -f /tmp/w18-test-20148221278.tex)...executed.
+runsystem(rm -f /tmp/w18-test-2014823950.tex)...executed.
 
 Package gnuplottex Info: Automatically converting gnuplot files. on input line 
 77.
@@ -1363,7 +1363,7 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <14.4> not available
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./freertos_task_state.pdf): PDF incl
 usion: found PDF version <1.7>, but at most version <1.5> allowed
-<freertos_task_state.pdf, id=609, 614.295pt x 794.97pt>
+<freertos_task_state.pdf, id=603, 614.295pt x 794.97pt>
 File: freertos_task_state.pdf Graphic file (type pdf)
 
 <use freertos_task_state.pdf>
@@ -1380,7 +1380,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [16 <./freertos_task_state.pdf>] [17] [18] <lpc176x.png, id=637, 1027.84pt x 2
+ [16 <./freertos_task_state.pdf>] [17] [18] <lpc176x.png, id=630, 1027.84pt x 2
 73.02pt>
 File: lpc176x.png Graphic file (type png)
 
@@ -1402,12 +1402,7 @@ Rozdzia\l  3.
 
 
 
-]
-
-LaTeX Warning: Reference `cha:dodatek_kompilacja' on page 22 undefined on input
- line 45.
-
-[22] (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+] [22] (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
 (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
@@ -1418,10 +1413,7 @@ nput line 84.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
 (Font)              Font shape `T1/pcr/b/n' tried instead on input line 85.
  [23]
-Underfull \vbox (badness 1292) has occurred while \output is active []
-
- [24]
-[25]) [26]
+[24] [25]) [26]
 \openout2 = `rozdzial4.aux'.
 
  (./rozdzial4.tex
@@ -1440,7 +1432,7 @@ ple-men-to-wany w pliku ¹ró-dªo-wym
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./atom_table.pdf): PDF inclusion: fo
 und PDF version <1.7>, but at most version <1.5> allowed
-<atom_table.pdf, id=715, 614.295pt x 794.97pt>
+<atom_table.pdf, id=710, 614.295pt x 794.97pt>
 File: atom_table.pdf Graphic file (type pdf)
  <use atom_table.pdf>
 Package pdftex.def Info: atom_table.pdf used on input line 60.
@@ -1518,7 +1510,7 @@ Underfull \vbox (badness 10000) detected at line 180
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./list_on_heap.pdf): PDF inclusion: 
 found PDF version <1.7>, but at most version <1.5> allowed
-<list_on_heap.pdf, id=760, 614.295pt x 794.97pt>
+<list_on_heap.pdf, id=755, 614.295pt x 794.97pt>
 File: list_on_heap.pdf Graphic file (type pdf)
  <use list_on_heap.pdf>
 Package pdftex.def Info: list_on_heap.pdf used on input line 202.
@@ -1528,7 +1520,7 @@ Package pdftex.def Info: list_on_heap.pdf used on input line 202.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./tuple_on_heap.pdf): PDF inclusion:
  found PDF version <1.7>, but at most version <1.5> allowed
-<tuple_on_heap.pdf, id=771, 614.295pt x 794.97pt>
+<tuple_on_heap.pdf, id=766, 614.295pt x 794.97pt>
 File: tuple_on_heap.pdf Graphic file (type pdf)
  <use tuple_on_heap.pdf>
 Package pdftex.def Info: tuple_on_heap.pdf used on input line 226.
@@ -1537,7 +1529,7 @@ Package pdftex.def Info: tuple_on_heap.pdf used on input line 226.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./bignum_on_heap.pdf): PDF inclusion
 : found PDF version <1.7>, but at most version <1.5> allowed
-<bignum_on_heap.pdf, id=774, 614.295pt x 794.97pt>
+<bignum_on_heap.pdf, id=769, 614.295pt x 794.97pt>
 File: bignum_on_heap.pdf Graphic file (type pdf)
  <use bignum_on_heap.pdf>
 Package pdftex.def Info: bignum_on_heap.pdf used on input line 247.
@@ -1559,7 +1551,7 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <8> not available
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_1.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_1.pdf, id=814, 614.295pt x 794.97pt>
+<interpreter_max_1.pdf, id=809, 614.295pt x 794.97pt>
 File: interpreter_max_1.pdf Graphic file (type pdf)
 
 <use interpreter_max_1.pdf>
@@ -1569,7 +1561,7 @@ Package pdftex.def Info: interpreter_max_1.pdf used on input line 346.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_2.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_2.pdf, id=816, 614.295pt x 794.97pt>
+<interpreter_max_2.pdf, id=811, 614.295pt x 794.97pt>
 File: interpreter_max_2.pdf Graphic file (type pdf)
 
 <use interpreter_max_2.pdf>
@@ -1579,7 +1571,7 @@ Package pdftex.def Info: interpreter_max_2.pdf used on input line 354.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_3.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_3.pdf, id=818, 614.295pt x 794.97pt>
+<interpreter_max_3.pdf, id=813, 614.295pt x 794.97pt>
 File: interpreter_max_3.pdf Graphic file (type pdf)
 
 <use interpreter_max_3.pdf>
@@ -1589,7 +1581,7 @@ Package pdftex.def Info: interpreter_max_3.pdf used on input line 362.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_4.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_4.pdf, id=820, 614.295pt x 794.97pt>
+<interpreter_max_4.pdf, id=815, 614.295pt x 794.97pt>
 File: interpreter_max_4.pdf Graphic file (type pdf)
 
 <use interpreter_max_4.pdf>
@@ -1599,7 +1591,7 @@ Package pdftex.def Info: interpreter_max_4.pdf used on input line 370.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_5.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_5.pdf, id=822, 614.295pt x 794.97pt>
+<interpreter_max_5.pdf, id=817, 614.295pt x 794.97pt>
 File: interpreter_max_5.pdf Graphic file (type pdf)
 
 <use interpreter_max_5.pdf>
@@ -1609,7 +1601,7 @@ Package pdftex.def Info: interpreter_max_5.pdf used on input line 378.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_6.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_6.pdf, id=824, 614.295pt x 794.97pt>
+<interpreter_max_6.pdf, id=819, 614.295pt x 794.97pt>
 File: interpreter_max_6.pdf Graphic file (type pdf)
 
 <use interpreter_max_6.pdf>
@@ -1619,7 +1611,7 @@ Package pdftex.def Info: interpreter_max_6.pdf used on input line 386.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_7.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_7.pdf, id=826, 614.295pt x 794.97pt>
+<interpreter_max_7.pdf, id=821, 614.295pt x 794.97pt>
 File: interpreter_max_7.pdf Graphic file (type pdf)
 
 <use interpreter_max_7.pdf>
@@ -1629,7 +1621,7 @@ Package pdftex.def Info: interpreter_max_7.pdf used on input line 394.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./interpreter_max_8.pdf): PDF inclus
 ion: found PDF version <1.7>, but at most version <1.5> allowed
-<interpreter_max_8.pdf, id=828, 614.295pt x 794.97pt>
+<interpreter_max_8.pdf, id=823, 614.295pt x 794.97pt>
 File: interpreter_max_8.pdf Graphic file (type pdf)
 
 <use interpreter_max_8.pdf>
@@ -1639,14 +1631,9 @@ Package pdftex.def Info: interpreter_max_8.pdf used on input line 402.
 x_3.pdf> <./interpreter_max_4.pdf> <./interpreter_max_5.pdf> <./interpreter_max
 _6.pdf> <./interpreter_max_7.pdf> <./interpreter_max_8.pdf>] [41]
 
-LaTeX Warning: Reference `sec:maszynaBledy' on page 42 undefined on input line 
-457.
-
-
-
 pdfTeX warning: /usr/texbin/pdflatex (file ./mp1.pdf): PDF inclusion: found PDF
  version <1.7>, but at most version <1.5> allowed
-<mp1.pdf, id=872, 614.295pt x 794.97pt>
+<mp1.pdf, id=868, 614.295pt x 794.97pt>
 File: mp1.pdf Graphic file (type pdf)
  <use mp1.pdf>
 Package pdftex.def Info: mp1.pdf used on input line 490.
@@ -1655,7 +1642,7 @@ Package pdftex.def Info: mp1.pdf used on input line 490.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./mp2.pdf): PDF inclusion: found PDF
  version <1.7>, but at most version <1.5> allowed
-<mp2.pdf, id=882, 614.295pt x 794.97pt>
+<mp2.pdf, id=878, 614.295pt x 794.97pt>
 File: mp2.pdf Graphic file (type pdf)
  <use mp2.pdf>
 Package pdftex.def Info: mp2.pdf used on input line 503.
@@ -1664,7 +1651,7 @@ Package pdftex.def Info: mp2.pdf used on input line 503.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./mp3.pdf): PDF inclusion: found PDF
  version <1.7>, but at most version <1.5> allowed
-<mp3.pdf, id=886, 614.295pt x 794.97pt>
+<mp3.pdf, id=882, 614.295pt x 794.97pt>
 File: mp3.pdf Graphic file (type pdf)
  <use mp3.pdf>
 Package pdftex.def Info: mp3.pdf used on input line 515.
@@ -1677,7 +1664,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./mp4.pdf): PDF inclusion: found PDF
  version <1.7>, but at most version <1.5> allowed
-<mp4.pdf, id=888, 614.295pt x 794.97pt>
+<mp4.pdf, id=884, 614.295pt x 794.97pt>
 File: mp4.pdf Graphic file (type pdf)
  <use mp4.pdf>
 Package pdftex.def Info: mp4.pdf used on input line 521.
@@ -1690,7 +1677,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./preemption.pdf): PDF inclusion: fo
 und PDF version <1.7>, but at most version <1.5> allowed
-<preemption.pdf, id=958, 614.295pt x 794.97pt>
+<preemption.pdf, id=954, 614.295pt x 794.97pt>
 File: preemption.pdf Graphic file (type pdf)
  <use preemption.pdf>
 Package pdftex.def Info: preemption.pdf used on input line 569.
@@ -1804,7 +1791,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./heap.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<heap.pdf, id=993, 614.295pt x 794.97pt>
+<heap.pdf, id=989, 614.295pt x 794.97pt>
 File: heap.pdf Graphic file (type pdf)
  <use heap.pdf>
 Package pdftex.def Info: heap.pdf used on input line 772.
@@ -1814,7 +1801,7 @@ Package pdftex.def Info: heap.pdf used on input line 772.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_0.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_0.pdf, id=1017, 614.295pt x 794.97pt>
+<gc_0.pdf, id=1013, 614.295pt x 794.97pt>
 File: gc_0.pdf Graphic file (type pdf)
  <use gc_0.pdf>
 Package pdftex.def Info: gc_0.pdf used on input line 820.
@@ -1823,7 +1810,7 @@ Package pdftex.def Info: gc_0.pdf used on input line 820.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_1.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_1.pdf, id=1020, 614.295pt x 794.97pt>
+<gc_1.pdf, id=1016, 614.295pt x 794.97pt>
 File: gc_1.pdf Graphic file (type pdf)
  <use gc_1.pdf>
 Package pdftex.def Info: gc_1.pdf used on input line 834.
@@ -1835,7 +1822,7 @@ Underfull \vbox (badness 1527) has occurred while \output is active []
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_2.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_2.pdf, id=1032, 614.295pt x 794.97pt>
+<gc_2.pdf, id=1028, 614.295pt x 794.97pt>
 File: gc_2.pdf Graphic file (type pdf)
  <use gc_2.pdf>
 Package pdftex.def Info: gc_2.pdf used on input line 844.
@@ -1844,7 +1831,7 @@ Package pdftex.def Info: gc_2.pdf used on input line 844.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_3.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_3.pdf, id=1035, 614.295pt x 794.97pt>
+<gc_3.pdf, id=1031, 614.295pt x 794.97pt>
 File: gc_3.pdf Graphic file (type pdf)
  <use gc_3.pdf>
 Package pdftex.def Info: gc_3.pdf used on input line 852.
@@ -1853,7 +1840,7 @@ Package pdftex.def Info: gc_3.pdf used on input line 852.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_4.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_4.pdf, id=1038, 614.295pt x 794.97pt>
+<gc_4.pdf, id=1034, 614.295pt x 794.97pt>
 File: gc_4.pdf Graphic file (type pdf)
  <use gc_4.pdf>
 Package pdftex.def Info: gc_4.pdf used on input line 860.
@@ -1866,7 +1853,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_5.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_5.pdf, id=1041, 614.295pt x 794.97pt>
+<gc_5.pdf, id=1037, 614.295pt x 794.97pt>
 File: gc_5.pdf Graphic file (type pdf)
  <use gc_5.pdf>
 Package pdftex.def Info: gc_5.pdf used on input line 869.
@@ -1878,7 +1865,7 @@ Underfull \vbox (badness 1655) has occurred while \output is active []
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./gc_6.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<gc_6.pdf, id=1055, 614.295pt x 794.97pt>
+<gc_6.pdf, id=1051, 614.295pt x 794.97pt>
 File: gc_6.pdf Graphic file (type pdf)
  <use gc_6.pdf>
 Package pdftex.def Info: gc_6.pdf used on input line 877.
@@ -1918,7 +1905,7 @@ Underfull \hbox (badness 1910) in paragraph at lines 914--915
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./tiw1.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<tiw1.pdf, id=1076, 614.295pt x 794.97pt>
+<tiw1.pdf, id=1072, 614.295pt x 794.97pt>
 File: tiw1.pdf Graphic file (type pdf)
  <use tiw1.pdf>
 Package pdftex.def Info: tiw1.pdf used on input line 926.
@@ -1927,7 +1914,7 @@ Package pdftex.def Info: tiw1.pdf used on input line 926.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./tiw2.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<tiw2.pdf, id=1079, 614.295pt x 794.97pt>
+<tiw2.pdf, id=1075, 614.295pt x 794.97pt>
 File: tiw2.pdf Graphic file (type pdf)
  <use tiw2.pdf>
 Package pdftex.def Info: tiw2.pdf used on input line 939.
@@ -1940,7 +1927,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./tiw3.pdf): PDF inclusion: found PD
 F version <1.7>, but at most version <1.5> allowed
-<tiw3.pdf, id=1091, 614.295pt x 794.97pt>
+<tiw3.pdf, id=1087, 614.295pt x 794.97pt>
 File: tiw3.pdf Graphic file (type pdf)
  <use tiw3.pdf>
 Package pdftex.def Info: tiw3.pdf used on input line 951.
@@ -1949,7 +1936,7 @@ Package pdftex.def Info: tiw3.pdf used on input line 951.
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./erts_memory.pdf): PDF inclusion: f
 ound PDF version <1.7>, but at most version <1.5> allowed
-<erts_memory.pdf, id=1102, 614.295pt x 794.97pt>
+<erts_memory.pdf, id=1098, 614.295pt x 794.97pt>
 File: erts_memory.pdf Graphic file (type pdf)
  <use erts_memory.pdf>
 Package pdftex.def Info: erts_memory.pdf used on input line 992.
@@ -1991,11 +1978,11 @@ Package gnuplottex Info: praca-gnuplottex-fig1.gnuplot converted on input line
 
 (./praca-gnuplottex-fig1.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig1.eps>
-(epstopdf)                    date: 2014-08-22 21:18:09
+(epstopdf)                    date: 2014-08-23 15:50:03
 (epstopdf)                    size: 20313 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig1-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:10
+(epstopdf)                    date: 2014-08-23 15:45:27
 (epstopdf)                    size: 5107 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig1-eps-c
 onverted-to.pdf praca-gnuplottex-fig1.eps>
@@ -2005,10 +1992,10 @@ nuplottex-fig1.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig1-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:09
+(epstopdf)                    date: 2014-08-23 15:50:03
 (epstopdf)                    size: 5107 bytes.
 
-<praca-gnuplottex-fig1-eps-converted-to.pdf, id=1160, 361.35pt x 252.945pt>
+<praca-gnuplottex-fig1-eps-converted-to.pdf, id=1156, 361.35pt x 252.945pt>
 File: praca-gnuplottex-fig1-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig1-eps-converted-to.pdf>
@@ -2035,11 +2022,11 @@ Package gnuplottex Info: praca-gnuplottex-fig2.gnuplot converted on input line
 
 (./praca-gnuplottex-fig2.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig2.eps>
-(epstopdf)                    date: 2014-08-22 21:18:09
+(epstopdf)                    date: 2014-08-23 15:50:03
 (epstopdf)                    size: 20831 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig2-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:11
+(epstopdf)                    date: 2014-08-23 15:45:27
 (epstopdf)                    size: 5337 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig2-eps-c
 onverted-to.pdf praca-gnuplottex-fig2.eps>
@@ -2049,10 +2036,10 @@ nuplottex-fig2.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig2-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:10
+(epstopdf)                    date: 2014-08-23 15:50:04
 (epstopdf)                    size: 5337 bytes.
 
-<praca-gnuplottex-fig2-eps-converted-to.pdf, id=1161, 361.35pt x 252.945pt>
+<praca-gnuplottex-fig2-eps-converted-to.pdf, id=1157, 361.35pt x 252.945pt>
 File: praca-gnuplottex-fig2-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig2-eps-converted-to.pdf>
@@ -2079,11 +2066,11 @@ Package gnuplottex Info: praca-gnuplottex-fig3.gnuplot converted on input line
 
 (./praca-gnuplottex-fig3.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig3.eps>
-(epstopdf)                    date: 2014-08-22 21:18:10
+(epstopdf)                    date: 2014-08-23 15:50:04
 (epstopdf)                    size: 21088 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig3-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:11
+(epstopdf)                    date: 2014-08-23 15:45:27
 (epstopdf)                    size: 5474 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig3-eps-c
 onverted-to.pdf praca-gnuplottex-fig3.eps>
@@ -2093,10 +2080,10 @@ nuplottex-fig3.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig3-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:10
+(epstopdf)                    date: 2014-08-23 15:50:04
 (epstopdf)                    size: 5474 bytes.
 
-<praca-gnuplottex-fig3-eps-converted-to.pdf, id=1162, 361.35pt x 252.945pt>
+<praca-gnuplottex-fig3-eps-converted-to.pdf, id=1158, 361.35pt x 252.945pt>
 File: praca-gnuplottex-fig3-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig3-eps-converted-to.pdf>
@@ -2123,11 +2110,11 @@ Package gnuplottex Info: praca-gnuplottex-fig4.gnuplot converted on input line
 
 (./praca-gnuplottex-fig4.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig4.eps>
-(epstopdf)                    date: 2014-08-22 21:18:10
+(epstopdf)                    date: 2014-08-23 15:50:04
 (epstopdf)                    size: 20655 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig4-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:12
+(epstopdf)                    date: 2014-08-23 15:45:27
 (epstopdf)                    size: 5281 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig4-eps-c
 onverted-to.pdf praca-gnuplottex-fig4.eps>
@@ -2137,10 +2124,10 @@ nuplottex-fig4.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig4-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:11
+(epstopdf)                    date: 2014-08-23 15:50:04
 (epstopdf)                    size: 5281 bytes.
 
-<praca-gnuplottex-fig4-eps-converted-to.pdf, id=1163, 361.35pt x 252.945pt>
+<praca-gnuplottex-fig4-eps-converted-to.pdf, id=1159, 361.35pt x 252.945pt>
 File: praca-gnuplottex-fig4-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig4-eps-converted-to.pdf>
@@ -2167,11 +2154,11 @@ Package gnuplottex Info: praca-gnuplottex-fig5.gnuplot converted on input line
 
 (./praca-gnuplottex-fig5.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig5.eps>
-(epstopdf)                    date: 2014-08-22 21:18:11
+(epstopdf)                    date: 2014-08-23 15:50:04
 (epstopdf)                    size: 19294 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig5-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:12
+(epstopdf)                    date: 2014-08-23 15:45:28
 (epstopdf)                    size: 4341 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig5-eps-c
 onverted-to.pdf praca-gnuplottex-fig5.eps>
@@ -2181,10 +2168,10 @@ nuplottex-fig5.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig5-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:11
+(epstopdf)                    date: 2014-08-23 15:50:05
 (epstopdf)                    size: 4341 bytes.
 
-<praca-gnuplottex-fig5-eps-converted-to.pdf, id=1164, 361.35pt x 252.945pt>
+<praca-gnuplottex-fig5-eps-converted-to.pdf, id=1160, 361.35pt x 252.945pt>
 File: praca-gnuplottex-fig5-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig5-eps-converted-to.pdf>
@@ -2211,11 +2198,11 @@ Package gnuplottex Info: praca-gnuplottex-fig6.gnuplot converted on input line
 
 (./praca-gnuplottex-fig6.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig6.eps>
-(epstopdf)                    date: 2014-08-22 21:18:11
+(epstopdf)                    date: 2014-08-23 15:50:05
 (epstopdf)                    size: 23012 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig6-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:12
+(epstopdf)                    date: 2014-08-23 15:45:28
 (epstopdf)                    size: 6436 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig6-eps-c
 onverted-to.pdf praca-gnuplottex-fig6.eps>
@@ -2225,10 +2212,10 @@ nuplottex-fig6.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig6-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:11
+(epstopdf)                    date: 2014-08-23 15:50:05
 (epstopdf)                    size: 6436 bytes.
 
-<praca-gnuplottex-fig6-eps-converted-to.pdf, id=1165, 361.35pt x 252.945pt>
+<praca-gnuplottex-fig6-eps-converted-to.pdf, id=1161, 361.35pt x 252.945pt>
 File: praca-gnuplottex-fig6-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig6-eps-converted-to.pdf>
@@ -2252,14 +2239,14 @@ o.pdf> <./praca-gnuplottex-fig6-eps-converted-to.pdf>]
 
 pdfTeX warning: /usr/texbin/pdflatex (file ./example_led_processes.pdf): PDF in
 clusion: found PDF version <1.7>, but at most version <1.5> allowed
-<example_led_processes.pdf, id=1187, 614.295pt x 794.97pt>
+<example_led_processes.pdf, id=1183, 614.295pt x 794.97pt>
 File: example_led_processes.pdf Graphic file (type pdf)
 
 <use example_led_processes.pdf>
 Package pdftex.def Info: example_led_processes.pdf used on input line 211.
 (pdftex.def)             Requested size: 358.21935pt x 225.91437pt.
  [65 <./example_led_processes.pdf>]
-<example_led.pdf, id=1198, 845.1575pt x 597.23125pt>
+<example_led.pdf, id=1194, 845.1575pt x 597.23125pt>
 File: example_led.pdf Graphic file (type pdf)
  <use example_led.pdf>
 Package pdftex.def Info: example_led.pdf used on input line 232.
@@ -2286,11 +2273,11 @@ Package gnuplottex Info: praca-gnuplottex-fig7.gnuplot converted on input line
 
 (./praca-gnuplottex-fig7.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig7.eps>
-(epstopdf)                    date: 2014-08-22 21:18:12
+(epstopdf)                    date: 2014-08-23 15:50:05
 (epstopdf)                    size: 30640 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig7-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:13
+(epstopdf)                    date: 2014-08-23 15:45:28
 (epstopdf)                    size: 32128 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig7-eps-c
 onverted-to.pdf praca-gnuplottex-fig7.eps>
@@ -2300,10 +2287,10 @@ nuplottex-fig7.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig7-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:12
+(epstopdf)                    date: 2014-08-23 15:50:05
 (epstopdf)                    size: 32128 bytes.
 
-<praca-gnuplottex-fig7-eps-converted-to.pdf, id=1208, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig7-eps-converted-to.pdf, id=1204, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig7-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig7-eps-converted-to.pdf>
@@ -2330,12 +2317,12 @@ Package gnuplottex Info: praca-gnuplottex-fig8.gnuplot converted on input line
 
 (./praca-gnuplottex-fig8.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig8.eps>
-(epstopdf)                    date: 2014-08-22 21:18:12
+(epstopdf)                    date: 2014-08-23 15:50:05
 (epstopdf)                    size: 31043 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig8-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:13
-(epstopdf)                    size: 38015 bytes
+(epstopdf)                    date: 2014-08-23 15:45:29
+(epstopdf)                    size: 38017 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig8-eps-c
 onverted-to.pdf praca-gnuplottex-fig8.eps>
 (epstopdf)             \includegraphics on input line 118.
@@ -2344,10 +2331,10 @@ nuplottex-fig8.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig8-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:12
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 38017 bytes.
 
-<praca-gnuplottex-fig8-eps-converted-to.pdf, id=1209, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig8-eps-converted-to.pdf, id=1205, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig8-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig8-eps-converted-to.pdf>
@@ -2374,11 +2361,11 @@ Package gnuplottex Info: praca-gnuplottex-fig9.gnuplot converted on input line
 
 (./praca-gnuplottex-fig9.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig9.eps>
-(epstopdf)                    date: 2014-08-22 21:18:12
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 30919 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig9-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:13:14
+(epstopdf)                    date: 2014-08-23 15:45:29
 (epstopdf)                    size: 33825 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig9-eps-c
 onverted-to.pdf praca-gnuplottex-fig9.eps>
@@ -2388,10 +2375,10 @@ nuplottex-fig9.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig9-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2014-08-22 21:18:13
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 33825 bytes.
 
-<praca-gnuplottex-fig9-eps-converted-to.pdf, id=1210, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig9-eps-converted-to.pdf, id=1206, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig9-eps-converted-to.pdf Graphic file (type pdf)
 
 <use praca-gnuplottex-fig9-eps-converted-to.pdf>
@@ -2418,11 +2405,11 @@ Package gnuplottex Info: praca-gnuplottex-fig10.gnuplot converted on input line
 
 (./praca-gnuplottex-fig10.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig10.eps>
-(epstopdf)                    date: 2014-08-22 21:18:13
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 30893 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig10-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:13:14
+(epstopdf)                    date: 2014-08-23 15:45:29
 (epstopdf)                    size: 41609 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig10-eps-
 converted-to.pdf praca-gnuplottex-fig10.eps>
@@ -2432,10 +2419,10 @@ gnuplottex-fig10.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig10-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:18:13
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 41609 bytes.
 
-<praca-gnuplottex-fig10-eps-converted-to.pdf, id=1211, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig10-eps-converted-to.pdf, id=1207, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig10-eps-converted-to.pdf Graphic file (type pdf)
 <use praca-gnuplottex-fig10-eps-converted-to.pdf>
 Package pdftex.def Info: praca-gnuplottex-fig10-eps-converted-to.pdf used on in
@@ -2464,11 +2451,11 @@ Package gnuplottex Info: praca-gnuplottex-fig11.gnuplot converted on input line
 
 (./praca-gnuplottex-fig11.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig11.eps>
-(epstopdf)                    date: 2014-08-22 21:18:13
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 30665 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig11-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:13:14
+(epstopdf)                    date: 2014-08-23 15:45:30
 (epstopdf)                    size: 39819 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig11-eps-
 converted-to.pdf praca-gnuplottex-fig11.eps>
@@ -2478,10 +2465,10 @@ gnuplottex-fig11.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig11-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:18:14
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 39819 bytes.
 
-<praca-gnuplottex-fig11-eps-converted-to.pdf, id=1212, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig11-eps-converted-to.pdf, id=1208, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig11-eps-converted-to.pdf Graphic file (type pdf)
 <use praca-gnuplottex-fig11-eps-converted-to.pdf>
 Package pdftex.def Info: praca-gnuplottex-fig11-eps-converted-to.pdf used on in
@@ -2507,11 +2494,11 @@ Package gnuplottex Info: praca-gnuplottex-fig12.gnuplot converted on input line
 
 (./praca-gnuplottex-fig12.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig12.eps>
-(epstopdf)                    date: 2014-08-22 21:18:14
+(epstopdf)                    date: 2014-08-23 15:50:06
 (epstopdf)                    size: 31151 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig12-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:13:15
+(epstopdf)                    date: 2014-08-23 15:45:30
 (epstopdf)                    size: 41592 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig12-eps-
 converted-to.pdf praca-gnuplottex-fig12.eps>
@@ -2521,10 +2508,10 @@ gnuplottex-fig12.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig12-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:18:14
+(epstopdf)                    date: 2014-08-23 15:50:07
 (epstopdf)                    size: 41592 bytes.
 
-<praca-gnuplottex-fig12-eps-converted-to.pdf, id=1213, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig12-eps-converted-to.pdf, id=1209, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig12-eps-converted-to.pdf Graphic file (type pdf)
 <use praca-gnuplottex-fig12-eps-converted-to.pdf>
 Package pdftex.def Info: praca-gnuplottex-fig12-eps-converted-to.pdf used on in
@@ -2550,11 +2537,11 @@ Package gnuplottex Info: praca-gnuplottex-fig13.gnuplot converted on input line
 
 (./praca-gnuplottex-fig13.tex
 Package epstopdf Info: Source file: <praca-gnuplottex-fig13.eps>
-(epstopdf)                    date: 2014-08-22 21:18:14
+(epstopdf)                    date: 2014-08-23 15:50:07
 (epstopdf)                    size: 31162 bytes
 (epstopdf)             Output file: <praca-gnuplottex-fig13-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:13:15
+(epstopdf)                    date: 2014-08-23 15:45:30
 (epstopdf)                    size: 41318 bytes
 (epstopdf)             Command: <epstopdf --outfile=praca-gnuplottex-fig13-eps-
 converted-to.pdf praca-gnuplottex-fig13.eps>
@@ -2564,10 +2551,10 @@ gnuplottex-fig13.eps)...executed.
 
 Package epstopdf Info: Result file: <praca-gnuplottex-fig13-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2014-08-22 21:18:14
+(epstopdf)                    date: 2014-08-23 15:50:07
 (epstopdf)                    size: 41318 bytes.
 
-<praca-gnuplottex-fig13-eps-converted-to.pdf, id=1214, 469.755pt x 151.56625pt>
+<praca-gnuplottex-fig13-eps-converted-to.pdf, id=1210, 469.755pt x 151.56625pt>
 File: praca-gnuplottex-fig13-eps-converted-to.pdf Graphic file (type pdf)
 <use praca-gnuplottex-fig13-eps-converted-to.pdf>
 Package pdftex.def Info: praca-gnuplottex-fig13-eps-converted-to.pdf used on in
@@ -2588,7 +2575,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 359--360
 onverted-to.pdf> <./praca-gnuplottex-fig10-eps-converted-to.pdf>] [70 <./praca-
 gnuplottex-fig11-eps-converted-to.pdf> <./praca-gnuplottex-fig12-eps-converted-
 to.pdf> <./praca-gnuplottex-fig13-eps-converted-to.pdf>]
-<example_rfm.pdf, id=1264, 845.1575pt x 597.23125pt>
+<example_rfm.pdf, id=1260, 845.1575pt x 597.23125pt>
 File: example_rfm.pdf Graphic file (type pdf)
  <use example_rfm.pdf>
 Package pdftex.def Info: example_rfm.pdf used on input line 407.
@@ -2602,7 +2589,7 @@ ki pro-to-ty-po-wej z mi-kro-kon-tro-le-rem
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[71] <console_rfm.png, id=1273, 560.0925pt x 530.98375pt>
+[71] <console_rfm.png, id=1269, 560.0925pt x 530.98375pt>
 File: console_rfm.png Graphic file (type png)
 
 <use console_rfm.png>
@@ -2657,17 +2644,12 @@ ji pro-gramu (do-my±l-nie jest to
  (./dodatek_config.tex
 Dodatek C.
 
-Overfull \hbox (29.4511pt too wide) in alignment at lines 11--15
+Overfull \hbox (0.99834pt too wide) in alignment at lines 11--15
  [] [] [] 
  []
 
 
-Underfull \hbox (badness 1527) in paragraph at lines 25--26
-\T1/ptm/m/n/10.95 funk-cji, które mog¡ zo-sta¢ wy-eks-por-to-wane z mo-du-
- []
-
-
-Overfull \hbox (29.4511pt too wide) in alignment at lines 15--40
+Overfull \hbox (0.99834pt too wide) in alignment at lines 15--40
  [] [] [] 
  []
 
@@ -3279,22 +3261,16 @@ Package rerunfilecheck Info: File `praca.out' has not changed.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 150.
  ) 
 Here is how much of TeX's memory you used:
- 14116 strings out of 493315
- 204522 string characters out of 6137905
- 424039 words of memory out of 5000000
- 16544 multiletter control sequences out of 15000+600000
+ 14108 strings out of 493315
+ 204437 string characters out of 6137905
+ 423691 words of memory out of 5000000
+ 16542 multiletter control sequences out of 15000+600000
  91817 words of font info for 104 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,12n,60p,937b,2022s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,60p,937b,1951s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
@@ -3315,10 +3291,10 @@ pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr
 live/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2013/
 texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/local/texlive/2013/texmf-dis
 t/fonts/type1/urw/zapfding/uzdr.pfb>
-Output written on praca.pdf (118 pages, 1831385 bytes).
+Output written on praca.pdf (118 pages, 1830882 bytes).
 PDF statistics:
- 1989 PDF objects out of 2073 (max. 8388607)
- 1743 compressed objects within 18 object streams
- 591 named destinations out of 1000 (max. 500000)
+ 1984 PDF objects out of 2073 (max. 8388607)
+ 1738 compressed objects within 18 object streams
+ 585 named destinations out of 1000 (max. 500000)
  1228 words of extra memory for PDF output out of 10000 (max. 10000000)
 

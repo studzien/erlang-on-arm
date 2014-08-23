@@ -28,25 +28,25 @@ Systemy wbudowane najczęściej implementowane są w oparciu o mikrokontrolery, 
 
 \label{ref:architektury}
 Spośród architektur oprogramowania uruchamianego na urządzeniach wbudowanych można wymienić:
-\begin{enumerate}
-\item \textbf{kontrolę programu w pętli} -
+\begin{itemize}
+\item kontrolę programu w pętli ---
 program kontrolowany jest w pojedynczej pętli, wewnątrz której podejmowane są decyzje o sterowaniu elementami sprzętowymi lub programowymi;
-\item \textbf{kontrolę programu przez przerwania} - 
+\item kontrolę programu przez przerwania --- 
 konkretne części programu wywoływane są przez wewnętrzne (np. zegary) lub zewnętrzne (np. odbiór danych z portu szeregowego) przerwania.
 Architektura ta często mieszana jest z wykonywaniem programu w pętli. W takim podejściu zadania o wysokim priorytecie wywoływane są przez przerwania, natomiast zadania o niskim priorytecie wykonywane są w pętli;
-\item \textbf{wielozadaniowość z wywłaszczaniem} - 
+\item wielozadaniowość z wywłaszczaniem --- 
 w tego typu systemach pomiędzy kodem programu a~mikrokontrolerem znajduje się niskopoziomowe oprogramowanie (jądro) odpowiadające za przydzielanie czasu procesora dla wielu współbieżnych zadań, które mogą mieć różne priorytety wykonania. Planista (\emph{scheduler}) decyduje także o tym, w którym momencie powinno zostać obsłużone przerwanie;
-\item \textbf{wielozadaniowość bez wywłaszczania} -
+\item wielozadaniowość bez wywłaszczania ---
 tego rodzaju architektura jest bardzo podobna do wielozadaniowości z wywłaszczaniem, jednak jądro nie dokonuje samodzielnych decyzji o przerwaniu wykonywania któregoś ze współbieżnych zadań lecz pozostawia tę decyzję programiście;
-\item \textbf{mikrojądro} -
+\item mikrojądro ---
 jest rozszerzeniem systemów obsługujących wielozadaniowość bez wywłaszczania lub z wywłaszczaniem poprzez dodanie np. zarządzania pamięcią, mechanizmów synchronizacji czy komunikacji pomiędzy współbieżnymi zadaniami do funkcjonalności jądra. Przykładami mikrojąder mogą być np. FreeRTOS, Enea OSE czy RTEMS;
-\item \textbf{jądro monolityczne} -
-do funkcjonalności jądra dodaje funkcjonalności zapewniające komplet komunikacji z peryferiami systemu dodające do funkcjonalności np. system plików, stos TCP/IP do komunikacji sieciowej czy sterowniki obsługi urządzeń zewnętrznych.
+\item jądro monolityczne ---
+do funkcjonalności jądra dodaje funkcjonalności zapewniające komunikację z~peryferiami systemu, np. system plików, stos TCP/IP do komunikacji sieciowej czy sterowniki obsługi urządzeń zewnętrznych.
 Spośród systemów z~jądrami monolitycznymi można wymienić takie systemy jak Embedded Linux czy Windows CE.
-\end{enumerate}
+\end{itemize}
 
 Można zauważyć, że wymienione architektury zostały uporządkowane względem złożoności projektowanego systemu, ale także pod względem złożoności występującego elementu pośredniego pomiędzy programowanym fizycznym urządzeniem a oprogramowaniem. Wraz ze wzrostem złożoności systemu rosną również wymagania sprzętowe konieczne do uruchomienia danego systemu, maleje jednak bezpośredni poziom kontroli programisty nad realizacją wymagań czasu rzeczywistego.
-W niniejszej pracy rozważane będą sposoby implementacji oprogramowania na systemy wbudowane w oparciu o mikrojądro. Przykładem takiego systemu jest FreeRTOS.
+W niniejszej pracy rozważane będą sposoby implementacji oprogramowania na systemy wbudowane w oparciu o mikrojądro uruchomione na układzie z mikrokontrolerem. Przykładem systemu zaprojektowanego do tego typu zastosowań jest FreeRTOS.
 
 %---------------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ Były one następujące:
 \item powinien zostać zapewniony mechanizm transakcyjny, który w połączeniu z duplikacją procesów ułatwi obsługę wyjątków i tolerowanie błędów oprogramowania.
 \end{enumerate}
 
-Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB - Bjarne Dackera, Joe Armstronga, Mike'a Williamsa i Roberta Virdinga do stworzenia nowej platformy umożliwiającej rozwój oprogramowania, spełniającego powyższe wymagania.
+Obserwacje te były motywacją dla czwórki inżynierów z firmy Ericsson AB, Bjarne Dackera, Joe Armstronga, Mike'a Williamsa i Roberta Virdinga, do stworzenia nowej platformy umożliwiającej rozwój oprogramowania, spełniającego powyższe wymagania.
 Jak się później okazało, do zaspokojenia wszystkich wymienionych wyżej potrzeb konieczne było stworzenie nowego, dedykowanego, funkcyjnego języka programowania --- Erlang, wraz z zestawem bibliotek --- OTP (Open Telecom Platform).
 
 Rozwiązanie to zapewniało realizację powyższych postulatów poprzez następujące cechy:
@@ -82,9 +82,9 @@ Należy zaznaczyć, że celem przyświecającym twórcom języka od samego pocz�
 
 Nie można jednak zapomnieć o tym, że język ten został zaprojektowany dla systemów o miękkich wymaganiach czasu rzeczywistego. Systemy tego typu charakteryzują się tym, że oczekiwane czasy reakcji na zdarzenie są rzędu milisekund, a odstępstwa od oczekiwanego czasu odpowiedzi powodują tylko spadek jakości usług danego systemu. W przeciwieństwie do tego, systemy o twardych wymaganiach czasu rzeczywistego uznaje się w takich sytuacjach za niefunkcjonalne.
 
-Aktualnie najpopularniejszym i właściwie jedynym typem środowiska, używanym do uruchamiania maszyny wirtualnej Erlanga dla celów produkcyjnych są pełnoprawne systemy operacyjne (głównie GNU/Linux lub Unix) uruchamiane na fizycznych maszynach bądź w środowiskach zwirtualizowanych. Wiążą się z tym dość wysokie wymagania, zarówno pod względem zasobów sprzętowych (jak np. ilość dostępnej pamięci RAM) jak i funkcjonalności samego systemu operacyjnego (jak np. mechanizmy komunikacji międzyprocesowej), konieczne do uruchomienia w pełni funkcjonalnej dystrybucji maszyny wirtualnej.
+Aktualnie najpopularniejszym i właściwie jedynym typem środowiska używanym do uruchamiania maszyny wirtualnej Erlanga dla celów produkcyjnych są pełnoprawne systemy operacyjne (głównie GNU/Linux lub Unix) uruchamiane na fizycznych maszynach bądź w środowiskach zwirtualizowanych. Wiążą się z tym dość wysokie wymagania, zarówno pod względem zasobów sprzętowych (jak np. ilość dostępnej pamięci RAM) jak i funkcjonalności samego systemu operacyjnego (jak np. mechanizmy komunikacji międzyprocesowej), konieczne do uruchomienia w pełni funkcjonalnej dystrybucji maszyny wirtualnej.
 
-Dystrybucja maszyny wirtualnej Erlanga BEAM (Bjorn/Bogdan Erlang Abstract Machine), która utrzymywana jest przez firmę Ericsson AB, umożliwia jednak uruchomienie jej w trybie wbudowanym na takich systemach operacyjnych jak VxWorks czy Embedded Solaris. Pierwszy z nich jest systemem operacyjnym czasu rzeczywistego, jednak maszyna wirtualna została przeniesiona na ten system tylko w~zakresie pozwalającym na uruchomienie na niej centrali telekomunikacyjnej, a jej uruchomienie wymaga 32 MB pamięci RAM i 22 MB przestrzeni dyskowej.
+Dystrybucja maszyny wirtualnej Erlanga BEAM (Bjorn/Bogdan Erlang Abstract Machine), która rozwijana jest przez firmę Ericsson AB, umożliwia jednak uruchomienie jej w trybie wbudowanym na takich systemach operacyjnych jak VxWorks czy Embedded Solaris. Pierwszy z nich jest systemem operacyjnym czasu rzeczywistego, jednak maszyna wirtualna została przeniesiona na ten system tylko w~zakresie pozwalającym na uruchomienie na niej centrali telekomunikacyjnej, a jej uruchomienie wymaga 32 MB pamięci RAM i 22 MB przestrzeni dyskowej.
 Z kolei uruchomienie Erlang/OTP na systemie Embedded Solaris wymaga 17 MB pamięci RAM i 80 MB przestrzeni dyskowej.
 Szczegóły dotyczące wersji maszyny wirtualnej na te systemy operacyjne mogą zostać znalezione w dokumentacji Erlang/OTP \cite{ErlangVxWorks}.
 
@@ -92,12 +92,12 @@ Szczegóły dotyczące wersji maszyny wirtualnej na te systemy operacyjne mogą 
 Oprócz tego, aktualnie rozwijanym, otwartym projektem związanym z uruchomieniem Erlanga na systemach wbudowanych jest Embedded Erlang \cite{ErlangEmbedded}, który powstaje nakładem sił firmy Erlang Solutions Ltd. Skupia się on jednak na uruchomieniu maszyny wirtualnej na platformach sprzętowych typu Raspberry Pi czy Parallela, które wymagają pełnej dystrybucji systemu operacyjnego Linux.
 
 
-Można zatem zauważyć, że wymagania, jakich do działania potrzebują zarówno wymienione przeniesienia (\emph{porty}) maszyny BEAM oraz Embedded Erlang są zdecydowanie zbyt wysokie w porównaniu do specyfikacji sprzętowych rozważanych w niniejszej pracy.
+Wymagania, jakich do działania potrzebują zarówno wymienione przeniesienia (\emph{porty}) maszyny BEAM oraz Embedded Erlang są zdecydowanie zbyt wysokie w porównaniu do specyfikacji sprzętowych rozważanych w niniejszej pracy.
 
 
 W momencie powstawania pracy firma Ericsson AB była w~trakcie implementacji maszyny wirtualnej Erlanga dla systemu operacyjnego czasu rzeczywistego Enea OSE. System ten abstrahuje logikę implementowanego oprogramowania w izolowanych procesach, komunikujących się między sobą poprzez wiadomości (\emph{actor model} \cite{Hewitt73}). Poziom zgodności funkcjonalności udostępnianych przez system z~architekturą maszyny wirtualnej Erlanga sprawia, że OSE wydaje się być idealnym systemem do implementacji maszyny wirtualnej dla tego języka. Pozostaje on jednak produktem zamkniętym.
 
-Innym projektem godnym uwagi jest Grisp, autorstwa Peera Stritzingera, będący portem maszyny wirtualnej Erlanga dla mikrojądra RTEMS \cite{Stritzinger2013}. W momencie pisania pracy Grisp również pozostaje w~trakcie rozwoju, jednak tak jak i maszyna dla systemu OSE pozostaje projektem zamkniętym.
+Innym projektem godnym uwagi jest Grisp, autorstwa Peera Stritzingera, będący portem maszyny wirtualnej Erlanga dla mikrojądra RTEMS \cite{Stritzinger2013}. W momencie pisania pracy Grisp również pozostaje w~trakcie rozwoju, jednak tak jak i system OSE pozostaje projektem zamkniętym.
 
 Warto także wspomnieć o projekcie Erlang on Xen autorstwa Maxima Kharchenki \cite{Kharchenko2012}, którego celem jest zbudowanie wersji maszyny wirtualnej, której możliwe byłoby uruchomienie w środowisku zwirtualizowanym, bezpośrednio przez \emph{hypervisor} Xen, bez systemu operacyjnego jako warstwy pośredniej. Aby cel mógł zostać osiągnięty, konieczna jest ponowna implementacja części funkcjonalności maszyny wirtualnej przy jednoczesnym dopasowaniu ich do architektury \emph{hypervisora}.
 %---------------------------------------------------------------------------
@@ -106,7 +106,7 @@ Warto także wspomnieć o projekcie Erlang on Xen autorstwa Maxima Kharchenki \c
 \label{sec:celePracy}
 
 Oczekiwanym efektem niniejszej pracy jest implementacja funkcjonalności systemu uruchomieniowego dla funkcyjnego, współbieżnego języka programowania Erlang dla systemu operacyjnego czasu rzeczywistego (mikrojądra) FreeRTOS.
-Zakres implementacji powinien pozwolić na uruchomienie kodu pośredniego (bajtkodu) maszyny wirtualnej Erlanga skompilowanego przez kompilator maszyny wirtualnej BEAM na mikrokontrolerach o ograniczonych zasobach sprzętowych (jak np. mikrokontroler z~serii LPC17xx, mający 512kB pamięci flash i 64kB pamięci RAM).
+Zakres implementacji powinien pozwolić na uruchomienie kodu pośredniego (bajtkodu) maszyny wirtualnej Erlanga skompilowanego przez kompilator maszyny wirtualnej BEAM na mikrokontrolerach o ograniczonych zasobach sprzętowych (jak np. mikrokontroler z~serii LPC17xx, mający 512kB pamięci flash i 32kB pamięci RAM).
 
 Sposób implementacji powinien pozwolić na uruchamianie programów w taki sposób, by możliwe było spełnienie przynajmniej pierwszych czterech cech charakterystycznych dla języka Erlang z podrozdziału \ref{sec:jezykiFunkcyjne}. Punkt 6. został na tym etapie pominięty, gdyż integracja systemu FreeRTOS z obsługą systemu plików leży poza zakresem pracy. Udostępnienie interfejsów sieciowych oraz możliwość korzystania z~mechanizmu klastrowania Erlanga (\emph{Distributed Erlang}) również nie jest jednym z celów niniejszej pracy.
 
@@ -123,7 +123,7 @@ Celem pracy jest są zatem:
 \section{Zawartość pracy}
 \label{sec:zawartoscPracy}
 
-Niniejsza praca została podzielona na sześć rozdziałów i cztery dodatki.
+Niniejsza praca została podzielona na sześć rozdziałów i pięć dodatków.
 
 W rozdziale \ref{cha:freertos} opisano funkcjonalności udostępniane przez system operacyjny czasu rzeczywistego FreeRTOS.
 Rozdział \ref{cha:erlang} opisuje cechy charakterystyczne Erlanga, zarówno jako funkcyjnego języka programowania jak i jego maszyny wirtualnej.
@@ -134,6 +134,6 @@ Rozdział \ref{cha:podsumowanie} zawiera podsumowanie pracy z wnioskami a także
 W dodatku \ref{cha:cd} opisano zawartość płyty CD dołączonej do niniejszej pracy.
 Dodatek \ref{cha:builder} opisuje sposób działania narzędzia służącego do kompilacji kodu źródłowego w Erlangu i odpowiedniej konfiguracji maszyny wirtualnej tak, aby zawierała skompilowany kod pośredni dla tych modułów.
 Dodatek \ref{cha:config} zestawia parametry konfiguracyjne zaimplementowanej maszyny wirtualnej.
-W dodatku \ref{cha:erlangKompilacja}~opisane zostały kroki pośrednie, jakie wykonuje kompilator języka Erlang aby przejść z kodu źródłowego napisanego w tym języku do kodu pośredniego modułu. Zaprezentowana została w nim także struktura wyjściowego pliku procesu kompilacji.
+W dodatku \ref{cha:erlangKompilacja}~opisane zostały kroki pośrednie, jakie wykonuje kompilator języka Erlang aby przejść z kodu źródłowego napisanego w~tym języku do kodu pośredniego modułu. Zaprezentowana została w nim także struktura wyjściowego pliku procesu kompilacji.
 Dodatek \ref{cha:operacjeBeam} zawiera listę instrukcji, jakie mogą znaleźć się w~pliku z kodem pośrednim wraz ze sposobem zapisu argumentów operacji.
 
